@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html class="x-admin-sm">
+
+<head>
+    <meta charset="UTF-8">
+    <title>新增</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi"
+    />
+    <link rel="stylesheet" href="./../../layuiadmin/layui/css/layui.css">
+    <script type="text/javascript" src="./../../layuiadmin/layui/layui.js" charset="utf-8"></script>
+    <!-- 引入vue -->
+    <script type="text/javascript" src="./../../layuiadmin/plugin/vue.js"></script>
+    <script type="text/javascript" src="./../../layuiadmin/plugin/axios.js"></script>
+    <!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
+    <!--[if lt IE 9]>
+    <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+    <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+    
+    <![endif]-->
+    <style>
+        .btn-box {
+            text-align: center;
+        }
+
+        .btn-box button {
+            /* margin-right: 30px; */
+            margin-bottom: 10px;
+        }
+
+        .layui-form-label {
+            width: 120px;
+
+        }
+
+        .layui-form-item .layui-input-inline {
+            width: 300px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="vm">
+        <div class="layui-fluid">
+            <div class="layui-row">
+                <form class="layui-form" action="">
+                    <!--   <div class="layui-form-item">
+                        <label for="bitian" class="layui-form-label">
+                            监测点编码</label>
+                        <div class="layui-input-inline">
+                            <input type="text" v-model="tWarnSet.monitorid" class="layui-input" placeholder="监测点编码" />
+                        </div>
+                    </div> -->
+                    <input type="hidden" class="layui-input" name="monitorId">
+                    <input type="hidden" class="layui-input" name="eventTypeId">
+                    <div class="layui-form-item">
+                        <label for="bitian" class="layui-form-label">
+                            监测点名称</label>
+                        <div class="layui-input-inline">
+                            <input type="text" v-model="monitorName" name="monitorName" class="layui-input" placeholder="监测点名称" />
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label for="bitian" class="layui-form-label">
+                            事件类型名称</label>
+                        <div class="layui-input-inline">
+                            <!-- <input type="text" v-model="tWarnSet.eventtype" class="layui-input" placeholder="事件类型名称" /> -->
+
+                            <select name="eventType" id="eventType" lay-verify="">
+                                <option value="">请选择事件类型</option>
+                                <option value="PM2.5超标">PM2.5超标</option>
+                                <option value="PM10超标">PM10超标</option>
+                                <option value="气体浓度超标">气体浓度超标</option>
+                                <option value="功率越线">功率越线</option>
+                                <option value="电流越限">电流越限</option>
+                                <option value="电压越限">电压越限</option>
+                                <option value="用电量报警">用电量报警</option>
+                            </select>
+                        </div>
+                    </div>
+                    <!-- <div class="layui-form-item">
+                        <label for="bitian" class="layui-form-label">
+                            事件类型编码</label>
+                        <div class="layui-input-inline">
+                            <input type="text" v-model="tWarnSet.eventtypeid" class="layui-input" placeholder="事件类型编码" />
+                        </div>
+                    </div> -->
+                    <div class="layui-form-item">
+                        <label for="bitian" class="layui-form-label">
+                            参数</label>
+                        <div class="layui-input-inline">
+                            <!-- <input type="text" v-model="tWarnSet.parametercode" class="layui-input" placeholder="参数" /> -->
+                            <select name="parameterCode" id="parameterCode" lay-verify="">
+                                <option value="">请选择参数类型</option>
+                                <option value="P（功率KW）">P（功率KW）</option>
+                                <option value="I（电流A）">I（电流A）</option>
+                                <option value="U（电压V）">U（电压V）</option>
+                                <option value="Pv（用电量Kw.h）">Pv（用电量Kw.h）</option>
+                                <option value="PM2.5">PM2.5</option>
+                                <option value="PM10">PM10</option>
+                                <option value="VOC（气体浓度mg/m3）">VOC（气体浓度mg/m3）</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label for="bitian" class="layui-form-label">
+                            条件</label>
+                        <div class="layui-input-inline">
+                            <!-- <input type="text" v-model="condition" name="condition" class="layui-input" placeholder="条件" /> -->
+                            <select name="condition" id="condition" lay-verify="">
+                                <option value="">请选择条件类型</option>
+                                <option value=">=">>=</option>
+                                <option value="<="><=</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label for="bitian" class="layui-form-label">
+                            阀值</label>
+                        <div class="layui-input-inline">
+                            <input type="text" v-model="limitValue" name="limitValue" class="layui-input" placeholder="阀值" />
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label for="bitian" class="layui-form-label">
+                            是否启用</label>
+                        <div class="layui-input-inline" id="active">
+                            <input type="radio" name="active" value="1" title="启用">
+                            <input type="radio" name="active" value="2" title="禁用">
+                        </div>
+                    </div>
+                    <!--  <div class="layui-form-item">
+                        <label for="bitian" class="layui-form-label">
+                        </label>
+                        <div class="layui-input-inline">
+                            <input type="text" v-model="tWarnSet.selectmonitor" class="layui-input" placeholder="" />
+                        </div>
+                    </div> -->
+
+                    <div class="layui-form-item">
+                        <label for="bitian" class="layui-form-label">
+                            状态</label>
+                        <div class="layui-input-inline" id="status">
+                            <!-- <input type="text" v-model="tWarnSet.status" class="layui-input" placeholder="状态：1、有效 2、无效" /> -->
+                            <input type="radio" name="status" value="1" title="有效">
+                            <input type="radio" name="status" value="2" title="无效">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label for="bitian" class="layui-form-label">
+                            备注</label>
+                        <div class="layui-input-inline">
+                            <!-- <input type="text" v-model="tWarnSet.remark" class="layui-input" placeholder="备注" /> -->
+                            <textarea placeholder="请输入内容" class="layui-textarea" name="remark" v-model="remark"></textarea>
+                        </div>
+                    </div>
+                    <!--  <div class="layui-form-item">
+                        <label for="bitian" class="layui-form-label">
+                            创建者名称</label>
+                        <div class="layui-input-inline">
+                            <input type="text" v-model="tWarnSet.createName" class="layui-input" placeholder="创建者名称" />
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label for="bitian" class="layui-form-label">
+                            更新者名称</label>
+                        <div class="layui-input-inline">
+                            <input type="text" v-model="tWarnSet.modifyName" class="layui-input" placeholder="更新者名称" />
+                        </div>
+                    </div> -->
+
+                    <div class="btn-box">
+                        <button class="layui-btn" lay-submit lay-filter="formDemo">添加</button>
+                        <button class="layui-btn layui-btn-danger" @click="cancel">取消</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+    </div>
+    <script>
+        layui.config({
+            base: '../../layuiadmin/' //静态资源所在路径
+        }).extend({
+            index: 'lib/index' //主入口模块
+        }).use(['index', "jquery", 'form'], function () {
+            var form = layui.form,
+                $ = layui.jquery;
+
+
+            form.on('submit(formDemo)', function (data) {
+                console.log(data);
+                data.field.monitorId = Math.floor(Math.random() * 100);
+                data.field.eventTypeId = Math.floor(Math.random() * 100);
+                axios({
+                    method: "post",
+                    url: layui.setter.BASEURL + 'environmental_intelligent_monitoring/twarnset/save',
+                    /* data: {
+                        monitorname: this.monitorname,
+                        eventtype: $("#eventtype").val,
+                        parametercode: $("#parametercode").val,
+                        condition: this.condition,
+                        limitvalue: this.limitvalue,
+                        remark: this.remark,
+                        active: $('#active input[checked]').val,
+                        status: $('#status input[checked]').val
+                    }, */
+                    data: data.field,
+                    headers: {
+                        "Content-Type": "application/json;charset=UTF-8"
+                    }
+                }).then(function (res) {
+                    if (res.data.code == 0) {
+                        console.log(res)
+                        layer.msg('保存成功！', {
+                            time: 500
+                        }, function () {
+                            window.parent.location.reload();
+                            parent.layer.close('iframe');
+                        }
+                        );
+                    } else {
+                        parent.layer.tips('保存异常!');
+                    }
+                }).catch(function (err) {
+                    console.log(err);
+                });
+                return false;
+            })
+
+
+        })
+
+        var vm = new Vue({
+            el: "#vm",
+            data: {
+                tWarnSet: {},
+                monitorName: "",
+                condition: "",
+                limitValue: "",
+                remark: ""
+            },
+            methods: {
+                addData: function () {
+                    /*  console.log(this.tWarnSet.bitian);
+                     layer.alert("新增成功", function (index) {
+                         xadmin.close();
+                     }) */
+                },
+                cancel() {
+                    parent.layer.closeAll('iframe');//关闭弹窗
+                }
+            },
+            created() {
+
+            }
+        });
+    </script>
+</body>
+
+</html>
