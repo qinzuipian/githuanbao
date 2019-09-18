@@ -74,9 +74,12 @@
 
 			<div class="layui-card-body">
 				<div style="padding-bottom: 10px;">
-					<button class="layui-btn layuiadmin-btn-list" data-type="add">添加</button>
-					<button class="layui-btn layuiadmin-btn-list" data-type="edit">编辑</button>
-					<button class="layui-btn layuiadmin-btn-list" data-type="batchdel">删除</button>
+					<button class="layui-btn layuiadmin-btn-list layui-bg-green" data-type="add">
+						<i class="layui-icon">&#xe654;</i>添加</button>
+					<button class="layui-btn layuiadmin-btn-list layui-bg-blue" data-type="edit">
+						<i class="layui-icon">&#xe642;</i>编辑</button>
+					<button class="layui-btn layuiadmin-btn-list layui-bg-red" data-type="batchdel">
+						<i class="layui-icon">&#xe640;</i>删除</button>
 				</div>
 				<table id="LAY-app-content-list" lay-filter="LAY-app-content-list"></table>
 			</div>
@@ -184,7 +187,7 @@
 
 						layer.confirm('确定删除吗？', function (index) {
 
-							//执行 Ajax 后重载
+							//执行 axios 后重载
 							axios({
 								method: "post",
 								url: layui.setter.BASEURL + 'environmental_intelligent_monitoring/twarnset/delete',
@@ -234,14 +237,14 @@
 							return layer.msg('只能选择单条数据进行编辑');
 						}
 						// 获取行数据的id传值至弹窗页面
-						window.id = checkData[0].id,
-							layer.open({
-								type: 2,
-								title: '编辑异常设备',
-								content: 'editTwarn.html',
-								maxmin: true,
-								area: ['600px', '550px']
-							});
+						window.id = checkData[0].id;
+						layer.open({
+							type: 2,
+							title: '编辑异常设备',
+							content: 'editTwarn.html',
+							maxmin: true,
+							area: ['600px', '550px']
+						});
 
 					}
 				};
