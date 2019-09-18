@@ -57,10 +57,10 @@
 				base: '../../layuiadmin/' //静态资源所在路径
 			}).extend({
 				index: 'lib/index' //主入口模块
-			}).use(['index', 'table',"laydate"], function() {
+			}).use(['index', 'table', "laydate"], function() {
 				var table = layui.table,
 					form = layui.form;
-					laydate = layui.laydate;
+				laydate = layui.laydate;
 
 				table.render({
 					elem: '#LAY-app-content-list',
@@ -80,14 +80,13 @@
 					},
 					cols: [
 							[{
-									title: '',
-									field: 'id',
+									type: 'numbers',
 									minWidth: 40,
-									width:40
+									width: 50
 								},
 								{
 									checkbox: true,
-									
+
 								}, {
 									title: '行业名称',
 									field: 'name',
@@ -96,10 +95,10 @@
 									title: '备注',
 									field: 'remark',
 									minWidth: 100
-								}, 
+								},
 								{
 									title: '创建时间',
-									field: 'modifyName',
+									field: 'createDate',
 									minWidth: 100
 								}
 							]
@@ -111,16 +110,16 @@
 				//日期选择器(设置日期的最后期限为今天)
 				var data = new Date();
 				var max_data = data.getDate();
-				 laydate.render({
-				    elem: '#startDate'
-				    ,btns: ['confirm'],
-					max:"max_data"
-				  });
-				  laydate.render({
-				     elem: '#endDate'
-				     ,btns: ['confirm'],
-					 max:"max_data"
-				   });
+				laydate.render({
+					elem: '#startDate',
+					btns: ['confirm'],
+					max: "max_data"
+				});
+				laydate.render({
+					elem: '#endDate',
+					btns: ['confirm'],
+					max: "max_data"
+				});
 
 
 				//监听搜索
@@ -138,40 +137,74 @@
 						batchdel: function() {
 							var checkStatus = table.checkStatus('LAY-app-content-list'),
 								checkData = checkStatus.data; //得到选中的数据
-
+							console.log(checkData);
+							var idList = [];
+							for (var i = 0; i < checkData.length; i++) {
+								idList.push(checkData[i].id)
+							}
+							console.log(idList)
 							if (checkData.length === 0) {
 								return layer.msg('请选择数据');
 							}
-
+							
 							layer.confirm('确定删除吗？', function(index) {
-
-								//执行 Ajax 后重载
-								/*
-								admin.req({
-								  url: 'xxx'
-								  //,……
-								});
-								*/
-								table.reload('LAY-app-content-list');
-								layer.msg('已删除');
+									//执行 Ajax 后重载
+									axios({
+										method: "post",
+										url: layui.setter.BASEURL + 'environmental_intelligent_monitoring/tbastrade/delete',
+										data: {
+											ids: idList
+										},
+										headers: {
+											"Content-Type": "application/json;charset=UTF-8"
+										}
+									}).then(function (res) {
+										if (res.data.code == 0) {
+											console.log(res)
+											table.reload('LAY-app-content-list');
+											layer.msg('已删除');
+							
+										} else {
+											layer.msg('删除失败!');
+										}
+									}).catch(function (err) {
+										console.log(err);
+									});
 							});
 						},
 						add: function() {
 							layer.open({
 								type: 2,
-								title: '添加文章',
-								content: 'listform.html',
+								title: '添加行业',
+								content: 'addIndustry.html',
 								maxmin: true,
-								area: ['550px', '550px'],
-								btn: ['确定', '取消'],
-								yes: function(index, layero) {
-									//点击确认触发 iframe 内容中的按钮提交
-									var submit = layero.find('iframe').contents().find("#layuiadmin-app-form-submit");
-									submit.click();
-								}
+								area: ['600px', '550px'],
+								// btn: ['确定', '取消'],
+								// yes: function(index, layero) {
+								// 	//点击确认触发 iframe 内容中的按钮提交
+								// 	var submit = layero.find('iframe').contents().find("#layuiadmin-app-form-submit");
+								// 	submit.click();
+								// }
 							});
 						},
 						edit: function() {
+							var checkStatus = table.checkStatus('LAY-app-content-list'),
+								checkData = checkStatus.data; //得到选中的数据
+							// console.log(checkData)
+							if (checkData.length === 0) {
+								return layer.msg('请选择需要修改的数据');
+							} else if (checkData.length > 1) {
+								return layer.msg('只能选择单条数据进行编辑');
+							}
+							// 获取行数据的id传值至弹窗页面
+							window.id = checkData[0].id,
+								layer.open({
+									type: 2,
+									title: '编辑行业',
+									content: 'editIndustry.html',
+									maxmin: true,
+									area: ['600px', '550px']
+								});
 
 						}
 					};
