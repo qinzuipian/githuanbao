@@ -13,6 +13,7 @@
     <!-- 引入vue -->
     <script type="text/javascript" src="./../../layuiadmin/plugin/vue.js"></script>
     <script type="text/javascript" src="./../../layuiadmin/plugin/axios.js"></script>
+    <script src="./../../layuiadmin/js/baseUrlConfig.js"></script>
     <!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
     <!--[if lt IE 9]>
     <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
@@ -50,7 +51,10 @@
                         <label for="bitian" class="layui-form-label">
                             企业名称</label>
                         <div class="layui-input-inline">
-                            <input type="text" v-model="tWarnSubscribe.enterprisename" name="enterpriseName" class="layui-input" placeholder="企业名称" />
+                            <!-- <input type="text" v-model="tWarnSubscribe.enterprisename" name="enterpriseName" class="layui-input" placeholder="企业名称" /> -->
+                            <select name="enterpriseName" id="enterpriseName" lay-verify="required" lay-filter="xmFilter">
+                                <option value=""></option>
+                            </select>
                         </div>
                     </div>
 
@@ -135,6 +139,34 @@
         }).use(['index', "jquery", 'form'], function () {
             var form = layui.form,
                 $ = layui.jquery;
+
+
+            // select动态填充数据
+            axios({
+                method: "post",
+                url: BASEURL + 'environmental_intelligent_monitoring/tbasenterprise/list',
+                data: {
+                    page: 1,
+                    limit: 10
+                },
+                headers: {
+                    "Content-Type": "application/json;charset=UTF-8"
+                }
+            }).then(function (res) {
+                if (res.data.code == 0) {
+                    // console.log(res)
+                    $.each(res.data.page.list, function (index, item) {
+                        // console.log(index, item)
+                        $('#enterpriseName').append(new Option(item.name, item.name));// 下拉菜单里添加元素
+                    });
+                    layui.form.render("select");
+
+                } else {
+
+                }
+            }).catch(function (err) {
+                console.log(err);
+            });
 
 
             form.on('submit(warnForm)', function (data) {
