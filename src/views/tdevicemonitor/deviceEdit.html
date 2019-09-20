@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>新增</title>
+    <title>编辑</title>
     <meta name="renderer" content="webkit">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi"
@@ -18,7 +18,6 @@
     <!--[if lt IE 9]>
     <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
     <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
-    
     <![endif]-->
     <style>
         .btn-box {
@@ -79,13 +78,13 @@
     <div id="vm">
         <div class="layui-fluid">
             <div class="layui-row">
-                <form class="layui-form">
-
+                <form class="layui-form" lay-filter="editDevice">
+                    <input type="hidden" name="id">
                     <div class="layui-form-item">
                         <label for="bitian" class="layui-form-label">
                             监测点名称</label>
                         <div class="layui-input-inline">
-                            <input type="text" name="monitorName" v-model="tDeviceMonitor.monitorname" class="layui-input" placeholder="监测点名称" />
+                            <input type="text" name="monitorName" class="layui-input" placeholder="监测点名称" />
                         </div>
                         <label for="bitian" class="layui-form-label">
                             信息分类</label>
@@ -93,7 +92,6 @@
 
                             <!-- <input type="text" v-model="tDeviceMonitor.type" class="layui-input" placeholder="设备类型:1、生产设备 2、治污设备" /> -->
                             <select name="ecPolluteType" id="ecPolluteType" lay-filter="ecPolluteType" lay-verify="">
-                                <option value="">请选择信息分类方式</option>
                                 <option value=""></option>
                             </select>
 
@@ -126,7 +124,7 @@
                         <label for="bitian" class="layui-form-label">
                             网关编号</label>
                         <div class="layui-input-inline">
-                            <input type="text" name="swicthId" v-model="tDeviceMonitor.swicthid" class="layui-input" placeholder="网关编号" />
+                            <input type="text" name="swicthId" class="layui-input" placeholder="网关编号" />
                         </div>
                         <label for="bitian" class="layui-form-label">
                             工艺 </label>
@@ -134,7 +132,7 @@
                             <select name="route" id="route" lay-filter="route" lay-verify="">
                                 <option value=""></option>
                             </select>
-                            <!-- <input type="text" name="route" lay-filter="route" class="layui-input" placeholder="" /> -->
+                            <!-- <input type="text" name="route" class="layui-input" placeholder="" /> -->
                         </div>
                     </div>
 
@@ -149,23 +147,7 @@
                         <label for="bitian" class="layui-form-label">
                             设备用途</label>
                         <div class="layui-input-inline">
-                            <input type="text" name="equipmentUse" v-model="tDeviceMonitor.equipmentuse" class="layui-input" placeholder="设备用途" />
-                        </div>
-
-                    </div>
-
-                    <div class="layui-form-item">
-                        <label for="bitian" class="layui-form-label">
-                            测点代码</label>
-                        <div class="layui-input-inline">
-                            <input type="text" name="tn" class="layui-input" placeholder="" />
-                        </div>
-
-
-                        <label for="bitian" class="layui-form-label">
-                            采集器代码</label>
-                        <div class="layui-input-inline">
-                            <input type="text" name="mn" v-model="tDeviceMonitor.mn" class="layui-input" />
+                            <input type="text" name="equipmentUse" class="layui-input" placeholder="设备用途" />
                         </div>
 
                     </div>
@@ -174,7 +156,7 @@
                         <label for="bitian" class="layui-form-label">
                             仪表类别</label>
                         <div class="layui-input-inline">
-                            <select name="collectType" id="collectType" lay-verify="">
+                            <select name="collectType " id="collectType" lay-filter="collectType" lay-verify="">
                                 <option value="">请选择仪表类别</option>
                                 <option value="用电">用电</option>
                                 <option value="扬尘设备">扬尘设备</option>
@@ -188,21 +170,19 @@
                         <label for="bitian" class="layui-form-label">
                             功率启停阀值(kW)</label>
                         <div class="layui-input-inline">
-                            <input type="text" name="electricLimit" v-model="tDeviceMonitor.electriclimit" class="layui-input" placeholder="功率启停阀值(kW)"
-                            />
+                            <input type="text" name="electricLimit" class="layui-input" placeholder="功率启停阀值(kW)" />
                         </div>
                     </div>
                     <div class="layui-form-item">
                         <label for="bitian" class="layui-form-label">
                             仪表型号</label>
                         <div class="layui-input-inline">
-                            <input type="text" name="model" v-model="tDeviceMonitor.model" class="layui-input" placeholder="仪表型号" />
+                            <input type="text" name="model" class="layui-input" placeholder="仪表型号" />
                         </div>
                         <label for="bitian" class="layui-form-label">
                             功率门限时间(m)</label>
                         <div class="layui-input-inline">
-                            <input type="text" name="electricTime" v-model="tDeviceMonitor.electrictime" class="layui-input" placeholder="功率门限时间(分钟)"
-                            />
+                            <input type="text" name="electricTime" class="layui-input" placeholder="功率门限时间(分钟)" />
                         </div>
                     </div>
 
@@ -211,52 +191,51 @@
                         <label for="bitian" class="layui-form-label">
                             是否是演示箱</label>
                         <div class="layui-input-inline">
-                            <input type="radio" name="isShow " value="true" title="是">
-                            <input type="radio" name="isShow " value="false" title="否">
+                            <input type="radio" name="isShow" value="true" title="是" checked>
+                            <input type="radio" name="isShow" value="false" title="否">
                         </div>
 
                         <label for="bitian" class="layui-form-label">
                             电量阀值(kW·h)</label>
                         <div class="layui-input-inline">
-                            <input type="text" name="powerLimit" v-model="tDeviceMonitor.powerlimit" class="layui-input" placeholder="电量阀值(kW·h)" />
+                            <input type="text" name="powerLimit" class="layui-input" placeholder="电量阀值(kW·h)" />
                         </div>
                     </div>
                     <div class="layui-form-item">
                         <label for="bitian" class="layui-form-label">
                             电压变比</label>
                         <div class="layui-input-inline">
-                            <input type="text" name="pt" v-model="tDeviceMonitor.pt" class="layui-input" placeholder="电压变比" />
+                            <input type="text" name="pt" class="layui-input" placeholder="电压变比" />
                         </div>
                         <label for="bitian" class="layui-form-label">
                             电量门限时间(m)</label>
                         <div class="layui-input-inline">
-                            <input type="text" name="powerTime" v-model="tDeviceMonitor.powertime" class="layui-input" placeholder="电量门限时间(分钟)" />
+                            <input type="text" name="powerTime" class="layui-input" placeholder="电量门限时间(分钟)" />
                         </div>
                     </div>
                     <div class="layui-form-item">
                         <label for="bitian" class="layui-form-label">
                             电流变比</label>
                         <div class="layui-input-inline">
-                            <input type="text" name="ct" v-model="tDeviceMonitor.ct" class="layui-input" placeholder="电流变比" />
+                            <input type="text" name="ct" class="layui-input" placeholder="电流变比" />
                         </div>
                         <label for="bitian" class="layui-form-label">
                             额定电压(V)</label>
                         <div class="layui-input-inline">
-                            <input type="text" name="ratedU" v-model="tDeviceMonitor.ratedu" class="layui-input" placeholder="额定电压(V)" />
+                            <input type="text" name="ratedU" class="layui-input" placeholder="额定电压(V)" />
                         </div>
                     </div>
                     <div class="layui-form-item">
                         <label for="bitian" class="layui-form-label">
                             额定功率(kW)</label>
                         <div class="layui-input-inline">
-                            <input type="text" name="ratedPower" v-model="tDeviceMonitor.ratedpower" class="layui-input" placeholder="额定功率(kW)" />
+                            <input type="text" name="ratedPower" class="layui-input" placeholder="额定功率(kW)" />
                         </div>
 
                         <label for="bitian" class="layui-form-label">
                             摄像头编号</label>
                         <div class="layui-input-inline">
-                            <input type="text" name="cameraIndexCode" v-model="tDeviceMonitor.cameraIndexCode" class="layui-input" placeholder="摄像头编号"
-                            />
+                            <input type="text" name="cameraIndexCode" class="layui-input" placeholder="摄像头编号" />
                         </div>
                     </div>
 
@@ -264,7 +243,7 @@
                         <label for="bitian" class="layui-form-label">
                             所选车间</label>
                         <div class="layui-input-inline">
-                            <input type="text" v-model="shopname" disabled class="layui-input layui-disabled" placeholder="所选车间" />
+                            <input type="text" v-model="shopname" name="shopName" disabled class="layui-input layui-disabled" placeholder="所选车间" />
                         </div>
                         <label for="bitian" class="layui-form-label">
                             备注</label>
@@ -273,13 +252,13 @@
                         </div>
                     </div>
                     <!-- <div class="layui-form-item">
-                        <label for="bitian" class="layui-form-label">
-                            车间筛选</label>
-                        <div class="layui-input-inline">
-                            <input type="text" class="layui-input" />
-                        </div>
-
-                    </div> -->
+                                <label for="bitian" class="layui-form-label">
+                                    车间筛选</label>
+                                <div class="layui-input-inline">
+                                    <input type="text" class="layui-input" />
+                                </div>
+        
+                            </div> -->
                     <div class="layui-form-item treeCss">
                         <label for="bitian" class="layui-form-label">车间选择</label>
                         <!-- <div id="shopTree" class="demo-tree-more treeItem"></div> -->
@@ -293,8 +272,8 @@
                                     <!-- vm.treeItemShow == item.enterpriseId; -->
                                     <ul>
                                         <!--  <li>
-                                            <input type="radio" name="userType" value="1" name="111">
-                                        </li> -->
+                                                    <input type="radio" name="userType" value="1" name="111">
+                                                </li> -->
 
                                         <li v-for="(it,index) in treeItemData" :key="index" v-show="item.enterpriseId == i">
                                             <input type="hidden" name="enterpriseId" v-model="i">
@@ -307,7 +286,7 @@
                         </div>
                     </div>
                     <div class="btn-box">
-                        <button class="layui-btn" lay-submit lay-filter="deviceForm">添加</button>
+                        <button class="layui-btn" lay-submit lay-filter="deviceForm">确认</button>
                         <button class="layui-btn layui-btn-danger" @click="cancel">取消</button>
                     </div>
 
@@ -315,27 +294,74 @@
             </div>
         </div>
 
-
-
     </div>
     <script>
-        layui.config({
-            base: '../../layuiadmin/' //静态资源所在路径
-        }).extend({
-            index: 'lib/index' //主入口模块
-        }).use(['index', "jquery", 'form', 'tree', 'laytpl', 'util'], function () {
+        layui.use(['form', 'jquery'], function () {
             var form = layui.form,
-                $ = layui.jquery,
-                tree = layui.tree,
-                util = layui.util,
-                laytpl = layui.laytpl;
+                $ = layui.jquery;
+
+            // 单个信息数据展示
+            axios({
+                method: "get",
+                url: BASEURL + "environmental_intelligent_monitoring/tdevicemonitor/info/" + parent.id,
+            })
+                .then(res => {
+                    if (res.data.code == 0) {
+                        console.log(res.data.tDeviceMonitor);
+
+                        var Devicedata = res.data.tDeviceMonitor;
+                        console.log(Devicedata.isShow)
+                        form.render();
+                        // console.log(Devicedata.collectType,vm.shopname)
+                        form.val('editDevice', {
+                            "id": Devicedata.id
+                            , "monitorName": Devicedata.monitorName// "name": "value"
+                            , "collectType": Devicedata.collectType
+                            , "codeType": Devicedata.codeType
+                            , "ecPolluteType": Devicedata.ecPolluteType
+                            , "type": Devicedata.type
+                            , "ecType": Devicedata.ecType
+                            , "swicthId": Devicedata.swicthId
+                            , "route": Devicedata.route
+                            , "meterId": Devicedata.meterId
+                            , "equipmentUse": Devicedata.equipmentUse
+                            , "electricLimit": Devicedata.electricLimit
+                            , "model": Devicedata.model
+                            , "electricTime": Devicedata.electricTime
+                            , "isShow": Devicedata.isShow.toString()
+                            , "powerLimit": Devicedata.powerLimit
+                            , "pt": Devicedata.pt
+                            , "powerTime": Devicedata.powerTime
+                            , "ratedU": Devicedata.ratedU
+                            , "ct": Devicedata.ct
+                            , "ratedPower": Devicedata.ratedPower
+                            , "cameraIndexCode": Devicedata.cameraIndexCode
+                            , "enterpriseName": Devicedata.enterpriseName
+                            , "enterpriseId": Devicedata.enterpriseId
+                            , "remark": Devicedata.remark
+                        });
+                        form.render('select', collectType);
+                       
+
+                        vm.shopname = Devicedata.shopName;
+                    } else {
+
+                    }
+                })
+                .catch(error => {
+
+                });
+
 
             // select框动态填充联动
             // 第一层填充
             axios({
                 method: "post",
                 url: BASEURL + 'environmental_intelligent_monitoring/tdevicemonitor/queryPolluteType',
-                params: {}
+                data: {},
+                headers: {
+                    "Content-Type": "application/json;charset=UTF-8"
+                }
             }).then(function (res) {
                 if (res.data.code == 0) {
                     // console.log(res)
@@ -417,13 +443,11 @@
 
 
 
-
-            // form表单添加数据提交
+            // form表单的提交
             form.on('submit(deviceForm)', function (data) {
-                console.log(data);
                 axios({
                     method: "post",
-                    url: layui.setter.BASEURL + 'environmental_intelligent_monitoring/tdevicemonitor/save',
+                    url: BASEURL + 'environmental_intelligent_monitoring/tdevicemonitor/update',
                     data: data.field,
                     headers: {
                         "Content-Type": "application/json;charset=UTF-8"
@@ -431,7 +455,7 @@
                 }).then(function (res) {
                     if (res.data.code == 0) {
                         console.log(res)
-                        layer.msg('保存成功！', {
+                        layer.msg('编辑成功！', {
                             time: 500
                         }, function () {
                             window.parent.location.reload();
@@ -439,17 +463,19 @@
                         }
                         );
                     } else {
-                        layer.msg('保存异常!');
+                        parent.layer.tips('编辑异常!');
                     }
                 }).catch(function (err) {
                     console.log(err);
                 });
                 return false;
             })
-
-
-
         })
+        /*
+    *   @Author: liangbiaobiao
+    *   @email: pokerface0206@163.com
+    */
+
         var vm = new Vue({
             el: "#vm",
             data: {
@@ -542,18 +568,20 @@
                 cancel() {
                     parent.layer.closeAll('iframe');//关闭弹窗
                 },
-                addData: function () {
+
+                submitData: function () {
                     console.log(this.tDeviceMonitor.bitian);
-                    layer.alert("新增成功", function (index) {
+                    layer.alert("编辑成功", function () {
                         xadmin.close();
+                        xadmin.father_reload();
                     })
                     axios({
                         method: "post",
-                        url: baseUrl + '/environmental_intelligent_monitoring/tdevicemonitor/save',
+                        url: baseUrl + '/environmental_intelligent_monitoring/tdevicemonitor/update',
                         params: {}
                     }).then(function (res) {
                         if (res.code == 0) {
-                            layer.alert("新增成功", function (index) {
+                            layer.alert("编辑成功", function (index) {
                                 xadmin.close();
                             })
                         } else {
@@ -562,13 +590,14 @@
                     }).catch(function (err) {
                         console.log(err);
                     });
-                },
-
+                }
+            },
+            mounted() {
+                // this.pageInit();
             },
             created() {
                 this.treeInit();
             }
-
         });
     </script>
 </body>

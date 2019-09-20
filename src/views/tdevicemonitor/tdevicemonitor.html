@@ -21,16 +21,16 @@
 					<div class="layui-inline">
 						<label class="layui-form-label">创建日期</label>
 						<div class="layui-input-inline">
-							<input type="text" class="layui-input" id="startDate" name="startDate" placeholder="请输入开始日期">
+							<input type="text" class="layui-input" id="startDate" name="startCreateDate" placeholder="请输入开始日期">
 						</div>
 						<div class="layui-input-inline">
-							<input type="text" class="layui-input" id="endDate" name="endDate" placeholder="请输入结束日期">
+							<input type="text" class="layui-input" id="endDate" name="endCreateDate" placeholder="请输入结束日期">
 						</div>
 					</div>
 					<div class="layui-inline">
 						<label class="layui-form-label">关键字</label>
 						<div class="layui-input-inline">
-							<input type="text" name="id" placeholder="监测点/企业名称" autocomplete="off" class="layui-input">
+							<input type="text" name="monitorName" placeholder="监测点/企业名称" autocomplete="off" class="layui-input">
 						</div>
 					</div>
 					<div class="layui-inline">
@@ -70,10 +70,13 @@
 
 			//时间日期
 			laydate.render({
-				elem: '#startDate'
+				elem: '#startDate',
+				format: 'yyyy-MM-dd'
+
 			});
 			laydate.render({
-				elem: '#endDate'
+				elem: '#endDate',
+				format: 'yyyy-MM-dd'
 			});
 
 			table.render({
@@ -94,12 +97,12 @@
 					{ type: 'numbers', width: 50, fixed: 'left' },
 					{ checkbox: true },
 					{ title: '创建日期', field: 'createDate', minWidth: 160 },
-					{ title: '监测点名称', field: 'monitorname', minWidth: 100 },
-					{ title: '所属企业', field: 'enterprisename', minWidth: 100 },
-					{ title: '所属车间', field: 'shopname', minWidth: 100 },
-					{ title: '所属设备', field: 'equipmentname', minWidth: 100 },
+					{ title: '监测点名称', field: 'monitorName', minWidth: 100 },
+					{ title: '所属企业', field: 'enterpriseName', minWidth: 100 },
+					{ title: '所属车间', field: 'shopName', minWidth: 100 },
+					{ title: '所属设备', field: 'equipmentName', minWidth: 100 },
 					{ title: '设备类型', field: 'type', minWidth: 100 },
-					{ title: '设备用途', field: 'equipmentuse', minWidth: 100 },
+					{ title: '设备用途', field: 'equipmentUse', minWidth: 100 },
 					{ title: '状态', field: 'status', minWidth: 100 },
 					{ title: '备注', field: 'remark', minWidth: 100 }
 
@@ -129,7 +132,7 @@
 			//监听搜索
 			form.on('submit(LAY-app-contlist-search)', function (data) {
 				var field = data.field;
-
+				console.log(field)
 				//执行重载
 				table.reload('LAY-app-content-list', {
 					where: field
@@ -141,6 +144,10 @@
 					batchdel: function () {
 						var checkStatus = table.checkStatus('LAY-app-content-list'),
 							checkData = checkStatus.data; //得到选中的数据
+						var idList = [];
+						for (var i = 0; i < checkData.length; i++) {
+							idList.push(checkData[i].id)
+						}
 
 						if (checkData.length === 0) {
 							return layer.msg('请选择数据');
@@ -148,15 +155,29 @@
 
 						layer.confirm('确定删除吗？', function (index) {
 
-							//执行 Ajax 后重载
-							/*
-							admin.req({
-							  url: 'xxx'
-							  //,……
+							//执行 axios 后重载
+							axios({
+								method: "post",
+								url: layui.setter.BASEURL + 'environmental_intelligent_monitoring/tdevicemonitor/delete',
+								data: {
+									ids: idList
+								},
+								headers: {
+									"Content-Type": "application/json;charset=UTF-8"
+								}
+							}).then(function (res) {
+								if (res.data.code == 0) {
+									console.log(res)
+									table.reload('LAY-app-content-list');
+									layer.msg('已删除');
+
+								} else {
+									layer.msg('删除失败!');
+								}
+							}).catch(function (err) {
+								console.log(err);
 							});
-							*/
-							table.reload('LAY-app-content-list');
-							layer.msg('已删除');
+
 						});
 					},
 					add: function () {
@@ -170,6 +191,24 @@
 						});
 					},
 					edit: function () {
+						var checkStatus = table.checkStatus('LAY-app-content-list'),
+							checkData = checkStatus.data; //得到选中的数据
+						// console.log(checkData)
+						if (checkData.length === 0) {
+							return layer.msg('请选择需要修改的数据');
+						} else if (checkData.length > 1) {
+							return layer.msg('只能选择单条数据进行编辑');
+						}
+						// 获取行数据的id传值至弹窗页面
+						window.id = checkData[0].id;
+						layer.open({
+							type: 2,
+							title: '编辑监测点',
+							content: 'deviceEdit.html',
+							maxmin: true,
+							area: ['860px', '550px']
+
+						});
 
 					}
 				};

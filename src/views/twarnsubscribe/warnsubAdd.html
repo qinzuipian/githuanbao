@@ -63,19 +63,9 @@
                             事件类型</label>
                         <div class="layui-input-inline">
                             <!-- <input type="text" v-model="tWarnSubscribe.eventtype" class="layui-input" placeholder="事件类型名称" /> -->
-                            <select name="eventType" id="eventtype" lay-verify="">
+                            <select name="eventType" id="eventType" lay-filter="eventType" lay-verify="">
                                 <option value="">请选择事件类型</option>
-                                <option value="设备停电">设备停电</option>
-                                <option value="限产异常">限产异常</option>
-                                <option value="停产异常">停产异常</option>
-                                <option value="治污设施异常">治污设施异常</option>
-                                <option value="功率越限">功率越限</option>
-                                <option value="电流越限">电流越限</option>
-                                <option value="电压越限">电压越限</option>
-                                <option value="用电量报警">用电量报警</option>
-                                <option value="PM2.5超标">PM2.5超标</option>
-                                <option value="PM10超标">PM10超标</option>
-                                <option value="气体浓度超标">气体浓度超标</option>
+                                <option value=""></option>
                             </select>
                         </div>
                     </div>
@@ -139,6 +129,27 @@
         }).use(['index', "jquery", 'form'], function () {
             var form = layui.form,
                 $ = layui.jquery;
+
+            // select事件类型数据填充
+            axios({
+                method: "post",
+                url: BASEURL + 'environmental_intelligent_monitoring/twarnsubscribe/queryEventTypeDictionary',
+                params: {}
+            }).then(function (res) {
+                if (res.data.code == 0) {
+                    // console.log(res)
+                    $.each(res.data.data, function (index, item) {
+                        // console.log(index, item)
+                        $('#eventType').append(new Option(item.eventType, item.eventTypeId));// 下拉菜单里添加元素
+                    });
+                    layui.form.render("select");
+
+                } else {
+
+                }
+            }).catch(function (err) {
+                console.log(err);
+            });
 
 
             // select动态填充数据
