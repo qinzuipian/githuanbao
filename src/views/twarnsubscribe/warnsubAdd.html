@@ -140,7 +140,7 @@
                     // console.log(res)
                     $.each(res.data.data, function (index, item) {
                         // console.log(index, item)
-                        $('#eventType').append(new Option(item.eventType, item.eventTypeId));// 下拉菜单里添加元素
+                        $('#eventType').append(new Option(item.eventType, item.eventType));// 下拉菜单里添加元素
                     });
                     layui.form.render("select");
 

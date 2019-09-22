@@ -354,6 +354,7 @@
 
             // 第二层填充
             form.on('select(ecPolluteType)', function (data) {
+                console.log(data)
                 // select框动态填充联动
                 $("#ecType").empty();
                 axios({
@@ -421,6 +422,10 @@
             // form表单添加数据提交
             form.on('submit(deviceForm)', function (data) {
                 console.log(data);
+
+                data.field.ecPolluteType = $("#ecPolluteType option:selected").text();
+                data.field.ecType = $("#ecType option:selected").text();
+                data.field.route = $("#route option:selected").text();
                 axios({
                     method: "post",
                     url: layui.setter.BASEURL + 'environmental_intelligent_monitoring/tdevicemonitor/save',

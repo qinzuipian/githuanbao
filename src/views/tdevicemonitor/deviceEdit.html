@@ -191,7 +191,7 @@
                         <label for="bitian" class="layui-form-label">
                             是否是演示箱</label>
                         <div class="layui-input-inline">
-                            <input type="radio" name="isShow" value="true" title="是" checked>
+                            <input type="radio" name="isShow" value="true" title="是">
                             <input type="radio" name="isShow" value="false" title="否">
                         </div>
 
@@ -300,58 +300,6 @@
             var form = layui.form,
                 $ = layui.jquery;
 
-            // 单个信息数据展示
-            axios({
-                method: "get",
-                url: BASEURL + "environmental_intelligent_monitoring/tdevicemonitor/info/" + parent.id,
-            })
-                .then(res => {
-                    if (res.data.code == 0) {
-                        console.log(res.data.tDeviceMonitor);
-
-                        var Devicedata = res.data.tDeviceMonitor;
-                        console.log(Devicedata.isShow)
-                        form.render();
-                        // console.log(Devicedata.collectType,vm.shopname)
-                        form.val('editDevice', {
-                            "id": Devicedata.id
-                            , "monitorName": Devicedata.monitorName// "name": "value"
-                            , "collectType": Devicedata.collectType
-                            , "codeType": Devicedata.codeType
-                            , "ecPolluteType": Devicedata.ecPolluteType
-                            , "type": Devicedata.type
-                            , "ecType": Devicedata.ecType
-                            , "swicthId": Devicedata.swicthId
-                            , "route": Devicedata.route
-                            , "meterId": Devicedata.meterId
-                            , "equipmentUse": Devicedata.equipmentUse
-                            , "electricLimit": Devicedata.electricLimit
-                            , "model": Devicedata.model
-                            , "electricTime": Devicedata.electricTime
-                            , "isShow": Devicedata.isShow.toString()
-                            , "powerLimit": Devicedata.powerLimit
-                            , "pt": Devicedata.pt
-                            , "powerTime": Devicedata.powerTime
-                            , "ratedU": Devicedata.ratedU
-                            , "ct": Devicedata.ct
-                            , "ratedPower": Devicedata.ratedPower
-                            , "cameraIndexCode": Devicedata.cameraIndexCode
-                            , "enterpriseName": Devicedata.enterpriseName
-                            , "enterpriseId": Devicedata.enterpriseId
-                            , "remark": Devicedata.remark
-                        });
-                        form.render('select', collectType);
-                       
-
-                        vm.shopname = Devicedata.shopName;
-                    } else {
-
-                    }
-                })
-                .catch(error => {
-
-                });
-
 
             // select框动态填充联动
             // 第一层填充
@@ -440,6 +388,72 @@
 
 
             })
+
+            // 单个信息数据展示
+            axios({
+                method: "get",
+                url: BASEURL + "environmental_intelligent_monitoring/tdevicemonitor/info/" + parent.id,
+            })
+                .then(res => {
+                    if (res.data.code == 0) {
+                        console.log(res.data.tDeviceMonitor);
+
+                        var Devicedata = res.data.tDeviceMonitor;
+                        // console.log(Devicedata.isShow)
+                        // console.log(Devicedata.collectType,vm.shopname)
+                        form.val('editDevice', {
+                            "id": Devicedata.id
+                            , "monitorName": Devicedata.monitorName// "name": "value"
+                            , "collectType": Devicedata.collectType
+                            , "codeType": Devicedata.codeType
+                            , "ecPolluteType": Devicedata.ecPolluteType
+                            , "type": Devicedata.type
+                            , "ecType": Devicedata.ecType
+                            , "swicthId": Devicedata.swicthId
+                            , "route": Devicedata.route
+                            , "meterId": Devicedata.meterId
+                            , "equipmentUse": Devicedata.equipmentUse
+                            , "electricLimit": Devicedata.electricLimit
+                            , "model": Devicedata.model
+                            , "electricTime": Devicedata.electricTime
+                            , "isShow": Devicedata.isShow.toString()
+                            , "powerLimit": Devicedata.powerLimit
+                            , "pt": Devicedata.pt
+                            , "powerTime": Devicedata.powerTime
+                            , "ratedU": Devicedata.ratedU
+                            , "ct": Devicedata.ct
+                            , "ratedPower": Devicedata.ratedPower
+                            , "cameraIndexCode": Devicedata.cameraIndexCode
+                            , "enterpriseName": Devicedata.enterpriseName
+                            , "enterpriseId": Devicedata.enterpriseId
+                            , "remark": Devicedata.remark
+                        });
+                        vm.shopname = Devicedata.shopName;
+                       $('#collectType').val(Devicedata.collectType);
+                    //    $('#ecPolluteType').text(Devicedata.ecPolluteType);
+                       $('#ecType').val(Devicedata.ecType);
+                       $('#route').val(Devicedata.route);
+                        // console.log(Devicedata.collectType)
+                        // $("#collectType option[value=Devicedata.collectType]").prop("selected", true)
+                        form.render();
+                        
+                       
+                        /*  $("#ecPolluteType option[value=Devicedata.ecPolluteType]").prop("selected", true);
+                         $("#ecType option[value=Devicedata.ecType]").prop("selected", true);
+                         $("#route option[value=Devicedata.route]").prop("selected", true); 
+ 
+                         form.render("select");*/
+
+
+                        
+                    } else {
+
+                    }
+                })
+                .catch(error => {
+
+                });
+
 
 
 
