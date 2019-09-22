@@ -11,6 +11,7 @@
 		<script src="../../layuiadmin/layui/layui.js" type="text/javascript" charset="utf-8"></script>
 		<!-- 引入vue -->
 		<script type="text/javascript" src="../../layuiadmin/plugin/vue.js"></script>
+		<script src="../../layuiadmin/js/baseUrlConfig.js" type="text/javascript" charset="utf-8"></script>
 		<script src="../../layuiadmin/plugin/axios.js"></script>
 		<style>
 			.btn-box {
@@ -128,13 +129,9 @@
 								<div class="layui-form-item">
 									<label class="layui-form-label">所属行业</label>
 									<div class="layui-input-inline">
-										<select name="tradeName" lay-filter="aihao">
+										<select name="tradeName" id="eventType" lay-filter="eventType">
+											<option value="">请选择</option>
 											<option value=""></option>
-											<option value="0">写作</option>
-											<option value="1">阅读</option>
-											<option value="2">游戏</option>
-											<option value="3">音乐</option>
-											<option value="4">旅行</option>
 										</select>
 									</div>
 								</div>
@@ -289,6 +286,26 @@
 					$ = layui.jquery,
 					upload = layui.upload,
 					layer = layui.layer;
+					
+					
+					axios({
+						method: "post",
+						url: BASEURL + 'environmental_intelligent_monitoring/tbastrade/list?limit=10000',
+						params: {}
+					}).then(function(res) {
+						if (res.data.code == 0) {
+							// console.log(res)
+							$.each(res.data.page.list, function(index, item) {
+								// console.log(index, item)
+								$('#eventType').append(new Option(item.name, item.id)); // 下拉菜单里添加元素
+							});
+							layui.form.render("select");
+						} else {
+					
+						}
+					}).catch(function(err) {
+						console.log(err);
+					});
 
 
 				//上传图片的方法 
