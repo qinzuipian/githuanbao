@@ -7,6 +7,7 @@
 		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
 		<link rel="stylesheet" href="../../layuiadmin/layui/css/layui.css" media="all">
+		<link rel="stylesheet" type="text/css" href="../../layuiadmin/plugin/element.css" />
 		<link rel="stylesheet" href="../../layuiadmin/style/admin.css" media="all">
 		<link rel="stylesheet" type="text/css" href="../../layuiadmin/style/tbasenterpriseallocate.css" />
 		<link rel="stylesheet" type="text/css" href="../../layuiadmin/style/common.css" />
@@ -16,52 +17,186 @@
 			<div class="layui-fluid layui-col-space30">
 				<div class="layui-card layui-col-md4 layui-col-lg4">
 					<div class="layui-card-header card-title">用户列表</div>
-					<form class="layui-form" action="">
-						<div v-for="it in userList">
-							<input type="radio" name="userlist" v-bind:value="it.username" />
-						</div>
-					</form>
-					<!-- <input type="radio" name="sex" value="男" title="男" checked="">
-					<input type="radio" name="sex" value="女" title="女"> -->
-					
+					<div class="l-card-border">
+						<el-radio-group v-model="selectUser" text-color="#000000" class="user-list-box">
+							<div v-for="it in userList">
+								<el-radio class="user-list-radio" :label="it.username"></el-radio>
+							</div>
+						</el-radio-group>
+					</div>
+					<el-button size="small" type="danger" :loading="reducedLoading" class="submit-btn" @click="reducedData">还原</el-button>
+					<el-button size="small" type="primary" :loading="submitLoading" class="submit-btn" @click="submitData">保存分配</el-button>
 				</div>
 				<div class="layui-card layui-col-md8 layui-col-lg8">
 					<div class="layui-card-header card-title">企业列表</div>
-					<div class="layui-card-body">
-						卡片式面板面板通常用于非白色背景色的主体内<br>
-						从而映衬出边框投影
+					<div class="l-card-border">
+						<el-checkbox-group v-model="selectEnterprise" text-color="#000000" class="user-list-box">
+							<div v-for="it in enterpriseList">
+								<el-checkbox :label="it.name" class="user-list-checkbox"></el-checkbox>
+							</div>
+						</el-checkbox-group>
 					</div>
 				</div>
 			</div>
 		</div>
 		<script src="../../layuiadmin/js/baseUrlConfig.js"></script>
 		<script src="../../layuiadmin/layui/layui.js"></script>
-		<script src="../../layuiadmin/plugin/vue.js"></script>
+		<script src="../../layuiadmin/plugin/vue.min.js"></script>
+		<script src="../../layuiadmin/plugin/element.js"></script>
 		<script src="../../layuiadmin/plugin/axios.js"></script>
 		<script>
 			var vm = new Vue({
 				el: "#vm",
 				data: {
+					submitLoading: false, // 提交按钮状态
+					reducedLoading: false, // 还原按钮状态
+
 					userList: [],
+					enterpriseList: [],
+
+					selectUser: '', // 选择用户
+					selectUserId: '', // 选择用户的ID
+					selectEnterprise: [], // 选择的企业
+					selecterEnterpriseIdList: [], // 选择的企业ID数组
+
 				},
 				methods: {
 					pageInit: function() {
+						// 用户
 						axios({
 								method: "GET",
 								url: BASEURL + "sys-mgr/sys/user/list",
-
 							})
 							.then(function(res) {
 								if (res.data.code == 0) {
 									vm.userList = res.data.page.list;
+								} else {
+									vm.$notify.error({
+										title: '错误',
+										message: res.data.msg
+									});
 								}
+							})
+						// 企业
+						axios({
+								method: "GET",
+								url: BASEURL + "environmental_intelligent_monitoring/tbasenterprise/list?limit=100000",
+							})
+							.then(function(res) {
+								if (res.data.code == 0) {
+									vm.enterpriseList = res.data.page.list;
+								} else {
+									vm.$notify.error({
+										title: '错误',
+										message: res.data.msg
+									});
+								}
+							})
+					},
+					submitData: function() {
+						vm.submitLoading = true;
+						vm.submitLoading = false;
+						if (vm.selectUser == "") {
+							vm.$notify.error({
+								title: '错误',
+								message: '未作出修改'
+							})
+						} else {
+							var data = JSON.stringify({
+								userId: vm.selectUserId,
+								enterpriseIdList: vm.selecterEnterpriseIdList
+							})
+							axios({
+									method: "POST",
+									url: BASEURL + "environmental_intelligent_monitoring/tbasenterpriseallocate/saveBatch",
+									headers: {
+										"Content-Type": "application/json;charset=UTF-8"
+									},
+									data: data
+								})
+								.then(function(res) {
+									if (res.data.code == 0) {
+										vm.selectUser = '';
+										vm.selectUserId = '';
+										vm.selectEnterprise = [];
+										vm.selecterEnterpriseIdList = [];
+										layer.alert('操作成功', function(index) {
+											layer.close(index)
+											vm.pageInit();
+										});
+									} else {
+										vm.$notify.error({
+											title: '错误',
+											message: res.data.msg
+										})
+									}
+								})
+						}
 
+					},
+					reducedData: function() {
+						vm.reducedLoading = true;
+						vm.queryUserEnterprise();
+					},
+					// 查询关系
+					queryUserEnterprise: function() {
+						axios({
+								method: "POST",
+								url: BASEURL + "environmental_intelligent_monitoring/tbasenterpriseallocate/list",
+								params: {
+									userId: vm.selectUserId,
+									limit: 10000
+								}
+							})
+							.then(function(res) {
+								if (res.data.code == 0) {
+									vm.reducedLoading = false;
+									vm.selectEnterprise = []
+									for (var i = 0; i < res.data.page.list.length; i++) {
+										for (var j = 0; j < vm.enterpriseList.length; j++) {
+											if (res.data.page.list[i].enterpriseId == vm.enterpriseList[j].id) {
+												vm.selectEnterprise.push(vm.enterpriseList[j].name)
+											}
+										}
+									}
+								} else {
+									vm.$notify.error({
+										title: '错误',
+										message: '这是一条错误的提示消息'
+									});
+								}
 							})
 					}
 				},
 				mounted: function() {
 					// 初始化加载
 					this.pageInit();
+				},
+				watch: {
+					//  监听用户列表单选框值的变化,锁定当前选中用户的ID
+					selectUser: function() {
+						for (var i = 0; i < vm.userList.length; i++) {
+							if (vm.selectUser == vm.userList[i].username) {
+								vm.selectUserId = vm.userList[i].userId;
+								vm.queryUserEnterprise();
+							}
+						}
+					},
+					// 监听企业列表值
+					selectEnterprise: function() {
+						vm.selecterEnterpriseIdList = [];
+						if (vm.selectEnterprise.length == 0) {
+							vm.selecterEnterpriseIdList = [];
+							return;
+						};
+						for (var i = 0; i < vm.selectEnterprise.length; i++) {
+							for (var j = 0; j < vm.enterpriseList.length; j++) {
+								if (vm.selectEnterprise[i] == vm.enterpriseList[j].name) {
+									vm.selecterEnterpriseIdList.push(vm.enterpriseList[j].id)
+								}
+							}
+						};
+					}
 				}
 			})
 
@@ -73,9 +208,12 @@
 				base: '../../layuiadmin/' //静态资源所在路径
 			}).extend({
 				index: 'lib/index' //主入口模块
-			}).use(['index', 'form'], function() {
-			
-			
+			}).use(['index', 'form', 'jquery', 'layer'], function() {
+
+				var form = layui.form;
+				var $ = layui.jquery;
+				var layer = layui.layer;
+
 			});
 		</script>
 	</body>

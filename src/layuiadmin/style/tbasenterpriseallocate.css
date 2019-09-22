@@ -3,3 +3,16 @@
 .card-title{
 	background: #23c6c8;
 }
+.user-list-box{
+	padding-left: 20px;
+}
+
+.user-list-radio,.user-list-checkbox{
+	line-height: 30px;
+	
+}
+
+.submit-btn{
+	margin: 20px;
+	
+}
