@@ -17,39 +17,40 @@
 		.layui-form-label {}
 	</style>
 	<body>
-
-		<div class="layui-fluid">
+		<div class="layui-fluid" id="app">
 			<div class="layui-card">
 				<div class="layui-form layui-card-header layuiadmin-card-header-auto">
 					<div class="layui-form-item">
 						<div class="layui-inline">
 							<label class="layui-form-label">创建日期</label>
 							<div class="layui-input-inline">
-								<input type="text" name="startCreateDate" class="layui-input" id="startDate" placeholder="请输入开始日期">
+								<input type="text" name="startCreateDate" v-model="startCreateDate" class="layui-input" id="startDate"
+								 placeholder="请输入开始日期">
 							</div>
 							<div class="layui-input-inline">
-								<input type="text" name="endCreateDate" class="layui-input" id="endDate" placeholder="请输入结束日期">
+								<input type="text" name="endCreateDate" v-model="endCreateDate" class="layui-input" id="endDate" placeholder="请输入结束日期">
 							</div>
 						</div>
 						<div class="layui-inline">
 							<label class="layui-form-label">行政区域</label>
 							<div class="layui-input-inline">
-								<select lay-verify="required">
+								<select >
 									<option value="">请选择</option>
 								</select>
 							</div>
 						</div>
-						<div c <div class="layui-inline">
+
+						<div class="layui-inline">
 							<label class="layui-form-label">企业名称</label>
 							<div class="layui-input-inline">
-								<input type="text" name="name" class="layui-input" placeholder="请输入企业名称">
+								<input type="text" name="name" v-model="name" class="layui-input" placeholder="请输入企业名称">
 							</div>
 						</div>
 						<div class="layui-inline">
 							<div class="layui-form-item">
 								<label class="layui-form-label">所属行业</label>
 								<div class="layui-input-block">
-									<select name="tradeName" id="eventType" lay-filter="eventType" lay-verify="required">
+									<select name="tradeName" id="eventType" lay-filter="eventType">
 										<option value="">请选择</option>
 										<option value=""></option>
 									</select>
@@ -59,13 +60,13 @@
 						<div class="layui-inline">
 							<label class="layui-form-label" style="width: 114px;">企业社会信用代码</label>
 							<div class="layui-input-inline">
-								<input type="text" name="trustCode" class="layui-input" placeholder="请输入企业社会信用代码">
+								<input type="text" name="trustCode" v-model="trustCode" class="layui-input" placeholder="请输入企业社会信用代码">
 							</div>
 						</div>
 						<div class="layui-inline">
 							<label class="layui-form-label">地址</label>
 							<div class="layui-input-inline">
-								<input type="text" name="address" class="layui-input" placeholder="请输入地址">
+								<input type="text" name="address" v-model="address" class="layui-input" placeholder="请输入地址">
 							</div>
 						</div>
 						<div class="layui-inline">
@@ -83,7 +84,7 @@
 						<button class="layui-btn layuiadmin-btn-list layui-bg-green" data-type="add"><i class="layui-icon">&#xe654;</i>添加</button>
 						<button class="layui-btn layuiadmin-btn-list layui-bg-blue" data-type="edit"><i class="layui-icon">&#xe642;</i>编辑</button>
 						<button class="layui-btn layuiadmin-btn-list layui-bg-red" data-type="batchdel"><i class="layui-icon">&#xe640;</i>删除</button>
-						<button class="layui-btn layuiadmin-btn-list layui-bg-orange layui-icon  layui-icon-link" lay-submit lay-filter="save">导出</button>
+						<button class="layui-btn layuiadmin-btn-list layui-bg-orange layui-icon  layui-icon-link" data-type="out">导出</button>
 					</div>
 					<table id="LAY-app-content-list" lay-filter="LAY-app-content-list"></table>
 				</div>
@@ -114,9 +115,9 @@
 					params: {}
 				}).then(function(res) {
 					if (res.data.code == 0) {
-						console.log(res)
+						// console.log(res)
 						$.each(res.data.page.list, function(index, item) {
-							console.log(index, item)
+							// console.log(index, item)
 							$('#eventType').append(new Option(item.name, item.id)); // 下拉菜单里添加元素
 						});
 						layui.form.render("select");
@@ -148,17 +149,12 @@
 							layer.msg('导入失败，文件格式错误！', {
 								time: 1500
 							}, function() {
-								// window.parent.location.reload();
+								window.parent.location.reload();
 							});
 						}
 					}
 				});
-				//导出Excel表格
-				form.on('submit(save)', function(data) {
-					console.log(startCreateDate);
-					console.log(endCreateDate);
-					window.location.href = BASEURL + 'environmental_intelligent_monitoring/tbasenterprise/exportExcel'
-				})
+
 
 				table.render({
 					elem: '#LAY-app-content-list',
@@ -282,13 +278,8 @@
 								title: '添加企业',
 								content: 'addEnterprise.html',
 								maxmin: true,
-								area: ['550px', '550px']
-								// btn: ['确定', '取消'],
-								// yes: function(index, layero) {
-								// 	//点击确认触发 iframe 内容中的按钮提交
-								// 	var submit = layero.find('iframe').contents().find("#layuiadmin-app-form-submit");
-								// 	submit.click();
-								// }
+								area: ['860px', '550px']
+								
 							});
 						},
 						edit: function() {
@@ -307,15 +298,13 @@
 									title: '编辑企业',
 									content: 'editEnterprise.html',
 									maxmin: true,
-									area: ['550px', '550px']
-									// btn: ['确定', '取消'],
-									// yes: function(index, layero) {
-									// 	//点击确认触发 iframe 内容中的按钮提交
-									// 	var submit = layero.find('iframe').contents().find("#layuiadmin-app-form-submit");
-									// 	submit.click();
-									// }
+									area: ['860px', '550px']
 								});
 
+						},
+						out: function() {
+							console.log(vm.name);
+							window.location.href = BASEURL + 'environmental_intelligent_monitoring/tbasenterprise/exportExcel?startCreateDate='+vm.startCreateDate+'&endCreateDate='+vm.endCreateDate+'&trustCode='+vm.trustCode+'&address='+vm.address+'&name='+vm.name
 						}
 					}
 
@@ -325,6 +314,17 @@
 				});
 
 			});
+
+			var vm = new Vue({
+				el: '#app',
+				data: {
+					startCreateDate: "",
+					address: "",
+					trustCode: "",
+					endCreateDate: "",
+					name: ''
+				}
+			})
 		</script>
 	</body>
 </html>
