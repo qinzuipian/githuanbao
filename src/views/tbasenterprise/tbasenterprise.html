@@ -34,7 +34,9 @@
 						<div class="layui-inline">
 							<label class="layui-form-label">行政区域</label>
 							<div class="layui-input-inline">
-								<input type="text" name="organizeName" class="layui-input" placeholder="请输入行政区域">
+								<select lay-verify="required">
+									<option value="">请选择</option>
+								</select>
 							</div>
 						</div>
 						<div c <div class="layui-inline">
@@ -71,16 +73,17 @@
 								<i class="layui-icon layui-icon-search layuiadmin-button-btn"></i>
 							</button>
 						</div>
+
 					</div>
 				</div>
 
 				<div class="layui-card-body">
 					<div style="padding-bottom: 10px;">
-						<button id="uploadfile" class="layui-btn layuiadmin-btn-list layui-bg-cyan" data-type="in"><i class="layui-icon">&#xe654;</i>批量导入</button>
+						<button id="uploadfile" class="layui-btn layuiadmin-btn-list layui-bg-cyan"><i class="layui-icon">&#xe654;</i>批量导入</button>
 						<button class="layui-btn layuiadmin-btn-list layui-bg-green" data-type="add"><i class="layui-icon">&#xe654;</i>添加</button>
 						<button class="layui-btn layuiadmin-btn-list layui-bg-blue" data-type="edit"><i class="layui-icon">&#xe642;</i>编辑</button>
 						<button class="layui-btn layuiadmin-btn-list layui-bg-red" data-type="batchdel"><i class="layui-icon">&#xe640;</i>删除</button>
-						<button class="layui-btn layuiadmin-btn-list layui-bg-orange layui-icon  layui-icon-link" data-type="out">导出</button><strong></strong>
+						<button class="layui-btn layuiadmin-btn-list layui-bg-orange layui-icon  layui-icon-link" lay-submit lay-filter="save">导出</button>
 					</div>
 					<table id="LAY-app-content-list" lay-filter="LAY-app-content-list"></table>
 				</div>
@@ -95,32 +98,35 @@
 				base: '../../layuiadmin/' //静态资源所在路径
 			}).extend({
 				index: 'lib/index' //主入口模块
-			}).use(['index', 'table', "laydate", "upload"], function() {
+			}).use(['index', 'table', "laydate", "upload", "tree", "util"], function() {
 				var table = layui.table,
 					form = layui.form,
-					laydate = layui.laydate;
-				upload = layui.upload;
-				
-				
+					laydate = layui.laydate,
+					upload = layui.upload,
+					tree = layui.tree,
+					util = layui.util;
+
+
 				// select事件类型数据填充
 				axios({
-				    method: "post",
-				    url: BASEURL + 'environmental_intelligent_monitoring/tbastrade/list?limit=10000',
-				    params: {}
-				}).then(function (res) {
-				    if (res.data.code == 0) {
-				        console.log(res)
-				        $.each(res.data.page.list, function (index, item) {
-				            console.log(index, item)
-				            $('#eventType').append(new Option(item.name, item.id));// 下拉菜单里添加元素
-				        });
-				        layui.form.render("select");
-				    } else {
-				
-				    }
-				}).catch(function (err) {
-				    console.log(err);
+					method: "post",
+					url: BASEURL + 'environmental_intelligent_monitoring/tbastrade/list?limit=10000',
+					params: {}
+				}).then(function(res) {
+					if (res.data.code == 0) {
+						console.log(res)
+						$.each(res.data.page.list, function(index, item) {
+							console.log(index, item)
+							$('#eventType').append(new Option(item.name, item.id)); // 下拉菜单里添加元素
+						});
+						layui.form.render("select");
+					} else {
+
+					}
+				}).catch(function(err) {
+					console.log(err);
 				});
+
 
 				// 批量导入
 				upload.render({
@@ -147,7 +153,12 @@
 						}
 					}
 				});
-
+				//导出Excel表格
+				form.on('submit(save)', function(data) {
+					console.log(startCreateDate);
+					console.log(endCreateDate);
+					window.location.href = BASEURL + 'environmental_intelligent_monitoring/tbasenterprise/exportExcel'
+				})
 
 				table.render({
 					elem: '#LAY-app-content-list',

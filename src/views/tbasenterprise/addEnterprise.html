@@ -32,6 +32,7 @@
 			}
 			.factor{
 				display: flex;
+				flex-wrap:wrap;
 			}
 			.factor span{
 				line-height: 2.5rem;
@@ -45,6 +46,7 @@
 			.box{
 				background: gainsboro;
 				margin-right: 10px;
+				margin-top: 0.625rem;
 				/* width: calc(50% - 10px); */
 				
 			}
@@ -60,19 +62,19 @@
 						<div class="layui-form-item">
 							<label for="bitian" class="layui-form-label">企业名称</label>
 							<div class="layui-input-inline">
-								<input type="text" name="name" value="西安卫康" lay-verify="required" class="layui-input" placeholder="企业名称" />
+								<input type="text" name="name"  lay-verify="required" class="layui-input" placeholder="企业名称" />
 							</div>
 						</div>
 						<div class="layui-form-item">
 							<label for="bitian" class="layui-form-label">企业社会信用代码</label>
 							<div class="layui-input-inline">
-								<input type="text" name="trustcode" value="1234566789099" lay-verify="required" class="layui-input" placeholder="企业社会信用代码" />
+								<input type="text" name="trustcode"  lay-verify="required" class="layui-input" placeholder="企业社会信用代码" />
 							</div>
 						</div>
 						<div class="layui-form-item">
 							<label for="bitian" class="layui-form-label">企业详细地址</label>
 							<div class="layui-input-inline">
-								<input type="text" name="address" value="陕西省西安市雁塔区亚美大厦" lay-verify="required" class="layui-input" placeholder="企业详细地址" />
+								<input type="text" name="address"  lay-verify="required" class="layui-input" placeholder="企业详细地址" />
 							</div>
 						</div>
 						<div class="layui-form-item">
@@ -80,7 +82,7 @@
 							<div class="layui-input-inline">
 								<select name="province">
 									<option value="">请选择省</option>
-									<option value="浙江" selected="">浙江省</option>
+									<option value="浙江">浙江省</option>
 									<option value="你的工号">江西省</option>
 									<option value="你最喜欢的老师">福建省</option>
 								</select>
@@ -89,7 +91,7 @@
 							<div class="layui-input-inline">
 								<select name="city">
 									<option value="">请选择市</option>
-									<option value="杭州" selected="">杭州</option>
+									<option value="杭州" >杭州</option>
 									<option value="宁波" disabled="">宁波</option>
 									<option value="温州">温州</option>
 									<option value="温州">台州</option>
@@ -100,7 +102,7 @@
 							<div class="layui-input-inline">
 								<select name="area">
 									<option value="">请选择县/区</option>
-									<option value="西湖区" selected="">西湖区</option>
+									<option value="西湖区" >西湖区</option>
 									<option value="余杭区">余杭区</option>
 									<option value="拱墅区">临安市</option>
 								</select>
@@ -114,7 +116,7 @@
 									<option value="0">写作</option>
 									<option value="1">阅读</option>
 									<option value="2">游戏</option>
-									<option value="3" selected="">音乐</option>
+									<option value="3" >音乐</option>
 									<option value="4">旅行</option>
 								</select>
 							</div>
@@ -122,13 +124,13 @@
 						<div class="layui-form-item">
 							<label for="bitian" class="layui-form-label">网关编号</label>
 							<div class="layui-input-inline">
-								<input type="text" value="192.168.1.100" name="swicthId" lay-verify="required" class="layui-input" placeholder="网关编号" />
+								<input type="text"  name="swicthId" lay-verify="required" class="layui-input" placeholder="网关编号" />
 							</div>
 						</div>
 						<div class="layui-form-item">
 							<label for="bitian" class="layui-form-label">仪表地址</label>
 							<div class="layui-input-inline">
-								<input type="number" value="19210299" name="meterId" lay-verify="required" class="layui-input" placeholder="仪表地址" />
+								<input type="number"  name="meterId" lay-verify="required" class="layui-input" placeholder="仪表地址" />
 							</div>
 						</div>
 						<div class="layui-form-item">
@@ -137,7 +139,7 @@
 								<select name="model" lay-filter="aihao">
 									<option value=""></option>
 									<option value="0">ADW400</option>
-									<option value="1" selected="">ADW100</option>
+									<option value="1" >ADW100</option>
 									<option value="2">游戏</option>
 									<option value="3">音乐</option>
 									<option value="4">旅行</option>
@@ -147,67 +149,67 @@
 						<div class="layui-form-item">
 							<label for="bitian" class="layui-form-label">电流变比</label>
 							<div class="layui-input-inline">
-								<input type="text" value="1" name="ct" class="layui-input" />
+								<input type="text" name="ct" class="layui-input" />
 							</div>
 						</div>
 						<div class="layui-form-item">
 							<label for="bitian" class="layui-form-label">电压变比</label>
 							<div class="layui-input-inline">
-								<input type="text" value="1" name="pt" class="layui-input" />
+								<input type="text"  name="pt" class="layui-input" />
 							</div>
 						</div>
 						<div class="layui-form-item">
 							<label for="bitian" class="layui-form-label">行业名称</label>
 							<div class="layui-input-inline">
-								<input type="text" value="工业" name="tradeName" class="layui-input" placeholder="行业名称" />
+								<input type="text"  name="tradeName" class="layui-input" placeholder="行业名称" />
 							</div>
 						</div>
 						<div class="layui-form-item">
 							<label for="bitian" class="layui-form-label">监管机构代码</label>
 							<div class="layui-input-inline">
-								<input type="text" value="123290098777889" name="organizeId" class="layui-input" placeholder="监管机构代码" />
+								<input type="text"  name="organizeId" class="layui-input" placeholder="监管机构代码" />
 							</div>
 						</div>
 						<div class="layui-form-item">
 							<label for="bitian" class="layui-form-label">监管机构名称</label>
 							<div class="layui-input-inline">
-								<input type="text" value="环保局" name="organizeName" class="layui-input" placeholder="监管机构名称" />
+								<input type="text"  name="organizeName" class="layui-input" placeholder="监管机构名称" />
 							</div>
 						</div>
 						<div class="layui-form-item">
 							<label for="bitian" class="layui-form-label">负责人</label>
 							<div class="layui-input-inline">
-								<input type="text" name="chargePerson" value="张XX" class="layui-input" placeholder="负责人" />
+								<input type="text" name="chargePerson"  class="layui-input" placeholder="负责人" />
 							</div>
 						</div>
 						<div class="layui-form-item">
 							<label for="bitian" class="layui-form-label">负责人电话</label>
 							<div class="layui-input-inline">
-								<input type="number" name="chargePhone" value="1111111111111" class="layui-input" placeholder="负责人电话" />
+								<input type="number" name="chargePhone"  class="layui-input" placeholder="负责人电话" />
 							</div>
 						</div>
 						<div class="layui-form-item">
 							<label for="bitian" class="layui-form-label">检查人</label>
 							<div class="layui-input-inline">
-								<input type="text" value="张XX" name="checkPerson" class="layui-input" placeholder="检查人" />
+								<input type="text"  name="checkPerson" class="layui-input" placeholder="检查人" />
 							</div>
 						</div>
 						<div class="layui-form-item">
 							<label for="bitian" class="layui-form-label">检查人电话</label>
 							<div class="layui-input-inline">
-								<input type="number" value="12340978090" name="checkPhone" class="layui-input" placeholder="检查人电话" />
+								<input type="number"  name="checkPhone" class="layui-input" placeholder="检查人电话" />
 							</div>
 						</div>
 						<div class="layui-form-item">
 							<label for="bitian" class="layui-form-label">法人</label>
 							<div class="layui-input-inline">
-								<input type="text" value="张XX" name="lawPerson" class="layui-input" placeholder="法人" />
+								<input type="text"  name="lawPerson" class="layui-input" placeholder="法人" />
 							</div>
 						</div>
 						<div class="layui-form-item">
 							<label for="bitian" class="layui-form-label">法人电话</label>
 							<div class="layui-input-inline">
-								<input type="number" value="111111111111" name="lawPhone" class="layui-input" placeholder="法人电话" />
+								<input type="number"  name="lawPhone" class="layui-input" placeholder="法人电话" />
 							</div>
 						</div>
 						<div class="layui-form-item">
@@ -223,7 +225,7 @@
 						<div class="layui-form-item">
 							<label for="bitian" class="layui-form-label">备注</label>
 							<div class="layui-input-inline">
-								<textarea type="text" value="11111111111" name="remark" style="height: 70px;" class="layui-input"></textarea>
+								<textarea type="text"  name="remark" style="height: 70px;" class="layui-input"></textarea>
 							</div>
 						</div>
 
@@ -232,12 +234,7 @@
 							<label for="bitian" class="layui-form-label">车间</label>
 							<div>
 								<div class="factor" name="tBasShopList">
-									<div class="box">
-										<span>车间</span>
-										<i class="layui-icon layui-icon-edit" @click="alert(2)"></i>
-										<i class="layui-icon layui-icon-close close" @click="delet()"></i>
-									</div>
-
+									
 								</div>
 							</div>
 						</div>
@@ -353,11 +350,6 @@
 
 
 			})
-
-
-
-
-
 			var vm = new Vue({
 				el: "#vm",
 				data: {
