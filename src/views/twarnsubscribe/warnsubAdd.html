@@ -183,6 +183,7 @@
             form.on('submit(warnForm)', function (data) {
                 console.log(data);
                 data.field.enterpriseId = Math.floor(Math.random() * 100);
+                data.field.eventTypeId = Math.floor(Math.random() * 100);
                 axios({
                     method: "post",
                     url: layui.setter.BASEURL + 'environmental_intelligent_monitoring/twarnsubscribe/save',
