@@ -302,14 +302,13 @@
 
 
             // select框动态填充联动
+
+
             // 第一层填充
             axios({
                 method: "post",
                 url: BASEURL + 'environmental_intelligent_monitoring/tdevicemonitor/queryPolluteType',
-                data: {},
-                headers: {
-                    "Content-Type": "application/json;charset=UTF-8"
-                }
+                params: {}
             }).then(function (res) {
                 if (res.data.code == 0) {
                     // console.log(res)
@@ -347,6 +346,33 @@
                             $('#ecType').append(new Option(item.text, item.id));// 下拉菜单里添加元素
                         });
                         layui.form.render("select");
+
+                        // 第三层select
+                        $("#route").empty();
+                        axios({
+                            method: "post",
+                            url: BASEURL + 'environmental_intelligent_monitoring/tdevicemonitor/queryPolluteType',
+                            params: {
+                                id: data.value
+                            }
+                            /* headers: {
+                                "Content-Type": "application/json;charset=UTF-8"
+                            } */
+                        }).then(function (res) {
+                            if (res.data.code == 0) {
+                                // console.log(res)
+                                $.each(res.data.data, function (index, item) {
+                                    console.log(index, item);
+                                    $('#route').append(new Option(item.text, item.id));// 下拉菜单里添加元素
+                                });
+                                layui.form.render("select");
+
+                            } else {
+
+                            }
+                        }).catch(function (err) {
+                            console.log(err);
+                        });
 
                     } else {
 
@@ -429,15 +455,65 @@
                             , "remark": Devicedata.remark
                         });
                         vm.shopname = Devicedata.shopName;
-                       $('#collectType').val(Devicedata.collectType);
-                    //    $('#ecPolluteType').text(Devicedata.ecPolluteType);
-                       $('#ecType').val(Devicedata.ecType);
-                       $('#route').val(Devicedata.route);
+                        $('#collectType').val(Devicedata.collectType);
+                        //    $('#ecPolluteType').text(Devicedata.ecPolluteType);
+                        /*  $('#ecType').val(Devicedata.ecType);
+                         $('#route').val(Devicedata.route); */
+
+                        $("#ecType").empty();
+                        axios({
+                            method: "post",
+                            url: BASEURL + 'environmental_intelligent_monitoring/tdevicemonitor/queryPolluteType',
+                            params: {
+                                id: $("#ecPolluteType").val()
+                            }
+                        }).then(function (res) {
+                            if (res.data.code == 0) {
+                                // console.log(res)
+                                $.each(res.data.data, function (index, item) {
+                                    // console.log(index, item)
+                                    $('#ecType').append(new Option(item.text, item.id));// 下拉菜单里添加元素
+                                });
+                                layui.form.render("select");
+
+                                // 第三层获取
+                                $("#route").empty();
+                                axios({
+                                    method: "post",
+                                    url: BASEURL + 'environmental_intelligent_monitoring/tdevicemonitor/queryPolluteType',
+                                    params: {
+                                        id: $("#ecType").val()
+                                    }
+                                    /* headers: {
+                                        "Content-Type": "application/json;charset=UTF-8"
+                                    } */
+                                }).then(function (res) {
+                                    if (res.data.code == 0) {
+                                        // console.log(res)
+                                        $.each(res.data.data, function (index, item) {
+                                            console.log(index, item);
+                                            $('#route').append(new Option(item.text, item.id));// 下拉菜单里添加元素
+                                        });
+                                        layui.form.render("select");
+
+                                    } else {
+
+                                    }
+                                }).catch(function (err) {
+                                    console.log(err);
+                                });
+
+                            } else {
+
+                            }
+                        }).catch(function (err) {
+                            console.log(err);
+                        });
                         // console.log(Devicedata.collectType)
                         // $("#collectType option[value=Devicedata.collectType]").prop("selected", true)
                         form.render();
-                        
-                       
+
+
                         /*  $("#ecPolluteType option[value=Devicedata.ecPolluteType]").prop("selected", true);
                          $("#ecType option[value=Devicedata.ecType]").prop("selected", true);
                          $("#route option[value=Devicedata.route]").prop("selected", true); 
@@ -445,7 +521,7 @@
                          form.render("select");*/
 
 
-                        
+
                     } else {
 
                     }

@@ -9,11 +9,13 @@
     <meta name="viewport" content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi"
     />
     <link rel="stylesheet" href="./../../layuiadmin/layui/css/layui.css">
+    <link rel="stylesheet" href="./../../layuiadmin/plugin/element.css">
     <script type="text/javascript" src="./../../layuiadmin/layui/layui.js" charset="utf-8"></script>
     <!-- 引入vue -->
     <script type="text/javascript" src="./../../layuiadmin/plugin/vue.js"></script>
     <script type="text/javascript" src="./../../layuiadmin/plugin/axios.js"></script>
     <script src="./../../layuiadmin/js/baseUrlConfig.js"></script>
+    <script src="./../../layuiadmin/plugin/element.js"></script>
     <!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
     <!--[if lt IE 9]>
     <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
@@ -53,13 +55,15 @@
                             <input type="text" v-model="tWarnSet.monitorid" class="layui-input" placeholder="监测点编码" />
                         </div>
                     </div> -->
-                    <input type="hidden" class="layui-input" name="monitorId">
-                    <input type="hidden" class="layui-input" name="eventTypeId">
+                    <!-- <input type="hidden" class="layui-input" name="monitorId"> -->
+                    <!-- <input type="hidden" class="layui-input" name="eventTypeId"> -->
                     <div class="layui-form-item">
                         <label for="bitian" class="layui-form-label">
                             监测点名称</label>
                         <div class="layui-input-inline">
-                            <input type="text" v-model="monitorName" name="monitorName" class="layui-input" placeholder="监测点名称" />
+                            <el-tree :highlight-current="true" :data="WarntreeData" :props="defaultProps" @node-click="handleNodeClick"></el-tree>
+                            <!-- <input type="text" v-model="monitorName" name="monitorName" class="layui-input" placeholder="监测点名称" /> -->
+
                         </div>
                     </div>
                     <div class="layui-form-item">
@@ -68,7 +72,7 @@
                         <div class="layui-input-inline">
                             <!-- <input type="text" v-model="tWarnSet.eventtype" class="layui-input" placeholder="事件类型名称" /> -->
 
-                            <select name="eventType" id="eventType" lay-filter="eventType" lay-verify="">
+                            <select name="eventTypeId" id="eventType" lay-filter="eventType" lay-verify="">
                                 <option value="">请选择事件类型</option>
                                 <option value=""></option>
                             </select>
@@ -106,8 +110,7 @@
                             <select name="condition" id="condition" lay-verify="">
                                 <option value="">请选择条件类型</option>
                                 <option value=">=">>=</option>
-                                <option value="<=">
-                                    <=</option>
+                                <option value="<="><=</option>
                             </select>
                         </div>
                     </div>
@@ -126,14 +129,6 @@
                             <input type="radio" name="active" value="2" title="禁用">
                         </div>
                     </div>
-                    <!--  <div class="layui-form-item">
-                        <label for="bitian" class="layui-form-label">
-                        </label>
-                        <div class="layui-input-inline">
-                            <input type="text" v-model="tWarnSet.selectmonitor" class="layui-input" placeholder="" />
-                        </div>
-                    </div> -->
-
                     <div class="layui-form-item">
                         <label for="bitian" class="layui-form-label">
                             状态</label>
@@ -151,21 +146,6 @@
                             <textarea placeholder="请输入内容" class="layui-textarea" name="remark" v-model="remark"></textarea>
                         </div>
                     </div>
-                    <!--  <div class="layui-form-item">
-                        <label for="bitian" class="layui-form-label">
-                            创建者名称</label>
-                        <div class="layui-input-inline">
-                            <input type="text" v-model="tWarnSet.createName" class="layui-input" placeholder="创建者名称" />
-                        </div>
-                    </div>
-                    <div class="layui-form-item">
-                        <label for="bitian" class="layui-form-label">
-                            更新者名称</label>
-                        <div class="layui-input-inline">
-                            <input type="text" v-model="tWarnSet.modifyName" class="layui-input" placeholder="更新者名称" />
-                        </div>
-                    </div> -->
-
                     <div class="btn-box">
                         <button class="layui-btn" lay-submit lay-filter="formDemo">添加</button>
                         <button class="layui-btn layui-btn-danger" @click="cancel">取消</button>
@@ -206,23 +186,21 @@
             });
 
 
+            form.on('select(eventType)', function (data) {
+                // console.log(data.elem[data.elem.selectedIndex].text);
+                vm.eventType = data.elem[data.elem.selectedIndex].text
+                form.render()
+
+            })
             form.on('submit(formDemo)', function (data) {
                 console.log(data);
-                data.field.monitorId = Math.floor(Math.random() * 100);
-                data.field.eventTypeId = Math.floor(Math.random() * 100);
+                // data.field.monitorId = Math.floor(Math.random() * 100);
+                data.field.eventType = vm.eventType;
+                data.field.monitorName = vm.treeLabel;
+                data.field.monitorId = vm.monitorId;
                 axios({
                     method: "post",
                     url: layui.setter.BASEURL + 'environmental_intelligent_monitoring/twarnset/save',
-                    /* data: {
-                        monitorname: this.monitorname,
-                        eventtype: $("#eventtype").val,
-                        parametercode: $("#parametercode").val,
-                        condition: this.condition,
-                        limitvalue: this.limitvalue,
-                        remark: this.remark,
-                        active: $('#active input[checked]').val,
-                        status: $('#status input[checked]').val
-                    }, */
                     data: data.field,
                     headers: {
                         "Content-Type": "application/json;charset=UTF-8"
@@ -238,7 +216,10 @@
                         }
                         );
                     } else {
-                        parent.layer.tips('保存异常!');
+                        vm.$notify.error({
+                            title: '错误',
+                            message: '保存异常'
+                        });
                     }
                 }).catch(function (err) {
                     console.log(err);
@@ -254,22 +235,76 @@
             data: {
                 tWarnSet: {},
                 monitorName: "",
+                eventType: "",
                 condition: "",
                 limitValue: "",
-                remark: ""
+                remark: "",
+
+                WarntreeData: [],
+                defaultProps: {
+                    children: 'children',
+                    label: 'label'
+                },
+                treeLabel: "",
+                monitorId:""
             },
             methods: {
-                addData: function () {
-                    /*  console.log(this.tWarnSet.bitian);
-                     layer.alert("新增成功", function (index) {
-                         xadmin.close();
-                     }) */
+                handleNodeClick(data) {
+                    console.log(data);
+                    vm.treeLabel = data.label;
+                    vm.monitorId = data.id;
+
+                },
+
+                twarnInit() {
+                    // 监测点树状组件
+                    axios({
+                        method: "post",
+                        url: BASEURL + 'environmental_intelligent_monitoring/tdevicemonitor/list',
+                        params: {}
+                    }).then(function (res) {
+                        if (res.data.code == 0) {
+                            var treedata = res.data.page.list;
+                            var newList = [];
+                            treedata.forEach(function (data) {
+                                // console.log(data)
+                                for (var i = 0; i < newList.length; i++) {
+                                    if (newList[i].id === data.enterpriseId) {
+                                        newList[i].children.push({
+                                            label: data.shopName,
+                                            children: [{ label: data.monitorName, id: data.id }]
+                                        });
+                                        newList[i].num++;
+                                        return;
+                                    }
+                                }
+                                newList.push({
+                                    label: data.enterpriseName,
+                                    id: data.enterpriseId,
+                                    num: 1,
+                                    children: [{
+                                        label: data.shopName,
+                                        children: [{ label: data.monitorName, id: data.id }]
+                                    }]
+                                });
+                            });
+                            console.log(newList);
+                            vm.WarntreeData = newList;
+
+
+                        } else {
+
+                        }
+                    }).catch(function (err) {
+                        console.log(err);
+                    });
                 },
                 cancel() {
                     parent.layer.closeAll('iframe');//关闭弹窗
                 }
             },
             created() {
+                this.twarnInit();
 
             }
         });

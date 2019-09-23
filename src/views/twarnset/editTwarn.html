@@ -59,14 +59,16 @@
                         <label for="bitian" class="layui-form-label">
                             监测点名称</label>
                         <div class="layui-input-inline">
-                            <input type="text" v-model="tWarnSet.monitorName" name="monitorName" disabled class="layui-input layui-disabled" placeholder="监测点名称" />
+                            <input type="text" v-model="tWarnSet.monitorName" name="monitorName" disabled class="layui-input layui-disabled" placeholder="监测点名称"
+                            />
                         </div>
                     </div>
                     <div class="layui-form-item">
                         <label for="bitian" class="layui-form-label">
                             事件类型名称</label>
                         <div class="layui-input-inline">
-                            <input type="text" v-model="tWarnSet.eventType" name="eventType" disabled class="layui-input layui-disabled" placeholder="事件类型名称" />
+                            <input type="text"  name="eventType" disabled class="layui-input layui-disabled" placeholder="事件类型名称"
+                            />
                         </div>
                     </div>
                     <!--  <div class="layui-form-item">
@@ -101,8 +103,7 @@
                             <select name="condition" id="condition" lay-verify="">
                                 <option value="">请选择条件类型</option>
                                 <option value=">=">>=</option>
-                                <option value="<=">
-                                    <=</option>
+                                <option value="<="><=</option>
                             </select>
                         </div>
                     </div>
@@ -143,20 +144,6 @@
                             <textarea placeholder="请输入内容" class="layui-textarea" name="remark" v-model="tWarnSet.remark"></textarea>
                         </div>
                     </div>
-                    <!--  <div class="layui-form-item">
-                        <label for="bitian" class="layui-form-label">
-                            创建者名称</label>
-                        <div class="layui-input-inline">
-                            <input type="text" v-model="tWarnSet.createName" class="layui-input" placeholder="创建者名称" />
-                        </div>
-                    </div>
-                    <div class="layui-form-item">
-                        <label for="bitian" class="layui-form-label">
-                            更新者名称</label>
-                        <div class="layui-input-inline">
-                            <input type="text" v-model="tWarnSet.modifyName" class="layui-input" placeholder="更新者名称" />
-                        </div>
-                    </div> -->
                     <div class="btn-box">
                         <button class="layui-btn" lay-submit lay-filter="editFormDemo">确认</button>
                         <button class="layui-btn layui-btn-danger" @click="cancel">取消</button>
@@ -200,6 +187,10 @@
 
 
                     } else {
+                        vm.$notify.error({
+                            title: '错误',
+                            message: res.data.msg
+                        });
 
                     }
                 })
@@ -226,7 +217,10 @@
                         }
                         );
                     } else {
-                        parent.layer.tips('编辑异常!');
+                        vm.$notify.error({
+                            title: '错误',
+                            message: '编辑异常'
+                        });
                     }
                 }).catch(function (err) {
                     console.log(err);
@@ -243,48 +237,11 @@
             },
 
             methods: {
-                /* pageInit: function () {
-                    var editData = JSON.parse(window.localStorage.getItem("memberEdit"));
-                    this.tWarnSet = editData[0];
-                    console.log(this.tWarnSet.bitian);
-                    this.$forceUpdate();
-                    window.localStorage.removeItem("memberEdit");
-                }, */
-
                 cancel() {
                     parent.layer.closeAll('iframe');//关闭弹窗
-                },
-                submitData: function () {
-                    console.log(this.tWarnSet.bitian);
-                    layer.alert("编辑成功", function () {
-                        xadmin.close();
-                        xadmin.father_reload();
-                    })
-                    axios({
-                        method: "post",
-                        url: baseUrl + '/environmental_intelligent_monitoring/twarnset/update',
-                        params: {}
-                    }).then(function (res) {
-                        if (res.code == 0) {
-                            layer.alert("编辑成功", function (index) {
-                                xadmin.close();
-                            })
-                        } else {
-
-                        }
-                    }).catch(function (err) {
-                        console.log(err);
-                    });
                 }
             },
-            mounted() {
-                // this.pageInit();
-
-            },
-            created() {
-                // this.editInit();
-                // console.log(parent.id)
-            }
+            created() {}
         });
     </script>
 </body>

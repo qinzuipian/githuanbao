@@ -52,7 +52,7 @@
                             企业名称</label>
                         <div class="layui-input-inline">
                             <!-- <input type="text" v-model="tWarnSubscribe.enterprisename" name="enterpriseName" class="layui-input" placeholder="企业名称" /> -->
-                            <select name="enterpriseName" id="enterpriseName" lay-verify="required" lay-filter="xmFilter">
+                            <select name="enterpriseId" id="enterpriseName" lay-verify="required" lay-filter="enterpriseName">
                                 <option value=""></option>
                             </select>
                         </div>
@@ -63,7 +63,7 @@
                             事件类型</label>
                         <div class="layui-input-inline">
                             <!-- <input type="text" v-model="tWarnSubscribe.eventtype" class="layui-input" placeholder="事件类型名称" /> -->
-                            <select name="eventType" id="eventType" lay-filter="eventType" lay-verify="">
+                            <select name="eventTypeId" id="eventType" lay-filter="eventType" lay-verify="">
                                 <option value="">请选择事件类型</option>
                                 <option value=""></option>
                             </select>
@@ -140,7 +140,7 @@
                     // console.log(res)
                     $.each(res.data.data, function (index, item) {
                         // console.log(index, item)
-                        $('#eventType').append(new Option(item.eventType, item.eventType));// 下拉菜单里添加元素
+                        $('#eventType').append(new Option(item.eventType, item.eventTypeId));// 下拉菜单里添加元素
                     });
                     layui.form.render("select");
 
@@ -155,20 +155,14 @@
             // select动态填充数据
             axios({
                 method: "post",
-                url: BASEURL + 'environmental_intelligent_monitoring/tbasenterprise/list',
-                data: {
-                    page: 1,
-                    limit: 10
-                },
-                headers: {
-                    "Content-Type": "application/json;charset=UTF-8"
-                }
+                url: BASEURL + 'environmental_intelligent_monitoring/tbasenterprise/list?limit=10000',
+                params: {}
             }).then(function (res) {
                 if (res.data.code == 0) {
                     // console.log(res)
                     $.each(res.data.page.list, function (index, item) {
                         // console.log(index, item)
-                        $('#enterpriseName').append(new Option(item.name, item.name));// 下拉菜单里添加元素
+                        $('#enterpriseName').append(new Option(item.name, item.id));// 下拉菜单里添加元素
                     });
                     layui.form.render("select");
 
@@ -179,11 +173,24 @@
                 console.log(err);
             });
 
+            // 监听select框获取选中的text值
+            form.on('select(enterpriseName)', function (data) {
+                // console.log(data.elem[data.elem.selectedIndex].text);
+                vm.enterpriseName = data.elem[data.elem.selectedIndex].text
+                form.render();
+
+            });
+            form.on('select(eventType)', function (data) {
+                // console.log(data.elem[data.elem.selectedIndex].text);
+                vm.eventType = data.elem[data.elem.selectedIndex].text
+                form.render();
+
+            })
 
             form.on('submit(warnForm)', function (data) {
                 console.log(data);
-                data.field.enterpriseId = Math.floor(Math.random() * 100);
-                data.field.eventTypeId = Math.floor(Math.random() * 100);
+                data.field.enterpriseName = vm.enterpriseName;
+                data.field.eventType = vm.eventType;
                 axios({
                     method: "post",
                     url: layui.setter.BASEURL + 'environmental_intelligent_monitoring/twarnsubscribe/save',
@@ -202,7 +209,10 @@
                         }
                         );
                     } else {
-                        parent.layer.tips('保存异常!');
+                        vm.$notify.error({
+                            title: '错误',
+                            message: '保存失败'
+                        });
                     }
                 }).catch(function (err) {
                     console.log(err);
@@ -213,30 +223,10 @@
         var vm = new Vue({
             el: "#vm",
             data: {
-                tWarnSubscribe: {}
+                enterpriseName: "",
+                eventType: ""
             },
             methods: {
-                addData: function () {
-                    console.log(this.tWarnSubscribe.bitian);
-                    layer.alert("新增成功", function (index) {
-                        xadmin.close();
-                    })
-                    axios({
-                        method: "post",
-                        url: baseUrl + '/environmental_intelligent_monitoring/twarnsubscribe/save',
-                        params: {}
-                    }).then(function (res) {
-                        if (res.code == 0) {
-                            layer.alert("新增成功", function (index) {
-                                xadmin.close();
-                            })
-                        } else {
-
-                        }
-                    }).catch(function (err) {
-                        console.log(err);
-                    });
-                },
                 cancel() {
                     parent.layer.closeAll('iframe');//关闭弹窗
                 }

@@ -59,7 +59,7 @@
                             事件类型</label>
                         <div class="layui-input-inline">
                             <!-- <input type="text" v-model="tWarnSubscribe.eventtype" class="layui-input" placeholder="事件类型名称" /> -->
-                            <select name="eventType" id="eventType" lay-filter="eventType" lay-verify="">
+                            <select name="eventTypeId" id="eventType" lay-filter="eventType" lay-verify="">
                                 <option value="">请选择事件类型</option>
                                 <option value=""></option>
                             </select>
@@ -137,7 +137,7 @@
                     // console.log(res)
                     $.each(res.data.data, function (index, item) {
                         // console.log(index, item)
-                        $('#eventType').append(new Option(item.eventType, item.eventType));// 下拉菜单里添加元素
+                        $('#eventType').append(new Option(item.eventType, item.eventTypeId));// 下拉菜单里添加元素
                     });
                     layui.form.render("select");
 
@@ -160,6 +160,7 @@
                             'id': WarnData.id,
                             'enterpriseName': WarnData.enterpriseName,
                             'eventType': WarnData.eventType,
+                            'eventTypeId': WarnData.eventTypeId,
                             'sendType': WarnData.sendType,
                             'userType': WarnData.userType,
                             'remark': WarnData.remark
