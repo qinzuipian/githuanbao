@@ -71,6 +71,11 @@
             cursor: pointer;
             font-size: 18px;
         }
+
+        .red {
+            color: #f00;
+            font-size: 12px;
+        }
     </style>
 </head>
 
@@ -82,16 +87,20 @@
                     <input type="hidden" name="id">
                     <div class="layui-form-item">
                         <label for="bitian" class="layui-form-label">
-                            监测点名称</label>
+                            监测点名称
+                            <span class="red">（必填）</span>
+                        </label>
                         <div class="layui-input-inline">
-                            <input type="text" name="monitorName" class="layui-input" placeholder="监测点名称" />
+                            <input type="text" name="monitorName" class="layui-input" lay-verify="required" placeholder="监测点名称" />
                         </div>
                         <label for="bitian" class="layui-form-label">
-                            信息分类</label>
+                            信息分类
+                            <span class="red">（必填）</span>
+                        </label>
                         <div class="layui-input-inline">
 
                             <!-- <input type="text" v-model="tDeviceMonitor.type" class="layui-input" placeholder="设备类型:1、生产设备 2、治污设备" /> -->
-                            <select name="ecPolluteType" id="ecPolluteType" lay-filter="ecPolluteType" lay-verify="">
+                            <select name="ecPolluteType" id="ecPolluteType" lay-filter="ecPolluteType" lay-verify="required">
                                 <option value=""></option>
                             </select>
 
@@ -109,7 +118,9 @@
                         </div>
 
                         <label for="bitian" class="layui-form-label">
-                            类别</label>
+                            类别
+                            <span class="red">（必填）</span>
+                        </label>
                         <div class="layui-input-inline">
 
                             <!-- <input type="text" v-model="tDeviceMonitor.type" class="layui-input" placeholder="设备类型:1、生产设备 2、治污设备" /> -->
@@ -122,12 +133,16 @@
 
                     <div class="layui-form-item">
                         <label for="bitian" class="layui-form-label">
-                            网关编号</label>
+                            网关编号
+                            <span class="red">（必填）</span>
+                        </label>
                         <div class="layui-input-inline">
-                            <input type="text" name="swicthId" class="layui-input" placeholder="网关编号" />
+                            <input type="text" name="swicthId" lay-verify="required" class="layui-input" placeholder="网关编号" />
                         </div>
                         <label for="bitian" class="layui-form-label">
-                            工艺 </label>
+                            工艺
+                            <span class="red">（必填）</span>
+                        </label>
                         <div class="layui-input-inline">
                             <select name="route" id="route" lay-filter="route" lay-verify="">
                                 <option value=""></option>
@@ -138,9 +153,11 @@
 
                     <div class="layui-form-item">
                         <label for="bitian" class="layui-form-label">
-                            仪表地址</label>
+                            仪表地址
+                            <span class="red">（必填）</span>
+                        </label>
                         <div class="layui-input-inline">
-                            <input type="text" name="meterId" class="layui-input" placeholder="" />
+                            <input type="text" name="meterId" lay-verify="required" class="layui-input" placeholder="" />
                         </div>
 
 
@@ -154,9 +171,11 @@
 
                     <div class="layui-form-item">
                         <label for="bitian" class="layui-form-label">
-                            仪表类别</label>
+                            仪表类别
+                            <span class="red">（必填）</span>
+                        </label>
                         <div class="layui-input-inline">
-                            <select name="collectType " id="collectType" lay-filter="collectType" lay-verify="">
+                            <select name="collectType " id="collectType" lay-filter="collectType" lay-verify="required">
                                 <option value="">请选择仪表类别</option>
                                 <option value="用电">用电</option>
                                 <option value="扬尘设备">扬尘设备</option>
@@ -168,21 +187,27 @@
                         </div>
 
                         <label for="bitian" class="layui-form-label">
-                            功率启停阀值(kW)</label>
+                            功率启停阀值(kW)
+                            <span class="red">（必填）</span>
+                        </label>
                         <div class="layui-input-inline">
-                            <input type="text" name="electricLimit" class="layui-input" placeholder="功率启停阀值(kW)" />
+                            <input type="text" name="electricLimit" lay-verify="required" class="layui-input" placeholder="功率启停阀值(kW)" />
                         </div>
                     </div>
                     <div class="layui-form-item">
                         <label for="bitian" class="layui-form-label">
-                            仪表型号</label>
+                            仪表型号
+                            <span class="red">（必填）</span>
+                        </label>
                         <div class="layui-input-inline">
-                            <input type="text" name="model" class="layui-input" placeholder="仪表型号" />
+                            <input type="text" name="model" lay-verify="required" class="layui-input" placeholder="仪表型号" />
                         </div>
                         <label for="bitian" class="layui-form-label">
-                            功率门限时间(m)</label>
+                            功率门限时间(m)
+                            <span class="red">（必填）</span>
+                        </label>
                         <div class="layui-input-inline">
-                            <input type="text" name="electricTime" class="layui-input" placeholder="功率门限时间(分钟)" />
+                            <input type="text" name="electricTime" lay-verify="required" class="layui-input" placeholder="功率门限时间(分钟)" />
                         </div>
                     </div>
 
@@ -203,9 +228,11 @@
                     </div>
                     <div class="layui-form-item">
                         <label for="bitian" class="layui-form-label">
-                            电压变比</label>
+                            电压变比
+                            <span class="red">（必填）</span>
+                        </label>
                         <div class="layui-input-inline">
-                            <input type="text" name="pt" class="layui-input" placeholder="电压变比" />
+                            <input type="text" name="pt" class="layui-input" lay-verify="required" placeholder="电压变比" />
                         </div>
                         <label for="bitian" class="layui-form-label">
                             电量门限时间(m)</label>
@@ -215,9 +242,11 @@
                     </div>
                     <div class="layui-form-item">
                         <label for="bitian" class="layui-form-label">
-                            电流变比</label>
+                            电流变比
+                            <span class="red">（必填）</span>
+                        </label>
                         <div class="layui-input-inline">
-                            <input type="text" name="ct" class="layui-input" placeholder="电流变比" />
+                            <input type="text" name="ct" class="layui-input" lay-verify="required" placeholder="电流变比" />
                         </div>
                         <label for="bitian" class="layui-form-label">
                             额定电压(V)</label>
