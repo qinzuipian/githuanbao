@@ -39,6 +39,7 @@
         }
         .red {
             color: #f00;
+            font-size: 12px;
         }
     </style>
 </head>
@@ -81,7 +82,7 @@
                     </div> -->
                     <div class="layui-form-item">
                         <label for="bitian" class="layui-form-label">
-                            参数</label>
+                            参数<span class="red">（必填）</span></label>
                         <div class="layui-input-inline">
                             <!-- <input type="text" v-model="tWarnSet.parameterCode" class="layui-input" placeholder="参数：" /> -->
                             <select name="parameterCode" id="parameterCode" lay-verify="required">
@@ -95,11 +96,11 @@
                                 <option value="VOC（气体浓度mg/m3）">VOC（气体浓度mg/m3）</option>
                             </select>
                         </div>
-                        <span class="red">（必填）</span>
+                       
                     </div>
                     <div class="layui-form-item">
                         <label for="bitian" class="layui-form-label">
-                            条件</label>
+                            条件<span class="red">（必填）</span></label>
                         <div class="layui-input-inline">
                             <!-- <input type="text" v-model="tWarnSet.condition" class="layui-input" placeholder="条件" /> -->
                             <select name="condition" id="condition" lay-verify="required">
@@ -108,15 +109,15 @@
                                 <option value="<="><=</option>
                             </select>
                         </div>
-                        <span class="red">（必填）</span>
+                        
                     </div>
                     <div class="layui-form-item">
                         <label for="bitian" class="layui-form-label">
-                            阀值</label>
+                            阀值<span class="red">（必填）</span></label>
                         <div class="layui-input-inline">
                             <input type="text" name="limitValue" class="layui-input" lay-verify="required" placeholder="阀值" />
                         </div>
-                        <span class="red">（必填）</span>
+                        
                     </div>
                     <div class="layui-form-item">
                         <label for="bitian" class="layui-form-label">

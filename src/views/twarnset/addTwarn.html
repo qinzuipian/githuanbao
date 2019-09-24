@@ -46,6 +46,7 @@
         }
         .red {
             color: #f00;
+            font-size: 12px;
         }
     </style>
 </head>
@@ -66,17 +67,17 @@
                     <!-- <input type="hidden" class="layui-input" name="eventTypeId"> -->
                     <div class="layui-form-item">
                         <label for="bitian" class="layui-form-label">
-                            监测点名称</label>
+                            监测点名称<span class="red">(必填)</span></label>
                         <div class="layui-input-inline elTree">
                             <el-tree :highlight-current="true" :data="WarntreeData" :props="defaultProps" @node-click="handleNodeClick"></el-tree>
                             <!-- <input type="text" v-model="monitorName" name="monitorName" class="layui-input" placeholder="监测点名称" /> -->
 
                         </div>
-                        <span class="red">(必填)</span>
+                        
                     </div>
                     <div class="layui-form-item">
                         <label for="bitian" class="layui-form-label">
-                            事件类型名称</label>
+                            事件类型名称<span class="red">(必填)</span></label>
                         <div class="layui-input-inline">
                             <!-- <input type="text" v-model="tWarnSet.eventtype" class="layui-input" placeholder="事件类型名称" /> -->
 
@@ -85,7 +86,7 @@
                                 <option value=""></option>
                             </select>
                         </div>
-                        <span class="red">(必填)</span>
+                        
                     </div>
                     <!-- <div class="layui-form-item">
                         <label for="bitian" class="layui-form-label">
@@ -96,7 +97,7 @@
                     </div> -->
                     <div class="layui-form-item">
                         <label for="bitian" class="layui-form-label">
-                            参数</label>
+                            参数<span class="red">(必填)</span></label>
                         <div class="layui-input-inline">
                             <!-- <input type="text" v-model="tWarnSet.parametercode" class="layui-input" placeholder="参数" /> -->
                             <select name="parameterCode" id="parameterCode" lay-verify="required">
@@ -110,21 +111,20 @@
                                 <option value="VOC（气体浓度mg/m3）">VOC（气体浓度mg/m3）</option>
                             </select>
                         </div>
-                        <span class="red">(必填)</span>
+                        
                     </div>
                     <div class="layui-form-item">
                         <label for="bitian" class="layui-form-label">
-                            条件</label>
+                            条件<span class="red">(必填)</span></label>
                         <div class="layui-input-inline">
                             <!-- <input type="text" v-model="condition" name="condition" class="layui-input" placeholder="条件" /> -->
                             <select name="condition" id="condition" lay-verify="required">
                                 <option value="">请选择条件类型</option>
                                 <option value=">=">>=</option>
-                                <option value="<=">
-                                    <=</option>
+                                <option value="<="><=</option>
                             </select>
                         </div>
-                        <span class="red">(必填)</span>
+                        
                     </div>
                     <div class="layui-form-item">
                         <label for="bitian" class="layui-form-label">

@@ -40,6 +40,7 @@
         }
         .red {
             color: #f00;
+            font-size: 12px;
         }
     </style>
 </head>
@@ -52,19 +53,19 @@
                     <input type="hidden" name="enterpriseId">
                     <div class="layui-form-item">
                         <label for="bitian" class="layui-form-label">
-                            企业名称</label>
+                            企业名称<span class="red">（必填）</span></label>
                         <div class="layui-input-inline">
                             <!-- <input type="text" v-model="tWarnSubscribe.enterprisename" name="enterpriseName" class="layui-input" placeholder="企业名称" /> -->
                             <select name="enterpriseId" id="enterpriseName" lay-verify="required" lay-filter="enterpriseName">
                                 <option value=""></option>
                             </select>
                         </div>
-                        <span class="red">（必填）</span>
+                       
                     </div>
 
                     <div class="layui-form-item">
                         <label for="bitian" class="layui-form-label">
-                            事件类型</label>
+                            事件类型<span class="red">（必填）</span></label>
                         <div class="layui-input-inline">
                             <!-- <input type="text" v-model="tWarnSubscribe.eventtype" class="layui-input" placeholder="事件类型名称" /> -->
                             <select name="eventTypeId" id="eventType" lay-filter="eventType" lay-verify="required">
@@ -72,14 +73,14 @@
                                 <option value=""></option>
                             </select>
                         </div>
-                        <span class="red">（必填）</span>
+                       
                     </div>
 
 
 
                     <div class="layui-form-item">
                         <label for="bitian" class="layui-form-label">
-                            发送方式</label>
+                            发送方式<span class="red">（必填）</span></label>
                         <div class="layui-input-inline">
                             <!-- <input type="text" v-model="tWarnSubscribe.sendtype" class="layui-input" placeholder="发送方式名称：短信、邮件、App、语音外呼" /> -->
                             <select name="sendType" id="eventtype" lay-verify="required">
@@ -90,28 +91,28 @@
                                 <option value="语音外呼">语音外呼</option>
                             </select>
                         </div>
-                        <span class="red">（必填）</span>
+                        
                     </div>
 
                     <div class="layui-form-item">
                         <label for="bitian" class="layui-form-label">
-                            用户类型</label>
+                            用户类型<span class="red">（必填）</span></label>
                         <div class="layui-input-inline">
                             <!-- <input type="text" v-model="tWarnSubscribe.usertype" class="layui-input" placeholder="用户类型：1、企业人员 2、检查人员 3、执法人员" /> -->
                             <input type="radio" name="userType"  value="1" title="企业人员">
                             <input type="radio" name="userType"  value="2" title="检查人员">
                             <input type="radio" name="userType"  value="3" title="执法人员">
                         </div>
-                        <span class="red">（必填）</span>
+                        
                     </div>
                     <div class="layui-form-item">
                         <label for="bitian" class="layui-form-label">
-                            发送对象</label>
+                            发送对象<span class="red">（必填）</span></label>
                         <div class="layui-input-inline">
                             <input type="text" name="sendToList" lay-verify="required" class="layui-input" placeholder="多个对象用；隔开" />
                            
                         </div>
-                        <span class="red">（必填）</span>
+                        
                     </div>
                     <div class="layui-form-item">
                         <label for="bitian" class="layui-form-label">
