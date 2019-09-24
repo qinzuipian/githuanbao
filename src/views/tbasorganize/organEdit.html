@@ -151,35 +151,6 @@
                 parentName: ""
             },
             methods: {
-                pageInit: function () {
-                    var editData = JSON.parse(window.localStorage.getItem("memberEdit"));
-                    this.tBasOrganize = editData[0];
-                    console.log(this.tBasOrganize.bitian);
-                    this.$forceUpdate();
-                    window.localStorage.removeItem("memberEdit");
-                },
-                submitData: function () {
-                    console.log(this.tBasOrganize.bitian);
-                    layer.alert("编辑成功", function () {
-                        xadmin.close();
-                        xadmin.father_reload();
-                    })
-                    axios({
-                        method: "post",
-                        url: baseUrl + '/environmental_intelligent_monitoring/tbasorganize/update',
-                        params: {}
-                    }).then(function (res) {
-                        if (res.code == 0) {
-                            layer.alert("编辑成功", function (index) {
-                                xadmin.close();
-                            })
-                        } else {
-
-                        }
-                    }).catch(function (err) {
-                        console.log(err);
-                    });
-                },
                 cancel() {
                     parent.layer.closeAll('iframe');//关闭弹窗
                 }

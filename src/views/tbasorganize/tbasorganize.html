@@ -131,7 +131,10 @@
 									layer.msg('已删除');
 
 								} else {
-									layer.msg('删除失败!');
+									vm.$notify.error({
+										title: '错误',
+										message: '删除失败'
+									});
 								}
 							}).catch(function (err) {
 								console.log(err);
@@ -201,7 +204,7 @@
 					vm.nodedata = data;
 					axios({
 						method: "post",
-						url: BASEURL + 'environmental_intelligent_monitoring/tbasorganize/list',
+						url: BASEURL + 'environmental_intelligent_monitoring/tbasorganize/list?limit=10000',
 						params: {
 							parentId: data.id
 						}
@@ -210,11 +213,14 @@
 
 							// vm.treeData = res.data.page.list;
 							var treedata = res.data.page.list;
+							// console.log(treedata)
 							// for (var i = 0; i < vm.treeData.length; i++) {
+							data.children = [];
 							for (var j = 0; j < treedata.length; j++) {
-								data.children = [];
+
 								// if (vm.treeData[i].id == data[j].parentId) {
 								if (data.id == treedata[j].parentId) {
+									// console.log(treedata[j])
 									let obj = {
 										label: treedata[j].name,
 										id: treedata[j].id,
@@ -228,7 +234,10 @@
 
 
 						} else {
-
+							vm.$notify.error({
+								title: '错误',
+								message: res.data.msg
+							});
 						}
 					}).catch(function (err) {
 						console.log(err);
@@ -239,7 +248,7 @@
 
 					axios({
 						method: "post",
-						url: BASEURL + 'environmental_intelligent_monitoring/tbasorganize/list',
+						url: BASEURL + 'environmental_intelligent_monitoring/tbasorganize/list?limit=10000',
 						params: {
 							parentId: 0
 						}

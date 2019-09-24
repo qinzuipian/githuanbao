@@ -45,9 +45,9 @@
         <div class="layui-fluid">
             <div class="layui-row">
                 <form class="layui-form" action="" lay-filter="editTwarn">
-                    <input type="hidden" v-model="tWarnSet.monitorId" name="monitorId" class="layui-input" />
-                    <input type="hidden" v-model="tWarnSet.eventTypeId" name="eventTypeId" class="layui-input" />
-                    <input type="hidden" v-model="tWarnSet.id" name="id" class="layui-input" />
+                    <input type="hidden" name="monitorId" class="layui-input" />
+                    <input type="hidden" name="eventTypeId" class="layui-input" />
+                    <input type="hidden" name="id" class="layui-input" />
                     <!--  <div class="layui-form-item">
                         <label for="bitian" class="layui-form-label">
                             监测点编码</label>
@@ -59,16 +59,14 @@
                         <label for="bitian" class="layui-form-label">
                             监测点名称</label>
                         <div class="layui-input-inline">
-                            <input type="text" v-model="tWarnSet.monitorName" name="monitorName" disabled class="layui-input layui-disabled" placeholder="监测点名称"
-                            />
+                            <input type="text" name="monitorName" disabled class="layui-input layui-disabled" placeholder="监测点名称" />
                         </div>
                     </div>
                     <div class="layui-form-item">
                         <label for="bitian" class="layui-form-label">
                             事件类型名称</label>
                         <div class="layui-input-inline">
-                            <input type="text"  name="eventType" disabled class="layui-input layui-disabled" placeholder="事件类型名称"
-                            />
+                            <input type="text" name="eventType" disabled class="layui-input layui-disabled" placeholder="事件类型名称" />
                         </div>
                     </div>
                     <!--  <div class="layui-form-item">
@@ -103,7 +101,8 @@
                             <select name="condition" id="condition" lay-verify="">
                                 <option value="">请选择条件类型</option>
                                 <option value=">=">>=</option>
-                                <option value="<="><=</option>
+                                <option value="<=">
+                                    <=</option>
                             </select>
                         </div>
                     </div>
@@ -111,7 +110,7 @@
                         <label for="bitian" class="layui-form-label">
                             阀值</label>
                         <div class="layui-input-inline">
-                            <input type="text" v-model="tWarnSet.limitValue" name="limitValue" class="layui-input" placeholder="阀值" />
+                            <input type="text" name="limitValue" class="layui-input" placeholder="阀值" />
                         </div>
                     </div>
                     <div class="layui-form-item">
@@ -199,6 +198,7 @@
                 });
             // form表单的提交
             form.on('submit(editFormDemo)', function (data) {
+                console.log(data)
                 axios({
                     method: "post",
                     url: BASEURL + 'environmental_intelligent_monitoring/twarnset/update',
@@ -233,7 +233,6 @@
         var vm = new Vue({
             el: "#vm",
             data: {
-                tWarnSet: {}
             },
 
             methods: {
@@ -241,7 +240,7 @@
                     parent.layer.closeAll('iframe');//关闭弹窗
                 }
             },
-            created() {}
+            created() { }
         });
     </script>
 </body>

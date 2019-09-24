@@ -331,52 +331,52 @@
                 laytpl = layui.laytpl;
 
             // select框动态填充联动
-            function selectTree(selectId) {
-                axios({
-                    method: "post",
-                    url: BASEURL + 'environmental_intelligent_monitoring/tdevicemonitor/queryPolluteType',
-                    params: {}
-                }).then(function (res) {
-                    if (res.data.code == 0) {
-                        // console.log(res)
+            // function selectTree(selectId) {
+            //     axios({
+            //         method: "post",
+            //         url: BASEURL + 'environmental_intelligent_monitoring/tdevicemonitor/queryPolluteType',
+            //         params: {}
+            //     }).then(function (res) {
+            //         if (res.data.code == 0) {
+            //             // console.log(res)
 
-                        $.each(res.data.data, function (index, item) {
-                            // var se = $(selectId).attr('id')
-                            console.log($(selectId).attr('id'))
-                            // console.log(index, item)
-                            $(selectId).attr('id').append(new Option(item.text, item.id));// 下拉菜单里添加元素
-                        });
-                        layui.form.render("select");
+            //             $.each(res.data.data, function (index, item) {
+            //                 // var se = $(selectId).attr('id')
+            //                 // console.log($(selectId).attr('id'))
+            //                 // console.log(index, item)
+            //                 $(selectId).attr('id').append(new Option(item.text, item.id));// 下拉菜单里添加元素
+            //             });
+            //             layui.form.render("select");
 
-                    } else {
+            //         } else {
 
-                    }
-                }).catch(function (err) {
-                    console.log(err);
-                });
+            //         }
+            //     }).catch(function (err) {
+            //         console.log(err);
+            //     });
 
-            }
-            selectTree(ecPolluteType)
+            // }
+            // selectTree(ecPolluteType)
             // 第一层填充
-            // axios({
-            //     method: "post",
-            //     url: BASEURL + 'environmental_intelligent_monitoring/tdevicemonitor/queryPolluteType',
-            //     params: {}
-            // }).then(function (res) {
-            //     if (res.data.code == 0) {
-            //         // console.log(res)
-            //         $.each(res.data.data, function (index, item) {
-            //             // console.log(index, item)
-            //             $('#ecPolluteType').append(new Option(item.text, item.id));// 下拉菜单里添加元素
-            //         });
-            //         layui.form.render("select");
+            axios({
+                method: "post",
+                url: BASEURL + 'environmental_intelligent_monitoring/tdevicemonitor/queryPolluteType',
+                params: {}
+            }).then(function (res) {
+                if (res.data.code == 0) {
+                    // console.log(res)
+                    $.each(res.data.data, function (index, item) {
+                        // console.log(index, item)
+                        $('#ecPolluteType').append(new Option(item.text, item.id));// 下拉菜单里添加元素
+                    });
+                    layui.form.render("select");
 
-            //     } else {
+                } else {
 
-            //     }
-            // }).catch(function (err) {
-            //     console.log(err);
-            // });
+                }
+            }).catch(function (err) {
+                console.log(err);
+            });
 
             // 第二层填充
             form.on('select(ecPolluteType)', function (data) {
@@ -500,7 +500,10 @@
                         }
                         );
                     } else {
-                        layer.msg('保存异常!');
+                        vm.$notify.error({
+                            title: '错误',
+                            message: '保存失败'
+                        });
                     }
                 }).catch(function (err) {
                     console.log(err);

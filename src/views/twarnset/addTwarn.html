@@ -110,7 +110,8 @@
                             <select name="condition" id="condition" lay-verify="">
                                 <option value="">请选择条件类型</option>
                                 <option value=">=">>=</option>
-                                <option value="<="><=</option>
+                                <option value="<=">
+                                    <=</option>
                             </select>
                         </div>
                     </div>
@@ -233,7 +234,6 @@
         var vm = new Vue({
             el: "#vm",
             data: {
-                tWarnSet: {},
                 monitorName: "",
                 eventType: "",
                 condition: "",
@@ -246,7 +246,7 @@
                     label: 'label'
                 },
                 treeLabel: "",
-                monitorId:""
+                monitorId: ""
             },
             methods: {
                 handleNodeClick(data) {
@@ -293,6 +293,10 @@
 
 
                         } else {
+                            vm.$notify.error({
+                                title: '错误',
+                                message: res.data.msg
+                            });
 
                         }
                     }).catch(function (err) {
