@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<title>管理机构表</title>
+	<meta name="renderer" content="webkit">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+	<link rel="stylesheet" href="../../../layuiadmin/layui/css/layui.css" media="all">
+	<link rel="stylesheet" href="../../../layuiadmin/style/admin.css" media="all">
+	<link rel="stylesheet" href="../../../layuiadmin/plugin/element.css">
+	<style>
+		#organizeTree .ulOrganize .layui-icon-add-circle {
+			cursor: pointer;
+			font-size: 18px;
+		}
+
+		#organizeTree .layui-form-radio>i {
+			font-size: 14px;
+		}
+
+		#organizeTree .layui-form-radio {
+			margin: 0 0 0 6px;
+		}
+
+		#organizeTree .ulOrganize li ul li {
+			margin-left: 50px;
+		}
+	</style>
+</head>
+
+<body>
+	<div id="vm">
+
+		<div class="layui-fluid">
+			<!-- <div id="organizeTree" class="demo-tree-more"></div> -->
+			<div style="padding-bottom: 10px;">
+				<button class="layui-btn layuiadmin-btn-list layui-bg-green" data-type="add">
+					<i class="layui-icon">&#xe654;</i>添加</button>
+				<button class="layui-btn layuiadmin-btn-list layui-bg-blue" data-type="edit">
+					<i class="layui-icon">&#xe642;</i>编辑</button>
+				<button class="layui-btn layuiadmin-btn-list layui-bg-red" data-type="batchdel">
+					<i class="layui-icon">&#xe640;</i>删除</button>
+				<button class="layui-btn layuiadmin-btn-list layui-btn-warm" data-type="batCancel">
+					<i class="layui-icon">&#x1006;</i>取消选中状态</button>
+			</div>
+			<div class="layui-card">
+				<!-- <div class="layui-form layui-card-header layuiadmin-card-header-auto">
+				<div class="layui-form-item">
+					<div class="layui-inline">
+						<label class="layui-form-label">名称</label>
+						<div class="layui-input-inline">
+							<input type="text" name="name" placeholder="请输入" autocomplete="off" class="layui-input">
+						</div>
+					</div>
+					<div class="layui-inline">
+						<button class="layui-btn layuiadmin-btn-list" lay-submit lay-filter="LAY-app-contlist-search">
+							<i class="layui-icon layui-icon-search layuiadmin-button-btn"></i>
+						</button>
+					</div>
+				</div>
+			</div> -->
+
+				<div class="layui-card-body">
+					<el-tree :highlight-current="treeHign" :data="treeData" :props="defaultProps" @node-click="handleNodeClick"></el-tree>
+					<!-- <table id="LAY-app-content-list" lay-filter="LAY-app-content-list"></table> -->
+
+				</div>
+
+
+			</div>
+
+		</div>
+	</div>
+
+
+	<script src="../../../layuiadmin/layui/layui.js"></script>
+	<script src="../../../layuiadmin/plugin/vue.js"></script>
+	<script src="../../../layuiadmin/plugin/axios.js"></script>
+	<script src="../../../layuiadmin/js/baseUrlConfig.js"></script>
+	<script src="../../../layuiadmin/plugin/element.js"></script>
+	<script>
+		layui.config({
+			base: '../../../layuiadmin/' //静态资源所在路径
+		}).extend({
+			index: 'lib/index' //主入口模块
+		}).use(['index', 'table', 'form', 'tree'], function () {
+			var table = layui.table,
+				form = layui.form,
+				tree = layui.tree;
+
+			//监听搜索
+			form.on('submit(LAY-app-contlist-search)', function (data) {
+				var field = data.field;
+
+				//执行重载
+				table.reload('LAY-app-content-list', {
+					where: field
+				});
+			});
+
+			var $ = layui.$,
+				active = {
+					batchdel: function () {
+						console.log()
+						if (vm.nodedata.length === 0) {
+							return layer.msg('请选择数据');
+						}
+						console.log(vm.nodedata)
+						var idList = [];
+						idList.push(vm.nodedata.id);
+						console.log(idList)
+
+						layer.confirm('确定删除吗？', function (index) {
+
+							//执行 axios 后重载
+							axios({
+								method: "post",
+								url: layui.setter.BASEURL + '/environmental_intelligent_monitoring/tbasorganize/delete',
+								data: {
+									ids: idList
+								},
+								headers: {
+									"Content-Type": "application/json;charset=UTF-8"
+								}
+							}).then(function (res) {
+								if (res.data.code == 0) {
+									console.log(res)
+									vm.organizeTree();
+									layer.msg('已删除');
+
+								} else {
+									vm.$notify.error({
+										title: '错误',
+										message: '删除失败'
+									});
+								}
+							}).catch(function (err) {
+								console.log(err);
+							});
+
+						});
+					},
+					add: function () {
+						window.data = vm.nodedata;
+						layer.open({
+							type: 2,
+							title: '添加行政区域信息',
+							content: 'organAdd.html',
+							maxmin: true,
+							area: ['650px', '260px'],
+
+						});
+					},
+					edit: function () {
+						window.data = vm.nodedata;
+						// console.log(window.data)
+						if (window.data.length === 0) {
+							return layer.msg('请选择需要修改的数据');
+						}
+
+						layer.open({
+							type: 2,
+							title: '修改行政区域信息',
+							content: 'organedit.html',
+							maxmin: true,
+							area: ['650px', '260px'],
+
+						});
+
+					},
+					batCancel: function () {
+						vm.treeHign = false;
+						vm.nodedata = [];
+					}
+				};
+
+			$('.layui-btn.layuiadmin-btn-list').on('click', function () {
+				var type = $(this).data('type');
+				active[type] ? active[type].call(this) : '';
+			});
+
+		});
+
+		var vm = new Vue({
+			el: "#vm",
+			data: {
+				treeData: [],
+				defaultProps: {
+					children: 'children',
+					label: 'label'
+				},
+				nodedata: [],
+				treeHign: true
+			},
+			methods: {
+				handleNodeClick(data, node) {
+					console.log(data);
+					vm.treeHign = true;
+					// console.log(node.parent.childNodes[0].parent.data.label)
+					var localname = node.parent.childNodes[0].parent.data.label === undefined ? '无上级目录' : node.parent.childNodes[0].parent.data.label;
+					localStorage.setItem("nodeParentName", localname)
+					vm.nodedata = data;
+					axios({
+						method: "post",
+						url: BASEURL + 'environmental_intelligent_monitoring/tbasorganize/list?limit=10000',
+						params: {
+							parentId: data.id
+						}
+					}).then(function (res) {
+						if (res.data.code == 0) {
+
+							// vm.treeData = res.data.page.list;
+							var treedata = res.data.page.list;
+							// console.log(treedata)
+							// for (var i = 0; i < vm.treeData.length; i++) {
+							data.children = [];
+							for (var j = 0; j < treedata.length; j++) {
+
+								// if (vm.treeData[i].id == data[j].parentId) {
+								if (data.id == treedata[j].parentId) {
+									// console.log(treedata[j])
+									let obj = {
+										label: treedata[j].name,
+										id: treedata[j].id,
+										parentId: treedata[j].parentId,
+										children: []
+									};
+									data.children.push(obj);
+								}
+							}
+							// }
+
+
+						} else {
+							vm.$notify.error({
+								title: '错误',
+								message: res.data.msg
+							});
+						}
+					}).catch(function (err) {
+						console.log(err);
+					});
+				},
+				// 获取树状组件的data值
+				organizeTree() {
+
+					axios({
+						method: "post",
+						url: BASEURL + 'environmental_intelligent_monitoring/tbasorganize/list?limit=10000',
+						params: {
+							parentId: 0
+						}
+					}).then(function (res) {
+						if (res.data.code == 0) {
+
+							vm.treeData = [];
+							// vm.treeData = res.data.page.list;
+							var data = res.data.page.list;
+
+							for (var i = 0; i < data.length; i++) {
+								var obj = {};
+								obj.label = data[i].name;
+								obj.id = data[i].id;
+								obj.parentId = data[i].parentId;
+								obj.children = [];
+								vm.treeData.push(obj);
+							}
+
+
+						} else {
+
+						}
+					}).catch(function (err) {
+						console.log(err);
+					});
+				},
+
+			},
+
+			created() {
+				this.organizeTree();
+
+
+			}
+		})
+	</script>
+</body>
+
+</html>
