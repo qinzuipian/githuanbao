@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html class="x-admin-sm">
+
+<head>
+    <meta charset="UTF-8">
+    <title>新增</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi"
+    />
+    <link rel="stylesheet" href="../../../layuiadmin/layui/css/layui.css">
+    <script type="text/javascript" src="../../../layuiadmin/layui/layui.js" charset="utf-8"></script>
+    <!-- 引入vue -->
+    <script type="text/javascript" src="../../../layuiadmin/plugin/vue.js"></script>
+    <script type="text/javascript" src="../../../layuiadmin/plugin/axios.js"></script>
+    <script src="../../../layuiadmin/js/baseUrlConfig.js"></script>
+    <!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
+    <!--[if lt IE 9]>
+    <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+    <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+    
+    <![endif]-->
+    <style>
+        .btn-box {
+            text-align: center;
+        }
+
+        .btn-box button {
+            /* margin-right: 30px; */
+            margin-bottom: 10px;
+        }
+
+        .layui-form-label {
+            width: 120px;
+
+        }
+
+        .layui-form-item .layui-input-inline {
+            width: 340px;
+        }
+        .red {
+            color: #f00;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="vm">
+        <div class="layui-fluid">
+            <div class="layui-row">
+                <form class="layui-form">
+                    <input type="hidden" name="enterpriseId">
+                    <div class="layui-form-item">
+                        <label for="bitian" class="layui-form-label">
+                            企业名称</label>
+                        <div class="layui-input-inline">
+                            <!-- <input type="text" v-model="tWarnSubscribe.enterprisename" name="enterpriseName" class="layui-input" placeholder="企业名称" /> -->
+                            <select name="enterpriseId" id="enterpriseName" lay-verify="required" lay-filter="enterpriseName">
+                                <option value=""></option>
+                            </select>
+                        </div>
+                        <span class="red">（必填）</span>
+                    </div>
+
+                    <div class="layui-form-item">
+                        <label for="bitian" class="layui-form-label">
+                            事件类型</label>
+                        <div class="layui-input-inline">
+                            <!-- <input type="text" v-model="tWarnSubscribe.eventtype" class="layui-input" placeholder="事件类型名称" /> -->
+                            <select name="eventTypeId" id="eventType" lay-filter="eventType" lay-verify="required">
+                                <option value="">请选择事件类型</option>
+                                <option value=""></option>
+                            </select>
+                        </div>
+                        <span class="red">（必填）</span>
+                    </div>
+
+
+
+                    <div class="layui-form-item">
+                        <label for="bitian" class="layui-form-label">
+                            发送方式</label>
+                        <div class="layui-input-inline">
+                            <!-- <input type="text" v-model="tWarnSubscribe.sendtype" class="layui-input" placeholder="发送方式名称：短信、邮件、App、语音外呼" /> -->
+                            <select name="sendType" id="eventtype" lay-verify="required">
+                                <option value="">请选择发送方式</option>
+                                <option value="手机短信">手机短信</option>
+                                <option value="App推送">App推送</option>
+                                <option value="邮件发送">邮件发送</option>
+                                <option value="语音外呼">语音外呼</option>
+                            </select>
+                        </div>
+                        <span class="red">（必填）</span>
+                    </div>
+
+                    <div class="layui-form-item">
+                        <label for="bitian" class="layui-form-label">
+                            用户类型</label>
+                        <div class="layui-input-inline">
+                            <!-- <input type="text" v-model="tWarnSubscribe.usertype" class="layui-input" placeholder="用户类型：1、企业人员 2、检查人员 3、执法人员" /> -->
+                            <input type="radio" name="userType"  value="1" title="企业人员">
+                            <input type="radio" name="userType"  value="2" title="检查人员">
+                            <input type="radio" name="userType"  value="3" title="执法人员">
+                        </div>
+                        <span class="red">（必填）</span>
+                    </div>
+                    <div class="layui-form-item">
+                        <label for="bitian" class="layui-form-label">
+                            发送对象</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="sendToList" lay-verify="required" class="layui-input" placeholder="多个对象用；隔开" />
+                           
+                        </div>
+                        <span class="red">（必填）</span>
+                    </div>
+                    <div class="layui-form-item">
+                        <label for="bitian" class="layui-form-label">
+                            备注</label>
+                        <div class="layui-input-inline">
+                            <!-- <input type="text" v-model="tWarnSubscribe.remark" class="layui-input" placeholder="备注" /> -->
+                            <textarea placeholder="请输入内容" class="layui-textarea" name="remark"></textarea>
+                        </div>
+                    </div>
+                    <!--   <div class="layui-form-item">
+                        <label for="bitian" class="layui-form-label">
+                            状态：1、有效 2、无效</label>
+                        <div class="layui-input-inline">
+                            <input type="text" v-model="tWarnSubscribe.status" class="layui-input" placeholder="状态：1、有效 2、无效" />
+                        </div>
+                    </div> -->
+                    <div class="btn-box">
+                        <button class="layui-btn" lay-submit lay-filter="warnForm">添加</button>
+                        <button class="layui-btn layui-btn-danger" @click="cancel">取消</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+    </div>
+    <script>
+        layui.config({
+            base: '../../../layuiadmin/' //静态资源所在路径
+        }).extend({
+            index: 'lib/index' //主入口模块
+        }).use(['index', "jquery", 'form'], function () {
+            var form = layui.form,
+                $ = layui.jquery;
+
+            // select事件类型数据填充
+            axios({
+                method: "post",
+                url: BASEURL + 'environmental_intelligent_monitoring/twarnsubscribe/queryEventTypeDictionary',
+                params: {}
+            }).then(function (res) {
+                if (res.data.code == 0) {
+                    // console.log(res)
+                    $.each(res.data.data, function (index, item) {
+                        // console.log(index, item)
+                        $('#eventType').append(new Option(item.eventType, item.eventTypeId));// 下拉菜单里添加元素
+                    });
+                    layui.form.render("select");
+
+                } else {
+
+                }
+            }).catch(function (err) {
+                console.log(err);
+            });
+
+
+            // select动态填充数据
+            axios({
+                method: "post",
+                url: BASEURL + 'environmental_intelligent_monitoring/tbasenterprise/list?limit=10000',
+                params: {}
+            }).then(function (res) {
+                if (res.data.code == 0) {
+                    // console.log(res)
+                    $.each(res.data.page.list, function (index, item) {
+                        // console.log(index, item)
+                        $('#enterpriseName').append(new Option(item.name, item.id));// 下拉菜单里添加元素
+                    });
+                    layui.form.render("select");
+
+                } else {
+
+                }
+            }).catch(function (err) {
+                console.log(err);
+            });
+
+            // 监听select框获取选中的text值
+            form.on('select(enterpriseName)', function (data) {
+                // console.log(data.elem[data.elem.selectedIndex].text);
+                vm.enterpriseName = data.elem[data.elem.selectedIndex].text
+                form.render();
+
+            });
+            form.on('select(eventType)', function (data) {
+                // console.log(data.elem[data.elem.selectedIndex].text);
+                vm.eventType = data.elem[data.elem.selectedIndex].text
+                form.render();
+
+            })
+
+            form.on('submit(warnForm)', function (data) {
+                console.log(data);
+                data.field.enterpriseName = vm.enterpriseName;
+                data.field.eventType = vm.eventType;
+                axios({
+                    method: "post",
+                    url: layui.setter.BASEURL + 'environmental_intelligent_monitoring/twarnsubscribe/save',
+                    data: data.field,
+                    headers: {
+                        "Content-Type": "application/json;charset=UTF-8"
+                    }
+                }).then(function (res) {
+                    if (res.data.code == 0) {
+                        console.log(res)
+                        layer.msg('保存成功！', {
+                            time: 500
+                        }, function () {
+                            window.parent.location.reload();
+                            parent.layer.close('iframe');
+                        }
+                        );
+                    } else {
+                        vm.$notify.error({
+                            title: '错误',
+                            message: '保存失败'
+                        });
+                    }
+                }).catch(function (err) {
+                    console.log(err);
+                });
+                return false;
+            })
+        })
+        var vm = new Vue({
+            el: "#vm",
+            data: {
+                enterpriseName: "",
+                eventType: ""
+            },
+            methods: {
+                cancel() {
+                    parent.layer.closeAll('iframe');//关闭弹窗
+                }
+            },
+
+        });
+    </script>
+</body>
+
+</html>
