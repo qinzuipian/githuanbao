@@ -86,7 +86,7 @@
 								<div class="layui-form-item">
 									<label for="bitian" class="layui-form-label">社会信用代码</label>
 									<div class="layui-input-inline">
-										<input type="text" name="trustcode" class="layui-input" placeholder="社会信用代码" />
+										<input type="text" name="trustCode" class="layui-input" placeholder="社会信用代码" />
 									</div>
 								</div>
 								<div class="layui-form-item">
@@ -124,7 +124,7 @@
 									<label class="layui-form-label">所属行业</label>
 									<div class="layui-input-inline">
 										<select name="tradeName" id="eventType" lay-filter="eventType">
-											<option value="">请选择</option>
+											<option value="" >请选择</option>
 											<option value=""></option>
 										</select>
 									</div>
@@ -246,15 +246,10 @@
 									<label for="bitian" class="layui-form-label">车间</label>
 									<div>
 										<div class="factor" name="tBasShopList">
-											<div class="box">
-												<span>22233333333sss</span>
-												<i class="layui-icon layui-icon-edit"></i>
-												<i class="layui-icon layui-icon-close  close"></i>
-											</div>
-											<div class="box">
-												<span>2222333r</span>
-												<i class="layui-icon layui-icon-edit"></i>
-												<i class="layui-icon layui-icon-close close"></i>
+											<div class="box" v-for="(it,index) in list">
+												<span v-text="it.name"></span>
+												<i class="layui-icon layui-icon-edit" @click="edit(it,index)"></i>
+												<i class="layui-icon layui-icon-close  close" @click="delet(it,index)"></i>
 											</div>
 										</div>
 									</div>
@@ -280,6 +275,38 @@
 					upload = layui.upload,
 					layer = layui.layer;
 
+				//添加弹窗
+				var $ = layui.$,
+					active = {
+						add: function() {
+							layer.open({
+								type: 2,
+								title: '添加车间',
+								content: 'addFactor.html',
+								maxmin: true,
+								area: ['500px', '300px'],
+								success: function(layero, index) {
+									var body = layer.getChildFrame('body', index);
+									var iframeWin = window[layero.find('iframe')[0]['name']]; //得到iframe页的窗口对象，执行iframe页的方法：iframeWin.method();
+									body.find("#save").click(function() {
+										vm.hasedit = 1;
+										vm.name = $(window.frames[0].document).find("#name").val();
+										vm.remark = $(window.frames[0].document).find("#remark").val();
+										var obj = new Object();
+										obj.name = vm.name; //为对象增加属性
+										obj.remark = vm.remark;
+										vm.list.push(obj);
+									})
+
+								}
+							});
+						}
+					};
+				$('#add').on('click', function() {
+					var type = $(this).data('type');
+					active[type] ? active[type].call(this) : '';
+				});
+
 
 				axios({
 					method: "post",
@@ -287,10 +314,8 @@
 					params: {}
 				}).then(function(res) {
 					if (res.data.code == 0) {
-						// console.log(res)
 						$.each(res.data.page.list, function(index, item) {
-							// console.log(index, item)
-							$('#eventType').append(new Option(item.name, item.id)); // 下拉菜单里添加元素
+							$('#eventType').append(new Option(item.name)); // 下拉菜单里添加元素
 						});
 						layui.form.render("select");
 					} else {
@@ -326,6 +351,9 @@
 
 					}
 				});
+				
+				
+				
 
 
 				axios({
@@ -335,14 +363,15 @@
 					.then(res => {
 						if (res.data.code == 0) {
 							vm.pic = res.data.tBasEnterprise.picUrl;
-							console.log(vm.pic);
-							if (vm.pic == "" || vm.pic == undefined) {
-								console.log(1);
-							} else {
+							console.log(res.data);
+							if (vm.pic == "" || vm.pic == undefined) {} else {
 								vm.haspic = 1
-								console.log(2);
+							}
+							if (res.data.tBasEnterprise.tBasShopList.length != 0) {
+								vm.hasedit = 1
 							}
 							var list = res.data.tBasEnterprise;
+							vm.list = res.data.tBasEnterprise.tBasShopList;
 							form.val('editEnterprise', {
 								"id": list.id,
 								"address": list.address,
@@ -352,6 +381,7 @@
 								"checkPhone": list.checkPhone,
 								"city": list.city,
 								"ct": list.ct,
+								"chargePerson":list.chargePerson,
 								"lawPerson": list.lawPerson,
 								"lawPhone": list.lawPhone,
 								"meterId": list.meterId,
@@ -364,8 +394,10 @@
 								"remark": list.remark,
 								"swicthId": list.swicthId,
 								"tradeName": list.tradeName,
-								"trustCode": list.trustCode
+								"trustCode": list.trustCode,
+								"tBasShopList": list.tBasShopList
 							});
+							console.log(list.tradeName);
 						} else {
 
 						}
@@ -375,7 +407,7 @@
 					});
 				form.on('submit(editFormDemo)', function(data) {
 					console.log(data);
-					data.field.picUrl = vm.pic
+					data.field.tBasShopList = vm.list;
 					axios({
 						method: "post",
 						url: BASEURL + 'environmental_intelligent_monitoring/tbasenterprise/update',
@@ -389,7 +421,7 @@
 							layer.msg('编辑成功！', {
 								time: 500
 							}, function() {
-								window.parent.location.reload();
+								// window.parent.location.reload();
 								parent.layer.close('iframe');
 							});
 						} else {
@@ -407,13 +439,53 @@
 				data: {
 					pic: '',
 					haspic: 0,
-					hasedit: 1
+					hasedit: 0,
+					list: [],
+					name: '',
+					remark: ""
 				},
 				methods: {
 					cancel: function() {
 						parent.layer.closeAll('iframe'); //关闭弹窗
+					},
+					edit: function(it, index_) {
+						layer.open({
+								type: 2,
+								title: '编辑车间',
+								content: 'editFactor.html',
+								maxmin: true,
+								area: ['500px', '300px'],
+								success: function(layero, index) {
+									var body = layer.getChildFrame('body', index);
+									var iframeWin = window[layero.find('iframe')[0]['name']]; //得到iframe页的窗口对象，执行iframe页的方法：iframeWin.method();
+									body.find('#name').val(it.name); //将值从父页面传到子页面的方法
+									body.find('#remark').val(it.remark);
+									body.find("#save").click(function() {
+											vm.hasedit = 1;
+											var list = iframeWin.get();
+											for (var i = 0; i < list.length; i++) {
+												it.name = list[i].name;
+												it.remark = list[i].remark;
+												console.log(it.name);
+												console.log(it.remark);
+											}
+										
+									})
+								}
+						});
+				},
+				delet: function(it, index) {
+					for (var i = 0; i < this.list.length; i++) {
+						if (index == i) {
+							console.log(this.list[i]);
+							this.list.splice(i, 1);
+						}
+					}
+					if (this.list.length == 0) {
+						vm.hasedit = 0;
 					}
 				}
+			}
 			});
 		</script>
 	</body>

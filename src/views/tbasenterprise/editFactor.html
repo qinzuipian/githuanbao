@@ -58,7 +58,7 @@
 							</div>
 						</div>
 						<div class="btn-box">
-							<button class="layui-btn layui-bg-green" lay-submit lay-filter="save">保存</button>
+							<button id="save" class="layui-btn layui-bg-green" lay-submit lay-filter="save">保存</button>
 							<button class="layui-btn layui-bg-red" @click="cancel">取消</button>
 						</div>
 					</form>
@@ -76,16 +76,39 @@
 					$ = layui.jquery;
 
 
+
+
+				form.on('submit(save)', function(data) {
+					get()
+					var index = parent.layer.getFrameIndex(window.name); //关闭特定的iframe窗口
+					parent.layer.close(index);
+
+				})
+
+
 			})
+			//子页面定义的方法,供父页面调用获取数值
+			function get() {
+				var name = document.getElementById("name").value;
+				var remark = document.getElementById("remark").value;
+				var obj = new Object();
+				obj.name = name; //为对象增加属性
+				obj.remark = remark;
+				vm.list.push(obj);
+				return vm.list;
+			}
 
 
 			var vm = new Vue({
 				el: "#vm",
 				data: {
-					tBasTrade: {}
+					list: []
+
 				},
 				methods: {
 					addData: function() {
+
+
 
 					},
 					cancel: function() {

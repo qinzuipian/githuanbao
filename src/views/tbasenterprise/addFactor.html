@@ -58,7 +58,7 @@
 							</div>
 						</div>
 						<div class="btn-box">
-							<button class="layui-btn layui-bg-green" lay-submit lay-filter="save">保存</button>
+							<button id="save" class="layui-btn layui-bg-green" lay-submit lay-filter="save">保存</button>
 							<button class="layui-btn layui-bg-red" @click="cancel">取消</button>
 						</div>
 					</form>
@@ -75,27 +75,18 @@
 				var form = layui.form,
 					$ = layui.jquery;
 
-				function newBuildReturnValue(name) {
-					var ret = new Array();
-					var name = $("#name").val();
-					var remark = $("#remark").val();
-					
-					return ret;
-				};
-				
-				function doOk() {
-					var ret = newBuildReturnValue("name");
-					var index = parent.layer.getFrameIndex(window.name);
-					parent.layer.close(index);
-				}
+
+
 				
 				form.on('submit(save)', function(data) {
-					doOk();
-
+					var index = parent.layer.getFrameIndex(window.name); //关闭特定的iframe窗口
+					parent.layer.close(index);
 
 				})
-			})
-			
+
+
+			});
+
 
 
 
@@ -103,7 +94,7 @@
 			var vm = new Vue({
 				el: "#vm",
 				data: {
-					tBasTrade: {}
+					list: []
 				},
 				methods: {
 					addData: function() {
