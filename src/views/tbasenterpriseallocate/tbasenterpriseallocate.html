@@ -29,7 +29,36 @@
 				</div>
 				<div class="layui-card layui-col-md8 layui-col-lg8">
 					<div class="layui-card-header card-title">企业列表</div>
+
 					<div class="l-card-border">
+
+						<div class="layui-form layui-card-header layuiadmin-card-header-auto">
+							<div class="layui-form-item">
+								<div class="layui-inline">
+									<label class="layui-form-label">企业名称</label>
+									<div class="layui-input-inline">
+										<input type="text" name="title" placeholder="请输入" autocomplete="off" class="layui-input" v-model="enterpriseName">
+									</div>
+								</div>
+								<div class="layui-inline">
+
+									<label class="layui-form-label">选择行业</label>
+									<div class="layui-input-block">
+										<el-select v-model="selectTrade" placeholder="请选择">
+											<el-option v-for="it in tradeList" :key="it.id" :label="it.name" :value="it.id">
+											</el-option>
+										</el-select>
+									</div>
+								</div>
+								<div class="layui-inline" style="margin-left: 50px;">
+									<button class="layui-btn layuiadmin-btn-list" @click="searchFunc">
+										<i class="layui-icon layui-icon-search layuiadmin-button-btn"></i>
+									</button>
+								</div>
+							</div>
+						</div>
+
+
 						<el-checkbox-group v-model="selectEnterprise" text-color="#000000" class="user-list-box">
 							<div v-for="it in enterpriseList">
 								<el-checkbox :label="it.name" class="user-list-checkbox"></el-checkbox>
@@ -51,13 +80,22 @@
 					submitLoading: false, // 提交按钮状态
 					reducedLoading: false, // 还原按钮状态
 
-					userList: [],
-					enterpriseList: [],
+					userList: [], // 用户列表
+					enterpriseList: [], // 企业列表
+					tradeList: [
+						{
+							name: "不限",
+							id: ""
+						}
+					], // 行业列表
 
 					selectUser: '', // 选择用户
 					selectUserId: '', // 选择用户的ID
 					selectEnterprise: [], // 选择的企业
 					selecterEnterpriseIdList: [], // 选择的企业ID数组
+
+					enterpriseName: '', // 搜索框输入的名字
+					selectTrade: '', // 选择的行业
 
 				},
 				methods: {
@@ -76,7 +114,7 @@
 										message: res.data.msg
 									});
 								}
-							})
+							});
 						// 企业
 						axios({
 								method: "GET",
@@ -91,8 +129,28 @@
 										message: res.data.msg
 									});
 								}
+							});
+
+						// 行业
+						axios({
+								method: "GET",
+								url: BASEURL + "environmental_intelligent_monitoring/tbastrade/list?limit=100000"
+							})
+							.then(function(res) {
+								if (res.data.code == 0) {
+									for(var i = 0; i < res.data.page.list.length; i++){
+										vm.tradeList.push(res.data.page.list[i])
+									}
+								} else {
+									vm.$notify.error({
+										title: '错误',
+										message: res.data.msg
+									})
+								}
 							})
 					},
+
+					// 保存分配
 					submitData: function() {
 						vm.submitLoading = true;
 						vm.submitLoading = false;
@@ -134,6 +192,7 @@
 						}
 
 					},
+					// 还原
 					reducedData: function() {
 						vm.reducedLoading = true;
 						vm.queryUserEnterprise();
@@ -166,7 +225,33 @@
 									});
 								}
 							})
-					}
+					},
+
+					// 搜索筛选
+					searchFunc: function() {
+						// 重新请求一次企业列表接口
+						axios({
+								method: "POST",
+								url: BASEURL + "environmental_intelligent_monitoring/tbasenterprise/list",
+								params: {
+									limit: 100000,
+									name: vm.enterpriseName,
+									tradeId: vm.selectTrade
+								}
+							})
+							.then(function(res) {
+								if (res.data.code == 0) {
+									vm.enterpriseList = res.data.page.list;
+								} else {
+									vm.$notify.error({
+										title: '错误',
+										message: res.data.msg
+									});
+								}
+							});
+							
+					},
+					
 				},
 				mounted: function() {
 					// 初始化加载
@@ -196,7 +281,7 @@
 								}
 							}
 						};
-					}
+					},
 				}
 			})
 
