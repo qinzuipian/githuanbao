@@ -93,10 +93,7 @@
 								parent.layer.close('iframe');
 							});
 						} else {
-							vm.$notify.error({
-								title: '错误',
-								message: res.data.msg
-							});
+							layer.msg(res.data.msg);
 						}
 					}).catch(function(err) {
 						console.log(err);
