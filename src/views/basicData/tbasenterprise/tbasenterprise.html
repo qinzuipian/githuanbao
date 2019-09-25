@@ -70,12 +70,12 @@
 						<div class="layui-inline">
 							<label class="layui-form-label">行政区域</label>
 							<div class="layui-input-inline">
-								<input readonly="readonly" placeholder="请选择" v-model="treeValue" class="layui-input" @click="appear">
+								<input readonly="readonly" placeholder="请选择" id="div_" v-model="treeValue" class="layui-input" @click="appear">
 								<i class="layui-icon-triangle-d layui-icon" v-bind:class="[{ actived: isActive },{ actived_after: !isActive }]"
-								 style="color: gray;" @click="appear"></i>
-								<div style="position: absolute;" class="layui-input-inline">
-									<div class="tree layui-anim layui-anim-upbit" v-show="tree == 1"  @blur="appear()">
-										<el-tree  :highlight-current="treeHign" :data="treeData" :props="defaultProps" @node-click="handleNodeClick"></el-tree>
+								 style="color: gray;"></i>
+								<div style="position: absolute;display: none;" class="layui-input-inline" id="tree">
+									<div class="tree layui-anim layui-anim-upbit">
+										<el-tree :highlight-current="treeHign" :data="treeData" :props="defaultProps" @node-click="handleNodeClick"></el-tree>
 										<!-- //TODO 这边要放树形结构 -->
 									</div>
 								</div>
@@ -360,6 +360,24 @@
 					active[type] ? active[type].call(this) : '';
 				});
 
+
+
+				$("#div_").bind("click", function() {
+					vm.isActive = 1;
+					$("#tree").css("display", "inline-block");
+					event.stopPropagation(); //==========阻止冒泡1
+				})
+
+				$(document).bind("click", function() {
+					vm.isActive = 0;
+					// vm.tree = !vm.tree;
+					// console.log(vm.isActive);
+					// console.log(vm.tree);
+					// console.log("点击了其他部位");
+					$("#tree").css("display", "none");
+
+				})
+
 			});
 
 			var vm = new Vue({
@@ -388,7 +406,6 @@
 					},
 					handleNodeClick(data, node) {
 						vm.treeValue = data.label;
-						// this.tree = 0
 						console.log(data.label);
 						console.log(this.tree);
 						vm.treeHign = true;
@@ -419,6 +436,7 @@
 										};
 										data.children.push(obj);
 									}
+									this.tree = false
 								}
 
 							} else {
