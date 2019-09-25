@@ -13,6 +13,7 @@
 		<script type="text/javascript" src="../../../layuiadmin/plugin/vue.js"></script>
 		<script src="../../../layuiadmin/js/baseUrlConfig.js" type="text/javascript" charset="utf-8"></script>
 		<script src="../../../layuiadmin/plugin/axios.js"></script>
+		<script src="../../../layuiadmin/plugin/area.js" type="text/javascript" charset="utf-8"></script>
 		<style>
 			.btn-box {
 			    text-align: center;
@@ -66,6 +67,13 @@
 			    width: 50%;
 			
 			}
+			.red{
+				color: red;
+				line-height: 2.1875rem;
+			}
+			.layui-form-item .layui-input-inline{
+				margin-right: 4px;
+			}
 			
     </style>
 	</head>
@@ -80,66 +88,58 @@
 								<div class="layui-form-item">
 									<label for="bitian" class="layui-form-label">企业名称</label>
 									<div class="layui-input-inline">
-										<input type="text" name="name" class="layui-input" placeholder="企业名称" />
+										<input type="text" name="name" lay-verify="required" class="layui-input" placeholder="企业名称" />
 									</div>
+									<span class="red">(必填)</span>
 								</div>
 								<div class="layui-form-item">
 									<label for="bitian" class="layui-form-label">社会信用代码</label>
 									<div class="layui-input-inline">
-										<input type="text" name="trustcode" class="layui-input" placeholder="社会信用代码" />
+										<input type="text" name="trustcode" lay-verify="required" class="layui-input" placeholder="社会信用代码" />
 									</div>
+									<span class="red">(必填)</span>
 								</div>
 								<div class="layui-form-item">
 									<label for="bitian" class="layui-form-label">企业详细地址</label>
 									<div class="layui-input-inline">
-										<input type="text" name="address" class="layui-input" placeholder="企业详细地址" />
+										<input type="text" name="address" lay-verify="required" class="layui-input" placeholder="企业详细地址" />
 									</div>
+									<span class="red">(必填)</span>
 								</div>
 								<div class="layui-form-item">
 									<label for="bitian" class="layui-form-label">所属省市区</label>
 									<div class="layui-input-inline">
-										<select name="province">
+										<select name="province" id="province" lay-verify="required" lay-search lay-filter="province">
 											<option value="">请选择省</option>
-											<option value="浙江">浙江省</option>
-											<option value="你的工号">江西省</option>
-											<option value="你最喜欢的老师">福建省</option>
 										</select>
-										<select name="city">
+										<select name="city" id="city" lay-verify="required" lay-search lay-filter="city">
 											<option value="">请选择市</option>
-											<option value="杭州">杭州</option>
-											<option value="宁波" disabled="">宁波</option>
-											<option value="温州">温州</option>
-											<option value="温州">台州</option>
-											<option value="温州">绍兴</option>
 										</select>
-										<select name="area">
+										<select name="area" id="area" lay-verify="required" lay-search>
 											<option value="">请选择县/区</option>
-											<option value="西湖区">西湖区</option>
-											<option value="余杭区">余杭区</option>
-											<option value="拱墅区">临安市</option>
 										</select>
 									</div>
-
+									<span class="red">(必填)</span>
 								</div>
 								<div class="layui-form-item">
 									<label class="layui-form-label">所属行业</label>
 									<div class="layui-input-inline">
-										<select name="tradeName" id="tradeName" lay-filter="tradeName">
+										<select name="tradeId" id="tradeName" lay-verify="required" lay-filter="tradeName">
 											<option value="">请选择</option>
-											<option value=""></option>
 										</select>
 									</div>
+									<span class="red">(必填)</span>
 								</div>
 								<div class="layui-form-item">
 									<label for="bitian" class="layui-form-label">网关编号</label>
 									<div class="layui-input-inline">
-										<input type="text" name="swicthId" lay-verify="required" class="layui-input" placeholder="网关编号" />
+										<input type="text" name="swicthId" class="layui-input" placeholder="网关编号" />
 									</div>
 								</div>
 								<div class="layui-form-item">
 									<label for="bitian" class="layui-form-label">仪表地址</label>
 									<div class="layui-input-inline">
-										<input type="number" name="meterId" lay-verify="required" class="layui-input" placeholder="仪表地址" />
+										<input type="number" name="meterId" class="layui-input" placeholder="仪表地址" />
 									</div>
 								</div>
 								<div class="layui-form-item">
@@ -276,6 +276,75 @@
 					upload = layui.upload,
 					layer = layui.layer;
 
+				var province = $("#province"),
+					city = $("#city"),
+					district = $("#area");
+
+				//初始将省份数据赋予
+				for (var i = 0; i < provinceList.length; i++) {
+					addEle(province, provinceList[i].name);
+				}
+
+				//赋予完成 重新渲染select
+				form.render('select');
+
+				//向select中 追加内容
+				function addEle(ele, value) {
+					var optionStr = "";
+					optionStr = "<option value=" + value + " >" + value + "</option>";
+					ele.append(optionStr);
+				}
+
+				//移除select中所有项 赋予初始值
+				function removeEle(ele) {
+					ele.find("option").remove();
+					var optionStar = "<option value=" + "0" + ">" + "请选择" + "</option>";
+					ele.append(optionStar);
+				}
+
+				var provinceText,
+					cityText,
+					cityItem;
+
+				//选定省份后 将该省份的数据读取追加上
+				form.on('select(province)', function(data) {
+					provinceText = data.value;
+					$.each(provinceList, function(i, item) {
+						if (provinceText == item.name) {
+							cityItem = i;
+							return cityItem;
+						}
+					});
+					removeEle(city);
+					removeEle(district);
+					$.each(provinceList[cityItem].cityList, function(i, item) {
+						addEle(city, item.name);
+					})
+					//重新渲染select 
+					form.render('select');
+				})
+
+				////选定市或直辖县后 将对应的数据读取追加上
+				form.on('select(city)', function(data) {
+					cityText = data.value;
+					removeEle(district);
+					$.each(provinceList, function(i, item) {
+						if (provinceText == item.name) {
+							cityItem = i;
+							return cityItem;
+						}
+					});
+					$.each(provinceList[cityItem].cityList, function(i, item) {
+						if (cityText == item.name) {
+							for (var n = 0; n < item.areaList.length; n++) {
+								addEle(district, item.areaList[n]);
+							}
+						}
+					})
+					//重新渲染select 
+					form.render('select');
+				})
+
 
 				axios({
 					method: "post",
@@ -284,8 +353,8 @@
 				}).then(function(res) {
 					if (res.data.code == 0) {
 						$.each(res.data.page.list, function(index, item) {
-							console.log(index, item)
-							$('#tradeName').append(new Option(item.name)); // 下拉菜单里添加元素
+							// console.log(index, item)
+							$('#tradeName').append(new Option(item.name, item.id)); // 下拉菜单里添加元素
 						});
 						layui.form.render("select");
 					} else {
@@ -322,10 +391,19 @@
 
 					}
 				});
+
+				// 监听select框获取选中的text值
+				form.on('select(tradeName)', function(data) {
+					// console.log(data.elem[data.elem.selectedIndex].text);
+					vm.tradeName = data.elem[data.elem.selectedIndex].text
+					form.render();
+
+				});
 				// 提交表单
 				form.on('submit(save)', function(data) {
 					data.field.picUrl = vm.pic;
 					data.field.tBasShopList = vm.list;
+					data.field.tradeName = vm.tradeName;
 					console.log(data.field);
 					axios({
 						method: "post",
@@ -340,7 +418,7 @@
 							layer.msg('保存成功！', {
 								time: 500
 							}, function() {
-								// window.parent.location.reload();
+								window.parent.location.reload();
 								parent.layer.close('iframe');
 							});
 						} else {
@@ -397,7 +475,8 @@
 					factor: {}, //添加的每一个对象,把每一个对象放到一个数字里面,
 					haspic: 0,
 					hasedit: 0,
-					list: []
+					list: [],
+					tradeName: ""
 				},
 				methods: {
 					cancel: function() {

@@ -13,6 +13,7 @@
 		<script type="text/javascript" src="../../../layuiadmin/plugin/vue.js"></script>
 		<script src="../../../layuiadmin/plugin/axios.js"></script>
 		<script src="../../../layuiadmin/js/baseUrlConfig.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../../layuiadmin/plugin/area.js" type="text/javascript" charset="utf-8"></script>
 		<style>
 			.btn-box {
 			    text-align: center;
@@ -61,11 +62,18 @@
 			}
 			.flex{
 				display: flex;
-				}
-				.treeCss {
-				    width: 50%;
+			}
+			.treeCss {
+				   width: 50%;
 
-				}
+			}
+			.red{
+				color: red;
+				line-height: 2.1875rem;
+			}
+			.layui-form-item .layui-input-inline{
+				margin-right: 4px;
+			}
 				
     </style>
 	</head>
@@ -80,65 +88,58 @@
 								<div class="layui-form-item">
 									<label for="bitian" class="layui-form-label">企业名称</label>
 									<div class="layui-input-inline">
-										<input type="text" name="name" class="layui-input" placeholder="企业名称" />
+										<input type="text" name="name" lay-verify="required" class="layui-input" placeholder="企业名称" />
 									</div>
+									<span class="red">(必填)</span>
 								</div>
 								<div class="layui-form-item">
 									<label for="bitian" class="layui-form-label">社会信用代码</label>
 									<div class="layui-input-inline">
-										<input type="text" name="trustCode" class="layui-input" placeholder="社会信用代码" />
+										<input type="text" name="trustCode" lay-verify="required" class="layui-input" placeholder="社会信用代码" />
 									</div>
+									<span class="red">(必填)</span>
 								</div>
 								<div class="layui-form-item">
 									<label for="bitian" class="layui-form-label">企业详细地址</label>
 									<div class="layui-input-inline">
-										<input type="text" name="address" class="layui-input" placeholder="企业详细地址" />
+										<input type="text" name="address" lay-verify="required" class="layui-input" placeholder="企业详细地址" />
 									</div>
+									<span class="red">(必填)</span>
 								</div>
 								<div class="layui-form-item">
 									<label for="bitian" class="layui-form-label">所属省市区</label>
 									<div class="layui-input-inline">
-										<select name="province">
+										<select name="province" id="province" lay-verify="required" lay-search lay-filter="province">
 											<option value="">请选择省</option>
-											<option value="浙江">浙江省</option>
-											<option value="你的工号">江西省</option>
-											<option value="你最喜欢的老师">福建省</option>
 										</select>
-										<select name="city">
+										<select name="city" id="city" lay-verify="required" lay-search lay-filter="city">
 											<option value="">请选择市</option>
-											<option value="杭州">杭州</option>
-											<option value="宁波" disabled="">宁波</option>
-											<option value="温州">温州</option>
-											<option value="温州">台州</option>
-											<option value="温州">绍兴</option>
 										</select>
-										<select name="area">
+										<select name="area" id="area" lay-verify="required" lay-search>
 											<option value="">请选择县/区</option>
-											<option value="西湖区">西湖区</option>
-											<option value="余杭区">余杭区</option>
-											<option value="拱墅区">临安市</option>
 										</select>
 									</div>
+									<span class="red">(必填)</span>
 								</div>
 								<div class="layui-form-item">
 									<label class="layui-form-label">所属行业</label>
 									<div class="layui-input-inline">
-										<select name="tradeName" id="eventType" lay-filter="eventType">
-											<option value="" >请选择</option>
-											<option value=""></option>
+										<select name="tradeId" id="tradeName" lay-verify="required" lay-filter="tradeName">
+											<option value="">请选择</option>
 										</select>
 									</div>
+									<span class="red">(必填)</span>
 								</div>
 								<div class="layui-form-item">
 									<label for="bitian" class="layui-form-label">网关编号</label>
 									<div class="layui-input-inline">
-										<input type="text" name="swicthId" lay-verify="required" class="layui-input" placeholder="网关编号" />
+										<input type="text" name="swicthId" class="layui-input" placeholder="网关编号" />
 									</div>
 								</div>
 								<div class="layui-form-item">
 									<label for="bitian" class="layui-form-label">仪表地址</label>
 									<div class="layui-input-inline">
-										<input type="number" name="meterId" lay-verify="required" class="layui-input" placeholder="仪表地址" />
+										<input type="number" name="meterId" class="layui-input" placeholder="仪表地址" />
 									</div>
 								</div>
 								<div class="layui-form-item">
@@ -275,6 +276,82 @@
 					upload = layui.upload,
 					layer = layui.layer;
 
+				var province = $("#province"),
+					city = $("#city"),
+					district = $("#area");
+
+				// vm.province = $("#province").val
+
+				//初始将省份数据赋予
+				for (var i = 0; i < provinceList.length; i++) {
+					addEle(province, provinceList[i].name);
+				}
+
+				//赋予完成 重新渲染select
+				form.render('select');
+
+				//向select中 追加内容
+				function addEle(ele, value) {
+					var optionStr = "";
+					optionStr = "<option value=" + value + " >" + value + "</option>";
+					ele.append(optionStr);
+				}
+
+				//移除select中所有项 赋予初始值
+				function removeEle(ele) {
+					ele.find("option").remove();
+					var optionStar = "<option value=" + "0" + ">" + "请选择" + "</option>";
+					ele.append(optionStar);
+				}
+
+				var provinceText,
+					cityText,
+					cityItem;
+
+
+
+
+				//选定省份后 将该省份的数据读取追加上
+				form.on('select(province)', function(data) {
+					provinceText = data.value;
+					$.each(provinceList, function(i, item) {
+						if (provinceText == item.name) {
+							cityItem = i;
+							return cityItem;
+						}
+					});
+					removeEle(city);
+					removeEle(district);
+					$.each(provinceList[cityItem].cityList, function(i, item) {
+						addEle(city, item.name);
+					})
+					//重新渲染select 
+					form.render('select');
+				})
+
+				////选定市或直辖县后 将对应的数据读取追加上
+				form.on('select(city)', function(data) {
+					cityText = data.value;
+					removeEle(district);
+					$.each(provinceList, function(i, item) {
+						if (provinceText == item.name) {
+							cityItem = i;
+							return cityItem;
+						}
+					});
+					$.each(provinceList[cityItem].cityList, function(i, item) {
+						if (cityText == item.name) {
+							for (var n = 0; n < item.areaList.length; n++) {
+								addEle(district, item.areaList[n]);
+							}
+						}
+					})
+					//重新渲染select 
+					form.render('select');
+				})
+
+
+
 				//添加弹窗
 				var $ = layui.$,
 					active = {
@@ -302,28 +379,13 @@
 							});
 						}
 					};
+
 				$('#add').on('click', function() {
 					var type = $(this).data('type');
 					active[type] ? active[type].call(this) : '';
 				});
 
 
-				axios({
-					method: "post",
-					url: BASEURL + 'environmental_intelligent_monitoring/tbastrade/list?limit=10000',
-					params: {}
-				}).then(function(res) {
-					if (res.data.code == 0) {
-						$.each(res.data.page.list, function(index, item) {
-							$('#eventType').append(new Option(item.name)); // 下拉菜单里添加元素
-						});
-						layui.form.render("select");
-					} else {
-
-					}
-				}).catch(function(err) {
-					console.log(err);
-				});
 
 
 				//上传图片的方法
@@ -351,63 +413,135 @@
 
 					}
 				});
-				
-				
-				
+
+
+
 
 
 				axios({
-						method: "get",
-						url: BASEURL + "environmental_intelligent_monitoring/tbasenterprise/info/" + parent.id,
-					})
-					.then(res => {
-						if (res.data.code == 0) {
-							vm.pic = res.data.tBasEnterprise.picUrl;
-							console.log(res.data);
-							if (vm.pic == "" || vm.pic == undefined) {} else {
-								vm.haspic = 1
-							}
-							if (res.data.tBasEnterprise.tBasShopList.length != 0) {
-								vm.hasedit = 1
-							}
-							var list = res.data.tBasEnterprise;
-							vm.list = res.data.tBasEnterprise.tBasShopList;
-							form.val('editEnterprise', {
-								"id": list.id,
-								"address": list.address,
-								"area": list.area, // "name": "value"
-								"chargePhone": list.chargePhone,
-								"checkPerson": list.checkPerson,
-								"checkPhone": list.checkPhone,
-								"city": list.city,
-								"ct": list.ct,
-								"chargePerson":list.chargePerson,
-								"lawPerson": list.lawPerson,
-								"lawPhone": list.lawPhone,
-								"meterId": list.meterId,
-								"model": list.model,
-								"name": list.name,
-								"organizeId": list.organizeId,
-								"organizeName": list.organizeName,
-								"province": list.province,
-								"pt": list.pt,
-								"remark": list.remark,
-								"swicthId": list.swicthId,
-								"tradeName": list.tradeName,
-								"trustCode": list.trustCode,
-								"tBasShopList": list.tBasShopList
+					method: "post",
+					url: BASEURL + 'environmental_intelligent_monitoring/tbastrade/list?limit=10000',
+					params: {}
+				}).then(function(res) {
+					if (res.data.code == 0) {
+						$.each(res.data.page.list, function(index, item) {
+							$('#tradeName').append(new Option(item.name, item.id)); // 下拉菜单里添加元素
+						});
+						form.render("select");
+
+
+						// form表单赋值
+						axios({
+								method: "get",
+								url: BASEURL + "environmental_intelligent_monitoring/tbasenterprise/info/" + parent.id,
+							})
+							.then(res => {
+								if (res.data.code == 0) {
+									vm.pic = res.data.tBasEnterprise.picUrl;
+									console.log(res.data);
+									if (vm.pic == "" || vm.pic == undefined) {} else {
+										vm.haspic = 1
+									}
+									if (res.data.tBasEnterprise.tBasShopList.length != 0) {
+										vm.hasedit = 1
+									}
+									var list = res.data.tBasEnterprise;
+									vm.list = res.data.tBasEnterprise.tBasShopList;
+									form.val('editEnterprise', {
+										"id": list.id,
+										"address": list.address,
+										"area": list.area, // "name": "value"
+										"chargePhone": list.chargePhone,
+										"checkPerson": list.checkPerson,
+										"checkPhone": list.checkPhone,
+										"city": list.city,
+										"ct": list.ct,
+										"chargePerson": list.chargePerson,
+										"lawPerson": list.lawPerson,
+										"lawPhone": list.lawPhone,
+										"meterId": list.meterId,
+										"model": list.model,
+										"name": list.name,
+										"organizeId": list.organizeId,
+										"organizeName": list.organizeName,
+										"province": list.province,
+										"pt": list.pt,
+										"remark": list.remark,
+										"tradeId": list.tradeId.toString(),
+										"swicthId": list.swicthId,
+										// "tradeName": list.tradeName,
+										"trustCode": list.trustCode,
+										"tBasShopList": list.tBasShopList
+									});
+									// $('#eventType').val(list.tradeId);
+									form.render("select");
+									vm.province = $("#province").val();
+									provinceText = vm.province;
+									$.each(provinceList, function(i, item) {
+										if (provinceText == item.name) {
+											cityItem = i;
+											return cityItem;
+										}
+									});
+									removeEle(city);
+									removeEle(district);
+									$.each(provinceList[cityItem].cityList, function(i, item) {
+										addEle(city, item.name);
+									})
+									$("#city").val(list.city);
+									vm.city = $("#city").val();
+									cityText = vm.city;
+									removeEle(district);
+									$.each(provinceList, function(i, item) {
+										if (provinceText == item.name) {
+											cityItem = i;
+											return cityItem;
+										}
+									});
+									$.each(provinceList[cityItem].cityList, function(i, item) {
+										if (cityText == item.name) {
+											for (var n = 0; n < item.areaList.length; n++) {
+												addEle(district, item.areaList[n]);
+											}
+										}
+									})
+									$("#area").val(list.area);
+									//重新渲染select 
+									form.render('select');
+
+
+
+									// console.log($('#eventType').val());
+								} else {
+
+								}
+							})
+							.catch(error => {
+
 							});
-							console.log(list.tradeName);
-						} else {
+					} else {
 
-						}
-					})
-					.catch(error => {
+					}
+				}).catch(function(err) {
+					console.log(err);
+				});
 
-					});
+
+
+				// 监听select框获取选中的text值
+				form.on('select(tradeName)', function(data) {
+					console.log(data.elem[data.elem.selectedIndex].text);
+					vm.tradeName = data.elem[data.elem.selectedIndex].text
+					form.render();
+
+				});
+
+
+
 				form.on('submit(editFormDemo)', function(data) {
 					console.log(data);
 					data.field.tBasShopList = vm.list;
+					data.field.tradeName = vm.tradeName;
 					axios({
 						method: "post",
 						url: BASEURL + 'environmental_intelligent_monitoring/tbasenterprise/update',
@@ -421,7 +555,7 @@
 							layer.msg('编辑成功！', {
 								time: 500
 							}, function() {
-								// window.parent.location.reload();
+								window.parent.location.reload();
 								parent.layer.close('iframe');
 							});
 						} else {
@@ -442,7 +576,11 @@
 					hasedit: 0,
 					list: [],
 					name: '',
-					remark: ""
+					remark: "",
+					tradeName: '',
+					province: "",
+					city: "",
+					area: ''
 				},
 				methods: {
 					cancel: function() {
@@ -450,42 +588,42 @@
 					},
 					edit: function(it, index_) {
 						layer.open({
-								type: 2,
-								title: '编辑车间',
-								content: 'editFactor.html',
-								maxmin: true,
-								area: ['500px', '300px'],
-								success: function(layero, index) {
-									var body = layer.getChildFrame('body', index);
-									var iframeWin = window[layero.find('iframe')[0]['name']]; //得到iframe页的窗口对象，执行iframe页的方法：iframeWin.method();
-									body.find('#name').val(it.name); //将值从父页面传到子页面的方法
-									body.find('#remark').val(it.remark);
-									body.find("#save").click(function() {
-											vm.hasedit = 1;
-											var list = iframeWin.get();
-											for (var i = 0; i < list.length; i++) {
-												it.name = list[i].name;
-												it.remark = list[i].remark;
-												console.log(it.name);
-												console.log(it.remark);
-											}
-										
-									})
-								}
+							type: 2,
+							title: '编辑车间',
+							content: 'editFactor.html',
+							maxmin: true,
+							area: ['500px', '300px'],
+							success: function(layero, index) {
+								var body = layer.getChildFrame('body', index);
+								var iframeWin = window[layero.find('iframe')[0]['name']]; //得到iframe页的窗口对象，执行iframe页的方法：iframeWin.method();
+								body.find('#name').val(it.name); //将值从父页面传到子页面的方法
+								body.find('#remark').val(it.remark);
+								body.find("#save").click(function() {
+									vm.hasedit = 1;
+									var list = iframeWin.get();
+									for (var i = 0; i < list.length; i++) {
+										it.name = list[i].name;
+										it.remark = list[i].remark;
+										console.log(it.name);
+										console.log(it.remark);
+									}
+
+								})
+							}
 						});
-				},
-				delet: function(it, index) {
-					for (var i = 0; i < this.list.length; i++) {
-						if (index == i) {
-							console.log(this.list[i]);
-							this.list.splice(i, 1);
+					},
+					delet: function(it, index) {
+						for (var i = 0; i < this.list.length; i++) {
+							if (index == i) {
+								console.log(this.list[i]);
+								this.list.splice(i, 1);
+							}
+						}
+						if (this.list.length == 0) {
+							vm.hasedit = 0;
 						}
 					}
-					if (this.list.length == 0) {
-						vm.hasedit = 0;
-					}
 				}
-			}
 			});
 		</script>
 	</body>
