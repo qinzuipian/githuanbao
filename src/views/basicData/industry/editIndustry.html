@@ -33,7 +33,13 @@
 					
 			.layui-form-item .layui-input-inline {
 			    width: 300px;
+				margin-right: 4px;
 			}
+			.red{
+				color: red;
+				line-height: 2.1875rem;
+			}
+			
 			
     </style>
 	</head>
@@ -46,8 +52,9 @@
 						<div class="layui-form-item">
 							<label for="bitian" class="layui-form-label">行业名称</label>
 							<div class="layui-input-inline">
-								<input type="text" name="name" class="layui-input" placeholder="行业名称" />
+								<input type="text" name="name" lay-verify="required" class="layui-input" placeholder="行业名称" />
 							</div>
+							<span class="red">(必填)</span>
 						</div>
 						<div class="layui-form-item">
 							<label for="bitian" class="layui-form-label">备注</label>
