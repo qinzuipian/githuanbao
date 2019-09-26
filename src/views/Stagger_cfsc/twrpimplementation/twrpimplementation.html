@@ -23,7 +23,7 @@
             z-index: 999;
             /* height: 200px; */
             background-color: #fff;
-           
+
         }
 
         .AdminArea .layui-icon {
@@ -42,10 +42,10 @@
                         <div class="layui-inline">
                             <label class="layui-form-label">时间</label>
                             <div class="layui-input-inline">
-                                <input type="text" class="layui-input" id="startDate" name="startCreateDate" placeholder="请输入开始日期">
+                                <input type="text" class="layui-input" v-model="startDate" id="startDate" name="startCreateDate" placeholder="请输入开始日期">
                             </div>
                             <div class="layui-input-inline">
-                                <input type="text" class="layui-input" id="endDate" name="endCreateDate" placeholder="请输入结束日期">
+                                <input type="text" class="layui-input" v-model="endDate" id="endDate" name="endCreateDate" placeholder="请输入结束日期">
                             </div>
                         </div>
                         <div class="layui-inline">
@@ -62,7 +62,7 @@
                         <div class="layui-inline">
                             <label class="layui-form-label">所属行业</label>
                             <div class="layui-input-inline">
-                                <select name="trade" id="tradeName" lay-verify="">
+                                <select name="trade" id="tradeName" lay-filter="tradeName" lay-verify="">
                                     <option value="">请选择所属行业</option>
                                     <option value=""></option>
                                 </select>
@@ -71,7 +71,7 @@
                         <div class="layui-inline">
                             <label class="layui-form-label">企业名称</label>
                             <div class="layui-input-inline">
-                                <input type="text" name="enterpriseName" placeholder="请输入企业名称" autocomplete="off" class="layui-input">
+                                <input type="text" name="enterpriseName" v-model="enterpriseName" placeholder="请输入企业名称" autocomplete="off" class="layui-input">
                             </div>
                         </div>
 
@@ -132,9 +132,9 @@
                 if (res.data.code == 0) {
                     $.each(res.data.page.list, function (index, item) {
                         // console.log(index, item)
-                        $('#tradeName').append(new Option(item.name, item.id));// 下拉菜单里添加元素
+                        $('#tradeName').append(new Option(item.name, item.name));// 下拉菜单里添加元素
                     });
-                    layui.form.render("select");
+                    form.render("select");
 
                 } else {
 
@@ -142,6 +142,15 @@
             }).catch(function (err) {
                 console.log(err);
             });
+            // 监听行业select
+            form.on('select(tradeName)', function (data) {
+                console.log(data);
+                vm.trade = data.value;
+
+            })
+
+
+
 
             table.render({
                 elem: '#LAY-app-content-list'
@@ -183,6 +192,7 @@
 
             //监听搜索
             form.on('submit(LAY-app-contlist-search)', function (data) {
+                console.log(data)
                 var field = data.field;
 
                 //执行重载
@@ -251,7 +261,11 @@
                     children: 'children',
                     label: 'label'
                 },
-                atraName: ""
+                atraName: "",
+                startDate: "",
+                endDate: "",
+                trade: "",
+                enterpriseName: ""
 
             },
             methods: {
@@ -341,18 +355,24 @@
 
                 // 导出
                 downloadClick() {
-                    console.log('1111');
-                    axios({
-                        method: "post",
-                        url: BASEURL + 'environmental_intelligent_monitoring/tbasorganize/list?limit=10000',
-                        params: {
+                    console.log(vm.startDate, vm.endDate, vm.atraName, vm.trade, vm.enterpriseName)
+                    location =
+                        BASEURL +
+                        "environmental_intelligent_monitoring/twrpimplementation/exportWord?" +
+                        "startCreateDate=" + vm.startDate +
+                        "&" + "endCreateDate=" + vm.endDate +
+                        "&" + "organizeName=" + vm.atraName +
+                        "&" + "trade=" + vm.trade +
+                        "&" + "enterpriseName=" + vm.enterpriseName;
+                    // console.log('1111');
+                    // axios({
+                    //     method: "get",
+                    //     url: BASEURL + 'environmental_intelligent_monitoring/twrpimplementation/exportWord',
+                    // }).then(function (res) {
 
-                        }
-                    }).then(function (res) {
-
-                    }).catch(function (err) {
-                        console.log(err);
-                    });
+                    // }).catch(function (err) {
+                    //     console.log(err);
+                    // });
                 }
             },
             created() {
