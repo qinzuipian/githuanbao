@@ -361,13 +361,13 @@
 				});
 
 
-
+				// 点击input框触发的事件
 				$("#div_").bind("click", function() {
 					vm.isActive = 1;
 					$("#tree").css("display", "inline-block");
 					event.stopPropagation(); //==========阻止冒泡1
 				})
-
+				//点击外面其他部分,触发的事件
 				$(document).bind("click", function() {
 					vm.isActive = 0;
 					// vm.tree = !vm.tree;
