@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>设施状态</title>
+		<meta name="renderer" content="webkit">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+		<link rel="stylesheet" media="all" href="../../../layuiadmin/layui/css/layui.css" />
+		<link rel="stylesheet" media="all" href="../../../layuiadmin/style/admin.css" />
+	</head>
+	<style type="text/css">
+		.data {
+			width: :100%;
+			height: 40px;
+			line-height: 40px;
+			background: #B3D8FF;
+			padding-left: 10px;
+			font-size: 14px;
+		}
+
+		.bar {
+			width: 150px;
+			height: 100px;
+			background: ghostwhite;
+			text-align: center;
+			margin-top: 10px;
+			margin-right: 10px;
+
+		}
+
+		.bar p:nth-child(1) {
+			font-size: 20px;
+			font-weight: 800;
+			margin-top: 15px;
+		}
+
+		.bar span {
+			font-size: 20px;
+			font-weight: 800;
+			margin-top: 15px;
+		}
+
+		.bar p:nth-child(2) {
+			margin-top: -10px;
+		}
+
+		p {
+			margin: 0;
+			padding: 0;
+		}
+
+		.flex {
+			display: flex;
+			flex-wrap: wrap;
+		}
+
+		#flex {
+			display: flex;
+			justify-content: center;
+		}
+	</style>
+	<body>
+		<div class="layui-fluid" id="app">
+			<div class="layui-card">
+				<div class="layui-form layui-card-header layuiadmin-card-header-auto">
+					<div class="data">实时数据</div>
+					<div class="flex">
+						<div class="bar">
+							<div id="flex">
+								<p v-text="ua"></p>
+								<span>V</span>
+							</div>
+							<p style="margin-top: -10px;">A相电压</p>
+						</div>
+						<div class="bar">
+							<div id="flex">
+								<p v-text="ub"></p>
+								<span>V</span>
+							</div>
+							<p>B相电压</p>
+						</div>
+						<div class="bar">
+							<div id="flex">
+								<p v-text="uc"></p>
+								<span>V</span>
+							</div>
+							<p>C相电压</p>
+						</div>
+						<div class="bar">
+							<div id="flex">
+								<p v-text="ia"></p>
+								<span>A</span>
+							</div>
+							<p>A相电流</p>
+						</div>
+						<div class="bar">
+							<div id="flex">
+								<p v-text="ib"></p>
+								<span>A</span>
+							</div>
+							<p>B相电流</p>
+						</div>
+						<div class="bar">
+							<div id="flex">
+								<p v-text="ic"></p>
+								<span>A</span>
+							</div>
+							<p>C相电流</p>
+						</div>
+						<div class="bar">
+							<div id="flex">
+								<p v-text="pv"></p>
+								<span>kWh</span>
+							</div>
+							<p>有功电能</p>
+						</div>
+						<div class="bar">
+							<div id="flex">
+								<p v-text="w"></p>
+								<span>kW</span>
+							</div>
+							<p>总有功功率</p>
+						</div>
+						<div class="bar">
+							<div id="flex">
+								<p v-text="q"></p>
+								<span>kVar</span>
+							</div>
+							<p>总无功功率</p>
+						</div>
+						<div class="bar">
+							<div id="flex">
+								<div id="flex">
+									<p v-text="the"></p>
+								</div>
+							</div>
+							<p>总功率因数</p>
+						</div>
+						<div class="bar">
+							<div id="flex">
+								<div id="flex">
+									<p v-text="pa"></p>
+									<span>kVar</span>
+								</div>
+							</div>
+							<p>A相有功功率</p>
+						</div>
+						<div class="bar">
+							<div id="flex">
+								<div id="flex">
+									<p v-text="pb"></p>
+									<span>kVar</span>
+								</div>
+							</div>
+							<p>B相有功功率</p>
+						</div>
+						<div class="bar">
+							<div id="flex">
+								<div id="flex">
+									<p v-text="pc"></p>
+									<span>kVar</span>
+								</div>
+							</div>
+							<p>C相有功功率</p>
+						</div>
+						<div class="bar">
+							<div id="flex">
+								<div id="flex">
+									<p v-text="uab"></p>
+									<span>V</span>
+								</div>
+							</div>
+							<p>A相线电压</p>
+						</div>
+						<div class="bar">
+							<div id="flex">
+								<div id="flex">
+									<p v-text="ubc"></p>
+									<span>V</span>
+								</div>
+							</div>
+							<p>B相线电压</p>
+						</div>
+						<div class="bar">
+							<div id="flex">
+								<div id="flex">
+									<p v-text="uca"></p>
+									<span>V</span>
+								</div>
+							</div>
+							<p>C相线电压</p>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<script src="../../../layuiadmin/layui/layui.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../../layuiadmin/plugin/vue.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../../layuiadmin/plugin/axios.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../../layuiadmin/js/baseUrlConfig.js" type="text/javascript" charset="utf-8"></script>
+
+		<script>
+			layui.config({
+				base: '../../../layuiadmin/' //静态资源所在路径
+			}).extend({
+				index: 'lib/index' //主入口模块
+			}).use(['index', 'table'], function() {
+				var table = layui.table,
+					form = layui.form;
+
+				axios({
+						method: "get",
+						url: BASEURL + "environmental_intelligent_monitoring/tdeviceequipstatus/info/" + parent.id,
+					})
+					.then(res => {
+						if (res.data.code == 0) {
+							console.log(res.data.tDeviceEquipStatus.ia);
+							app.ia = res.data.tDeviceEquipStatus.ia; 
+							app.ib = res.data.tDeviceEquipStatus.ib;
+							app.ic = res.data.tDeviceEquipStatus.ic;
+							app.ua = res.data.tDeviceEquipStatus.ua;
+							app.ub = res.data.tDeviceEquipStatus.ub;
+							app.uc = res.data.tDeviceEquipStatus.uc;
+							app.pv = res.data.tDeviceEquipStatus.pv;
+							app.w = res.data.tDeviceEquipStatus.w;
+							app.q = res.data.tDeviceEquipStatus.q;
+							app.the = res.data.tDeviceEquipStatus.the;
+							app.pa = res.data.tDeviceEquipStatus.pa;
+							app.pb = res.data.tDeviceEquipStatus.pb;
+							app.pc = res.data.tDeviceEquipStatus.pc;
+							app.uab = res.data.tDeviceEquipStatus.uab;
+							app.ubc = res.data.tDeviceEquipStatus.ubc;
+							app.uca = res.data.tDeviceEquipStatus.uca;
+							form.val('editIndustry', {
+								"id": list.id,
+								"name": list.name,
+								"remark": list.remark // "name": "value"
+							});
+						} else {
+
+						}
+					})
+					.catch(error => {
+
+					});
+
+			});
+			var app = new Vue({
+				el: "#app",
+				data: {
+					ia:"",
+					ib:"",
+					ic:"",
+					ua:"",
+					ub:"",
+					uc:"",
+					pv:"",
+					w:"",
+					q:"",
+					the:"",
+					pa:"",
+					pb:"",
+					pc:"",
+					uab:"",
+					ubc:"",
+					uca:""
+				}
+			})
+		</script>
+	</body>
+</html>

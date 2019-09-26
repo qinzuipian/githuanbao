@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>企业及产污设施统计</title>
+		<meta name="renderer" content="webkit">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+		<link rel="stylesheet" media="all" href="../../../layuiadmin/layui/css/layui.css" />
+		<link rel="stylesheet" media="all" href="../../../layuiadmin/style/admin.css" />
+		<link rel="stylesheet" type="text/css" href="../../../layuiadmin/plugin/element.css" />
+	</head>
+	<style type="text/css">
+		.tree {
+			z-index: 999;
+			background: white;
+			border: gainsboro solid 1px;
+			margin-top: 2px;
+			position: relative;
+			padding: 0px 8px;
+		}
+
+		.actived {
+			animation: rotated 0.2s linear forwards;
+		}
+
+		.actived_after {
+			animation: rotated_after 0.2s linear forwards;
+		}
+
+		@keyframes rotated {
+			from {
+				transform: rotate(0deg);
+			}
+
+			to {
+				transform: rotate(180deg);
+			}
+		}
+
+		@keyframes rotated_after {
+			from {
+				transform: rotate(180deg);
+			}
+
+			to {
+				transform: rotate(0deg);
+			}
+		}
+	</style>
+
+	<body>
+
+		<div class="layui-fluid" id="app">
+			<div class="layui-card">
+				<div class="layui-form layui-card-header layuiadmin-card-header-auto">
+					<div class="layui-form-item">
+						<button type="button" class="layui-btn " @click="showH()">
+							<i class="layui-icon">&#xe654;</i>行业
+						</button>
+						<button type="button" class="layui-btn " @click="showX()">
+							<i class="layui-icon">&#xe642;</i>行政区域
+						</button>
+					</div>
+					<div v-show="show == 1">
+						<div class="layui-form-item">
+							<div class="layui-inline">
+								<label class="layui-form-label">行政区域</label>
+								<div class="layui-input-inline">
+									<input readonly="readonly" placeholder="请选择" id="div_" v-model="treeValue" class="layui-input" @click="appear">
+									<i class="layui-icon-triangle-d layui-icon" v-bind:class="[{ actived: isActive },{ actived_after: !isActive }]"
+									 style="color: gray;"></i>
+									<div style="position: absolute;display: none;" class="layui-input-inline" id="tree">
+										<div class="tree layui-anim layui-anim-upbit">
+											<el-tree :highlight-current="treeHign" :data="treeData" :props="defaultProps" @node-click="handleNodeClick"></el-tree>
+											<!-- //TODO 这边要放树形结构 -->
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="layui-inline">
+								<label class="layui-form-label">状态</label>
+								<div class="layui-input-block">
+									<select name="state">
+										<option value="">请选择</option>
+										<option value="运行">运行</option>
+										<option value="失联">失联</option>
+										<option value="停机">停机</option>
+									</select>
+								</div>
+							</div>
+						</div>
+						<div class="layui-card-body" style="width: 60%;">
+							<el-table style="width: 100%">
+								<el-table-column prop="date" label="序号" width="50">
+								</el-table-column>
+								<el-table-column prop="date" label="行业" width="70">
+								</el-table-column>
+								<el-table-column prop="date" label="企业数量" width="80">
+								</el-table-column>
+								<el-table-column prop="date" label="主表数量" width="80">
+								</el-table-column>
+								<el-table-column prop="date" label="产污设施数量" width="120">
+								</el-table-column>
+								<el-table-column prop="date" label="污处设施数量" width="120">
+								</el-table-column>
+								<el-table-column label="监测点数量(个)">
+									<el-table-column prop="province" label="运行">
+									</el-table-column>
+									<el-table-column prop="city" label="停机">
+									</el-table-column>
+									<el-table-column prop="address" label="失联">
+									</el-table-column>
+								</el-table-column>
+							</el-table>
+							<!-- <div style="width: 100%;height: 6.25rem;"></div> -->
+						</div>
+					</div>
+					<div v-show="show == 2">
+						<div class="layui-inline">
+							<div class="layui-form-item">
+								<label class="layui-form-label">所属行业</label>
+								<div class="layui-input-block">
+									<select name="tradeName" id="eventType" lay-filter="eventType">
+										<option value="">请选择</option>
+										<option value=""></option>
+									</select>
+								</div>
+							</div>
+						</div>
+						<div class="layui-inline">
+							<label class="layui-form-label">状态</label>
+							<div class="layui-input-block">
+								<select name="state">
+									<option value="">请选择</option>
+									<option value="运行">运行</option>
+									<option value="失联">失联</option>
+									<option value="停机">停机</option>
+								</select>
+							</div>
+						</div>
+						
+						
+					</div>
+
+				</div>
+
+			</div>
+		</div>
+
+		<script src="../../../layuiadmin/layui/layui.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../../layuiadmin/plugin/vue.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../../layuiadmin/plugin/axios.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../../layuiadmin/plugin/element.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../../layuiadmin/js/baseUrlConfig.js" type="text/javascript" charset="utf-8"></script>
+		
+		<script>
+			layui.config({
+				base: '../../../layuiadmin/' //静态资源所在路径
+			}).extend({
+				index: 'lib/index' //主入口模块
+			}).use(['index', 'table', "laydate"], function() {
+				var table = layui.table,
+					form = layui.form,
+					laydate = layui.laydate;
+
+				var data = new Date();
+				var max_data = data.getDate();
+				laydate.render({
+					elem: '#startDate',
+					btns: ['confirm'],
+					max: "max_data"
+				});
+				
+
+				axios({
+					method: "post",
+					url: BASEURL + 'environmental_intelligent_monitoring/tbastrade/list?limit=10000',
+					params: {}
+				}).then(function(res) {
+					if (res.data.code == 0) {
+						// console.log(res)
+						$.each(res.data.page.list, function(index, item) {
+							// console.log(index, item)
+							$('#eventType').append(new Option(item.name, item.id)); // 下拉菜单里添加元素
+						});
+						layui.form.render("select");
+					} else {
+
+					}
+				}).catch(function(err) {
+					console.log(err);
+				});
+
+
+
+
+
+
+
+				//监听搜索
+				form.on('submit(LAY-app-contlist-search)', function(data) {
+					var field = data.field;
+
+					//执行重载
+					table.reload('LAY-app-content-list', {
+						where: field
+					});
+				});
+
+				var $ = layui.$,
+					active = {
+						batchdel: function() {
+
+						},
+						del: function() {
+
+						},
+						edit: function() {
+
+						}
+					};
+
+				$('.layui-btn.layuiadmin-btn-list').on('click', function() {
+					var type = $(this).data('type');
+					active[type] ? active[type].call(this) : '';
+				});
+				$("#div_").bind("click", function() {
+					vm.isActive = 1;
+					$("#tree").css("display", "inline-block");
+					event.stopPropagation(); //==========阻止冒泡1
+				})
+				//点击外面其他部分,触发的事件
+				$(document).bind("click", function() {
+					vm.isActive = 0;
+					// vm.tree = !vm.tree;
+					// console.log(vm.isActive);
+					// console.log(vm.tree);
+					// console.log("点击了其他部位");
+					$("#tree").css("display", "none");
+
+				})
+			});
+
+			var vm = new Vue({
+				el: "#app",
+				data: {
+					treeData: [],
+					defaultProps: {
+						children: 'children',
+						label: 'label'
+					},
+					nodedata: [],
+					treeHign: true,
+					startCreateDate: "",
+					address: "",
+					trustCode: "",
+					endCreateDate: "",
+					name: '',
+					tree: 0,
+					isActive: 0,
+					treeValue: "",
+					show: 1
+				},
+				methods: {
+					showH: function() {
+						this.show = 1
+					},
+					showX: function() {
+						this.show = 2
+					},
+					appear: function(isActive) {
+						this.tree = !this.tree
+						this.isActive = !this.isActive
+					},
+					handleNodeClick(data, node) {
+						vm.treeValue = data.label;
+						console.log(data.label);
+						console.log(this.tree);
+						vm.treeHign = true;
+						// console.log(node.parent.childNodes[0].parent.data.label)
+						var localname = node.parent.childNodes[0].parent.data.label === undefined ? '无上级目录' : node.parent.childNodes[
+								0]
+							.parent.data.label;
+						localStorage.setItem("nodeParentName", localname)
+						vm.nodedata = data;
+						axios({
+							method: "post",
+							url: BASEURL + 'environmental_intelligent_monitoring/tbasorganize/list?limit=10000',
+							params: {
+								parentId: data.id
+							}
+						}).then(function(res) {
+							if (res.data.code == 0) {
+								// this.tree = !this,tree;
+								var treedata = res.data.page.list;
+								data.children = [];
+								for (var j = 0; j < treedata.length; j++) {
+									if (data.id == treedata[j].parentId) {
+										// console.log(treedata[j])
+										let obj = {
+											label: treedata[j].name,
+											id: treedata[j].id,
+											parentId: treedata[j].parentId,
+											children: []
+										};
+										data.children.push(obj);
+									}
+									this.tree = false
+								}
+
+							} else {
+								vm.$notify.error({
+									title: '错误',
+									message: res.data.msg
+								});
+							}
+						}).catch(function(err) {
+							console.log(err);
+						});
+					},
+					organizeTree() {
+						console.log(this.tree);
+						axios({
+							method: "post",
+							url: BASEURL + 'environmental_intelligent_monitoring/tbasorganize/list?limit=10000',
+							params: {
+								parentId: 0
+							}
+						}).then(function(res) {
+							if (res.data.code == 0) {
+								vm.treeData = [];
+								// vm.treeData = res.data.page.list;
+								var data = res.data.page.list;
+
+								for (var i = 0; i < data.length; i++) {
+									var obj = {};
+									obj.label = data[i].name;
+									obj.id = data[i].id;
+									obj.parentId = data[i].parentId;
+									obj.children = [];
+									vm.treeData.push(obj);
+								}
+							} else {
+
+							}
+						}).catch(function(err) {
+							console.log(err);
+						});
+					}
+				},
+				created() {
+					this.organizeTree();
+				}
+
+			})
+		</script>
+	</body>
+</html>
