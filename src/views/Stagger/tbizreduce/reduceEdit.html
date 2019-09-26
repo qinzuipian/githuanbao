@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html class="x-admin-sm">
+
+<head>
+    <meta charset="UTF-8">
+    <title>编辑</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi"
+    />
+    <link rel="stylesheet" href="./../../../layuiadmin/layui/css/layui.css">
+    <!-- <link rel="stylesheet" href="./../../layuiadmin/style/admin.css"> -->
+    <script type="text/javascript" src="./../../../layuiadmin/layui/layui.js" charset="utf-8"></script>
+    <!-- 引入vue -->
+    <script type="text/javascript" src="./../../../layuiadmin/plugin/vue.js"></script>
+    <script src="./../../../layuiadmin/plugin/axios.js"></script>
+    <script src="./../../../layuiadmin/js/baseUrlConfig.js"></script>
+    <!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
+    <!--[if lt IE 9]>
+    <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+    <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <style>
+        .btn-box {
+            text-align: center;
+        }
+
+        .btn-box button {
+            /* margin-right: 30px; */
+            margin-bottom: 10px;
+        }
+
+        .layui-form-label {
+            width: 120px;
+
+        }
+
+        .layui-form-item .layui-input-inline {
+            width: 300px;
+        }
+
+        .red {
+            color: #f00;
+            font-size: 12px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="vm">
+        <div class="layui-fluid">
+            <div class="layui-row">
+                <form class="layui-form" lay-filter="editReduce">
+                    <input type="hidden" name="id">
+                    <div class="layui-form-item">
+                        <label for="bitian" class="layui-form-label">
+                            设置类型<span class="red">(必填)</span></label>
+                        <div class="layui-input-inline">
+                            <!-- <input type="text" v-model="tBizReduce.producetype" class="layui-input" placeholder="设置类型：限产、停产" /> -->
+                            <select name="produceType" id="produceType" lay-verify="required">
+                                <option value="">请选择设置类型</option>
+                                <option value="限产">限产</option>
+                                <option value="停产">停产</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label for="bitian" class="layui-form-label">
+                            限产百分比%<span class="red">(必填)</span></label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="lessProduce" class="layui-input" lay-verify="required" placeholder="限产百分比%" />
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label for="bitian" class="layui-form-label">
+                            开始时间</label>
+                        <div class="layui-input-inline">
+                            <!-- <input type="text" v-model="tBizReduce.starttime" class="layui-input" placeholder="开始时间" /> -->
+                            <input type="text" class="layui-input" id="startTime" name="startTime" placeholder="请输入开始日期">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label for="bitian" class="layui-form-label">
+                            结束时间</label>
+                        <div class="layui-input-inline">
+                            <!-- <input type="text" v-model="tBizReduce.endtime" class="layui-input" placeholder="结束时间" /> -->
+                            <input type="text" class="layui-input" id="endTime" name="endTime" placeholder="请输入结束日期">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label for="bitian" class="layui-form-label">
+                            预警等级<span class="red">(必填)</span></label>
+                        <div class="layui-input-inline">
+                            <!-- <input type="text" v-model="tBizReduce.levelname" class="layui-input" placeholder="预警等级名称：黄色、橙色、红色预警" /> -->
+                            <select name="levelName" id="levelname" lay-verify="required">
+                                <option value="">请选择预警等级</option>
+                                <option value="黄色预警">黄色预警</option>
+                                <option value="橙色预警">橙色预警</option>
+                                <option value="红色预警">红色预警</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label for="bitian" class="layui-form-label">
+                            是否启用</label>
+                        <div class="layui-input-inline">
+                            <input type="radio" name="active" value="1" title="启用">
+                            <input type="radio" name="active" value="2" title="禁用">
+                            <!-- <input type="text" v-model="tBizReduce.active" class="layui-input" placeholder="是否启用：1、启用；2、禁用" /> -->
+                        </div>
+                    </div>
+                    <!--  <div class="layui-form-item">
+                        <label for="bitian" class="layui-form-label">
+                            对象类型：1、企业 2、部门</label>
+                        <div class="layui-input-inline">
+                            <input type="text" v-model="tBizReduce.setobject" class="layui-input" placeholder="对象类型：1、企业 2、部门" />
+                        </div>
+                    </div> -->
+
+
+
+                    <div class="layui-form-item">
+                        <label for="bitian" class="layui-form-label">
+                            状态</label>
+                        <div class="layui-input-inline">
+                            <input type="radio" name="status" value="1" title="有效">
+                            <input type="radio" name="status" value="2" title="无效">
+                            <!-- <input type="text" v-model="tBizReduce.status" class="layui-input" placeholder="状态：1、有效 2、无效" /> -->
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label for="bitian" class="layui-form-label">
+                            备注</label>
+                        <div class="layui-input-inline">
+                            <textarea placeholder="请输入内容" class="layui-textarea" name="remark"></textarea>
+                            <!-- <input type="text" v-model="tBizReduce.remark" class="layui-input" placeholder="备注" /> -->
+                        </div>
+                    </div>
+                    <div class="btn-box">
+                        <button class="layui-btn" lay-submit lay-filter="editForm">确认</button>
+                        <button class="layui-btn layui-btn-danger" @click="cancel">取消</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+    </div>
+    <script>
+        layui.use(['form', 'jquery', 'laydate'], function () {
+            var form = layui.form,
+                $ = layui.jquery,
+                laydate = layui.laydate;
+
+
+            //时间日期
+            laydate.render({
+                elem: '#startTime',
+                format: 'yyyy-MM-dd HH:mm:ss'
+            });
+            laydate.render({
+                elem: '#endTime',
+                format: 'yyyy-MM-dd HH:mm:ss'
+            });
+
+            // 单个信息数据展示
+            axios({
+                method: "get",
+                url: BASEURL + "environmental_intelligent_monitoring/tbizreduce/info/" + parent.id,
+            })
+                .then(res => {
+                    if (res.data.code == 0) {
+                        var ReduceData = res.data.tBizReduce;
+                        form.val('editReduce', {
+                            'id': ReduceData.id,
+                            'produceType': ReduceData.produceType,
+                            'lessProduce': ReduceData.lessProduce,
+                            'startTime': ReduceData.startTime,
+                            'endTime': ReduceData.endTime,
+                            'levelName': ReduceData.levelName,
+                            'active': ReduceData.active,
+                            'status': ReduceData.status,
+                            'remark': ReduceData.remark
+
+                        })
+                    } else {
+                        layer.msg('网络出错')
+
+                    }
+                }).catch(error => {
+
+                });
+
+
+            // form表单的提交
+            form.on('submit(editForm)', function (data) {
+                axios({
+                    method: "post",
+                    url: BASEURL + 'environmental_intelligent_monitoring/tbizreduce/update',
+                    data: data.field,
+                    headers: {
+                        "Content-Type": "application/json;charset=UTF-8"
+                    }
+                }).then(function (res) {
+                    if (res.data.code == 0) {
+                        console.log(res)
+                        layer.msg('编辑成功！', {
+                            time: 500
+                        }, function () {
+                            window.parent.location.reload();
+                            parent.layer.close('iframe');
+                        }
+                        );
+                    } else {
+                        parent.layer.tips('编辑异常!');
+                    }
+                }).catch(function (err) {
+                    console.log(err);
+                });
+                return false;
+            })
+        })
+        /*
+*   @Author: liangbiaobiao
+*   @email: pokerface0206@163.com
+*/
+        var vm = new Vue({
+            el: "#vm",
+            data: {
+                tBizReduce: {}
+            },
+            methods: {
+                pageInit: function () {
+                    var editData = JSON.parse(window.localStorage.getItem("memberEdit"));
+                    this.tBizReduce = editData[0];
+                    console.log(this.tBizReduce.bitian);
+                    this.$forceUpdate();
+                    window.localStorage.removeItem("memberEdit");
+                },
+                submitData: function () {
+                    console.log(this.tBizReduce.bitian);
+                },
+                cancel() {
+                    parent.layer.closeAll('iframe');//关闭弹窗
+                }
+            },
+            mounted() {
+                // this.pageInit();
+            }
+        });
+    </script>
+</body>
+
+</html>

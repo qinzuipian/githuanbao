@@ -1,5 +1,4 @@
 .DS_Store
 node_modules/
-/src/layuiadmin/style/common.css
-layuiadmin/
+/src/layuiadmin/
 .gitignore
