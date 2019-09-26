@@ -22,13 +22,13 @@
 								<i class="layui-icon layui-icon-shrink-right" id="LAY_app_flexible"></i>
 							</a>
 						</li>
-						
+
 						<li class="layui-nav-item" lay-unselect>
 							<a href="javascript:;" layadmin-event="refresh" title="刷新">
 								<i class="layui-icon layui-icon-refresh-3"></i>
 							</a>
 						</li>
-						
+
 					</ul>
 					<ul class="layui-nav layui-layout-right" lay-filter="layadmin-layout-right">
 
@@ -45,7 +45,7 @@
 								<i class="layui-icon layui-icon-theme"></i>
 							</a>
 						</li>
-						
+
 						<li class="layui-nav-item layui-hide-xs" lay-unselect>
 							<a href="javascript:;" layadmin-event="fullscreen">
 								<i class="layui-icon layui-icon-screen-full"></i>
@@ -74,7 +74,42 @@
 						</div>
 
 						<ul class="layui-nav layui-nav-tree" lay-shrink="all" id="LAY-system-side-menu" lay-filter="layadmin-system-side-menu">
-
+							<li data-name="industry" class="layui-nav-item">
+								<a href="javascript:;" lay-tips="数据监测" lay-direction="2">
+									<i class="layui-icon layui-icon-date"></i>
+									<cite>数据监测</cite>
+								</a>
+								<dl class="layui-nav-child">
+									<dd><a lay-href="dataMonitor_sjjc/timeMonitor/timeMonitor.html">实时监测</a></dd>
+								</dl>
+							</li>
+							<li data-name="industry" class="layui-nav-item">
+								<a href="javascript:;" lay-tips="企业异常" lay-direction="2">
+									<i class="layui-icon layui-icon-form"></i>
+									<cite>企业异常</cite>
+								</a>
+								<!-- <dl class="layui-nav-child">
+									<dd><a lay-href="basicData/industry/industry.html">行业管理</a></dd>
+								</dl>-->
+							</li>
+							<li data-name="industry" class="layui-nav-item">
+								<a href="javascript:;" lay-tips="统计分析" lay-direction="2">
+									<i class="layui-icon layui-icon-chart-screen"></i>
+									<cite>统计分析</cite>
+								</a>
+								<dl class="layui-nav-child">
+									<dd><a lay-href="statistics _tjfx/tdeviceequipstatus/tdeviceequipstatus.html">设备状态列表</a></dd>
+								</dl>
+							</li>
+							<li data-name="industry" class="layui-nav-item">
+								<a href="javascript:;" lay-tips="能耗分析" lay-direction="2">
+									<i class="layui-icon layui-icon-chart-screen"></i>
+									<cite>能耗分析</cite>
+								</a>
+								<!-- <dl class="layui-nav-child">
+									<dd><a lay-href="basicData/industry/industry.html">行业管理</a></dd>
+								</dl>-->
+							</li>
 							<li data-name="industry" class="layui-nav-item">
 								<a href="javascript:;" lay-tips="基础数据管理" lay-direction="2">
 									<i class="layui-icon layui-icon-template-1"></i>
@@ -105,25 +140,24 @@
 									<dd><a lay-href="basicData/twarnset/twarnset.html">设备异常设置</a></dd>
 								</dl>
 							</li>
-							
 							<li data-name="industry" class="layui-nav-item">
-								<a href="javascript:;" lay-tips="数据监测" lay-direction="2">
+								<a href="javascript:;" lay-tips="错峰生产管理" lay-direction="2">
 									<i class="layui-icon layui-icon-date"></i>
-									<cite>数据监测</cite>
+									<cite>错峰生产管理</cite>
 								</a>
-								<dl class="layui-nav-child">
+								<!-- <dl class="layui-nav-child">
 									<dd><a lay-href="basicData/industry/industry.html">行业管理</a></dd>
-								</dl>
-								<dl class="layui-nav-child">
-									<dd><a lay-href="basicData/tbasorganize/tbasorganize.html">机构管理</a></dd>
-								</dl>
-								<dl class="layui-nav-child">
-									<dd><a lay-href="basicData/tbasenterprise/tbasenterprise.html">企业管理</a></dd>
-								</dl>
-								
+								</dl>-->
 							</li>
-							
-							
+							<li data-name="industry" class="layui-nav-item">
+								<a href="javascript:;" lay-tips="日志查看" lay-direction="2">
+									<i class="layui-icon layui-icon-form"></i>
+									<cite>日志查看</cite>
+								</a>
+								<!-- <dl class="layui-nav-child">
+									<dd><a lay-href="basicData/industry/industry.html">行业管理</a></dd>
+								</dl>-->
+							</li>
 						</ul>
 					</div>
 				</div>
