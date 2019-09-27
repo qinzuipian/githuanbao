@@ -9,37 +9,292 @@
 		<link rel="stylesheet" href="../../../layuiadmin/layui/css/layui.css" media="all">
 		<link rel="stylesheet" href="../../../layuiadmin/style/admin.css" media="all">
 		<link rel="stylesheet" type="text/css" href="../../../layuiadmin/style/timeMonitor.css" />
+		<link rel="stylesheet" type="text/css" href="../../../layuiadmin/plugin/element.css" />
 	</head>
 	<body>
 
 		<div id="vm">
 			<p class="nowData" @click="toDeviceStatus">
-				<span>当前在线企业: 9</span>
-				<span>当前在线设备: 9</span>
-				<span>当前失联设备: 9</span>
-				<span>当前停机设备: 9</span>
+				<span>当前在线企业: <span v-text="onlineEnterprise"></span></span>
+				<span>当前在线设备: <span v-text="onlineCount"></span></span>
+				<span>当前失联设备: <span v-text="offlineCount"></span></span>
+				<span>当前停机设备: <span v-text="offContactCount"></span></span>
 			</p>
-		</div>
+			<div class="layui-fluid">
+				<div class="layui-col-md4 layui-col-lg4">
+					eqweq
+				</div>
+				<div class="layui-col-md8 layui-col-lg8">
+					<div class="layui-card" style="margin: 0; border: 1px solid rgb(230, 230, 230);">
+						<div class="layui-form layui-card-header layuiadmin-card-header-auto">
+							<div class="layui-form-item">
+								<div class="layui-inline">
+									<label class="layui-form-label">企业名称</label>
+									<div class="layui-input-inline">
+										<input type="text" name="startCreateDate" class="layui-input" v-model="enterpriseName" placeholder="请输入企业名称">
+									</div>
+								</div>
+								<div class="layui-inline">
+									<label class="layui-form-label">行业名称</label>
+									<el-select v-model="selectIndustry" placeholder="请选择行业">
+										<el-option v-for="item in industryList" :key="item.id" :label="item.name" :value="item.id">
+										</el-option>
+									</el-select>
+								</div>
+								<div class="layui-inline">
+									<label class="layui-form-label">生产状态</label>
+									<el-select v-model="selectStatus" placeholder="请选择生产状态">
+										<el-option v-for="item in statusList" :key="item.value" :label="item.name" :value="item.value">
+										</el-option>
+									</el-select>
+								</div>
+							</div>
+						</div>
+					</div>
 
+					<table class="layui-table" id="timeMonitor" lay-filter="timeMonitor" style="margin-top: 0;"></table>
+				</div>
+			</div>
+		</div>
+		<script src="../../../layuiadmin/js/baseUrlConfig.js"></script>
 		<script src="../../../layuiadmin/layui/layui.js"></script>
 		<script src="../../../layuiadmin/plugin/vue.min.js"></script>
+		<script src="../../../layuiadmin/plugin/element.js"></script>
 		<script src="../../../layuiadmin/plugin/axios.js"></script>
 		<script type="text/javascript">
 			var vm = new Vue({
 				el: "#vm",
 				data: {
+					onlineEnterprise: '', // 当前在线企业
+					onlineCount: '', // 当前在线设备
+					offlineCount: '', // 当前停机设备
+					offContactCount: '', // 当前失联设备
 					
+					enterpriseName: '', // 企业名称
+					selectIndustry: '', // 选择的行业
+					industryList: [], // 行业数组
+					selectStatus: '', // 选择的生产状态
+					statusList: [ // 生产状态的数组
+						{
+							name: '所有状态',
+							value: ''
+						},
+						{
+							name: '限产',
+							value: 0
+						},
+						{
+							name: '停产',
+							value: 1
+						},
+						{
+							name: '生产',
+							value: 2
+						}
+					],
 				},
 				methods: {
-					pageInit: function(){
-						
+					pageInit: function() {
+						axios({
+								method: "POST",
+								url: BASEURL + 'environmental_intelligent_monitoring/tbastrade/list'
+							})
+							.then(function(res) {
+								if (res.data.code == 0) {
+									vm.industryList = res.data.page.list;
+									vm.industryList.unshift({
+										name: '所有行业',
+										id: ''
+									})
+								} else {
+									vm.$notify.error({
+										title: '错误',
+										message: res.data.msg
+									})
+								}
+							});
+							
+						axios({
+							method: "POST",
+							url: BASEURL + 'environmental_intelligent_monitoring/dataMonitor/queryALLEnterpriseReport',
+						})
+						.then(function(res){
+							if(res.data.code == 0){
+								vm.onlineEnterprise = res.data.data.onlineEnterprise;
+								vm.onlineCount = res.data.data.onlineCount;
+								vm.offlineCount = res.data.data.offlineCount;
+								vm.offContactCount = res.data.data.offContactCount;
+								
+							}else{
+								vm.$notify.error({
+									title: '错误',
+									message: res.data.msg
+								})
+							}
+						})
 					},
-					toDeviceStatus: function(){
-						// todo 界面跳转在admin.js中766行.
-						window.open = "../../statistics _tjfx/tdeviceequipstatus/tdeviceequipstatus.html"
+					toDeviceStatus: function() {
+						// 跳转到设备状态列表
+						window.parent.document.getElementById("toDeviceequipstatus").click();
+
+					},
+					tableReloadFunc() { // 搜索重载表格
+						layui.table.reload('timeMonitor', {
+							where: {
+								enterpriseName: vm.enterpriseName,
+								produceType: vm.selectStatus,
+								tradeId: vm.selectIndustry
+							}
+						});
+					}
+				},
+				mounted: function() {
+					this.pageInit();
+				},
+				watch: {
+					enterpriseName: function() {
+						vm.tableReloadFunc();
+					},
+					selectIndustry: function() {
+						vm.tableReloadFunc();
+					},
+					selectStatus: function() {
+						vm.tableReloadFunc();
 					}
 				}
-			})
+			});
+
+			layui.config({
+				base: '../../../layuiadmin/' //静态资源所在路径
+			}).extend({
+				index: 'lib/index' //主入口模块
+			}).use(['index', 'table', 'laydate', 'layer'], function() {
+				var table = layui.table,
+					layer = layui.layer;
+				var $ = layui.$;
+				table.render({
+					elem: '#timeMonitor',
+					height: 550, //容器高度
+					url: layui.setter.BASEURL + 'environmental_intelligent_monitoring/dataMonitor/queryEnterpriseReportList', //数据接口
+					page: true,
+					parseData: function(res) { // 数据重新处理为layUI的数据格式
+						var msg = {
+							"code": res.code, //解析接口状态
+							"msg": res.msg, //解析提示文本
+							"count": res.page.totalCount, //解析数据长度
+							"data": res.page.list //解析数据列表
+						};
+						return msg;
+					},
+					cols: [
+						[{
+								type: 'numbers',
+								width: '70',
+								rowspan: 2
+							},
+							{
+								field: 'enterpriseName',
+								title: '企业',
+								minWidth: 90,
+								sort: true,
+								rowspan: 2
+							},
+							{
+								field: 'tradeName',
+								align: 'center',
+								title: '行业',
+								minWidth: 90,
+								sort: true,
+								rowspan: 2
+							},
+							{
+								field: 'produceType',
+								align: 'center',
+								title: '生产状态',
+								minWidth: 115,
+								sort: true,
+								rowspan: 2
+							},
+							{
+								field: 'isAbnormal',
+								align: 'center',
+								title: '异常污染',
+								minWidth: 115,
+								sort: true,
+								rowspan: 2
+							},
+							{
+								field: 'productMonitorNum',
+								align: 'center',
+								title: '产污监测点数量',
+								minWidth: 155,
+								sort: true,
+								rowspan: 2
+							},
+							{
+								field: 'treatMonitorNum',
+								align: 'center',
+								title: '治污监测点数量',
+								minWidth: 155,
+								sort: true,
+								rowspan: 2
+							},
+							{
+								align: 'center',
+								title: '监测点数量(个)',
+								colspan: 3
+							}
+						],
+						[{
+								field: 'startStatusNum',
+								title: '运行',
+								minWidth: 90,
+								sort: true
+							},
+							{
+								field: 'endStatusNum',
+								title: '停机',
+								minWidth: 90,
+								sort: true
+							},
+							{
+								field: 'unknownStatusNum',
+								title: '失联',
+								minWidth: 90,
+								sort: true
+							},
+						]
+					], //设置表头
+					limit: 10,
+					limits: [10, 15, 20, 25, 30],
+					done: function(res, page, count) {
+						$("[data-field='produceType']").children().each(function() {
+							if ($(this).text() == 0) {
+								$(this).text("限产")
+							} else if ($(this).text() == 1) {
+								$(this).text("停产")
+							} else {
+								$(this).text("生产")
+							}
+						});
+
+						$("[data-field='isAbnormal']").children().each(function() {
+							if ($(this).text() == 0) {
+								$(this).text("正常")
+							} else if ($(this).text() == 1) {
+								$(this).text("异常")
+							}
+						})
+					}
+				});
+				//监听行单击事件
+				table.on('row(timeMonitor)', function(obj) {
+					var data = obj.data;
+					console.log(data);
+					//标注选中样式
+					obj.tr.addClass('layui-table-click').siblings().removeClass('layui-table-click');
+				});
+			});
 		</script>
 
 	</body>

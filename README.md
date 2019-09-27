@@ -15,3 +15,11 @@
 如果需要页面间的跳转，比如'实时监测'中点击'当前在线企业'就会跳转到设备状态列表。关于跳转的源码在admin.js 766行。
 简易操作：在按钮点击事件中执行左侧菜单点击事件，直接调用admin.js中的方法。
 代码： window.parent.document.getElementById("自己在左侧菜单中目标页面的a链接中加一个ID").click(); 
+
+#### 接口异常处理方式
+
+统一用这个弹窗提示出来异常信息
+vm.$notify.error({
+	title: '错误',
+	message: res.data.msg
+})
