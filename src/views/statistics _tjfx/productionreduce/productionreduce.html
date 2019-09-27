@@ -47,6 +47,21 @@
 				transform: rotate(0deg);
 			}
 		}
+
+		.demo-table-expand {
+			font-size: 0;
+		}
+
+		.demo-table-expand label {
+			width: 90px;
+			color: #99a9bf;
+		}
+
+		.demo-table-expand .el-form-item {
+			margin-right: 0;
+			margin-bottom: 0;
+			width: 50%;
+		}
 	</style>
 
 	<body>
@@ -100,7 +115,35 @@
 					</div>
 				</div>
 				<div class="layui-card-body">
-					<table id="LAY-app-content-list" lay-filter="LAY-app-content-list"></table>
+					<el-table :data="tableData" style="width: 100%" :row-key="row_key" :expand-row-key = "expandRowKey">
+						<el-table-column type="expand">
+							<template slot-scope="props">
+								<el-form label-position="left" inline class="demo-table-expand">
+									<el-form-item label="我在这边" >
+
+										<div style="width:100%;height:450px;" id="botchart"></div>
+									</el-form-item>
+								</el-form>
+							</template>
+						</el-table-column>
+
+						<el-table-column label="企业名称" prop="id">
+						</el-table-column>
+						<el-table-column label="机构" prop="name">
+						</el-table-column>
+						<el-table-column label="行业" prop="desc">
+						</el-table-column>
+						<el-table-column label="生产状态" prop="">
+						</el-table-column>
+						<el-table-column label="是否污染日" prop="">
+						</el-table-column>
+						<el-table-column label="空气质量" prop="">
+						</el-table-column>
+						<el-table-column label="用电量(kWh)" prop="">
+						</el-table-column>
+						<el-table-column label="排名" prop="">
+						</el-table-column>
+					</el-table>
 					<!-- <div style="width: 100%;height: 6.25rem;"></div> -->
 				</div>
 			</div>
@@ -111,18 +154,17 @@
 		<script src="../../../layuiadmin/plugin/axios.js" type="text/javascript" charset="utf-8"></script>
 		<script src="../../../layuiadmin/plugin/element.js" type="text/javascript" charset="utf-8"></script>
 		<script src="../../../layuiadmin/js/baseUrlConfig.js" type="text/javascript" charset="utf-8"></script>
-		<script type="text/html" id="barDemo">
-			<a class="layui-btn  layui-btn-xs" lay-event="detail">详情</a>
-		</script>
+
 		<script>
 			layui.config({
 				base: '../../../layuiadmin/' //静态资源所在路径
 			}).extend({
 				index: 'lib/index' //主入口模块
-			}).use(['index', 'table', "laydate"], function() {
+			}).use(['index', "echarts", 'table', "laydate"], function() {
 				var table = layui.table,
 					form = layui.form,
-					laydate = layui.laydate;
+					laydate = layui.laydate,
+					echarts = layui.echarts;
 
 				var data = new Date();
 				var max_data = data.getDate();
@@ -131,7 +173,25 @@
 					btns: ['confirm'],
 					max: "max_data"
 				});
-				
+				// console.log(document.getElementById('botchart'))
+				// var echart = echarts.init(document.getElementById('botchart')); //行业的图表
+				option = {
+					xAxis: {
+						type: 'category',
+						data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+					},
+					yAxis: {
+						type: 'value'
+					},
+					series: [{
+						data: [820, 932, 901, 934, 1290, 1330, 1320],
+						type: 'line'
+					}]
+				};
+				// 
+				// 				echart.setOption(option);
+
+
 				axios({
 					method: "post",
 					url: BASEURL + 'environmental_intelligent_monitoring/tbastrade/list?limit=10000',
@@ -145,12 +205,12 @@
 						});
 						layui.form.render("select");
 					} else {
-				
+
 					}
 				}).catch(function(err) {
 					console.log(err);
 				});
-				
+
 
 				table.render({
 					elem: '#LAY-app-content-list',
@@ -271,12 +331,9 @@
 				//点击外面其他部分,触发的事件
 				$(document).bind("click", function() {
 					vm.isActive = 0;
-					// vm.tree = !vm.tree;
-					// console.log(vm.isActive);
-					// console.log(vm.tree);
-					// console.log("点击了其他部位");
+
 					$("#tree").css("display", "none");
-				
+
 				})
 			});
 
@@ -297,13 +354,53 @@
 					name: '',
 					tree: 0,
 					isActive: 0,
-					treeValue: ""
+					treeValue: "",
+					tableData: [{
+						id: '12987122',
+						name: '好滋好味鸡蛋仔',
+						category: '江浙小吃、小吃零食',
+						desc: '荷兰优质淡奶，奶香浓而不腻',
+						address: '上海市普陀区真北路',
+						shop: '王小虎夫妻店',
+						shopId: '10333'
+					}, {
+						id: '12987123',
+						name: '好滋好味鸡蛋仔',
+						category: '江浙小吃、小吃零食',
+						desc: '荷兰优质淡奶，奶香浓而不腻',
+						address: '上海市普陀区真北路',
+						shop: '王小虎夫妻店',
+						shopId: '10333'
+					}, {
+						id: '12987125',
+						name: '好滋好味鸡蛋仔',
+						category: '江浙小吃、小吃零食',
+						desc: '荷兰优质淡奶，奶香浓而不腻',
+						address: '上海市普陀区真北路',
+						shop: '王小虎夫妻店',
+						shopId: '10333'
+					}, {
+						id: '12987126',
+						name: '好滋好味鸡蛋仔',
+						category: '江浙小吃、小吃零食',
+						desc: '荷兰优质淡奶，奶香浓而不腻',
+						address: '上海市普陀区真北路',
+						shop: '王小虎夫妻店',
+						shopId: '10333'
+					}],
+					echart:"",
+					expandRowKey:[]
 				},
 				methods: {
 					appear: function(isActive) {
 						this.tree = !this.tree
 						this.isActive = !this.isActive
 					},
+					
+					row_key: function() {
+						return row.id;
+					},
+					
 					handleNodeClick(data, node) {
 						vm.treeValue = data.label;
 						console.log(data.label);
@@ -381,6 +478,11 @@
 				},
 				created() {
 					this.organizeTree();
+				},
+				mounted() {
+					this.expandRowKey.push(this.tableData[1].id)
+					// this.echart = layui.echarts.init(document.getElementById('botchart')); //行业的图表
+					// this.echart.setOption(option);
 				}
 
 			})

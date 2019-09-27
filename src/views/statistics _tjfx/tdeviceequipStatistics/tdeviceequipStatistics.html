@@ -47,6 +47,11 @@
 				transform: rotate(0deg);
 			}
 		}
+
+		.flex {
+			display: flex;
+			background: ghostwhite;
+		}
 	</style>
 
 	<body>
@@ -56,10 +61,10 @@
 				<div class="layui-form layui-card-header layuiadmin-card-header-auto">
 					<div class="layui-form-item">
 						<button type="button" class="layui-btn " @click="showH()">
-							<i class="layui-icon">&#xe654;</i>行业
+							行业
 						</button>
 						<button type="button" class="layui-btn " @click="showX()">
-							<i class="layui-icon">&#xe642;</i>行政区域
+							行政区域
 						</button>
 					</div>
 					<div v-show="show == 1">
@@ -89,80 +94,243 @@
 									</select>
 								</div>
 							</div>
-						</div>
-						<div class="layui-card-body" style="width: 60%;">
-							<el-table style="width: 100%">
-								<el-table-column prop="date" label="序号" width="50">
-								</el-table-column>
-								<el-table-column prop="date" label="行业" width="70">
-								</el-table-column>
-								<el-table-column prop="date" label="企业数量" width="80">
-								</el-table-column>
-								<el-table-column prop="date" label="主表数量" width="80">
-								</el-table-column>
-								<el-table-column prop="date" label="产污设施数量" width="120">
-								</el-table-column>
-								<el-table-column prop="date" label="污处设施数量" width="120">
-								</el-table-column>
-								<el-table-column label="监测点数量(个)">
-									<el-table-column prop="province" label="运行">
-									</el-table-column>
-									<el-table-column prop="city" label="停机">
-									</el-table-column>
-									<el-table-column prop="address" label="失联">
-									</el-table-column>
-								</el-table-column>
-							</el-table>
-							<!-- <div style="width: 100%;height: 6.25rem;"></div> -->
+							<div class="flex">
+								<div class="layui-card-body" style="width: 65%; border-right: 10px solid white;">
+									<el-table style="width: 100%">
+										<el-table-column prop="date" label="序号" width="50">
+										</el-table-column>
+										<el-table-column prop="date" label="行业" width="70">
+										</el-table-column>
+										<el-table-column prop="date" label="企业数量" width="80">
+										</el-table-column>
+										<el-table-column prop="date" label="主表数量" width="80">
+										</el-table-column>
+										<el-table-column prop="date" label="产污设施数量" width="120">
+										</el-table-column>
+										<el-table-column prop="date" label="污处设施数量" width="120">
+										</el-table-column>
+										<el-table-column label="监测点数量(个)">
+											<el-table-column prop="province" label="运行">
+											</el-table-column>
+											<el-table-column prop="city" label="停机">
+											</el-table-column>
+											<el-table-column prop="address" label="失联">
+											</el-table-column>
+										</el-table-column>
+									</el-table>
+								</div>
+								<div style="width: 35%;">
+									<div style="width:100%;height:450px;" id="botchart"></div>
+									<!-- //图表 -->
+									<div>
+
+									</div>
+
+								</div>
+							</div>
+
 						</div>
 					</div>
-					<div v-show="show == 2">
-						<div class="layui-inline">
-							<div class="layui-form-item">
-								<label class="layui-form-label">所属行业</label>
+					<div v-show="show == 2" id="xz" style="display: none;">
+						<div class="layui-form-item">
+							<div class="layui-inline">
+								<div class="layui-form-item">
+									<label class="layui-form-label">所属行业</label>
+									<div class="layui-input-block">
+										<select name="tradeName" id="eventType" lay-filter="eventType">
+											<option value="">请选择</option>
+											<option value=""></option>
+										</select>
+									</div>
+								</div>
+							</div>
+							<div class="layui-inline">
+								<label class="layui-form-label">状态</label>
 								<div class="layui-input-block">
-									<select name="tradeName" id="eventType" lay-filter="eventType">
+									<select name="state">
 										<option value="">请选择</option>
-										<option value=""></option>
+										<option value="运行">运行</option>
+										<option value="失联">失联</option>
+										<option value="停机">停机</option>
 									</select>
 								</div>
 							</div>
-						</div>
-						<div class="layui-inline">
-							<label class="layui-form-label">状态</label>
-							<div class="layui-input-block">
-								<select name="state">
-									<option value="">请选择</option>
-									<option value="运行">运行</option>
-									<option value="失联">失联</option>
-									<option value="停机">停机</option>
-								</select>
+							<div class="flex">
+								<div class="layui-card-body" style="width: 65%; border-right: 10px solid white;">
+									<el-table style="width: 100%">
+										<el-table-column prop="date" label="序号" width="50">
+										</el-table-column>
+										<el-table-column prop="date" label="行业" width="70">
+										</el-table-column>
+										<el-table-column prop="date" label="企业数量" width="80">
+										</el-table-column>
+										<el-table-column prop="date" label="主表数量" width="80">
+										</el-table-column>
+										<el-table-column prop="date" label="产污设施数量" width="120">
+										</el-table-column>
+										<el-table-column prop="date" label="污处设施数量" width="120">
+										</el-table-column>
+										<el-table-column label="监测点数量(个)">
+											<el-table-column prop="province" label="运行">
+											</el-table-column>
+											<el-table-column prop="city" label="停机">
+											</el-table-column>
+											<el-table-column prop="address" label="失联">
+											</el-table-column>
+										</el-table-column>
+									</el-table>
+								</div>
+								<div style="width: 35%;">
+									<div style="width:100%;height:450px;" id="botchart_"></div>
+									<!-- //图表-->
+								</div>
 							</div>
 						</div>
-						
-						
 					</div>
 
 				</div>
-
 			</div>
 		</div>
-
 		<script src="../../../layuiadmin/layui/layui.js" type="text/javascript" charset="utf-8"></script>
 		<script src="../../../layuiadmin/plugin/vue.js" type="text/javascript" charset="utf-8"></script>
 		<script src="../../../layuiadmin/plugin/axios.js" type="text/javascript" charset="utf-8"></script>
 		<script src="../../../layuiadmin/plugin/element.js" type="text/javascript" charset="utf-8"></script>
 		<script src="../../../layuiadmin/js/baseUrlConfig.js" type="text/javascript" charset="utf-8"></script>
-		
 		<script>
+			var echarted;
 			layui.config({
-				base: '../../../layuiadmin/' //静态资源所在路径
+				base: '../../../layuiadmin/',
+				//静态资源所在路径
 			}).extend({
 				index: 'lib/index' //主入口模块
-			}).use(['index', 'table', "laydate"], function() {
+			}).use(['index', 'table', "laydate", "echarts"], function() {
 				var table = layui.table,
 					form = layui.form,
-					laydate = layui.laydate;
+					laydate = layui.laydate,
+					echarts = layui.echarts;
+
+
+				var echart = echarts.init(document.getElementById('botchart')); //行业的图表
+				echarted = echarts.init(document.getElementById('botchart_')); //行政区域的图表
+				option = {
+					tooltip: {
+						trigger: 'item',
+						formatter: "{b}: {c} ({d}%)"
+					},
+					legend: {
+						orient: 'vertical',
+						x: 'left',
+						data: ['直接访问', '邮件营销', '联盟广告', '视频广告', '搜索引擎']
+					},
+					series: [{
+						type: 'pie',
+						radius: ['20%', '40%'],
+						avoidLabelOverlap: false,
+						label: {
+							normal: {
+								show: false,
+								position: 'center'
+							},
+							emphasis: {
+								show: true,
+								textStyle: {
+									fontSize: '30',
+									fontWeight: 'bold'
+								}
+							}
+						},
+						labelLine: {
+							normal: {
+								show: false
+							}
+						},
+						data: [{
+								value: 335,
+								name: '直接访问'
+							},
+							{
+								value: 310,
+								name: '邮件营销'
+							},
+							{
+								value: 234,
+								name: '联盟广告'
+							},
+							{
+								value: 135,
+								name: '视频广告'
+							},
+							{
+								value: 1548,
+								name: '搜索引擎'
+							}
+						]
+					}]
+				};
+				echart.setOption(option);
+				options = {
+					tooltip: {
+						trigger: 'item',
+						formatter: "{b}: {c} ({d}%)"
+					},
+					legend: {
+						orient: 'vertical',
+						x: 'left',
+						data: ['直接访问', '邮件营销', '联盟广告', '视频广告', '搜索引擎']
+					},
+					series: [{
+						type: 'pie',
+						radius: ['20%', '40%'],
+						avoidLabelOverlap: false,
+						label: {
+							normal: {
+								show: false,
+								position: 'center'
+							},
+							emphasis: {
+								show: true,
+								textStyle: {
+									fontSize: '30',
+									fontWeight: 'bold'
+								}
+							}
+						},
+						labelLine: {
+							normal: {
+								show: false
+							}
+						},
+						data: [{
+								value: 335,
+								name: '直接访问'
+							},
+							{
+								value: 310,
+								name: '邮件营销'
+							},
+							{
+								value: 234,
+								name: '联盟广告'
+							},
+							{
+								value: 135,
+								name: '视频广告'
+							},
+							{
+								value: 1548,
+								name: '搜索引擎'
+							}
+						]
+					}]
+				};
+
+				echarted.setOption(options);
+				// echarted.resize();
+
+
+
+
+
 
 				var data = new Date();
 				var max_data = data.getDate();
@@ -171,7 +339,7 @@
 					btns: ['confirm'],
 					max: "max_data"
 				});
-				
+
 
 				axios({
 					method: "post",
@@ -261,13 +429,17 @@
 					isActive: 0,
 					treeValue: "",
 					show: 1
+
 				},
 				methods: {
 					showH: function() {
-						this.show = 1
+						this.show = 1;
+						// document.getElementById("xz").classList.remove("layui-show");
 					},
 					showX: function() {
-						this.show = 2
+						this.show = 2;
+
+						// document.getElementById("xz").addClass("layui-show");
 					},
 					appear: function(isActive) {
 						this.tree = !this.tree
@@ -278,7 +450,6 @@
 						console.log(data.label);
 						console.log(this.tree);
 						vm.treeHign = true;
-						// console.log(node.parent.childNodes[0].parent.data.label)
 						var localname = node.parent.childNodes[0].parent.data.label === undefined ? '无上级目录' : node.parent.childNodes[
 								0]
 							.parent.data.label;
@@ -354,6 +525,11 @@
 				}
 
 			})
+			window.onclick = function() {
+				 echarted.resize();
+				 console.log(1);
+
+			}
 		</script>
 	</body>
 </html>
