@@ -505,6 +505,7 @@
 									var list = res.data.tBasEnterprise;
 									vm.list = res.data.tBasEnterprise.tBasShopList;
 									vm.treeValue = res.data.tBasEnterprise.organizeName
+									vm.tradeName = res.data.tBasEnterprise.tradeName
 									form.val('editEnterprise', {
 										"id": list.id,
 										"address": list.address,
