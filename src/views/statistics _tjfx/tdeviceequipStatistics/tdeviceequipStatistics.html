@@ -279,46 +279,46 @@
 
 				echart = echarts.init(document.getElementById('botchart')); //行业的图表
 				echarted = echarts.init(document.getElementById('botchart_')); //行政区域的图表
-				option = {
-					tooltip: {
-						trigger: 'item',
-						formatter: "{b}: {c} ({d}%)"
-					},
-					legend: {
-						orient: 'vertical',
-						x: 'left',
-						data: [""]
-					},
-					title: {
-						text: "企业分布",
-						padding: "3"
-					},
-					series: [{
-						type: 'pie',
-						radius: ['20%', '40%'],
-						avoidLabelOverlap: false,
-						label: {
-							normal: {
-								show: false,
-								position: 'center'
-							},
-							emphasis: {
-								show: true,
-								textStyle: {
-									fontSize: '30',
-									fontWeight: 'bold'
-								}
-							}
-						},
-						labelLine: {
-							normal: {
-								show: false
-							}
-						},
-						data: []
+				// option = {
+				// 	tooltip: {
+				// 		trigger: 'item',
+				// 		formatter: "{b}: {c} ({d}%)"
+				// 	},
+				// 	legend: {
+				// 		orient: 'vertical',
+				// 		x: 'left',
+				// 		data: [""]
+				// 	},
+				// 	title: {
+				// 		text: "企业分布",
+				// 		padding: "3"
+				// 	},
+				// 	series: [{
+				// 		type: 'pie',
+				// 		radius: ['20%', '40%'],
+				// 		avoidLabelOverlap: false,
+				// 		label: {
+				// 			normal: {
+				// 				show: false,
+				// 				position: 'center'
+				// 			},
+				// 			emphasis: {
+				// 				show: true,
+				// 				textStyle: {
+				// 					fontSize: '30',
+				// 					fontWeight: 'bold'
+				// 				}
+				// 			}
+				// 		},
+				// 		labelLine: {
+				// 			normal: {
+				// 				show: false
+				// 			}
+				// 		},
+				// 		data: []
 
-					}]
-				};
+				// }]
+				// };
 				console.log(vm.list_Xpic);
 				echart.setOption({
 					series: [{
@@ -471,6 +471,19 @@
 							vm.list_Hpic.push(obj);
 						}
 						echart.setOption({
+							noDataLoadingOption: {
+								text: '暂无数据',
+								effect: 'bubble',
+								effectOption: {
+									effect: {
+										n: 0 //气泡个数为0 
+									}
+								}
+							},
+							textStyle: {
+								fontSize: 32,
+								fontWeight: 'bold'
+							},
 							tooltip: {
 								trigger: 'item',
 								formatter: "{b}: {c} ({d}%)"
