@@ -52,6 +52,38 @@
 			display: flex;
 			background: ghostwhite;
 		}
+
+		.chartstatistics {
+			width: 80%;
+			margin-left: 10%;
+			margin-right: 10%;
+			padding: 0px;
+			line-height: 24px;
+			/* margin-bottom: 10px; */
+		}
+
+		.box {
+			display: flex;
+			background: white;
+			border: 1px solid white;
+			padding: 0 10px;
+		}
+
+		.box_odd {
+			display: flex;
+			background: gainsboro;
+			border: 1px solid white;
+			padding: 0 10px;
+		}
+
+		.empty {
+			height: 30px;
+			z-index: 999;
+			background: white;
+			position: relative;
+			padding-left: 26px;
+
+		}
 	</style>
 
 	<body>
@@ -77,6 +109,7 @@
 									 style="color: gray;"></i>
 									<div style="position: absolute;display: none;" class="layui-input-inline" id="tree">
 										<div class="tree layui-anim layui-anim-upbit">
+											<p class="empty" @click="emptyTree">请选择</p>
 											<el-tree :highlight-current="treeHign" :data="treeData" :props="defaultProps" @node-click="handleNodeClick"></el-tree>
 											<!-- //TODO 这边要放树形结构 -->
 										</div>
@@ -86,42 +119,60 @@
 							<div class="layui-inline">
 								<label class="layui-form-label">状态</label>
 								<div class="layui-input-block">
-									<select name="state">
+									<select name="state" lay-filter="state">
 										<option value="">请选择</option>
-										<option value="运行">运行</option>
-										<option value="失联">失联</option>
-										<option value="停机">停机</option>
+										<option value="2">生产</option>
+										<option value="0">限产</option>
+										<option value="1">停产</option>
 									</select>
 								</div>
 							</div>
+							<div class="layui-inline">
+								<button class="layui-btn layuiadmin-btn-list" @click="Hsearch">
+									<i class="layui-icon layui-icon-search layuiadmin-button-btn"></i>
+								</button>
+							</div>
 							<div class="flex">
 								<div class="layui-card-body" style="width: 65%; border-right: 10px solid white;">
-									<el-table style="width: 100%">
-										<el-table-column prop="date" label="序号" width="50">
+									<el-table style="width: 100%;" :data="list_Htable">
+										<el-table-column type="index" label="序号" width="50">
 										</el-table-column>
-										<el-table-column prop="date" label="行业" width="70">
+										<el-table-column property="name" label="行业" width="70">
 										</el-table-column>
-										<el-table-column prop="date" label="企业数量" width="80">
+										<el-table-column property="enterpriseNum" label="企业数量" width="80">
 										</el-table-column>
-										<el-table-column prop="date" label="主表数量" width="80">
+										<el-table-column property="productEquipNum" label="产污设施数量" width="120">
 										</el-table-column>
-										<el-table-column prop="date" label="产污设施数量" width="120">
-										</el-table-column>
-										<el-table-column prop="date" label="污处设施数量" width="120">
+										<el-table-column property="treatEquipNum" label="污处设施数量" width="120">
 										</el-table-column>
 										<el-table-column label="监测点数量(个)">
-											<el-table-column prop="province" label="运行">
+											<el-table-column property="startStatusNum" label="运行">
 											</el-table-column>
-											<el-table-column prop="city" label="停机">
+											<el-table-column property="endStatusNum" label="停机">
 											</el-table-column>
-											<el-table-column prop="address" label="失联">
+											<el-table-column property="unknownStatusNum" label="失联">
 											</el-table-column>
 										</el-table-column>
 									</el-table>
 								</div>
-								<div style="width: 35%;">
+								<div style="width: 35%;margin-bottom: 20px;">
 									<div style="width:100%;height:450px;" id="botchart"></div>
 									<!-- //图表 -->
+									<div class="chartstatistics" v-for="(it,index) in list_box1">
+										<div class="box_odd" v-show="index == 0">
+											<p style="width: 50%;" v-text="it.name"></p>
+											<p style="width: 50%;text-align: right" v-text="it.percentage"></p>
+										</div>
+										<div class="box_odd" v-show="index != 0 & (index)%2 == 0">
+											<p style="width: 50%;" v-text="it.name"></p>
+											<p style="width: 50%;text-align: right" v-text="it.percentage"></p>
+										</div>
+										<div class="box" v-show="index != 0 & (index)%2 != 0">
+											<p style="width: 50%;" v-text="it.name"></p>
+											<p style="width: 50%;text-align: right" v-text="it.percentage"></p>
+										</div>
+
+									</div>
 									<div>
 
 									</div>
@@ -147,42 +198,58 @@
 							<div class="layui-inline">
 								<label class="layui-form-label">状态</label>
 								<div class="layui-input-block">
-									<select name="state">
+									<select name="state" lay-filter="state">
 										<option value="">请选择</option>
-										<option value="运行">运行</option>
-										<option value="失联">失联</option>
-										<option value="停机">停机</option>
+										<option value="2">生产</option>
+										<option value="0">限产</option>
+										<option value="1">停产</option>
 									</select>
 								</div>
 							</div>
+							<div class="layui-inline">
+								<button class="layui-btn layuiadmin-btn-list" @click="Xsearch">
+									<i class="layui-icon layui-icon-search layuiadmin-button-btn"></i>
+								</button>
+							</div>
 							<div class="flex">
 								<div class="layui-card-body" style="width: 65%; border-right: 10px solid white;">
-									<el-table style="width: 100%">
-										<el-table-column prop="date" label="序号" width="50">
+									<el-table style="width: 100%" :data="list_Xtable">
+										<el-table-column type="index" label="序号" width="50">
 										</el-table-column>
-										<el-table-column prop="date" label="行业" width="70">
+										<el-table-column prop="name" label="行政区域" width="130">
 										</el-table-column>
-										<el-table-column prop="date" label="企业数量" width="80">
+										<el-table-column prop="enterpriseNum" label="企业数量" width="80">
 										</el-table-column>
-										<el-table-column prop="date" label="主表数量" width="80">
+										<el-table-column prop="productEquipNum" label="产污设施数量" width="120">
 										</el-table-column>
-										<el-table-column prop="date" label="产污设施数量" width="120">
-										</el-table-column>
-										<el-table-column prop="date" label="污处设施数量" width="120">
+										<el-table-column prop="treatEquipNum" label="污处设施数量" width="120">
 										</el-table-column>
 										<el-table-column label="监测点数量(个)">
-											<el-table-column prop="province" label="运行">
+											<el-table-column prop="startStatusNum" label="运行">
 											</el-table-column>
-											<el-table-column prop="city" label="停机">
+											<el-table-column prop="endStatusNum" label="停机">
 											</el-table-column>
-											<el-table-column prop="address" label="失联">
+											<el-table-column prop="unknownStatusNum" label="失联">
 											</el-table-column>
 										</el-table-column>
 									</el-table>
 								</div>
-								<div style="width: 35%;">
+								<div style="width: 35%;margin-bottom: 20px;">
 									<div style="width:100%;height:450px;" id="botchart_"></div>
-									<!-- //图表-->
+									<div class="chartstatistics" v-for="(it,index) in list_box2">
+										<div class="box_odd" v-show="index == 0">
+											<p style="width: 50%;" v-text="it.name"></p>
+											<p style="width: 50%;text-align: right" v-text="it.percentage"></p>
+										</div>
+										<div class="box_odd" v-show="index != 0 & (index)%2 == 0">
+											<p style="width: 50%;" v-text="it.name"></p>
+											<p style="width: 50%;text-align: right" v-text="it.percentage"></p>
+										</div>
+										<div class="box" v-show="index != 0 & (index)%2 != 0">
+											<p style="width: 50%;" v-text="it.name"></p>
+											<p style="width: 50%;text-align: right" v-text="it.percentage"></p>
+										</div>
+									</div>
 								</div>
 							</div>
 						</div>
@@ -220,7 +287,11 @@
 					legend: {
 						orient: 'vertical',
 						x: 'left',
-						data: ['直接访问', '邮件营销', '联盟广告', '视频广告', '搜索引擎']
+						data: [""]
+					},
+					title: {
+						text: "企业分布",
+						padding: "3"
 					},
 					series: [{
 						type: 'pie',
@@ -244,27 +315,28 @@
 								show: false
 							}
 						},
-						data: [{
-								value: 335,
-								name: '直接访问'
-							},
-							{
-								value: 310,
-								name: '邮件营销'
-							},
-							{
-								value: 234,
-								name: '联盟广告'
-							},
-							{
-								value: 135,
-								name: '视频广告'
-							},
-							{
-								value: 1548,
-								name: '搜索引擎'
-							}
-						]
+						data: vm.list_Hpic
+						// [{
+						// 		value: 335,
+						// 		name: '直接访问'
+						// 	},
+						// 	{
+						// 		value: 310,
+						// 		name: '邮件营销'
+						// 	},
+						// 	{
+						// 		value: 234,
+						// 		name: '联盟广告'
+						// 	},
+						// 	{
+						// 		value: 135,
+						// 		name: '视频广告'
+						// 	},
+						// 	{
+						// 		value: 1548,
+						// 		name: '搜索引擎'
+						// 	}
+						// ]
 					}]
 				};
 				echart.setOption(option);
@@ -276,9 +348,14 @@
 					legend: {
 						orient: 'vertical',
 						x: 'left',
-						data: ['直接访问', '邮件营销', '联盟广告', '视频广告', '搜索引擎']
+						data: [""]
+					},
+					title: {
+						text: "企业分布",
+						padding: "3"
 					},
 					series: [{
+						name: "企业分布",
 						type: 'pie',
 						radius: ['20%', '40%'],
 						avoidLabelOverlap: false,
@@ -300,32 +377,12 @@
 								show: false
 							}
 						},
-						data: [{
-								value: 335,
-								name: '直接访问'
-							},
-							{
-								value: 310,
-								name: '邮件营销'
-							},
-							{
-								value: 234,
-								name: '联盟广告'
-							},
-							{
-								value: 135,
-								name: '视频广告'
-							},
-							{
-								value: 1548,
-								name: '搜索引擎'
-							}
-						]
+						data: vm.list_Xpic
 					}]
 				};
 
 				echarted.setOption(options);
-				// echarted.resize();
+
 
 
 
@@ -339,8 +396,7 @@
 					btns: ['confirm'],
 					max: "max_data"
 				});
-
-
+				//行业的下拉选择框
 				axios({
 					method: "post",
 					url: BASEURL + 'environmental_intelligent_monitoring/tbastrade/list?limit=10000',
@@ -349,7 +405,7 @@
 					if (res.data.code == 0) {
 						// console.log(res)
 						$.each(res.data.page.list, function(index, item) {
-							// console.log(index, item)
+							// console.log(item.id)
 							$('#eventType').append(new Option(item.name, item.id)); // 下拉菜单里添加元素
 						});
 						layui.form.render("select");
@@ -362,7 +418,108 @@
 
 
 
+				//获取下来框的后台数据
 
+				//行业* （行政区域）   获取表格数据
+				axios({
+					method: "post",
+					url: BASEURL + 'environmental_intelligent_monitoring/dataMonitor/queryEnterpriseReportOrderByTrade',
+					params: {
+						organizeId: vm.treeId,
+						produceType: vm.state_
+					},
+				}).then(function(res) {
+					if (res.data.code == 0) {
+						vm.list_Htable = res.data.data;
+					} else {
+
+					}
+				}).catch(function(err) {
+					console.log(err);
+				});
+
+				//行政区域获取下拉行业的选项
+				form.on('select(eventType)', function(data) {
+					// console.log(data.elem[data.elem.selectedIndex].value);
+					vm.tradeName = data.elem[data.elem.selectedIndex].value
+					form.render();
+				});
+
+
+				//行政区域* （行业）   获取表格数据
+				axios({
+					method: "post",
+					url: BASEURL + 'environmental_intelligent_monitoring/dataMonitor/queryEnterpriseReportOrderByOrganize',
+					params: {
+						tradeId: vm.tradeName,
+						produceType: vm.state_
+					}
+				}).then(function(res) {
+					console.log(res)
+					if (res.data.code == 0) {
+						vm.list_Xtable = res.data.data;
+					} else {
+
+					}
+				}).catch(function(err) {
+					console.log(err);
+				});
+
+
+				//行业*    获取扇形统计图的数据
+				axios({
+					method: "post",
+					url: BASEURL + 'environmental_intelligent_monitoring/dataMonitor/queryTradeReport',
+					params: {
+						organizeId: vm.treeId,
+						produceType: vm.state_
+					}
+				}).then(function(res) {
+					// console.log(res)
+					var obj = {
+
+					}
+					if (res.data.code == 0) {
+						// for (var i = 0; i < res.data.data.length; i++) {
+						// 	obj.value = res.data.data[i].percent;
+						// 	obj.name = res.data.data[i].name;
+						// 	vm.list_pic.push(obj);
+						// }
+						vm.list_Hpic = res.data.data;
+						console.log(vm.list_Hpic);
+					} else {
+
+					}
+				}).catch(function(err) {
+					console.log(err);
+				});
+				//行政中心的扇形图
+				axios({
+					method: "post",
+					url: BASEURL + 'environmental_intelligent_monitoring/dataMonitor/queryOrganizeReport',
+					params: {
+						tradeId: vm.tradeName,
+						produceType: vm.state_
+					}
+				}).then(function(res) {
+					console.log(res)
+					var obj = {
+				
+					}
+					if (res.data.code == 0) {
+						// for (var i = 0; i < res.data.data.length; i++) {
+						// 	obj.value = res.data.data[i].percent;
+						// 	obj.name = res.data.data[i].name;
+						// 	vm.list_pic.push(obj);
+						// }
+						vm.list_Xpic = res.data.data;
+						console.log(vm.list_pic);
+					} else {
+				
+					}
+				}).catch(function(err) {
+					console.log(err);
+				});
 
 
 
@@ -375,6 +532,18 @@
 						where: field
 					});
 				});
+				//获取下拉框的值
+				form.on('select(state)', function(data) {
+					vm.state_ = data.value;
+					// console.log(field);
+					form.render("select")
+				});
+
+
+
+
+
+
 
 				var $ = layui.$,
 					active = {
@@ -393,18 +562,19 @@
 					var type = $(this).data('type');
 					active[type] ? active[type].call(this) : '';
 				});
+
+				//点击输入框出现的行政区域
 				$("#div_").bind("click", function() {
 					vm.isActive = 1;
 					$("#tree").css("display", "inline-block");
 					event.stopPropagation(); //==========阻止冒泡1
 				})
+
 				//点击外面其他部分,触发的事件
 				$(document).bind("click", function() {
 					vm.isActive = 0;
-					// vm.tree = !vm.tree;
-					// console.log(vm.isActive);
-					// console.log(vm.tree);
-					// console.log("点击了其他部位");
+					// console.log(vm.treeId);
+
 					$("#tree").css("display", "none");
 
 				})
@@ -419,6 +589,7 @@
 						label: 'label'
 					},
 					nodedata: [],
+					treeId: "",
 					treeHign: true,
 					startCreateDate: "",
 					address: "",
@@ -428,27 +599,79 @@
 					tree: 0,
 					isActive: 0,
 					treeValue: "",
-					show: 1
+					show: 1,
+					list_box1: [],
+					list_box2: [],
+					list_Htable: [],
+					list_Xtable: [],
+					state_: "",
+					list_Hpic: [],
+					list_Xpic:[],
+					tradeName: ""
 
 				},
 				methods: {
+					emptyTree:function(){
+						vm.treeValue = "",
+						vm.treeId = ""
+					},
 					showH: function() {
 						this.show = 1;
-						// document.getElementById("xz").classList.remove("layui-show");
 					},
 					showX: function() {
 						this.show = 2;
-
-						// document.getElementById("xz").addClass("layui-show");
 					},
 					appear: function(isActive) {
 						this.tree = !this.tree
 						this.isActive = !this.isActive
 					},
+					Xsearch: function() {
+						axios({
+							method: "post",
+							url: BASEURL + 'environmental_intelligent_monitoring/dataMonitor/queryEnterpriseReportOrderByOrganize',
+							params: {
+								tradeId: vm.tradeName,
+								produceType: vm.state_
+							}
+						}).then(function(res) {
+							// console.log(res)
+							if (res.data.code == 0) {
+								vm.list_Xtable = res.data.data;
+							} else {
+
+							}
+						}).catch(function(err) {
+							console.log(err);
+						});
+					},
+					Hsearch: function() {
+						axios({
+							method: "post",
+							url: BASEURL + 'environmental_intelligent_monitoring/dataMonitor/queryEnterpriseReportOrderByTrade',
+							params: {
+								organizeId: vm.treeId,
+								produceType: vm.state_
+							},
+						}).then(function(res) {
+							// console.log(res)
+							if (res.data.code == 0) {
+								vm.list_Htable = res.data.data;
+							} else {
+
+							}
+						}).catch(function(err) {
+							console.log(err);
+						});
+
+
+					},
 					handleNodeClick(data, node) {
 						vm.treeValue = data.label;
-						console.log(data.label);
-						console.log(this.tree);
+						vm.treeId = data.id;
+
+						// console.log();
+
+						// console.log(this.tree);
 						vm.treeHign = true;
 						var localname = node.parent.childNodes[0].parent.data.label === undefined ? '无上级目录' : node.parent.childNodes[
 								0]
@@ -491,7 +714,6 @@
 						});
 					},
 					organizeTree() {
-						console.log(this.tree);
 						axios({
 							method: "post",
 							url: BASEURL + 'environmental_intelligent_monitoring/tbasorganize/list?limit=10000',
@@ -525,11 +747,9 @@
 				}
 
 			})
-			window.onclick = function() {
-				 echarted.resize();
-				 console.log(1);
-
-			}
+			// window.onclick = function() {
+			// 	echarted.resize();
+			// }
 		</script>
 	</body>
 </html>

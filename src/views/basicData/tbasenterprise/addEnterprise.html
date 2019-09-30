@@ -8,12 +8,14 @@
 		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 		<meta name="viewport" content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi" />
 		<link rel="stylesheet" type="text/css" href="../../../layuiadmin/layui/css/layui.css" />
+		<link rel="stylesheet" type="text/css" href="../../../layuiadmin/plugin/element.css"/>
 		<script src="../../../layuiadmin/layui/layui.js" type="text/javascript" charset="utf-8"></script>
 		<!-- 引入vue -->
 		<script type="text/javascript" src="../../../layuiadmin/plugin/vue.js"></script>
 		<script src="../../../layuiadmin/js/baseUrlConfig.js" type="text/javascript" charset="utf-8"></script>
 		<script src="../../../layuiadmin/plugin/axios.js"></script>
 		<script src="../../../layuiadmin/plugin/area.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../../layuiadmin/plugin/element.js" type="text/javascript" charset="utf-8"></script>
 		<style>
 			.btn-box {
 			    text-align: center;
@@ -67,12 +69,48 @@
 			    width: 50%;
 			
 			}
+			.tree {
+				z-index: 999;
+				background: white;
+				border: gainsboro solid 1px;
+				margin-top: 2px;
+				position: relative;
+				padding: 0px 8px;
+			}
+			
 			.red{
 				color: red;
 				line-height: 2.1875rem;
 			}
 			.layui-form-item .layui-input-inline{
 				margin-right: 4px;
+			}
+			.actived {
+				animation: rotated 0.2s linear forwards;
+			}
+			
+			.actived_after {
+				animation: rotated_after 0.2s linear forwards;
+			}
+			
+			@keyframes rotated {
+				from {
+					transform: rotate(0deg);
+				}
+			
+				to {
+					transform: rotate(180deg);
+				}
+			}
+			
+			@keyframes rotated_after {
+				from {
+					transform: rotate(180deg);
+				}
+			
+				to {
+					transform: rotate(0deg);
+				}
 			}
 			
     </style>
@@ -99,13 +137,7 @@
 									</div>
 									<span class="red">(必填)</span>
 								</div>
-								<div class="layui-form-item">
-									<label for="bitian" class="layui-form-label">企业详细地址</label>
-									<div class="layui-input-inline">
-										<input type="text" name="address" lay-verify="required" class="layui-input" placeholder="企业详细地址" />
-									</div>
-									<span class="red">(必填)</span>
-								</div>
+
 								<div class="layui-form-item">
 									<label for="bitian" class="layui-form-label">所属省市区</label>
 									<div class="layui-input-inline">
@@ -120,6 +152,31 @@
 										</select>
 									</div>
 									<span class="red">(必填)</span>
+								</div>
+								<div class="layui-form-item">
+									<label for="bitian" class="layui-form-label">企业详细地址</label>
+									<div class="layui-input-inline">
+										<input type="text" name="address" lay-verify="required" class="layui-input" placeholder="企业详细地址" />
+									</div>
+									<span class="red">(必填)</span>
+								</div>
+								<div class="layui-form-item">
+									<div class="layui-inline">
+										<label class="layui-form-label">行政区域</label>
+										<div class="layui-input-inline" >
+											<input readonly="readonly" placeholder="请选择" id="div_" v-model="treeValue"  class="layui-input" @click="appear"/>
+											<!-- <span class="layui-icon-triangle-d layui-icon" v-bind:class="[{ actived: isActive },{ actived_after: !isActive }]"
+											 style="color: gray;"></span></input> -->
+											
+											<div style="position: absolute;display: none;" class="layui-input-inline" id="tree">
+												<div class="tree layui-anim layui-anim-upbit">
+													<el-tree :highlight-current="treeHign" :data="treeData" :props="defaultProps" @node-click="handleNodeClick"></el-tree>
+													<!-- //TODO 这边要放树形结构 -->
+												</div>
+											</div>
+										</div>
+										<span class="red">(必填)</span>
+									</div>
 								</div>
 								<div class="layui-form-item">
 									<label class="layui-form-label">所属行业</label>
@@ -155,7 +212,7 @@
 										</select>
 									</div>
 								</div>
-								<div class="layui-form-item">
+								<!-- <div class="layui-form-item">
 									<label for="bitian" class="layui-form-label">监管机构代码</label>
 									<div class="layui-input-inline">
 										<input type="text" name="organizeId" class="layui-input" placeholder="监管机构代码" />
@@ -166,21 +223,21 @@
 									<div class="layui-input-inline">
 										<input type="text" name="organizeName" class="layui-input" placeholder="监管机构名称" />
 									</div>
-								</div>
+								</div> -->
 								<div class="layui-form-item">
 									<label for="bitian" class="layui-form-label">电流变比</label>
 									<div class="layui-input-inline">
 										<input type="text" name="ct" class="layui-input" />
 									</div>
 								</div>
+							</div>
+							<div class="treeCss">
 								<div class="layui-form-item">
 									<label for="bitian" class="layui-form-label">电压变比</label>
 									<div class="layui-input-inline">
 										<input type="text" name="pt" class="layui-input" />
 									</div>
 								</div>
-							</div>
-							<div class="treeCss">
 								<div class="layui-form-item">
 									<label for="bitian" class="layui-form-label">负责人</label>
 									<div class="layui-input-inline">
@@ -404,6 +461,8 @@
 					data.field.picUrl = vm.pic;
 					data.field.tBasShopList = vm.list;
 					data.field.tradeName = vm.tradeName;
+					data.field.organizeName = vm.treeValue;
+					data.field.organizeId = vm.treeId;
 					console.log(data.field);
 					axios({
 						method: "post",
@@ -462,6 +521,22 @@
 					active[type] ? active[type].call(this) : '';
 				});
 
+				// 点击input框触发的事件
+				$("#div_").bind("click", function() {
+					vm.isActive = 1;
+					$("#tree").css("display", "inline-block");
+					event.stopPropagation(); //==========阻止冒泡1
+				})
+				//点击外面其他部分,触发的事件
+				$(document).bind("click", function() {
+					vm.isActive = 0;
+					// vm.tree = !vm.tree;
+					// console.log(vm.isActive);
+					// console.log(vm.tree);
+					// console.log("点击了其他部位");
+					$("#tree").css("display", "none");
+
+				})
 
 
 
@@ -476,11 +551,31 @@
 					haspic: 0,
 					hasedit: 0,
 					list: [],
-					tradeName: ""
+					tradeName: "",
+					treeData: [],
+					defaultProps: {
+						children: 'children',
+						label: 'label'
+					},
+					nodedata: [],
+					treeHign: true,
+					startCreateDate: "",
+					address: "",
+					trustCode: "",
+					endCreateDate: "",
+					name: '',
+					tree: 0,
+					isActive: 0,
+					treeValue:"",
+					treeId:""
 				},
 				methods: {
 					cancel: function() {
 						parent.layer.closeAll('iframe'); //关闭弹窗
+					},
+					appear: function(isActive) {
+						this.tree = !this.tree
+						this.isActive = !this.isActive
 					},
 					edit: function(it, index_) {
 						layer.open({
@@ -515,7 +610,86 @@
 						if (this.list.length == 0) {
 							vm.hasedit = 0;
 						}
+					},
+					handleNodeClick(data, node) {
+						vm.treeValue = data.label;
+						vm.treeId = data.id
+						console.log(data.label);
+						console.log(data.id);
+						// console.log(this.tree);
+						vm.treeHign = true;
+						// console.log(node.parent.childNodes[0].parent.data.label)
+						var localname = node.parent.childNodes[0].parent.data.label === undefined ? '无上级目录' : node.parent.childNodes[0]
+							.parent.data.label;
+						localStorage.setItem("nodeParentName", localname)
+						vm.nodedata = data;
+						axios({
+							method: "post",
+							url: BASEURL + 'environmental_intelligent_monitoring/tbasorganize/list?limit=10000',
+							params: {
+								parentId: data.id
+							}
+						}).then(function(res) {
+							if (res.data.code == 0) {
+								// this.tree = !this,tree;
+								var treedata = res.data.page.list;
+								data.children = [];
+								for (var j = 0; j < treedata.length; j++) {
+									if (data.id == treedata[j].parentId) {
+										// console.log(treedata[j])
+										let obj = {
+											label: treedata[j].name,
+											id: treedata[j].id,
+											parentId: treedata[j].parentId,
+											children: []
+										};
+										data.children.push(obj);
+									}
+									this.tree = false
+								}
+
+							} else {
+								vm.$notify.error({
+									title: '错误',
+									message: res.data.msg
+								});
+							}
+						}).catch(function(err) {
+							console.log(err);
+						});
+					},
+					organizeTree() {
+						console.log(this.tree);
+						axios({
+							method: "post",
+							url: BASEURL + 'environmental_intelligent_monitoring/tbasorganize/list?limit=10000',
+							params: {
+								parentId: 0
+							}
+						}).then(function(res) {
+							if (res.data.code == 0) {
+								vm.treeData = [];
+								// vm.treeData = res.data.page.list;
+								var data = res.data.page.list;
+
+								for (var i = 0; i < data.length; i++) {
+									var obj = {};
+									obj.label = data[i].name;
+									obj.id = data[i].id;
+									obj.parentId = data[i].parentId;
+									obj.children = [];
+									vm.treeData.push(obj);
+								}
+							} else {
+
+							}
+						}).catch(function(err) {
+							console.log(err);
+						});
 					}
+				},
+				created() {
+					this.organizeTree();
 				}
 			});
 		</script>

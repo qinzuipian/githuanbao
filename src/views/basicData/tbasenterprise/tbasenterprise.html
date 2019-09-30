@@ -51,6 +51,14 @@
 				transform: rotate(0deg);
 			}
 		}
+		.empty {
+			height: 30px;
+			z-index: 999;
+			background: white;
+			position: relative;
+			padding-left: 26px;
+		
+		}
 	</style>
 	<body>
 		<div class="layui-fluid" id="app">
@@ -75,6 +83,7 @@
 								 style="color: gray;"></i>
 								<div style="position: absolute;display: none;" class="layui-input-inline" id="tree">
 									<div class="tree layui-anim layui-anim-upbit">
+										<p class="empty" @click="emptyTree">请选择</p>
 										<el-tree :highlight-current="treeHign" :data="treeData" :props="defaultProps" @node-click="handleNodeClick"></el-tree>
 										<!-- //TODO 这边要放树形结构 -->
 									</div>
@@ -322,7 +331,7 @@
 								title: '添加企业',
 								content: 'addEnterprise.html',
 								maxmin: true,
-								area: ['860px', '550px']
+								area: ['880px', '550px']
 
 							});
 						},
@@ -342,7 +351,7 @@
 								title: '编辑企业',
 								content: 'editEnterprise.html',
 								maxmin: true,
-								area: ['860px', '550px']
+								area: ['880px', '550px']
 							});
 
 						},
@@ -400,6 +409,10 @@
 					treeValue: ""
 				},
 				methods: {
+					emptyTree:function(){
+						vm.treeValue = "",
+						vm.treeId = ""
+					},
 					appear: function(isActive) {
 						this.tree = !this.tree
 						this.isActive = !this.isActive
