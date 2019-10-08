@@ -53,19 +53,19 @@
             <div class="layui-row">
                 <form class="layui-form">
                     <!-- <input type="hidden" name="enterpriseId" class="layui-input" /> -->
-                    <div class="layui-form-item">
+                    <!-- <div class="layui-form-item">
                         <label for="bitian" class="layui-form-label">
                             企业名称
                             <span class="red">（必填）</span>
                         </label>
                         <div class="layui-input-inline">
-                            <!-- <input type="text" v-model="tWarnSubscribe.enterprisename" name="enterpriseName" class="layui-input" placeholder="企业名称" /> -->
+                        
                             <select name="enterpriseId" id="enterpriseName" lay-verify="required" lay-filter="enterpriseName">
                                 <option value=""></option>
                             </select>
                         </div>
 
-                    </div>
+                    </div> -->
                     <div class="layui-form-item">
                         <label for="bitian" class="layui-form-label">
                             设置类型
@@ -223,7 +223,7 @@
             // form表单提交
             form.on('submit(reduceForm)', function (data) {
                 console.log(data);
-                data.field.enterpriseName = vm.enterpriseName;
+                // data.field.enterpriseName = vm.enterpriseName;
                 axios({
                     method: "post",
                     url: layui.setter.BASEURL + 'environmental_intelligent_monitoring/tbizreduce/save',
@@ -242,7 +242,10 @@
                         }
                         );
                     } else {
-                        parent.layer.tips('保存异常!');
+                        vm.$notify.error({
+                            title: '错误',
+                            message: '保存异常'
+                        });
                     }
                 }).catch(function (err) {
                     console.log(err);

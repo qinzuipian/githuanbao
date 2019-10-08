@@ -51,7 +51,7 @@
                         <div class="layui-inline">
                             <label class="layui-form-label">行政区域</label>
                             <div class="layui-input-inline AdminArea">
-                                <input type="text" name="atraCode" v-model="atraName" placeholder="请选择行政区域" autocomplete="off" class="layui-input">
+                                <input type="text" name="organizeName" v-model="atraName" placeholder="请选择行政区域" autocomplete="off" class="layui-input">
                                 <i class="layui-icon layui-icon-triangle-d" @click="AdminFocus"></i>
                                 <div class="Areashow layui-anim layui-anim-upbit" v-show="Areashow">
                                     <el-tree :highlight-current="treeHign" :data="treeData" :props="defaultProps" @node-click="handleNodeClick"></el-tree>
@@ -194,7 +194,6 @@
             form.on('submit(LAY-app-contlist-search)', function (data) {
                 console.log(data)
                 var field = data.field;
-
                 //执行重载
                 table.reload('LAY-app-content-list', {
                     where: field

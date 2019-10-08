@@ -56,12 +56,12 @@
 <body>
     <div id="vm">
         <div class="layui-fluid layui-col-space30">
-            <div class="layui-card layui-col-md4 layui-col-lg4" style="min-height: 500px;">
+            <div class="layui-card layui-col-md5 layui-col-lg5" style="min-height: 500px;">
                 <div class="layui-card-header card-title">停限产列表</div>
                 <div class="l-card-border">
                     <el-radio-group text-color="#000000" class="user-list-box" v-model="levelRadio" @change="levelChange">
-                        <div v-for="it in levelList">
-                            <el-radio class="user-list-radio" :label="it.levelName">
+                        <div v-for="(it,index) in levelList" :key="index">
+                            <el-radio class="user-list-radio" :label="it.id">
                                 <span v-text="it.levelName"></span>
                                 <span v-text="it.produceType"></span>
                                 <span v-text="it.startTime"></span>-
@@ -70,15 +70,15 @@
                         </div>
                     </el-radio-group>
                 </div>
-                <el-button size="small" type="primary" class="submit-btn">保存</el-button>
-                <el-button size="small" type="danger" class="submit-btn">清空</el-button>
+                <el-button size="small" type="primary" class="submit-btn" @click="treeSave">保存</el-button>
+                <el-button size="small" type="danger" class="submit-btn" @click="treeClear">清空</el-button>
 
             </div>
-            <div class="layui-card layui-col-md8 layui-col-lg8" style="min-height: 800px;">
+            <div class="layui-card layui-col-md7 layui-col-lg7" style="min-height: 800px;">
                 <div class="layui-card-header card-title">企业列表&nbsp;&nbsp;&nbsp;
                     <div class="layui-inline layui-form">
                         <div class="layui-input-inline">
-                            <input type="text" name="title" placeholder="请输入企业名称" autocomplete="off" class="layui-input">
+                            <input type="text" name="title" placeholder="请输入企业名称" v-model="enterpriseName" autocomplete="off" class="layui-input">
                         </div>
                     </div>
 
@@ -93,7 +93,7 @@
                     </div>
                     <div class="layui-inline layui-form">
                         <div class="layui-input-inline">
-                            <select id="tradeName">
+                            <select id="tradeName" lay-filter="tradeLay">
                                 <option value="">请选择所属行业</option>
                                 <option value=""></option>
                             </select>
@@ -103,10 +103,10 @@
                         <i class="layui-icon layui-icon-search layuiadmin-button-btn" @click="laySearch"></i>
                     </div>
                 </div>
-
+                <!-- @check-change="mmmm" -->
                 <div class="l-card-border">
-                    <el-tree :data="enpriseData" show-checkbox default-expand-all node-key="id" @check="manageCheck" ref="tree" highlight-current
-                        :props="defaultProps">
+                    <el-tree :data="enpriseData" show-checkbox default-expand-all :default-checked-keys="checkKey" node-key="monitorId" @check="manageCheck"
+                        ref="tree" highlight-current :props="defaultProps">
                     </el-tree>
                 </div>
             </div>
@@ -131,6 +131,15 @@
                     },
                     atraName: "",
                     enpriseData: [],
+                    enterpriseName: "",
+                    trade: "",
+                    // 判断单选框是否选中
+                    levelLength: "",
+                    levelId: "",
+                    treeObj: {},
+                    monitorIdData: [],
+                    checkKey: [],
+                    monitoridList: []
 
                 },
                 methods: {
@@ -138,11 +147,11 @@
                     levelInit() {
                         axios({
                             method: "post",
-                            url: BASEURL + 'environmental_intelligent_monitoring/tbizreduce/list?limit=10000',
+                            url: BASEURL + 'environmental_intelligent_monitoring/tbizreduce/queryReduceList',
                             params: {}
                         }).then(function (res) {
                             if (res.data.code == 0) {
-                                vm.levelList = res.data.page.list;
+                                vm.levelList = res.data.data;
                             }
 
                         }).catch(function (err) {
@@ -152,7 +161,121 @@
                     },
                     // 单选框选择事件改变
                     levelChange(val) {
-                        console.log(val)
+                        console.log(val);
+                        vm.levelId = val;
+                        vm.levelLength = val;
+
+                        axios({
+                            method: "post",
+                            url: BASEURL + 'environmental_intelligent_monitoring/tbizreduce/queryEnterpriseList',
+                            params: {
+                                id: val
+                            }
+                        }).then(function (res) {
+                            if (res.data.code == 0) {
+                                var treeData = res.data.data;
+                                var keyData = [];
+                                treeData.forEach(function (item, index) {
+                                    keyData.push(item.monitorId)
+                                })
+                                vm.checkKey = keyData
+
+                                console.log(vm.checkKey);
+                                vm.monitoridList = keyData;
+                                // this.$refs.tree.setCheckedKeys(vm.checkKey);
+                            }
+
+                        }).catch(function (err) {
+                            console.log(err);
+                        });
+
+                    },
+                    // 左右列表对应保存
+                    treeSave() {
+                        if (vm.levelLength == "") {
+                            vm.$notify.warning({
+                                title: '提示',
+                                position: 'top-center',
+                                message: '请选择一条停限产计划'
+                            });
+                        } else {
+                            axios({
+                                method: "post",
+                                url: BASEURL + 'environmental_intelligent_monitoring/tbizreduce/saveBatchForEnterprise',
+                                data: {
+                                    id: vm.levelId,
+                                    tBizEnterpriseList: vm.monitorIdData
+                                },
+                                headers: {
+                                    "Content-Type": "application/json;charset=UTF-8"
+                                }
+
+                            }).then(function (res) {
+                                if (res.data.code == 0) {
+
+                                    vm.$notify.success({
+                                        title: '提示',
+                                        position: 'top-center',
+                                        message: '授权成功'
+                                    });
+                                    vm.enterPriseInit();
+
+
+                                } else {
+                                    vm.$notify.error({
+                                        title: '错误',
+                                        position: 'top-center',
+                                        message: '授权失败'
+                                    });
+                                }
+
+                            }).catch(function (err) {
+                                console.log(err);
+                            });
+
+                        }
+
+
+
+
+                    },
+                    // 左右列表对应删除
+                    treeClear() {
+                        if (vm.levelLength == "") {
+                            vm.$notify.warning({
+                                title: '提示',
+                                position: 'top-center',
+                                message: '请选择一条停限产计划'
+                            });
+                        } else {
+                            layer.confirm('确定删除吗？', function (index) {
+                                axios({
+                                    method: "post",
+                                    url: layui.setter.BASEURL + 'environmental_intelligent_monitoring/tbizreduce/deleteByMonitorId',
+                                    data: {
+                                        monitorIds: vm.monitoridList
+                                    },
+                                    headers: {
+                                        "Content-Type": "application/json;charset=UTF-8"
+                                    }
+                                }).then(function (res) {
+                                    if (res.data.code == 0) {
+                                        layer.msg('已删除');
+
+                                    } else {
+                                        vm.$notify.error({
+                                            title: '错误',
+                                            position: 'top-center',
+                                            message: '删除失败'
+                                        });
+                                    }
+                                }).catch(function (err) {
+                                    console.log(err);
+                                });
+                            })
+
+                        }
+
                     },
                     // 企业列表树状图
                     enterPriseInit() {
@@ -167,13 +290,13 @@
                                 // vm.enpriseData = res.data.page.list;
                                 treeData.forEach(function (data) {
                                     for (var i = 0; i < dataList.length; i++) {
-                                        if (dataList[i].id === data.enterpriseId) {
+                                        if (dataList[i].enterpriseId === data.enterpriseId) {
                                             dataList[i].children.push({
                                                 label: data.shopName,
                                                 children: [{
                                                     label: data.type === "1" ? '生产设备' : '治污设备',
-                                                    id: data.type,
-                                                    children: [{ label: data.monitorName }]
+                                                    // id: data.type,
+                                                    children: [{ label: data.monitorName, monitorId: data.id }]
                                                 }]
                                             });
                                             dataList[i].num++;
@@ -184,14 +307,14 @@
 
                                     dataList.push({
                                         label: data.enterpriseName,
-                                        id: data.enterpriseId,
+                                        enterpriseId: data.enterpriseId,
                                         num: 1,
                                         children: [{
                                             label: data.shopName,
                                             children: [{
                                                 label: data.type === "1" ? '生产设备' : '治污设备',
                                                 id: data.type,
-                                                children: [{ label: data.monitorName }]
+                                                children: [{ label: data.monitorName, monitorId: data.id }]
                                             }]
                                         }]
                                     });
@@ -291,12 +414,245 @@
                         });
                     },
                     // 复选框选中
-                    manageCheck(data) {
+                    manageCheck(data, node) {
+                        vm.monitoridList = [];
+                        var data = this.$refs.tree.getCheckedNodes(true);
                         console.log(data)
+
+                        for (var i = 0; i < data.length; i++) {
+                            console.log(data[i]);
+                            // console.log(dataItem)
+                            // var obj = {};
+                            vm.enpriseData.forEach(function (item, index) {
+                                // console.log(item,index)
+
+                                item.children.forEach(function (it, index) {
+                                    it.children.forEach(function (itthird, index) {
+                                        itthird.children.forEach(function (itfourth, index) {
+                                            // console.log(itfourth);
+
+
+
+                                            if (itfourth.monitorId === data[i].monitorId && itfourth.label === data[i].label) {
+
+                                                // console.log(dataItem);
+                                                // console.log(item)
+
+                                                data[i].monitorId = itfourth.monitorId;
+                                                data[i].monitorName = itfourth.label;
+                                                data[i].enterpriseId = item.enterpriseId;
+                                                data[i].enterpriseName = item.label;
+                                                // vm.monitorIdData.push(obj);
+                                                // delete data[i].label;
+                                            }
+
+
+
+                                        })
+                                    })
+                                })
+
+                            })
+
+
+
+                        }
+                        vm.monitorIdData = data;
+                        vm.monitorIdData.forEach(function (item, index) {
+                            console.log(item);
+                            vm.monitoridList.push(item.monitorId);
+                        })
+                        console.log(vm.monitoridList)
+
+                        // console.log(data)
+                        // this.$refs.tree.setCheckedKeys([])
+                        // console.log(data, node);
+                        // var nodeData = node.checkedNodes;
+                        // var halfData = node.halfCheckedNodes;
+                        // // var monitorIdData = [];
+
+                        // vm.treeObj = {}
+                        // nodeData.forEach(function (item, index) {
+
+                        //     console.log(item, index);
+
+
+
+                        //     if (item.enterpriseId != undefined) {
+                        //         vm.treeObj.enterpriseId = item.enterpriseId;
+                        //         vm.treeObj.enterpriseName = item.label;
+
+                        //     } else if (item.monitorId != undefined) {
+                        //         console.log(item);
+                        //         vm.treeObj.monitorId = item.monitorId;
+                        //         vm.treeObj.monitorName = item.label;
+                        //     } else {
+                        //         halfData.forEach(function (item, index) {
+                        //             if (item.enterpriseId != undefined) {
+                        //                 console.log(item);
+                        //                 vm.treeObj.enterpriseId = item.enterpriseId;
+                        //                 vm.treeObj.enterpriseName = item.label;
+                        //                 // monitorIdData.push(obj);
+                        //             }
+                        //         })
+
+                        //     }
+                        // })
+                        // console.log(vm.treeObj)
+                        // vm.monitorIdData.push(vm.treeObj);
+                        // // Array.prototype.push.apply(monitorIdData)
+                        // console.log(vm.monitorIdData)
+                        // console.log(this.$refs.tree.getCheckedKeys())
+                        // console.log(this.$refs.tree.getHalfCheckedNodes(true))
+
+                        // console.log(this.$refs.tree.getHalfCheckedNodes(true).concat(this.$refs.tree.getCheckedNodes()));
+                        // var data = this.$refs.tree.getHalfCheckedNodes(true).concat(this.$refs.tree.getCheckedNodes());
+                        // console.log(this.$refs.tree.getCheckedNodes(true));
+                        // console.log(data)
+
+                        // console.log(this.$refs.tree.getNode())
                     },
+
+                    mmmm(node, key, istrue) {
+                        // console.log(node,key,istrue);
+                        // console.log(this.$refs.tree.getCheckedNodes(true));
+                        // var data = this.$refs.tree.getCheckedNodes(true);
+
+
+                        // console.log(data)
+                        // for (var i = 0; i < data.length; i++) {
+                        //     // console.log(data[i])
+                        // }
+                        // data.forEach(function (dataItem, index) {
+                        //     // console.log(dataItem)
+                        //     var obj = {};
+
+                        // vm.enpriseData.forEach(function (item, index) {
+                        //     // console.log(item,index)
+
+                        //     item.children.forEach(function (it, index) {
+                        //         it.children.forEach(function (itthird, index) {
+                        //             itthird.children.forEach(function (itfourth, index) {
+                        //                 // console.log(itfourth);
+
+
+
+                        //                 if (itfourth.monitorId === dataItem.monitorId && itfourth.label === dataItem.label) {
+
+                        //                     // console.log(dataItem);
+                        //                     // console.log(item)
+
+                        //                     obj.monitorId = itfourth.monitorId;
+                        //                     obj.monitorName = itfourth.label;
+                        //                     obj.enterpriseId = item.enterpriseId;
+                        //                     obj.enterpriseName = item.label;
+                        //                     vm.monitorIdData.push(obj);
+
+
+                        //                 }
+
+
+
+                        //             })
+                        //         })
+                        //     })
+
+                        // })
+
+
+                        // })
+                        // console.log(vm.monitorIdData)
+
+
+                        // var obj = {};
+                        // var formData = [];
+                        // var data = this.$refs.tree.getCheckedNodes(true);
+                        // var dataobj = {};
+                        // var data1 = [];
+                        // data.forEach(function(item,index) {
+
+                        //      dataobj.monitorId = item.monitorId;
+                        //      dataobj.monitorName = item.label;
+                        //      data1.push(dataobj)
+                        // })
+                        // if (node.enterpriseId != undefined) {
+                        //     obj.enterpriseId = node.enterpriseId;
+                        //     obj.enterpriseName = node.label;
+                        //     formData.push(obj)
+
+                        //     var obj = formData.map((item, index) => {
+                        //         return { ...item, ...data1[index] };
+                        //     })
+
+                        //     obj.map(function (value, index, array) {
+                        //         console.log(value);
+                        //         vm.monitorIdData.push(value)
+                        //         // localStorage.setItem("data",JSON.stringify(value));
+                        //     })
+                        //     console.log(vm.monitorIdData)
+
+                        // }
+                        // console.log(obj);
+
+
+
+
+                    },
+
                     // 搜索
                     laySearch() {
-                        console.log(111)
+                        axios({
+                            method: "post",
+                            url: BASEURL + 'environmental_intelligent_monitoring/tdevicemonitor/list?limit=10000',
+                            params: {
+                                organizeName: vm.atraName,
+                                enterpriseName: vm.enterpriseName,
+                                tradeId: vm.trade
+                            }
+                        }).then(function (res) {
+                            if (res.data.code == 0) {
+                                var treeData = res.data.page.list;
+                                var dataList = [];
+                                // vm.enpriseData = res.data.page.list;
+                                treeData.forEach(function (data) {
+                                    for (var i = 0; i < dataList.length; i++) {
+                                        if (dataList[i].id === data.enterpriseId) {
+                                            dataList[i].children.push({
+                                                label: data.shopName,
+                                                children: [{
+                                                    label: data.type === "1" ? '生产设备' : '治污设备',
+                                                    id: data.type,
+                                                    children: [{ label: data.monitorName, id: data.id }]
+                                                }]
+                                            });
+                                            dataList[i].num++;
+                                            return;
+                                        }
+                                    }
+
+
+                                    dataList.push({
+                                        label: data.enterpriseName,
+                                        id: data.enterpriseId,
+                                        num: 1,
+                                        children: [{
+                                            label: data.shopName,
+                                            children: [{
+                                                label: data.type === "1" ? '生产设备' : '治污设备',
+                                                id: data.type,
+                                                children: [{ label: data.monitorName, id: data.id }]
+                                            }]
+                                        }]
+                                    });
+                                })
+                                // console.log(dataList)
+                                vm.enpriseData = dataList;
+
+                            }
+
+                        }).catch(function (err) {
+                            console.log(err);
+                        });
                     }
                 },
                 created() {
@@ -371,6 +727,14 @@
                 }).catch(function (err) {
                     console.log(err);
                 });
+
+
+                // 监听行业select
+                form.on('select(tradeLay)', function (data) {
+                    // console.log(data);
+                    vm.trade = data.value;
+
+                })
 
             });
         </script>

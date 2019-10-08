@@ -54,7 +54,9 @@
                     <input type="hidden" name="id">
                     <div class="layui-form-item">
                         <label for="bitian" class="layui-form-label">
-                            设置类型<span class="red">(必填)</span></label>
+                            设置类型
+                            <span class="red">(必填)</span>
+                        </label>
                         <div class="layui-input-inline">
                             <!-- <input type="text" v-model="tBizReduce.producetype" class="layui-input" placeholder="设置类型：限产、停产" /> -->
                             <select name="produceType" id="produceType" lay-verify="required">
@@ -66,7 +68,9 @@
                     </div>
                     <div class="layui-form-item">
                         <label for="bitian" class="layui-form-label">
-                            限产百分比%<span class="red">(必填)</span></label>
+                            限产百分比%
+                            <span class="red">(必填)</span>
+                        </label>
                         <div class="layui-input-inline">
                             <input type="text" name="lessProduce" class="layui-input" lay-verify="required" placeholder="限产百分比%" />
                         </div>
@@ -89,7 +93,9 @@
                     </div>
                     <div class="layui-form-item">
                         <label for="bitian" class="layui-form-label">
-                            预警等级<span class="red">(必填)</span></label>
+                            预警等级
+                            <span class="red">(必填)</span>
+                        </label>
                         <div class="layui-input-inline">
                             <!-- <input type="text" v-model="tBizReduce.levelname" class="layui-input" placeholder="预警等级名称：黄色、橙色、红色预警" /> -->
                             <select name="levelName" id="levelname" lay-verify="required">
@@ -183,7 +189,10 @@
 
                         })
                     } else {
-                        layer.msg('网络出错')
+                        vm.$notify.error({
+                            title: '错误',
+                            message: res.data.msg
+                        });
 
                     }
                 }).catch(error => {
@@ -211,7 +220,10 @@
                         }
                         );
                     } else {
-                        parent.layer.tips('编辑异常!');
+                        vm.$notify.error({
+                            title: '错误',
+                            message: '编辑异常'
+                        });
                     }
                 }).catch(function (err) {
                     console.log(err);
