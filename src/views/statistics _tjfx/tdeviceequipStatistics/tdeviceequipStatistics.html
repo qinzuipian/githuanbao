@@ -161,15 +161,18 @@
 									<div class="chartstatistics" v-for="(it,index) in list_box1">
 										<div class="box_odd" v-show="index == 0">
 											<p style="width: 50%;" v-text="it.name"></p>
-											<p style="width: 50%;text-align: right" v-text="it.percentage"></p>
+											<p style="width: 50%;text-align: right" v-text="it.value"></p>
+											<p>%</p>
 										</div>
 										<div class="box_odd" v-show="index != 0 & (index)%2 == 0">
 											<p style="width: 50%;" v-text="it.name"></p>
-											<p style="width: 50%;text-align: right" v-text="it.percentage"></p>
+											<p style="width: 50%;text-align: right" v-text="it.value"></p>
+											<p>%</p>
 										</div>
 										<div class="box" v-show="index != 0 & (index)%2 != 0">
 											<p style="width: 50%;" v-text="it.name"></p>
-											<p style="width: 50%;text-align: right" v-text="it.percentage"></p>
+											<p style="width: 50%;text-align: right" v-text="it.value"></p>
+											<p>%</p>
 										</div>
 
 									</div>
@@ -239,15 +242,18 @@
 									<div class="chartstatistics" v-for="(it,index) in list_box2">
 										<div class="box_odd" v-show="index == 0">
 											<p style="width: 50%;" v-text="it.name"></p>
-											<p style="width: 50%;text-align: right" v-text="it.percentage"></p>
+											<p style="width: 50%;text-align: right" v-text="it.value"></p>
+											<p>%</p>
 										</div>
 										<div class="box_odd" v-show="index != 0 & (index)%2 == 0">
 											<p style="width: 50%;" v-text="it.name"></p>
-											<p style="width: 50%;text-align: right" v-text="it.percentage"></p>
+											<p style="width: 50%;text-align: right" v-text="it.value"></p>
+											<p>%</p>
 										</div>
 										<div class="box" v-show="index != 0 & (index)%2 != 0">
 											<p style="width: 50%;" v-text="it.name"></p>
-											<p style="width: 50%;text-align: right" v-text="it.percentage"></p>
+											<p style="width: 50%;text-align: right" v-text="it.value"></p>
+											<p>%</p>
 										</div>
 									</div>
 								</div>
@@ -276,101 +282,29 @@
 					laydate = layui.laydate,
 					echarts = layui.echarts;
 
-
-				echart = echarts.init(document.getElementById('botchart')); //行业的图表
-				echarted = echarts.init(document.getElementById('botchart_')); //行政区域的图表
-				// option = {
-				// 	tooltip: {
-				// 		trigger: 'item',
-				// 		formatter: "{b}: {c} ({d}%)"
-				// 	},
-				// 	legend: {
-				// 		orient: 'vertical',
-				// 		x: 'left',
-				// 		data: [""]
-				// 	},
-				// 	title: {
-				// 		text: "企业分布",
-				// 		padding: "3"
-				// 	},
-				// 	series: [{
-				// 		type: 'pie',
-				// 		radius: ['20%', '40%'],
-				// 		avoidLabelOverlap: false,
-				// 		label: {
-				// 			normal: {
-				// 				show: false,
-				// 				position: 'center'
-				// 			},
-				// 			emphasis: {
-				// 				show: true,
-				// 				textStyle: {
-				// 					fontSize: '30',
-				// 					fontWeight: 'bold'
-				// 				}
-				// 			}
-				// 		},
-				// 		labelLine: {
-				// 			normal: {
-				// 				show: false
-				// 			}
-				// 		},
-				// 		data: []
-
-				// }]
-				// };
-				console.log(vm.list_Xpic);
-				echart.setOption({
-					series: [{
-						name: "企业",
-						data: vm.list_Xpic
-					}]
+				//取消了无数据加载时候的冒泡泡事件
+				echart = echarts.init(document.getElementById('botchart'), {
+					noDataLoadingOption: {
+						text: '暂无数据',
+						effect: "bubble",
+						effectOption: {
+							effect: {
+								n: 0 //气泡个数为0 
+							}
+						}
+					}
 				});
-				options = {
-					tooltip: {
-						trigger: 'item',
-						formatter: "{b}: {c} ({d}%)"
-					},
-					legend: {
-						orient: 'vertical',
-						x: 'left',
-						data: []
-					},
-					title: {
-						text: "企业分布",
-						padding: "3"
-					},
-					series: [{
-						name: "企业分布",
-						type: 'pie',
-						radius: ['20%', '40%'],
-						avoidLabelOverlap: false,
-						label: {
-							normal: {
-								show: false,
-								position: 'center'
-							},
-							emphasis: {
-								show: true,
-								textStyle: {
-									fontSize: '30',
-									fontWeight: 'bold'
-								}
+				//行业的图表,取消了无数据冒泡泡的事件
+				echarted = echarts.init(document.getElementById('botchart_'), {
+					noDataLoadingOption: {
+						text: '暂无数据',
+						effect: 'bubble',
+						effectOption: {
+							effect: {
+								n: 0 //气泡个数为0 
 							}
-						},
-						labelLine: {
-							normal: {
-								show: false
-							}
-						},
-						data: []
-					}]
-				};
-				console.log(vm.list_Xpic);
-				echarted.setOption({
-					series: [{
-						data: vm.list_Xpic
-					}]
+						}
+					}
 				});
 
 
@@ -440,7 +374,7 @@
 						produceType: vm.state_
 					}
 				}).then(function(res) {
-					console.log(res)
+					// console.log(res)
 					if (res.data.code == 0) {
 						vm.list_Xtable = res.data.data;
 					} else {
@@ -460,33 +394,27 @@
 						produceType: vm.state_
 					}
 				}).then(function(res) {
-					// console.log(res)
-					var obj = {
-
-					}
+					echart.hideLoading();
+					// console.log(res.data.data)
 					if (res.data.code == 0) {
+						console.log(res.data.data);
 						for (var i = 0; i < res.data.data.length; i++) {
-							obj.value = res.data.data[i].percent;
+							var obj = {}
+							console.log(i);
+							obj.value = res.data.data[i].percent * 100;
 							obj.name = res.data.data[i].name;
 							vm.list_Hpic.push(obj);
+							vm.list_box1.push(obj)
 						}
+						console.log(vm.list_Hpic);
 						echart.setOption({
-							noDataLoadingOption: {
-								text: '暂无数据',
-								effect: 'bubble',
-								effectOption: {
-									effect: {
-										n: 0 //气泡个数为0 
-									}
-								}
-							},
 							textStyle: {
 								fontSize: 32,
 								fontWeight: 'bold'
 							},
 							tooltip: {
 								trigger: 'item',
-								formatter: "{b}: {c} ({d}%)"
+								formatter: "{b}:({d}%)"
 							},
 							legend: {
 								orient: 'vertical',
@@ -520,15 +448,17 @@
 									}
 								},
 								data: vm.list_Hpic
-
 							}]
 						});
+
 					} else {
 
 					}
 				}).catch(function(err) {
 					console.log(err);
 				});
+
+
 				//行政中心的扇形图
 				axios({
 					method: "post",
@@ -538,18 +468,59 @@
 						produceType: vm.state_
 					}
 				}).then(function(res) {
-					console.log(res)
-					var obj = {
+					
 
-					}
 					if (res.data.code == 0) {
-						// for (var i = 0; i < res.data.data.length; i++) {
-						// 	obj.value = res.data.data[i].percent;
-						// 	obj.name = res.data.data[i].name;
-						// 	vm.list_pic.push(obj);
-						// }
-						vm.list_Xpic = res.data.data;
-						// console.log(vm.list_pic);
+						for (var i = 0; i < res.data.data.length; i++) {
+							var obj = {}
+							obj.value = res.data.data[i].percent * 100;
+							obj.name = res.data.data[i].name;
+							vm.list_Xpic.push(obj);
+							vm.list_box2.push(obj);
+						}
+						echarted.setOption({
+							textStyle: {
+								fontSize: 32,
+								fontWeight: 'bold'
+							},
+							tooltip: {
+								trigger: 'item',
+								formatter: "{b}:({d}%)"
+							},
+							legend: {
+								orient: 'vertical',
+								x: 'left',
+								data: []
+							},
+							title: {
+								text: "企业分布",
+								padding: "3"
+							},
+							series: [{
+								type: 'pie',
+								radius: ['20%', '40%'],
+								avoidLabelOverlap: false,
+								label: {
+									normal: {
+										show: false,
+										position: 'center'
+									},
+									emphasis: {
+										show: true,
+										textStyle: {
+											fontSize: '30',
+											fontWeight: 'bold'
+										}
+									}
+								},
+								labelLine: {
+									normal: {
+										show: false
+									}
+								},
+								data: vm.list_Xpic
+							}]
+						});
 					} else {
 
 					}
@@ -609,7 +580,6 @@
 				//点击外面其他部分,触发的事件
 				$(document).bind("click", function() {
 					vm.isActive = 0;
-					// console.log(vm.treeId);
 
 					$("#tree").css("display", "none");
 
@@ -679,8 +649,83 @@
 						}).catch(function(err) {
 							console.log(err);
 						});
+
+
+						//行政中心的扇形图
+						axios({
+							method: "post",
+							url: BASEURL + 'environmental_intelligent_monitoring/dataMonitor/queryOrganizeReport',
+							params: {
+								tradeId: vm.tradeName,
+								produceType: vm.state_
+							}
+						}).then(function(res) {
+							vm.list_Xpic = [];
+							vm.list_box2 = [];
+
+							if (res.data.code == 0) {
+								echarted.hideLoading();//收起来(暂无数据的框框)
+								for (var i = 0; i < res.data.data.length; i++) {
+									var obj = {}
+									obj.value = res.data.data[i].percent * 100;
+									obj.name = res.data.data[i].name;
+									vm.list_Xpic.push(obj);
+									vm.list_box2.push(obj);
+								}
+								echarted.setOption({
+									textStyle: {
+										fontSize: 32,
+										fontWeight: 'bold'
+									},
+									tooltip: {
+										trigger: 'item',
+										formatter: "{b}:({d}%)"
+									},
+									legend: {
+										orient: 'vertical',
+										x: 'left',
+										data: []
+									},
+									title: {
+										text: "企业分布",
+										padding: "3"
+									},
+									series: [{
+										type: 'pie',
+										radius: ['20%', '40%'],
+										avoidLabelOverlap: false,
+										label: {
+											normal: {
+												show: false,
+												position: 'center'
+											},
+											emphasis: {
+												show: true,
+												textStyle: {
+													fontSize: '30',
+													fontWeight: 'bold'
+												}
+											}
+										},
+										labelLine: {
+											normal: {
+												show: false
+											}
+										},
+										data: vm.list_Xpic
+									}]
+								}, true);
+							} else {
+
+							}
+						}).catch(function(err) {
+							console.log(err);
+						});
 					},
 					Hsearch: function() {
+						vm.list_Hpic = [];
+						vm.list_box1 = [];
+						//搜索表格
 						axios({
 							method: "post",
 							url: BASEURL + 'environmental_intelligent_monitoring/dataMonitor/queryEnterpriseReportOrderByTrade',
@@ -699,15 +744,84 @@
 							console.log(err);
 						});
 
+						//行业搜索扇形图
+						axios({
+							method: "post",
+							url: BASEURL + 'environmental_intelligent_monitoring/dataMonitor/queryTradeReport',
+							params: {
+								organizeId: vm.treeId,
+								produceType: vm.state_
+							}
+						}).then(function(res) {
+							echart.hideLoading();
+							if (res.data.code == 0) {
+								for (var i = 0; i < res.data.data.length; i++) {
+
+
+									var obj = {};
+									obj.value = res.data.data[i].percent * 100;
+									obj.name = res.data.data[i].name;
+									vm.list_Hpic.push(obj)
+									vm.list_box1.push(obj);
+									// console.log(vm.list_Hpic);
+								}
+
+								echart.setOption({
+									textStyle: {
+										fontSize: 32,
+										fontWeight: 'bold'
+									},
+									tooltip: {
+										trigger: 'item',
+										formatter: "{b}:({d}%)"
+									},
+									legend: {
+										orient: 'vertical',
+										x: 'left',
+										data: []
+									},
+									title: {
+										text: "企业分布",
+										padding: "3"
+									},
+									series: [{
+										type: 'pie',
+										radius: ['20%', '40%'],
+										avoidLabelOverlap: false,
+										label: {
+											normal: {
+												show: false,
+												position: 'center'
+											},
+											emphasis: {
+												show: true,
+												textStyle: {
+													fontSize: '30',
+													fontWeight: 'bold'
+												}
+											}
+										},
+										labelLine: {
+											normal: {
+												show: false
+											}
+										},
+										data: vm.list_Hpic
+
+									}]
+								}, true);
+							} else {
+
+							}
+						}).catch(function(err) {
+							console.log(err);
+						});
+
 
 					},
 					handleNodeClick(data, node) {
 						vm.treeValue = data.label;
 						vm.treeId = data.id;
-
-						// console.log();
-
-						// console.log(this.tree);
 						vm.treeHign = true;
 						var localname = node.parent.childNodes[0].parent.data.label === undefined ? '无上级目录' : node.parent.childNodes[
 								0]
@@ -783,9 +897,9 @@
 				}
 
 			})
-			// window.onclick = function() {
-			// 	echarted.resize();
-			// }
+			window.onclick = function() {
+				echarted.resize();
+			}
 		</script>
 	</body>
 </html>

@@ -62,13 +62,14 @@
 			margin-bottom: 0;
 			width: 50%;
 		}
+
 		.empty {
 			height: 30px;
 			z-index: 999;
 			background: white;
 			position: relative;
 			padding-left: 26px;
-		
+
 		}
 	</style>
 
@@ -123,14 +124,16 @@
 						</div>
 					</div>
 				</div>
+				<div id="echart" style="width:100%;height:450px;display: none;"></div>
 				<div class="layui-card-body">
-					<el-table :data="tableData" style="width: 100%" :row-key="row_key" :expand-row-key = "expandRowKey">
+					<el-table :data="tableData" :row-key="getRowKeys" :expand-row-keys="expands" style="width: 100%">
 						<el-table-column type="expand">
 							<template slot-scope="props">
 								<el-form label-position="left" inline class="demo-table-expand">
-									<el-form-item label="我在这边" >
-
-										<div style="width:100%;height:450px;" id="botchart"></div>
+									<el-form-item >
+										<div style="width:100%;height:450px;">
+											{{props.row.name}}
+										</div>
 									</el-form-item>
 								</el-form>
 							</template>
@@ -142,18 +145,17 @@
 						</el-table-column>
 						<el-table-column label="行业" prop="desc">
 						</el-table-column>
-						<el-table-column label="生产状态" prop="">
+						<el-table-column label="生产状态" prop="id">
 						</el-table-column>
-						<el-table-column label="是否污染日" prop="">
+						<el-table-column label="是否污染日" prop="name">
 						</el-table-column>
-						<el-table-column label="空气质量" prop="">
+						<el-table-column label="空气质量" prop="desc">
 						</el-table-column>
-						<el-table-column label="用电量(kWh)" prop="">
+						<el-table-column label="用电量(kWh)" prop="name">
 						</el-table-column>
-						<el-table-column label="排名" prop="">
+						<el-table-column label="排名" prop="name">
 						</el-table-column>
 					</el-table>
-					<!-- <div style="width: 100%;height: 6.25rem;"></div> -->
 				</div>
 			</div>
 		</div>
@@ -175,15 +177,19 @@
 					laydate = layui.laydate,
 					echarts = layui.echarts;
 
-				var data = new Date();
-				var max_data = data.getDate();
-				laydate.render({
-					elem: '#startDate',
-					btns: ['confirm'],
-					max: "max_data"
+
+
+				echart = echarts.init(document.getElementById('echart'), {
+					noDataLoadingOption: {
+						text: '暂无数据',
+						effect: "bubble",
+						effectOption: {
+							effect: {
+								n: 0 //气泡个数为0 
+							}
+						}
+					}
 				});
-				// console.log(document.getElementById('botchart'))
-				// var echart = echarts.init(document.getElementById('botchart')); //行业的图表
 				option = {
 					xAxis: {
 						type: 'category',
@@ -197,10 +203,19 @@
 						type: 'line'
 					}]
 				};
-				// 
-				// 				echart.setOption(option);
+				echart.setOption(option);
+
+				// 获取当前的时间
+				var data = new Date();
+				var max_data = data.getDate();
+				laydate.render({
+					elem: '#startDate',
+					btns: ['confirm'],
+					max: "max_data"
+				});
 
 
+				//下拉菜单里面的选项
 				axios({
 					method: "post",
 					url: BASEURL + 'environmental_intelligent_monitoring/tbastrade/list?limit=10000',
@@ -221,87 +236,7 @@
 				});
 
 
-				table.render({
-					elem: '#LAY-app-content-list',
-					height: 555 //容器高度
-						,
-					url: layui.setter.BASEURL + 'environmental_intelligent_monitoring/tdeviceequipstatus/queryAllList' //数据接口
-						,
-					page: true,
-					parseData: function(res) { // 数据重新处理为layUI的数据格式
-						var msg = {
-							"code": res.code, //解析接口状态
-							"msg": res.msg, //解析提示文本
-							"count": res.page.totalCount, //解析数据长度
-							"data": res.page.list //解析数据列表
-						};
-						return msg;
-					},
-					cols: [
-							[{
-									type: 'numbers',
-									minWidth: 40,
-									width: 50
-								},
-								{
-									title: '企业名称',
-									field: 'enterpriseName',
-									minWidth: 200
-								}, {
-									title: '机构',
-									field: 'shopName',
-									minWidth: 100
-								}, {
-									title: '行业',
-									field: 'equipName',
-									minWidth: 100
-								}, {
-									title: '生产状态',
-									field: 'monitorName',
-									minWidth: 60
-								}, {
-									title: '是否污染日',
-									field: 'swicthId',
-									minWidth: 100
-								}, {
-									title: '空气质量',
-									field: 'meterId',
-									minWidth: 100
-								}, {
-									title: '用电量（kWh）',
-									field: 'state',
-									Width: 30
-								}, {
-									title: '排名',
-									minWidth: 100,
-									toolbar: '#barDemo'
-								}
-							]
-						] //设置表头
-						,
-					limit: 10,
-					limits: [10, 15, 20, 25, 30]
-				});
-				table.on('tool(LAY-app-content-list)', function(obj) {
-					var data = obj.data;
-					console.log(data.id);
-					if (obj.event === 'detail') {
-						window.id = data.id;
-						layer.open({
-							type: 2,
-							title: '实时数据',
-							content: 'tdeviceequipstatusDeatil.html',
-							maxmin: true,
-							area: ['1050px', '550px']
-							// btn: ['确定', '取消'],
-							// yes: function(index, layero) {
-							// 	//点击确认触发 iframe 内容中的按钮提交
-							// 	var submit = layero.find('iframe').contents().find("#layuiadmin-app-form-submit");
-							// 	submit.click();
-							// }
-						});
-					}
-				});
+
 
 
 
@@ -340,7 +275,6 @@
 				//点击外面其他部分,触发的事件
 				$(document).bind("click", function() {
 					vm.isActive = 0;
-
 					$("#tree").css("display", "none");
 
 				})
@@ -380,44 +314,27 @@
 						address: '上海市普陀区真北路',
 						shop: '王小虎夫妻店',
 						shopId: '10333'
-					}, {
-						id: '12987125',
-						name: '好滋好味鸡蛋仔',
-						category: '江浙小吃、小吃零食',
-						desc: '荷兰优质淡奶，奶香浓而不腻',
-						address: '上海市普陀区真北路',
-						shop: '王小虎夫妻店',
-						shopId: '10333'
-					}, {
-						id: '12987126',
-						name: '好滋好味鸡蛋仔',
-						category: '江浙小吃、小吃零食',
-						desc: '荷兰优质淡奶，奶香浓而不腻',
-						address: '上海市普陀区真北路',
-						shop: '王小虎夫妻店',
-						shopId: '10333'
+
 					}],
-					echart:"",
-					expandRowKey:[]
+					expands: []
 				},
 				methods: {
-					emptyTree:function(){
+					emptyTree: function() {
 						vm.treeValue = "",
-						vm.treeId = ""
+							vm.treeId = ""
+					},
+					getRowKeys(row) {
+						console.log(row.id);
+						return row.id;
 					},
 					appear: function(isActive) {
 						this.tree = !this.tree
 						this.isActive = !this.isActive
 					},
-					
-					row_key: function() {
-						return row.id;
-					},
-					
 					handleNodeClick(data, node) {
 						vm.treeValue = data.label;
-						console.log(data.label);
-						console.log(this.tree);
+						// console.log(data.label);
+						// console.log(this.tree);
 						vm.treeHign = true;
 						// console.log(node.parent.childNodes[0].parent.data.label)
 						var localname = node.parent.childNodes[0].parent.data.label === undefined ? '无上级目录' : node.parent.childNodes[0]
@@ -460,7 +377,7 @@
 						});
 					},
 					organizeTree() {
-						console.log(this.tree);
+						// console.log(this.tree);
 						axios({
 							method: "post",
 							url: BASEURL + 'environmental_intelligent_monitoring/tbasorganize/list?limit=10000',
@@ -493,9 +410,8 @@
 					this.organizeTree();
 				},
 				mounted() {
-					this.expandRowKey.push(this.tableData[1].id)
-					// this.echart = layui.echarts.init(document.getElementById('botchart')); //行业的图表
-					// this.echart.setOption(option);
+					// 在这里你想初始化的时候展开哪一行都可以了
+					this.expands.push(this.tableData[0].id);
 				}
 
 			})
