@@ -107,12 +107,15 @@
 						enterpriseId: 89
 					}
 				}).then(function(res) {
-					console.log(res);
+					vm.ptotal_list =[];
+					vm.w_list =[];
+					vm.aqi_lis =[];
+					// console.log(res);
 					pow_chart.hideLoading();
 					if (res.data.code == 0) {
 						for (var i = 0; i < res.data.data.length; i++) {
-							
-							vm.total_list.push((i+1));
+
+							vm.ptotal_list.push((i + 1));
 							// console.log(vm.total_list);
 							vm.w_list.push(res.data.data[i].w);
 							vm.aqi_list.push(res.data.data[i].AQI)
@@ -121,51 +124,49 @@
 						pow_chart.setOption({
 							xAxis: {
 								type: 'category',
-								data: vm.total_list
+								data: vm.ptotal_list
 							},
 							legend: {
 								data: ['总用电量', 'AQI'],
 								x: 'left'
 							},
+							tooltip: {
+								trigger: 'axis'
+							},
 							yAxis: [{
 									name: '(KW.h)',
-									type: 'value',
-									max: 500
+									type: 'value'
+
 								},
 								{
 									name: 'AQI',
 									nameLocation: 'end',
-									max: 5,
-									type: 'value',
-									inverse: true
+									type: 'value'
 								}
 							],
-							series: [
-							        {
-							            name:'总用电量',
-							            type:'line',
-							            animation: false,
-							            areaStyle: {
-							            },
-							            lineStyle: {
-							                width: 1
-							            },
-							            
-							            data:vm.w_list
-							        },
-							        {
-							            name:'AQI',
-							            type:'line',
-							            yAxisIndex:1,
-							            animation: false,
-							            areaStyle: {
-							            },
-							            lineStyle: {
-							                width: 1
-							            },
-							            data: vm.aqi_list
-							        }
-							    ]
+							series: [{
+									name: '总用电量',
+									type: 'line',
+									animation: false,
+									areaStyle: {},
+									lineStyle: {
+										width: 1
+									},
+
+									data: vm.w_list
+								},
+								{
+									name: 'AQI',
+									type: 'line',
+									yAxisIndex: 1,
+									animation: false,
+									areaStyle: {},
+									lineStyle: {
+										width: 1
+									},
+									data: vm.aqi_list
+								}
+							]
 						}, true);
 					} else {
 
@@ -220,13 +221,7 @@
 
 				})
 
-
-
 			});
-
-
-
-
 
 
 			var vm = new Vue({
@@ -237,7 +232,12 @@
 					item_voc: 0,
 					w_list: [],
 					aqi_list: [],
-					total_list:[]
+					voc_list:[],
+					ptotal_list: [],
+					dtotal_list: [],
+					vtotal_list: [],
+					p2_list: [],
+					p10_list: []
 				},
 				methods: {
 					power: function() {
@@ -246,14 +246,181 @@
 						this.item_voc = 0
 					},
 					dust: function() {
+						vm.aqi_list = [];
+						vm.p10_list = [];
+						vm.p2_lis = [];
+						vm.dtotal_list =[]
 						this.item_power = 0;
-						this.item_dust = 1
-						this.item_voc = 0
+						this.item_dust = 1;
+						this.item_voc = 0;
+						axios({
+							method: "get",
+							url: BASEURL + 'environmental_intelligent_monitoring/dataMonitor/queryEnterpriseReduceReport',
+							params: {
+								enterpriseId: 89
+							}
+						}).then(function(res) {
+							console.log(res);
+							dus_chart.hideLoading();
+							if (res.data.code == 0) {
+								
+								for (var i = 0; i < res.data.data.length; i++) {
+
+									vm.dtotal_list.push((i + 1));
+									vm.p10_list.push(res.data.data[i].pm10);
+									vm.p2_list.push(res.data.data[i].pm25);
+									vm.aqi_list.push(res.data.data[i].AQI);
+									console.log(vm.p10_list);
+									console.log(vm.p2_list);
+									console.log(vm.aqi_list);
+
+								}
+								dus_chart.setOption({
+									xAxis: {
+										type: 'category',
+										data: vm.dtotal_list
+									},
+									legend: {
+										data: ['PM2.5', "PM10", 'AQI'],
+										x: 'left'
+									},
+									tooltip: {
+										trigger: 'axis'
+									},
+									yAxis: [{
+											name: '(μg/m3)',
+											type: 'value'
+
+										},
+										{
+											name: 'AQI',
+											nameLocation: 'end',
+											type: 'value'
+										}
+									],
+									series: [{
+											name: 'PM2.5',
+											type: 'line',
+											animation: false,
+											areaStyle: {},
+											lineStyle: {
+												width: 1
+											},
+
+											data: vm.p2_list
+										},
+										{
+											name: 'PM10',
+											type: 'line',
+											animation: false,
+											areaStyle: {},
+											lineStyle: {
+												width: 1
+											},
+
+											data: vm.p10_list
+										},
+										{
+											name: 'AQI',
+											type: 'line',
+											yAxisIndex: 1,
+											animation: false,
+											areaStyle: {},
+											lineStyle: {
+												width: 1
+											},
+											data: vm.aqi_list
+										}
+									]
+								}, true);
+							} else {
+
+							}
+						}).catch(function(err) {
+							console.log(err);
+						});
+
+
 					},
 					voc: function() {
+						vm.voc_list = [];
+						vm.aqi_list=[];
+						vm.vtotal_list=[]
 						this.item_power = 0;
-						this.item_dust = 0
-						this.item_voc = 1
+						this.item_dust = 0;
+						this.item_voc = 1;
+						axios({
+							method: "get",
+							url: BASEURL + 'environmental_intelligent_monitoring/dataMonitor/queryEnterpriseReduceReport',
+							params: {
+								enterpriseId: 89
+							}
+						}).then(function(res) {
+							console.log(res);
+							voc_chart.hideLoading();
+							if (res.data.code == 0) {
+								for (var i = 0; i < res.data.data.length; i++) {
+
+									vm.vtotal_list.push((i + 1));
+									// console.log(vm.total_list);
+									vm.voc_list.push(res.data.data[i].hour);
+									vm.aqi_list.push(res.data.data[i].AQI)
+
+								}
+								voc_chart.setOption({
+									xAxis: {
+										type: 'category',
+										data: vm.vtotal_list
+									},
+									legend: {
+										data: ['气体浓度', 'AQI'],
+										x: 'left'
+									},
+									tooltip: {
+										trigger: 'axis'
+									},
+									yAxis: [{
+											name: '(mg/m3)',
+											type: 'value'
+
+										},
+										{
+											name: 'AQI',
+											nameLocation: 'end',
+											type: 'value'
+										}
+									],
+									series: [{
+											name: '气体浓度',
+											type: 'line',
+											animation: false,
+											areaStyle: {},
+											lineStyle: {
+												width: 1
+											},
+
+											data: vm.voc_list
+										},
+										{
+											name: 'AQI',
+											type: 'line',
+											yAxisIndex: 1,
+											animation: false,
+											areaStyle: {},
+											lineStyle: {
+												width: 1
+											},
+											data: vm.aqi_list
+										}
+									]
+								}, true);
+							} else {
+
+							}
+						}).catch(function(err) {
+							console.log(err);
+						});
+
 
 					}
 				}
