@@ -42,7 +42,7 @@
 						<div class="layui-inline">
 							<label class="layui-form-label">设备名称</label>
 							<div class="layui-input-inline">
-								<input type="text" name="equipmentName" placeholder="请输入设备名称" autocomplete="off" class="layui-input">
+								<input type="text" name="equipName" placeholder="请输入设备名称" autocomplete="off" class="layui-input">
 							</div>
 						</div>
 						<div class="layui-inline">
@@ -54,7 +54,7 @@
 						<div class="layui-inline">
 							<label class="layui-form-label">事件类型</label>
 							<div class="layui-input-inline">
-								<select name="eventTypeId" id="eventType" lay-filter="eventType" lay-verify="required">
+								<select name="eventType" id="eventType" lay-filter="eventType">
 									<option value="">请选择事件类型</option>
 									<option value=""></option>
 								</select>
@@ -69,20 +69,21 @@
 						<div class="layui-inline">
 							<button class="layui-btn layuiadmin-btn-list" lay-submit lay-filter="LAY-app-contlist-search">
 								<i class="layui-icon layui-icon-search layuiadmin-button-btn"></i>
-                            </button>
-                            <button type="button" class="layui-btn layui-btn-normal">
-                                    <i class="layui-icon layui-icon-template-1 layuiadmin-button-btn"></i>
-                                批量处理</button>
+							</button>
+
 						</div>
 					</div>
 				</div>
 
 				<div class="layui-card-body">
-					<!-- <div style="padding-bottom: 10px;">
-						<button class="layui-btn layuiadmin-btn-list" data-type="add">添加</button>
+					<div style="padding-bottom: 10px;">
+						<button type="button" class="layui-btn layui-btn-normal layuiadmin-btn-list" data-type="batchHandle">
+							<i class="layui-icon layui-icon-template-1 layuiadmin-button-btn"></i>
+							批量处理</button>
+						<!-- <button class="layui-btn layuiadmin-btn-list" data-type="add">添加</button>
 						<button class="layui-btn layuiadmin-btn-list" data-type="edit">编辑</button>
-						<button class="layui-btn layuiadmin-btn-list" data-type="batchdel">删除</button>
-					</div> -->
+						<button class="layui-btn layuiadmin-btn-list" data-type="batchdel">删除</button> -->
+					</div>
 					<table id="LAY-app-content-list" lay-filter="LAY-app-content-list"></table>
 					<script type="text/html" id="barDemo">
 						<!-- <a class="layui-btn layui-btn-xs" lay-event="edit">运行数据</a> -->
@@ -131,17 +132,21 @@
 						"data": res.page.list //解析数据列表
 					};
 					return msg;
+				},
+				where: {
+					currentStatus: 0
 				}
 				, cols: [[
 					{ checkbox: true },
 					// { title: '主键', field: 'id', minWidth: 100 },
 					// { title: '', field: 'ct', minWidth: 100 },
 
-					// { title: '详情', field: 'description', minWidth: 100 },
+
 					// { title: '企业ID', field: 'enterpriseId', minWidth: 100 },
 					{ title: '企业名称', field: 'enterpriseName', minWidth: 100 },
 					{ title: '事件类型', field: 'eventType', minWidth: 100 },
-					{ title: '时间', field: 'lastTime', minWidth: 100 },
+					{ title: '发生时间', field: 'lastTime', minWidth: 100 },
+					{ title: '详情', field: 'description', minWidth: 200 },
 					// { title: '审批状态', field: 'currentStatus', minWidth: 100 },
 					{ fixed: 'right', title: '操作', toolbar: '#barDemo', width: 200 }
 					// { title: '', field: 'isSubmit', minWidth: 100 },
@@ -197,7 +202,7 @@
 					// console.log(res)
 					$.each(res.data.data, function (index, item) {
 						// console.log(index, item)
-						$('#eventType').append(new Option(item.eventType, item.eventTypeId));// 下拉菜单里添加元素
+						$('#eventType').append(new Option(item.eventType, item.eventType));// 下拉菜单里添加元素
 					});
 					layui.form.render("select");
 
@@ -223,7 +228,7 @@
 
 			var $ = layui.$,
 				active = {
-					batchdel: function () {
+					batchHandle: function () {
 						var checkStatus = table.checkStatus('LAY-app-content-list'),
 							checkData = checkStatus.data; //得到选中的数据
 
@@ -231,7 +236,7 @@
 							return layer.msg('请选择数据');
 						}
 
-						layer.confirm('确定删除吗？', function (index) {
+						layer.confirm('确定批量处理吗？', function (index) {
 
 							//执行 Ajax 后重载
 							/*
@@ -241,27 +246,8 @@
 							});
 							*/
 							table.reload('LAY-app-content-list');
-							layer.msg('已删除');
+							layer.msg('已完成');
 						});
-					},
-					add: function () {
-						layer.open({
-							type: 2,
-							title: '添加文章',
-							content: 'listform.html',
-							maxmin: true,
-							area: ['550px', '550px'],
-							btn: ['确定', '取消'],
-							yes: function (index, layero) {
-								//点击确认触发 iframe 内容中的按钮提交
-								var submit = layero.find('iframe').contents().find("#layuiadmin-app-form-submit");
-								submit.click();
-							}
-						});
-					},
-					edit: function () {
-
-
 					}
 				};
 

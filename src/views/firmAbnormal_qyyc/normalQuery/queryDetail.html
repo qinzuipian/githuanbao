@@ -86,7 +86,7 @@
                         <label for="bitian" class="layui-form-label">
                             设备名称</label>
                         <div class="layui-input-inline">
-                            <input type="text" name="" class="layui-input" placeholder="设备名称" />
+                            <input type="text" name="equipName" class="layui-input" placeholder="设备名称" />
                         </div>
                     </div>
                     <div class="layui-form-item">
@@ -100,7 +100,7 @@
                         <label for="bitian" class="layui-form-label">
                             网关编码</label>
                         <div class="layui-input-inline">
-                            <input type="text" name="" class="layui-input" placeholder="网关编码" />
+                            <input type="text" name="swicthId" class="layui-input" placeholder="网关编码" />
                         </div>
                     </div>
                     <div class="layui-form-item">
@@ -129,14 +129,16 @@
                         <label for="bitian" class="layui-form-label">
                             详情</label>
                         <div class="layui-input-inline">
-                            <input type="text" name="reason" class="layui-input" placeholder="详情" />
+                            <textarea placeholder="详情" class="layui-textarea" name="description"></textarea>
+                            <!-- <input type="text" name="reason" class="layui-input" placeholder="详情" /> -->
                         </div>
                     </div>
                     <div class="layui-form-item">
                         <label for="bitian" class="layui-form-label">
                             备注</label>
                         <div class="layui-input-inline">
-                            <input type="text" name="remark" class="layui-input" placeholder="备注" />
+                            <textarea placeholder="备注" class="layui-textarea" name="remark"></textarea>
+                            <!-- <input type="text" name="remark" class="layui-input" placeholder="备注" /> -->
                         </div>
                     </div>
                     <div class="btn-box">
@@ -169,7 +171,9 @@
                             'meterId': detailData.meterId,
                             'reason': detailData.reason,
                             'description': detailData.description,
-                            'remark': detailData.remark
+                            'remark': detailData.remark,
+                            'equipName': detailData.equipName,
+                            'swicthId': detailData.swicthId
                         })
                     } else {
                         vm.$notify.error({
@@ -198,7 +202,7 @@
                             this.nomalActive = 3;
                         } else if (parent.currentStatus == 3) {
                             this.nomalActive = 4;
-                        }else if (parent.currentStatus == 4) {
+                        } else if (parent.currentStatus == 4) {
                             this.nomalActive = 3;
                         }
                     }

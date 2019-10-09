@@ -3,3 +3,4 @@ node_modules/
 /src/layuiadmin/
 .gitignore
 .vscode
+/src/views/index.html
