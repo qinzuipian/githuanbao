@@ -42,7 +42,7 @@
 						<div class="layui-inline">
 							<label class="layui-form-label">设备名称</label>
 							<div class="layui-input-inline">
-								<input type="text" name="equipmentName" placeholder="请输入设备名称" autocomplete="off" class="layui-input">
+								<input type="text" name="equipName" placeholder="请输入设备名称" autocomplete="off" class="layui-input">
 							</div>
 						</div>
 						<div class="layui-inline">
@@ -54,7 +54,7 @@
 						<div class="layui-inline">
 							<label class="layui-form-label">事件类型</label>
 							<div class="layui-input-inline">
-								<select name="eventTypeId" id="eventType" lay-filter="eventType" lay-verify="required">
+								<select name="eventType" id="eventType" lay-filter="eventType">
 									<option value="">请选择事件类型</option>
 									<option value=""></option>
 								</select>
@@ -134,11 +134,12 @@
 					// { title: '主键', field: 'id', minWidth: 100 },
 					// { title: '', field: 'ct', minWidth: 100 },
 
-					// { title: '详情', field: 'description', minWidth: 100 },
+
 					// { title: '企业ID', field: 'enterpriseId', minWidth: 100 },
 					{ title: '企业名称', field: 'enterpriseName', minWidth: 100 },
 					{ title: '事件类型', field: 'eventType', minWidth: 100 },
-					{ title: '时间', field: 'lastTime', minWidth: 100 },
+					{ title: '发生时间', field: 'lastTime', minWidth: 100 },
+					{ title: '详情', field: 'description', minWidth: 200 },
 					{ title: '审批状态', field: 'currentStatus', minWidth: 100 },
 					{ fixed: 'right', title: '操作', toolbar: '#barDemo', width: 200 }
 					// { title: '', field: 'isSubmit', minWidth: 100 },
@@ -198,7 +199,8 @@
 						content: 'queryDetail.html' //这里content是一个普通的String
 					});
 				} else if (layEvent === 'edit') {
-					location.href = "firmMonitor.html";
+					// location.href = "firmMonitor.html";
+					layer.msg('暂未开发')
 				}
 			});
 
@@ -213,7 +215,7 @@
 					// console.log(res)
 					$.each(res.data.data, function (index, item) {
 						// console.log(index, item)
-						$('#eventType').append(new Option(item.eventType, item.eventTypeId));// 下拉菜单里添加元素
+						$('#eventType').append(new Option(item.eventType, item.eventType));// 下拉菜单里添加元素
 					});
 					layui.form.render("select");
 

@@ -6,7 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>企业监控</title>
-
     <link rel="stylesheet" href="./../../../layuiadmin/layui/css/layui.css" media="all">
     <link rel="stylesheet" href="./../../../layuiadmin/style/admin.css" media="all">
     <link rel="stylesheet" href="./../../../layuiadmin/style/firmMonitor.css">
@@ -75,9 +74,8 @@
             base: '../../../layuiadmin/' //静态资源所在路径
         }).extend({
             index: 'lib/index' //主入口模块
-        }).use(['index', 'table', 'laydate'], function () {
-            var table = layui.table,
-                form = layui.form,
+        }).use(['index', 'laydate'], function () {
+            var form = layui.form,
                 laydate = layui.laydate;
 
             //时间日期
