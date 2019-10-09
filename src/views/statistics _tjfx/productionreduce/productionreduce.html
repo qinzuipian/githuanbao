@@ -103,7 +103,8 @@
 						<div class="layui-inline">
 							<label class="layui-form-label">行政区域</label>
 							<div class="layui-input-inline">
-								<input readonly="readonly" placeholder="请选择" id="div_" v-model="treeValue" class="layui-input" @click="appear">
+								<input readonly="readonly" placeholder="请选择" id="div_" v-model="treeValue" class="layui-input"
+								 @click="appear">
 								<i class="layui-icon-triangle-d layui-icon" v-bind:class="[{ actived: isActive },{ actived_after: !isActive }]"
 								 style="color: gray;"></i>
 								<div style="position: absolute;display: none;" class="layui-input-inline" id="tree">
@@ -119,7 +120,7 @@
 							<div class="layui-form-item">
 								<label class="layui-form-label">所属行业</label>
 								<div class="layui-input-block">
-									<select name="tradeName" id="eventType" lay-filter="eventType">
+									<select name="tradeId" id="eventType" lay-filter="eventType">
 										<option value="">请选择</option>
 										<option value=""></option>
 									</select>
@@ -127,7 +128,7 @@
 							</div>
 						</div>
 						<div class="layui-inline">
-							<button class="layui-btn layuiadmin-btn-list" lay-submit lay-filter="LAY-app-contlist-search">
+							<button class="layui-btn layuiadmin-btn-list" lay-submit lay-filter="LAY-app-contlist-search" @click="search">
 								<i class="layui-icon layui-icon-search layuiadmin-button-btn"></i>
 							</button>
 						</div>
@@ -151,6 +152,7 @@
 		</script>
 
 		<script>
+			var tables;
 			layui.config({
 				base: '../../../layuiadmin/' //静态资源所在路径
 			}).extend({
@@ -161,22 +163,19 @@
 					laydate = layui.laydate,
 					echarts = layui.echarts;
 
-				table.render({
+
+
+
+
+
+				tables = table.render({
 					elem: '#LAY-app-content-list',
 					height: 555 //容器高度
 						,
 					url: layui.setter.BASEURL + 'environmental_intelligent_monitoring/dataMonitor/queryEnterpriseReduceList' //数据接口
 						,
 					page: true,
-					parseData: function(res) { // 数据重新处理为layUI的数据格式
-						// var msg = {
-						// 	"code": res.code, //解析接口状态
-						// 	"msg": res.msg, //解析提示文本
-						// 	"count": res.page.totalCount, //解析数据长度
-						// 	"data": res.page.list //解析数据列表
-						// };
-						// return msg;
-					},
+
 					cols: [
 							[{
 									type: 'numbers',
@@ -221,20 +220,29 @@
 						] //设置表头
 						,
 					limit: 10,
-					limits: [10, 15, 20, 25, 30]
+					limits: [10, 15, 20, 25, 30],
+					done: function(res, page, count) {
+						$("[data-field='isPollutionDay']").children().each(function() {
+							if ($(this).text() == '0') {
+								$(this).text("非污染日")
+							} else if ($(this).text() == '1') {
+								$(this).text("是污染日")
+							}
+						})
+					}
 				});
 				table.on('tool(LAY-app-content-list)', function(obj) {
 					var data = obj.data;
-					console.log(data.id);
+					console.log(data.enterpriseId);
 					if (obj.event === 'detail') {
-						window.id = data.id;
+						window.id = data.enterpriseId;
 						layer.open({
 							type: 2,
 							title: '实时数据',
 							content: 'productionreduceDetail.html',
 							maxmin: true,
-							area: ['1050px', '550px']
-							
+							area: ['1050px', '650px']
+
 						});
 					}
 				});
@@ -260,7 +268,7 @@
 					if (res.data.code == 0) {
 						// console.log(res)
 						$.each(res.data.page.list, function(index, item) {
-							// console.log(index, item)
+							console.log(item.id);
 							$('#eventType').append(new Option(item.name, item.id)); // 下拉菜单里添加元素
 						});
 						layui.form.render("select");
@@ -272,8 +280,13 @@
 				});
 
 
+				// 监听select框获取选中的text值
+				form.on('select(tradeName)', function(data) {
+					console.log(data.elem[data.elem.selectedIndex].text);
+					vm.tradeName = data.elem[data.elem.selectedIndex].text
+					form.render();
 
-
+				});
 
 
 				//监听搜索
@@ -313,11 +326,14 @@
 					vm.isActive = 0;
 					$("#tree").css("display", "none");
 
-				})
+				});
 
 
 
 			});
+
+
+
 
 
 
@@ -342,39 +358,9 @@
 					tree: 0,
 					isActive: 0,
 					treeValue: "",
-					tableData: [{
-						id: '12987122',
-						name: '好滋好味鸡蛋仔',
-						category: '江浙小吃、小吃零食',
-						desc: '荷兰优质淡奶，奶香浓而不腻',
-						address: '上海市普陀区真北路',
-						shop: '王小虎夫妻店',
-						shopId: '10333'
-					}, {
-						id: '12987123',
-						name: '好滋好味鸡蛋仔',
-						category: '江浙小吃、小吃零食',
-						desc: '荷兰优质淡奶，奶香浓而不腻',
-						address: '上海市普陀区真北路',
-						shop: '王小虎夫妻店',
-						shopId: '10333'
-					}, {
-						id: '12987125',
-						name: '好滋好味鸡蛋仔',
-						category: '江浙小吃、小吃零食',
-						desc: '荷兰优质淡奶，奶香浓而不腻',
-						address: '上海市普陀区真北路',
-						shop: '王小虎夫妻店',
-						shopId: '10333'
-					}, {
-						id: '12987126',
-						name: '好滋好味鸡蛋仔',
-						category: '江浙小吃、小吃零食',
-						desc: '荷兰优质淡奶，奶香浓而不腻',
-						address: '上海市普陀区真北路',
-						shop: '王小虎夫妻店',
-						shopId: '10333'
-					}]
+					treeId: '',
+					tradeName: ''
+
 
 				},
 				methods: {
@@ -382,17 +368,88 @@
 						vm.treeValue = "",
 							vm.treeId = ""
 					},
+					search: function() {
+						tables.reload({
+							elem: '#LAY-app-content-list',
+							height: 555 //容器高度
+								,
+							where: {
+								organizeId:vm.treeId
+
+							},
+							url: layui.setter.BASEURL + 'environmental_intelligent_monitoring/dataMonitor/queryEnterpriseReduceList' //数据接口
+								,
+							page: true,
+
+							cols: [
+									[{
+											type: 'numbers',
+											minWidth: 40,
+											width: 50
+										},
+										{
+											title: '企业名称',
+											field: 'enterpriseName',
+											minWidth: 200
+										}, {
+											title: '机构',
+											field: 'organizeName',
+											minWidth: 100
+										}, {
+											title: '行业',
+											field: 'tradeName',
+											minWidth: 100
+										}, {
+											title: '生产状态',
+											field: 'produceType',
+											minWidth: 60
+										}, {
+											title: '是否污染日',
+											field: 'isPollutionDay',
+											minWidth: 100
+										}, {
+											title: '用电量(kWh)',
+											field: 'w',
+											minWidth: 100
+										}, {
+											title: '排名',
+											field: 'rank',
+											Width: 30
+										},
+										{
+											title: '详情',
+											minWidth: 100,
+											toolbar: '#barDemo'
+										}
+									]
+								] //设置表头
+								,
+							limit: 10,
+							limits: [10, 15, 20, 25, 30],
+							// done: function(res, page, count) {
+							// 	document.getElementById("[data-field='isPollutionDay']").each(function() {
+							// 		if ($(this).text() == '0') {
+							// 			$(this).text("非污染日")
+							// 		} else if ($(this).text() == '1') {
+							// 			$(this).text("是污染日")
+							// 		}
+							// 	})
+							// }
+						});
+					},
 					appear: function(isActive) {
 						this.tree = !this.tree
 						this.isActive = !this.isActive
 					},
 					handleNodeClick(data, node) {
 						vm.treeValue = data.label;
-						// console.log(data.label);
+						vm.treeId = data.id;
+						// console.log(data.id);
 						// console.log(this.tree);
 						vm.treeHign = true;
 						// console.log(node.parent.childNodes[0].parent.data.label)
-						var localname = node.parent.childNodes[0].parent.data.label === undefined ? '无上级目录' : node.parent.childNodes[0]
+						var localname = node.parent.childNodes[0].parent.data.label === undefined ? '无上级目录' : node.parent.childNodes[
+								0]
 							.parent.data.label;
 						localStorage.setItem("nodeParentName", localname)
 						vm.nodedata = data;

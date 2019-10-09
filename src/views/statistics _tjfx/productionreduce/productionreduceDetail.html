@@ -33,6 +33,9 @@
 							<button type="button" class="layui-btn" @click="dust">烟尘</button>
 							<button type="button" class="layui-btn" @click="voc">VOC</button>
 						</div>
+						<div  @click="change">
+							<p style="margin-left: 90%;color: #3492ED;font-size: 16px;">查看企业监控</p>
+						</div>
 						<div v-show="item_power == 1">
 							<div style="width:100%;height:450px;" id="pow_chart"></div>
 						</div>
@@ -101,10 +104,10 @@
 
 				//用电量的折线统计图
 				axios({
-					method: "get",
+					method: "post",
 					url: BASEURL + 'environmental_intelligent_monitoring/dataMonitor/queryEnterpriseReduceReport',
 					params: {
-						enterpriseId: 89
+						enterpriseId: parent.id
 					}
 				}).then(function(res) {
 					vm.ptotal_list =[];
@@ -115,7 +118,7 @@
 					if (res.data.code == 0) {
 						for (var i = 0; i < res.data.data.length; i++) {
 
-							vm.ptotal_list.push((i + 1));
+							vm.ptotal_list.push(res.data.data[i].hour);
 							// console.log(vm.total_list);
 							vm.w_list.push(res.data.data[i].w);
 							vm.aqi_list.push(res.data.data[i].AQI)
@@ -245,6 +248,9 @@
 						this.item_dust = 0
 						this.item_voc = 0
 					},
+					change:function(){
+						console.log(11);
+					},
 					dust: function() {
 						vm.aqi_list = [];
 						vm.p10_list = [];
@@ -257,7 +263,7 @@
 							method: "get",
 							url: BASEURL + 'environmental_intelligent_monitoring/dataMonitor/queryEnterpriseReduceReport',
 							params: {
-								enterpriseId: 89
+								enterpriseId: parent.id
 							}
 						}).then(function(res) {
 							console.log(res);
@@ -266,7 +272,7 @@
 								
 								for (var i = 0; i < res.data.data.length; i++) {
 
-									vm.dtotal_list.push((i + 1));
+									vm.dtotal_list.push(res.data.data[i].hour);
 									vm.p10_list.push(res.data.data[i].pm10);
 									vm.p2_list.push(res.data.data[i].pm25);
 									vm.aqi_list.push(res.data.data[i].AQI);
@@ -353,7 +359,7 @@
 							method: "get",
 							url: BASEURL + 'environmental_intelligent_monitoring/dataMonitor/queryEnterpriseReduceReport',
 							params: {
-								enterpriseId: 89
+								enterpriseId: parent.id
 							}
 						}).then(function(res) {
 							console.log(res);
@@ -361,9 +367,9 @@
 							if (res.data.code == 0) {
 								for (var i = 0; i < res.data.data.length; i++) {
 
-									vm.vtotal_list.push((i + 1));
+									vm.vtotal_list.push(res.data.data[i].hour);
 									// console.log(vm.total_list);
-									vm.voc_list.push(res.data.data[i].hour);
+									vm.voc_list.push(res.data.data[i].gasConcent);
 									vm.aqi_list.push(res.data.data[i].AQI)
 
 								}
