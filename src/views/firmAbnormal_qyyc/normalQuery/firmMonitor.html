@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>企业监控</title>
+    <link rel="stylesheet" href="./../../../layuiadmin/layui/css/layui.css" media="all">
+    <link rel="stylesheet" href="./../../../layuiadmin/style/admin.css" media="all">
+    <link rel="stylesheet" href="./../../../layuiadmin/style/firmMonitor.css">
+</head>
+
+<body>
+    <div id="vm">
+        <div class="firmMain">
+            <div class="firmLeft">
+                <div class="title"></div>
+                <div class="leftContent">
+                    暂无数据
+                </div>
+            </div>
+            <div class="firmRight">
+                <div class="title">
+                    <button type="button" :class="{'active': firmShow == 1}" @click="firmShow = 1">实时数据</button>
+                    <button type="button" :class="{'active': firmShow == 2}" @click="firmShow = 2">运行工况</button>
+                    <button type="button" :class="{'active': firmShow == 3}" @click="firmShow = 3">污处异常</button>
+                </div>
+                <div class="rightContent">
+                    <div v-show="firmShow==1">
+                        <div class="layui-inline layui-form">
+                            <div class="layui-input-inline">
+                                <select name="eventTypeId" lay-verify="required">
+                                    <option value="">请选择时间间隔</option>
+                                    <option value="5">5</option>
+                                    <option value="10">10</option>
+                                    <option value="15">15</option>
+                                </select>
+                            </div>
+                            <div class="layui-input-inline">
+                                <input type="text" class="layui-input" id="timeDate" placeholder="请输入日期">
+                            </div>
+                        </div>
+                    </div>
+                    <div v-show="firmShow==2">
+                        <div class="layui-inline layui-form">
+                            <div class="layui-input-inline">
+                                <input type="text" class="layui-input" id="yunData" placeholder="请输入日期">
+                            </div>
+                        </div>
+                    </div>
+                    <div v-show="firmShow==3">
+                        <div class="layui-inline layui-form">
+                            <div class="layui-input-inline">
+                                <input type="text" class="layui-input" id="startDate" placeholder="请输入开始日期">
+                            </div>
+                            <div class="layui-input-inline">
+                                <input type="text" class="layui-input" id="endDate" placeholder="请输入结束日期">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <script src="./../../../layuiadmin/layui/layui.js"></script>
+    <script src="./../../../layuiadmin/plugin/vue.js"></script>
+    <script src="./../../../layuiadmin/plugin/axios.js"></script>
+    <script src="./../../../layuiadmin/js/baseUrlConfig.js"></script>
+    <script>
+        layui.config({
+            base: '../../../layuiadmin/' //静态资源所在路径
+        }).extend({
+            index: 'lib/index' //主入口模块
+        }).use(['index', 'laydate'], function () {
+            var form = layui.form,
+                laydate = layui.laydate;
+
+            //时间日期
+            laydate.render({
+                elem: '#timeDate',
+                format: 'yyyy-MM-dd'
+            });
+            laydate.render({
+                elem: '#yunData',
+                format: 'yyyy-MM-dd'
+            });
+            laydate.render({
+                elem: '#startDate',
+                format: 'yyyy-MM-dd'
+            });
+            laydate.render({
+                elem: '#endDate',
+                format: 'yyyy-MM-dd'
+            });
+        })
+
+
+        var vm = new Vue({
+            el: "#vm",
+            data: {
+                firmShow: 1
+
+            },
+            methods: {}
+        })
+    </script>
+</body>
+
+</html>
