@@ -10,6 +10,189 @@
 		<link rel="stylesheet" href="../../../layuiadmin/style/admin.css" media="all">
 		<link rel="stylesheet" type="text/css" href="../../../layuiadmin/style/timeMonitor.css" />
 		<link rel="stylesheet" type="text/css" href="../../../layuiadmin/plugin/element.css" />
+		<style type="text/css">
+			html {
+				height: 100%
+			}
+
+			body {
+				height: 100%;
+				margin: 0px;
+				padding: 0px
+			}
+
+			#container {
+				height: 100%
+			}
+
+			.anchorBL {
+				display: none;
+			}
+
+			/* 地图信息窗口 */
+			/*地图弹框*/
+			.myMapInfo {
+				width: 310px;
+				min-height: 250px;
+				margin-left: 20px;
+				/*让阴影有空间显示*/
+			}
+
+			.shang {
+				height: calc(100% - 31px);
+				background: #fff;
+				border-radius: 12px;
+				box-shadow: 0px 10px 15px rgba(72, 130, 202, 0.4);
+				color: #4b565d;
+			}
+
+			.qybt {
+				height: 44px;
+				background-color: #0090e9;
+				/* background-image: url('../../../layuiadmin/img/myMapInfobg.png'); */
+				background-repeat: no-repeat;
+				border-top-left-radius: 12px;
+				border-top-right-radius: 12px;
+				padding: 15px 20px 0;
+				font-weight: 900;
+				color: #fff;
+				overflow: hidden;
+				text-overflow: ellipsis;
+				white-space: nowrap;
+			}
+
+			.qybt a {
+				color: #fff;
+				font-size: 16px;
+			}
+
+			.xia {
+				height: 31px;
+				/* background: url('../../../layuiadmin/img/myMapInfobg.png') center bottom no-repeat; */
+			}
+
+			.daTa {
+				display: flex;
+				justify-content: center;
+				height: 74px;
+				padding: 0 20px 20px;
+			}
+
+			.xm {
+				background: #f0f0f0;
+				flex: 1;
+				padding-top: 8px;
+				text-align: center;
+			}
+
+			.xm1,
+			.xm2 {
+				margin-right: 5px;
+			}
+
+			.shuJu {
+				font: 18px Arial;
+			}
+
+			.biaoti {
+				color: #8d9ba4;
+			}
+
+			/*地图信息弹框去原样式*/
+			.BMap_pop .BMap_top,
+			.BMap_pop>div>div,
+			.BMap_pop .BMap_center,
+			.BMap_pop .BMap_bottom {
+				background: none !important;
+				border: none !important;
+			}
+
+			.BMap_pop div:nth-child(8) {
+				display: none !important;
+			}
+
+			.BMap_pop div:nth-child(9) {
+				left: 0px !important;
+				top: 0px !important;
+				width: 350px !important;
+			}
+
+			.BMap_pop img:nth-child(10) {
+				display: none;
+				top: 45px !important;
+				left: 315px !important;
+			}
+
+			.BMap_shadow {
+				display: none !important;
+			}
+
+			/*地图信息弹框去原样式*/
+			/*地图弹框*/
+			.ui-jqgrid .ui-jqgrid-htable thead th div {
+				white-space: normal;
+				text-align: left
+			}
+
+			.tbsl {
+				background-color: red
+			}
+
+			.st {
+				background: #C5D0DA;
+				padding: 10px;
+				text-align: right;
+				cursor: pointer;
+				display: inline-block;
+				position: absolute;
+				left: -0.5%;
+				z-index: 999999;
+				top: calc(50% - 20px);
+			}
+
+			.st i {
+				font-size: 18px;
+				color: #333;
+			}
+
+			.ui-jqgrid .ui-jqgrid-hbox {
+				padding-right: 0px;
+			}
+
+			.ui-jqgrid-hbox table {
+				width: 100% !important
+			}
+
+			.ui-jqgrid-bdiv table {
+				width: 100% !important
+			}
+			
+			.u-paddingLeft20 {
+			    padding-left: 20px !important
+			}
+			
+			.u-paddingRight20 {
+			    padding-right: 20px !important
+			}
+			
+			.u-paddingTop10 {
+			    padding-top: 10px !important
+			}
+			
+			.u-paddingBottom15 {
+			    padding-bottom: 15px !important
+			}
+			
+			.u-paddingRight0 {
+			    padding-right: 0 !important
+			}
+			
+			.u-paddingBottom0 {
+			    padding-bottom: 0 !important
+			}
+
+
+		</style>
 	</head>
 	<body>
 
@@ -21,10 +204,10 @@
 				<span>当前停机设备: <span v-text="offContactCount"></span></span>
 			</p>
 			<div class="layui-fluid">
-				<div class="layui-col-md4 layui-col-lg4">
-					eqweq
+				<div class="layui-col-md4 layui-col-lg4" style="height: 687px;border: 1px solid rgb(230, 230, 230);">
+					<div id="container"></div>
 				</div>
-				<div class="layui-col-md8 layui-col-lg8">
+				<div class="layui-col-md8 layui-col-lg8" style="padding-left: 20px;">
 					<div class="layui-card" style="margin: 0; border: 1px solid rgb(230, 230, 230);">
 						<div class="layui-form layui-card-header layuiadmin-card-header-auto">
 							<div class="layui-form-item">
@@ -60,6 +243,7 @@
 		<script src="../../../layuiadmin/layui/layui.js"></script>
 		<script src="../../../layuiadmin/plugin/vue.min.js"></script>
 		<script src="../../../layuiadmin/plugin/element.js"></script>
+		<script type="text/javascript" src="http://api.map.baidu.com/api?v=3.0&ak=xq2PQs4sG3sHfuHHwtqaFBcErq9uUyND"></script>
 		<script src="../../../layuiadmin/plugin/axios.js"></script>
 		<script type="text/javascript">
 			var vm = new Vue({
@@ -69,7 +253,7 @@
 					onlineCount: '', // 当前在线设备
 					offlineCount: '', // 当前停机设备
 					offContactCount: '', // 当前失联设备
-					
+
 					enterpriseName: '', // 企业名称
 					selectIndustry: '', // 选择的行业
 					industryList: [], // 行业数组
@@ -113,25 +297,25 @@
 									})
 								}
 							});
-							
+
 						axios({
-							method: "POST",
-							url: BASEURL + 'environmental_intelligent_monitoring/dataMonitor/queryALLEnterpriseReport',
-						})
-						.then(function(res){
-							if(res.data.code == 0){
-								vm.onlineEnterprise = res.data.data.onlineEnterprise;
-								vm.onlineCount = res.data.data.onlineCount;
-								vm.offlineCount = res.data.data.offlineCount;
-								vm.offContactCount = res.data.data.offContactCount;
-								
-							}else{
-								vm.$notify.error({
-									title: '错误',
-									message: res.data.msg
-								})
-							}
-						})
+								method: "POST",
+								url: BASEURL + 'environmental_intelligent_monitoring/dataMonitor/queryALLEnterpriseReport',
+							})
+							.then(function(res) {
+								if (res.data.code == 0) {
+									vm.onlineEnterprise = res.data.data.onlineEnterprise;
+									vm.onlineCount = res.data.data.onlineCount;
+									vm.offlineCount = res.data.data.offlineCount;
+									vm.offContactCount = res.data.data.offContactCount;
+
+								} else {
+									vm.$notify.error({
+										title: '错误',
+										message: res.data.msg
+									})
+								}
+							})
 					},
 					toDeviceStatus: function() {
 						// 跳转到设备状态列表
@@ -175,6 +359,7 @@
 				table.render({
 					elem: '#timeMonitor',
 					height: 550, //容器高度
+					method: 'post',
 					url: layui.setter.BASEURL + 'environmental_intelligent_monitoring/dataMonitor/queryEnterpriseReportList', //数据接口
 					page: true,
 					parseData: function(res) { // 数据重新处理为layUI的数据格式
@@ -195,15 +380,16 @@
 							{
 								field: 'enterpriseName',
 								title: '企业',
-								minWidth: 90,
+								minWidth: 180,
 								sort: true,
-								rowspan: 2
+								rowspan: 2,
+								align: 'center'
 							},
 							{
 								field: 'tradeName',
 								align: 'center',
 								title: '行业',
-								minWidth: 90,
+								minWidth: 120,
 								sort: true,
 								rowspan: 2
 							},
@@ -211,7 +397,7 @@
 								field: 'produceType',
 								align: 'center',
 								title: '生产状态',
-								minWidth: 115,
+								minWidth: 85,
 								sort: true,
 								rowspan: 2
 							},
@@ -248,19 +434,19 @@
 						[{
 								field: 'startStatusNum',
 								title: '运行',
-								minWidth: 90,
+								minWidth: 80,
 								sort: true
 							},
 							{
 								field: 'endStatusNum',
 								title: '停机',
-								minWidth: 90,
+								minWidth: 80,
 								sort: true
 							},
 							{
 								field: 'unknownStatusNum',
 								title: '失联',
-								minWidth: 90,
+								minWidth: 80,
 								sort: true
 							},
 						]
@@ -268,6 +454,7 @@
 					limit: 10,
 					limits: [10, 15, 20, 25, 30],
 					done: function(res, page, count) {
+						addMarkerFunc(res.data);
 						$("[data-field='produceType']").children().each(function() {
 							if ($(this).text() == 0) {
 								$(this).text("限产")
@@ -295,6 +482,79 @@
 					obj.tr.addClass('layui-table-click').siblings().removeClass('layui-table-click');
 				});
 			});
+
+			// 循环添加企业位置标记
+			function addMarkerFunc(enterpriseData) {
+				var centerPoint;
+				if(enterpriseData.length == 0){
+					centerPoint = [114.504434,37.069162]
+				}else{
+					centerPoint = [enterpriseData[0].longitude, enterpriseData[0].latitude]
+				}
+				// 加载地图
+				var map = new BMap.Map("container",{ enableMapClick: false }); // 创建地图实例  
+				var point = new BMap.Point(centerPoint[0], centerPoint[1]); // 创建点坐标  
+				map.centerAndZoom(point, 12);
+				map.enableScrollWheelZoom(true); //开启鼠标滚轮缩放
+
+				// 编写自定义函数,创建标注
+				function addMarker(_point) {
+					var marker = new BMap.Marker(_point);
+					map.addOverlay(marker);
+					// 给标注上添加点击事件
+					marker.addEventListener("click", function(e) {
+						for (var i = 0; i < enterpriseData.length; i++) {
+							if (enterpriseData[i].longitude == _point.lng) {
+								createInfoWindow(enterpriseData[i]);
+							}
+						}
+					});
+				}
+				
+				// 添加信息窗口
+				var opts = {
+					width: 350, // 信息窗口宽度
+					height: 254, // 信息窗口高度
+					title: "", // 信息窗口标题
+					enableMessage: true //设置允许信息窗发送短息
+				};
+
+				for (var i = 0; i < enterpriseData.length; i++) {
+					var _point = new BMap.Point(enterpriseData[i].longitude, enterpriseData[i].latitude);
+					addMarker(_point);
+				};
+
+				//创建InfoWindow        
+				function createInfoWindow(json) {
+					var sContent = '';
+					sContent = '<a  href="javascript:void(0);" onclick="NewTab(' + json.id +
+						')"><div class="myMapInfo">' + '<div class="shang">' + '<div class="qybt">' + json.enterpriseName +
+						'<input type="hidden" value="/MainMonitor/EntMon?EnterpriseId=' + json.id + '" /></div>' +
+						'<div class="u-paddingLeft20 u-paddingRight20 u-paddingTop10 u-marginBottom15">' + '<div class="layui-row">' +
+						'<div class="layui-col-sm5 layui-col-xs5 u-paddingRight0">' + '行业:' + '<span>' + json.tradeName + '</span>' + '</div>' +
+						'<div class="layui-col-sm7 layui-col-xs7">' + '生产:' + '<span>' + json.produceType + '</span>' + '</div>' + '</div>' +
+						'<div class="layui-row">' + '<div class="layui-col-sm5 layui-col-xs5  u-paddingRight0">' + '状态:' + '<span>' + json.produceType +
+						'</span>' + '</div>' + '<div class="layui-col-sm7 layui-col-xs7">' + '行政区域:' + '<span>' + json.organizeName + '</span>' +
+						'</div>' + '</div>' + '<div>' + '地址:' + '<span>' + json.address + '</span>' + '</div>' + '</div>' +
+						'<div class="daTa">' + '<div class="xm xm1">' + '<p class=" u-marginBottom0">' + '<span class="shuJu">' + json.productMonitorNum +
+						'</span>个' + '</p>' + '<span class="biaoti">产污监测点</span>' + '</div>' + '<div class="xm xm2">' +
+						'<p class=" u-marginBottom0">' + '<span class="shuJu">' + json.treatMonitorNum + '</span>个' + '</p>' +
+						'<span class="biaoti">治污监测点</span>' + '</div>' + '<div class="xm xm3">' + '<p class=" u-marginBottom0">' +
+						'<span class="shuJu">' + json.startStatusNum + '</span>个' + '</p>' + '<span class="biaoti">监测点</span>' + '</div>' +
+						'</div>' + '</div >' + '<div class="xia"> ' + '</div> ' + '</div></a>';
+
+					var infoWindow = new BMap.InfoWindow(sContent, opts); // 创建信息窗口对象
+					map.openInfoWindow(infoWindow, map.getCenter()); //开启信息窗口
+				};
+
+			};
+			// 点击信息窗口跳转到企业监控
+			function NewTab(someT) {
+				// todo 等曹甜将企业监控写好后上传到码云,然后再index中修改企业监控的路径,在这里传参到本地.
+				console.log(window.parent.document.getElementById("yincang"));
+				window.parent.document.getElementById("yincang").click(); 
+				
+			}
 		</script>
 
 	</body>
