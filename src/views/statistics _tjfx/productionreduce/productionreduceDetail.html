@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>减产排产的单个详细列表</title>
+		<meta name="renderer" content="webkit">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+		<link rel="stylesheet" type="text/css" href="../../../layuiadmin/layui/css/layui.css" />
+		<link rel="stylesheet" type="text/css" href="../../../layuiadmin/style/admin.css" />
+		<link rel="stylesheet" type="text/css" href="../../../layuiadmin/plugin/element.css" />
+	</head>
+	<style type="text/css">
+		.flex {
+			display: flex;
+			justify-content: center;
+		}
+
+		.flex p {
+			width: 200px;
+			height: 30px;
+		}
+	</style>
+
+	<body>
+
+		<div class="layui-fluid" id="app">
+			<div class="layui-card">
+				<div class="layui-form layui-card-header layuiadmin-card-header-auto">
+					<div class="layui-form-item">
+						<div class="layui-btn-container flex">
+							<button type="button" class="layui-btn" @click="power">用电量</button>
+							<button type="button" class="layui-btn" @click="dust">烟尘</button>
+							<button type="button" class="layui-btn" @click="voc">VOC</button>
+						</div>
+						<div v-show="item_power == 1">
+							<div style="width:100%;height:450px;" id="pow_chart"></div>
+						</div>
+						<div v-show="item_dust == 1">
+							<div style="width:100%;height:450px;" id="dus_chart"></div>
+						</div>
+						<div v-show="item_voc == 1">
+							<div style="width:100%;height:450px;" id="voc_chart"></div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<script src="../../../layuiadmin/layui/layui.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../../layuiadmin/plugin/vue.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../../layuiadmin/plugin/axios.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../../layuiadmin/plugin/element.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../../layuiadmin/js/baseUrlConfig.js" type="text/javascript" charset="utf-8"></script>
+
+
+		<script>
+			layui.config({
+				base: '../../../layuiadmin/' //静态资源所在路径
+			}).extend({
+				index: 'lib/index' //主入口模块
+			}).use(['index', "echarts", 'table', "laydate"], function() {
+				var table = layui.table,
+					form = layui.form,
+					laydate = layui.laydate,
+					echarts = layui.echarts;
+
+				pow_chart = echarts.init(document.getElementById('pow_chart'), {
+					noDataLoadingOption: {
+						text: '暂无数据',
+						effect: "bubble",
+						effectOption: {
+							effect: {
+								n: 0 //气泡个数为0 
+							}
+						}
+					}
+				});
+				dus_chart = echarts.init(document.getElementById('dus_chart'), {
+					noDataLoadingOption: {
+						text: '暂无数据',
+						effect: "bubble",
+						effectOption: {
+							effect: {
+								n: 0 //气泡个数为0 
+							}
+						}
+					}
+				});
+				voc_chart = echarts.init(document.getElementById('voc_chart'), {
+					noDataLoadingOption: {
+						text: '暂无数据',
+						effect: "bubble",
+						effectOption: {
+							effect: {
+								n: 0 //气泡个数为0 
+							}
+						}
+					}
+				});
+
+				//用电量的折线统计图
+				axios({
+					method: "get",
+					url: BASEURL + 'environmental_intelligent_monitoring/dataMonitor/queryEnterpriseReduceReport',
+					params: {
+						enterpriseId: 89
+					}
+				}).then(function(res) {
+					console.log(res);
+					pow_chart.hideLoading();
+					if (res.data.code == 0) {
+						for (var i = 0; i < res.data.data.length; i++) {
+							
+							vm.total_list.push((i+1));
+							// console.log(vm.total_list);
+							vm.w_list.push(res.data.data[i].w);
+							vm.aqi_list.push(res.data.data[i].AQI)
+
+						}
+						pow_chart.setOption({
+							xAxis: {
+								type: 'category',
+								data: vm.total_list
+							},
+							legend: {
+								data: ['总用电量', 'AQI'],
+								x: 'left'
+							},
+							yAxis: [{
+									name: '(KW.h)',
+									type: 'value',
+									max: 500
+								},
+								{
+									name: 'AQI',
+									nameLocation: 'end',
+									max: 5,
+									type: 'value',
+									inverse: true
+								}
+							],
+							series: [
+							        {
+							            name:'总用电量',
+							            type:'line',
+							            animation: false,
+							            areaStyle: {
+							            },
+							            lineStyle: {
+							                width: 1
+							            },
+							            
+							            data:vm.w_list
+							        },
+							        {
+							            name:'AQI',
+							            type:'line',
+							            yAxisIndex:1,
+							            animation: false,
+							            areaStyle: {
+							            },
+							            lineStyle: {
+							                width: 1
+							            },
+							            data: vm.aqi_list
+							        }
+							    ]
+						}, true);
+					} else {
+
+					}
+				}).catch(function(err) {
+					console.log(err);
+				});
+
+
+
+
+
+
+
+
+				//监听搜索
+				form.on('submit(LAY-app-contlist-search)', function(data) {
+					var field = data.field;
+
+					//执行重载
+					table.reload('LAY-app-content-list', {
+						where: field
+					});
+				});
+
+				var $ = layui.$,
+					active = {
+						batchdel: function() {
+
+						},
+						del: function() {
+
+						},
+						edit: function() {
+
+						}
+					};
+
+				$('.layui-btn.layuiadmin-btn-list').on('click', function() {
+					var type = $(this).data('type');
+					active[type] ? active[type].call(this) : '';
+				});
+				$("#div_").bind("click", function() {
+					vm.isActive = 1;
+					$("#tree").css("display", "inline-block");
+					event.stopPropagation(); //==========阻止冒泡1
+				})
+				//点击外面其他部分,触发的事件
+				$(document).bind("click", function() {
+					vm.isActive = 0;
+					$("#tree").css("display", "none");
+
+				})
+
+
+
+			});
+
+
+
+
+
+
+			var vm = new Vue({
+				el: "#app",
+				data: {
+					item_power: 1,
+					item_dust: 0,
+					item_voc: 0,
+					w_list: [],
+					aqi_list: [],
+					total_list:[]
+				},
+				methods: {
+					power: function() {
+						this.item_power = 1;
+						this.item_dust = 0
+						this.item_voc = 0
+					},
+					dust: function() {
+						this.item_power = 0;
+						this.item_dust = 1
+						this.item_voc = 0
+					},
+					voc: function() {
+						this.item_power = 0;
+						this.item_dust = 0
+						this.item_voc = 1
+
+					}
+				}
+
+			})
+			window.onclick = function() {
+				dus_chart.resize();
+				voc_chart.resize();
+			}
+		</script>
+	</body>
+</html>
