@@ -154,6 +154,10 @@
 				}
 			});
 
+			//执行重载
+			table.reload('LAY-app-content-list', {
+				where: field
+			});
 
 			// select框填充数据
 			axios({
