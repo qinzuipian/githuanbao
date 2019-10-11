@@ -13,46 +13,49 @@
 	</head>
 	<body>
 		<div id="vm">
-			<!-- <div class="layui-card" style="margin: 0; border: 1px solid rgb(230, 230, 230);">
+			<div class="layui-card" style="margin: 0; border: 1px solid rgb(230, 230, 230);">
 				<div class="layui-form layui-card-header layuiadmin-card-header-auto">
 					<div class="layui-form-item">
 						<div class="layui-inline">
-							<label class="layui-form-label">创建时间</label>
+							<label class="layui-form-label">时间</label>
 							<div class="layui-input-inline">
-								<div class="block">
-									<el-date-picker v-model="createDate" type="date" placeholder="选择日期" default-value="2010-10-01">
-									</el-date-picker>
-								</div>
-								
+								<el-date-picker v-model="createDate" type="date" value-format="yyyy-MM-dd" placeholder="选择日期" default-value>
+								</el-date-picker>
 							</div>
 						</div>
-						
-
 
 						<div class="layui-inline">
-							<label class="layui-form-label">企业名称</label>
+							<label class="layui-form-label">企业</label>
 							<div class="layui-input-inline">
-								<input type="text" name="startCreateDate" class="layui-input" v-model="enterpriseName" placeholder="请输入企业名称">
+								<el-select v-model="enterpriseId" placeholder="请选择">
+									<el-option v-for="item in enterpriseList" :key="item.id" :label="item.name" :value="item.id">
+									</el-option>
+								</el-select>
+							</div>
+						</div>
+
+						<div class="layui-inline">
+							<label class="layui-form-label">车间名称</label>
+							<div class="layui-input-inline">
+								<input type="text" name="startCreateDate" class="layui-input" v-model="shopName" placeholder="请输入车间名称">
 							</div>
 						</div>
 						<div class="layui-inline">
-							<label class="layui-form-label">行业名称</label>
-							<el-select v-model="selectIndustry" placeholder="请选择行业">
-								<el-option v-for="item in industryList" :key="item.id" :label="item.name" :value="item.id">
-								</el-option>
-							</el-select>
+							<label class="layui-form-label">监测点名称</label>
+							<div class="layui-input-inline">
+								<input type="text" name="startCreateDate" class="layui-input" v-model="monitorName" placeholder="请输入监测点名称">
+							</div>
 						</div>
 						<div class="layui-inline">
-							<label class="layui-form-label">生产状态</label>
-							<el-select v-model="selectStatus" placeholder="请选择生产状态">
-								<el-option v-for="item in statusList" :key="item.value" :label="item.name" :value="item.value">
-								</el-option>
-							</el-select>
+							<button class="layui-btn layuiadmin-btn-list" @click="search">
+								<i class="layui-icon layui-icon-search layuiadmin-button-btn"></i>
+							</button>
 						</div>
+
 					</div>
 				</div>
-			</div> -->
-			<!-- <table class="layui-table" id="runData" lay-filter="runData" style="margin-top: 0;"></table> -->
+			</div>
+			<table class="layui-table" id="runData" lay-filter="runData" style="margin-top: 0;"></table>
 		</div>
 		<script src="../../../layuiadmin/js/baseUrlConfig.js"></script>
 		<script src="../../../layuiadmin/layui/layui.js"></script>
@@ -60,144 +63,207 @@
 		<script src="../../../layuiadmin/plugin/element.js"></script>
 		<script src="../../../layuiadmin/plugin/axios.js"></script>
 		<script type="text/javascript">
+			function layuiInit(nowDate) {
+				layui.config({
+					base: '../../../layuiadmin/' //静态资源所在路径
+				}).extend({
+					index: 'lib/index' //主入口模块
+				}).use(['index', 'table', 'laydate', 'layer'], function() {
+					var table = layui.table,
+						layer = layui.layer;
+					var $ = layui.$;
+					table.render({
+						elem: '#runData',
+						height: 550, //容器高度
+						method: 'post',
+						url: layui.setter.BASEURL + 'environmental_intelligent_monitoring/dataMonitor/queryEquipOperatList', //数据接口
+						where: {
+							createDate: nowDate
+						},
+						page: true,
+						parseData: function(res) { // 数据重新处理为layUI的数据格式
+							var msg = {
+								"code": res.code, //解析接口状态
+								"msg": res.msg, //解析提示文本
+								"count": res.page.totalCount, //解析数据长度
+								"data": res.page.list //解析数据列表
+							};
+							return msg;
+						},
+						cols: [
+							[{
+									field: 'createDate',
+									title: '时间',
+									minWidth: 170,
+									sort: true,
+									align: 'center'
+								},
+								{
+									field: 'OrganizeName',
+									align: 'center',
+									title: '行政区域',
+									minWidth: 100,
+									sort: true
+								},
+								{
+									field: 'enterpriseName',
+									align: 'center',
+									title: '企业名称',
+									minWidth: 85,
+									sort: true
+								},
+								{
+									field: 'shopName',
+									align: 'center',
+									title: '车间名称',
+									minWidth: 95,
+									sort: true
+								},
+								{
+									field: 'productName',
+									align: 'center',
+									title: '产污设施名称',
+									minWidth: 135,
+									sort: true
+								},
+								{
+									field: 'productNum',
+									align: 'center',
+									title: '产污设施阀值',
+									minWidth: 135,
+									sort: true
+								},
+								{
+									field: 'productAcquisit',
+									align: 'center',
+									title: '产污设施采集值',
+									minWidth: 135,
+									sort: true
+								},
+								{
+									field: 'treatName',
+									align: 'center',
+									title: '治污设施名称',
+									minWidth: 80,
+									sort: true
+								},
+								{
+									field: 'treatNum',
+									align: 'center',
+									title: '治污设施阀值',
+									minWidth: 80,
+									sort: true
+								},
+								{
+									field: 'treatAcquisit',
+									align: 'center',
+									title: '治污设施采集值',
+									minWidth: 80,
+									sort: true
+								},
+								{
+									field: 'produceType',
+									align: 'center',
+									title: '停限产计划',
+									minWidth: 80,
+									sort: true
+								}
+							]
+						], //设置表头
+						limit: 10,
+						limits: [10, 15, 20, 25, 30],
+						done: function(res, page, count) {
+							$("[data-field='produceType']").children().each(function() {
+								if ($(this).text() == 0) {
+									$(this).text("限产")
+								} else if ($(this).text() == 1) {
+									$(this).text("停产")
+								} else {
+									$(this).text("生产")
+								}
+							});
+
+							$("[data-field='isAbnormal']").children().each(function() {
+								if ($(this).text() == 0) {
+									$(this).text("正常")
+								} else if ($(this).text() == 1) {
+									$(this).text("异常")
+								}
+							})
+						}
+					});
+					//监听行单击事件
+					table.on('row(runData)', function(obj) {
+						var data = obj.data;
+						console.log(data);
+						//标注选中样式
+						obj.tr.addClass('layui-table-click').siblings().removeClass('layui-table-click');
+					});
+				});
+			}
+
+
 			var vm = new Vue({
-				el: "#createDate",
+				el: "#vm",
 				data: {
-					createDate: '',
-				}
-			});
-			layui.config({
-				base: '../../../layuiadmin/' //静态资源所在路径
-			}).extend({
-				index: 'lib/index' //主入口模块
-			}).use(['index', 'table', 'laydate', 'layer'], function() {
-				var table = layui.table,
-					layer = layui.layer;
-				var $ = layui.$;
-				table.render({
-					elem: '#runData',
-					height: 550, //容器高度
-					method: 'post',
-					url: layui.setter.BASEURL + 'environmental_intelligent_monitoring/dataMonitor/queryEnterpriseReportList', //数据接口
-					page: true,
-					parseData: function(res) { // 数据重新处理为layUI的数据格式
-						var msg = {
-							"code": res.code, //解析接口状态
-							"msg": res.msg, //解析提示文本
-							"count": res.page.totalCount, //解析数据长度
-							"data": res.page.list //解析数据列表
-						};
-						return msg;
+					createDate: '', // 创建日期
+					enterpriseList: [], // 企业数组
+					enterpriseId: '', // 企业id
+					shopName: '', // 车间名称
+					monitorName: '', // 监测点名称
+				},
+				methods: {
+					init: function() {
+						// 获取企业列表
+						axios({
+								method: "POST",
+								url: BASEURL + "environmental_intelligent_monitoring/tbasenterprise/list"
+							})
+							.then(function(res) {
+								if (res.data.code == 0) {
+									vm.enterpriseList = res.data.page.list;
+								} else {
+									vm.$notify.error({
+										title: '错误',
+										message: res.data.msg
+									})
+								}
+							});
+
+						// 获取当前时间用来传入表格
+						var date = new Date();
+						var seperator1 = "-";
+						var year = date.getFullYear();
+						var month = date.getMonth() + 1;
+						var strDate = date.getDate();
+						if (month >= 1 && month <= 9) {
+							month = "0" + month;
+						}
+						if (strDate >= 0 && strDate <= 9) {
+							strDate = "0" + strDate;
+						}
+						var nowDate = year + seperator1 + month + seperator1 + strDate;
+						console.log(vm);
+						this.createDate = nowDate;
+						layuiInit(nowDate);
 					},
-					cols: [
-						[{
-								type: 'numbers',
-								width: '70',
-								rowspan: 2
+					search: function() {
+						layui.table.reload('runData', {
+							where: { //设定异步数据接口的额外参数，任意设
+								createDate: vm.createDate,
+								enterpriseId: vm.enterpriseId,
+								shopName: vm.shopName,
+								monitorName: vm.monitorName
 							},
-							{
-								field: 'enterpriseName',
-								title: '企业',
-								minWidth: 180,
-								sort: true,
-								rowspan: 2,
-								align: 'center'
-							},
-							{
-								field: 'tradeName',
-								align: 'center',
-								title: '行业',
-								minWidth: 120,
-								sort: true,
-								rowspan: 2
-							},
-							{
-								field: 'produceType',
-								align: 'center',
-								title: '生产状态',
-								minWidth: 85,
-								sort: true,
-								rowspan: 2
-							},
-							{
-								field: 'isAbnormal',
-								align: 'center',
-								title: '异常污染',
-								minWidth: 115,
-								sort: true,
-								rowspan: 2
-							},
-							{
-								field: 'productMonitorNum',
-								align: 'center',
-								title: '产污监测点数量',
-								minWidth: 155,
-								sort: true,
-								rowspan: 2
-							},
-							{
-								field: 'treatMonitorNum',
-								align: 'center',
-								title: '治污监测点数量',
-								minWidth: 155,
-								sort: true,
-								rowspan: 2
-							},
-							{
-								align: 'center',
-								title: '监测点数量(个)',
-								colspan: 3
-							}
-						],
-						[{
-								field: 'startStatusNum',
-								title: '运行',
-								minWidth: 80,
-								sort: true
-							},
-							{
-								field: 'endStatusNum',
-								title: '停机',
-								minWidth: 80,
-								sort: true
-							},
-							{
-								field: 'unknownStatusNum',
-								title: '失联',
-								minWidth: 80,
-								sort: true
-							},
-						]
-					], //设置表头
-					limit: 10,
-					limits: [10, 15, 20, 25, 30],
-					done: function(res, page, count) {
-						$("[data-field='produceType']").children().each(function() {
-							if ($(this).text() == 0) {
-								$(this).text("限产")
-							} else if ($(this).text() == 1) {
-								$(this).text("停产")
-							} else {
-								$(this).text("生产")
+							page: {
+								curr: 1 //重新从第 1 页开始
 							}
 						});
-
-						$("[data-field='isAbnormal']").children().each(function() {
-							if ($(this).text() == 0) {
-								$(this).text("正常")
-							} else if ($(this).text() == 1) {
-								$(this).text("异常")
-							}
-						})
 					}
-				});
-				//监听行单击事件
-				table.on('row(runData)', function(obj) {
-					var data = obj.data;
-					console.log(data);
-					//标注选中样式
-					obj.tr.addClass('layui-table-click').siblings().removeClass('layui-table-click');
-				});
+				},
+				mounted: function() {
+					this.init();
+				}
 			});
 		</script>
 	</body>
