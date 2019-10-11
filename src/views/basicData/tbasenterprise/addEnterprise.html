@@ -80,7 +80,7 @@
 			
 			.red{
 				color: red;
-				line-height: 2.1875rem;
+				/* line-height: 2.1875rem; */
 			}
 			.layui-form-item .layui-input-inline{
 				margin-right: 4px;
@@ -124,22 +124,23 @@
 						<div class="flex">
 							<div class=" treeCss">
 								<div class="layui-form-item">
-									<label for="bitian" class="layui-form-label">企业名称</label>
+									<label for="bitian" class="layui-form-label">企业名称
+									<span class="red">*</span></label>
 									<div class="layui-input-inline">
 										<input type="text" name="name" lay-verify="required" class="layui-input" placeholder="企业名称" />
 									</div>
-									<span class="red">(必填)</span>
 								</div>
 								<div class="layui-form-item">
-									<label for="bitian" class="layui-form-label">社会信用代码</label>
+									<label for="bitian" class="layui-form-label">社会信用代码
+									<span class="red">*</span></label>
 									<div class="layui-input-inline">
 										<input type="text" name="trustcode" lay-verify="required" class="layui-input" placeholder="社会信用代码" />
 									</div>
-									<span class="red">(必填)</span>
 								</div>
 
 								<div class="layui-form-item">
-									<label for="bitian" class="layui-form-label">所属省市区</label>
+									<label for="bitian" class="layui-form-label">所属省市区
+									<span class="red">*</span></label>
 									<div class="layui-input-inline">
 										<select name="province" id="province" lay-verify="required" lay-search lay-filter="province">
 											<option value="">请选择省</option>
@@ -151,18 +152,19 @@
 											<option value="">请选择县/区</option>
 										</select>
 									</div>
-									<span class="red">(必填)</span>
 								</div>
 								<div class="layui-form-item">
-									<label for="bitian" class="layui-form-label">企业详细地址</label>
+									<label for="bitian" class="layui-form-label">企业详细地址
+									<span class="red">*</span></label>
 									<div class="layui-input-inline">
 										<input type="text" name="address" lay-verify="required" class="layui-input" placeholder="企业详细地址" />
 									</div>
-									<span class="red">(必填)</span>
+
 								</div>
 								<div class="layui-form-item">
 									<div class="layui-inline">
-										<label class="layui-form-label">行政区域</label>
+										<label class="layui-form-label">行政区域
+										<span class="red">*</span></label>
 										<div class="layui-input-inline" >
 											<input readonly="readonly" placeholder="请选择" id="div_" v-model="treeValue"  class="layui-input" @click="appear"/>
 											<!-- <span class="layui-icon-triangle-d layui-icon" v-bind:class="[{ actived: isActive },{ actived_after: !isActive }]"
@@ -175,17 +177,16 @@
 												</div>
 											</div>
 										</div>
-										<span class="red">(必填)</span>
 									</div>
 								</div>
 								<div class="layui-form-item">
-									<label class="layui-form-label">所属行业</label>
+									<label class="layui-form-label">所属行业
+									<span class="red">*</span></label>
 									<div class="layui-input-inline">
 										<select name="tradeId" id="tradeName" lay-verify="required" lay-filter="tradeName">
 											<option value="">请选择</option>
 										</select>
 									</div>
-									<span class="red">(必填)</span>
 								</div>
 								<div class="layui-form-item">
 									<label for="bitian" class="layui-form-label">网关编号</label>
