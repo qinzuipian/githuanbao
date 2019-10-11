@@ -40,7 +40,7 @@
 
         .red {
             color: #f00;
-            font-size: 12px;
+            font-size: 22px;
         }
     </style>
 </head>
@@ -54,7 +54,7 @@
                     <div class="layui-form-item">
                         <label for="bitian" class="layui-form-label">
                             企业名称
-                            <span class="red">（必填）</span>
+                            <span class="red">*</span>
                         </label>
                         <div class="layui-input-inline">
                             <input type="text" name="enterpriseName" lay-verify="required" class="layui-input" placeholder="企业名称" />
@@ -65,7 +65,7 @@
                     <div class="layui-form-item">
                         <label for="bitian" class="layui-form-label">
                             事件类型
-                            <span class="red">（必填）</span>
+                            <span class="red">*</span>
                         </label>
                         <div class="layui-input-inline">
                             <!-- <input type="text" v-model="tWarnSubscribe.eventtype" class="layui-input" placeholder="事件类型名称" /> -->
@@ -82,7 +82,7 @@
                     <div class="layui-form-item">
                         <label for="bitian" class="layui-form-label">
                             发送方式
-                            <span class="red">（必填）</span>
+                            <span class="red">*</span>
                         </label>
                         <div class="layui-input-inline">
                             <!-- <input type="text" v-model="tWarnSubscribe.sendtype" class="layui-input" placeholder="发送方式名称：短信、邮件、App、语音外呼" /> -->
@@ -91,7 +91,7 @@
                                 <option value="手机短信">手机短信</option>
                                 <option value="App推送">App推送</option>
                                 <option value="邮件发送">邮件发送</option>
-                                <option value="语音外呼">语音外呼</option>
+                                <!-- <option value="语音外呼">语音外呼</option> -->
                             </select>
                         </div>
 
@@ -101,7 +101,7 @@
                     <div class="layui-form-item">
                         <label for="bitian" class="layui-form-label">
                             用户类型
-                            <span class="red">（必填）</span>
+                            <span class="red">*</span>
                         </label>
                         <div class="layui-input-inline">
                             <!-- <input type="text" v-model="tWarnSubscribe.usertype" class="layui-input" placeholder="用户类型：1、企业人员 2、检查人员 3、执法人员" /> -->

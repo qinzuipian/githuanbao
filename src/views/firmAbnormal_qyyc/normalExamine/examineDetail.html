@@ -38,7 +38,7 @@
         }
 
         .layui-form-item .layui-input-inline {
-            width: 300px;
+            width: 320px;
         }
 
         .showStyle .el-step.is-simple .el-step__title {
@@ -53,68 +53,91 @@
         <div class="layui-fluid">
             <div class="layui-row">
                 <form class="layui-form" lay-filter="detailFirm">
-                    <div class="showStyle" v-show="normalShow">
+                    <!-- <div class="showStyle" v-show="normalShow">
                         <el-steps :active="nomalActive" simple>
                             <el-step title="发现异常" icon="el-icon-warning"></el-step>
                             <el-step title="异常处理" icon="el-icon-eleme"></el-step>
                             <el-step title="异常申报" icon="el-icon-upload"></el-step>
                             <el-step title="异常审核" icon="el-icon-s-order"></el-step>
                         </el-steps>
-                    </div>
+                    </div> -->
+                    <input type="hidden" name="id">
                     <div class="layui-form-item">
                         <label for="bitian" class="layui-form-label">
                             事件类型</label>
                         <div class="layui-input-inline">
-                            <input type="text" name="eventType" class="layui-input" placeholder="" />
+                            <input type="text" name="eventType" class="layui-input layui-disabled" disabled placeholder="" />
                         </div>
                     </div>
                     <div class="layui-form-item">
                         <label for="bitian" class="layui-form-label">
                             企业名称</label>
                         <div class="layui-input-inline">
-                            <input type="text" name="enterpriseName" class="layui-input" placeholder="" />
+                            <input type="text" name="enterpriseName" class="layui-input layui-disabled" disabled placeholder="" />
                         </div>
                     </div>
                     <div class="layui-form-item">
                         <label for="bitian" class="layui-form-label">
                             车间名称</label>
                         <div class="layui-input-inline">
-                            <input type="text" name="shopName" class="layui-input" placeholder="车间名称" />
+                            <input type="text" name="shopName" class="layui-input layui-disabled" disabled placeholder="" />
                         </div>
                     </div>
                     <div class="layui-form-item">
                         <label for="bitian" class="layui-form-label">
                             设备名称</label>
                         <div class="layui-input-inline">
-                            <input type="text" name="equipName" class="layui-input" placeholder="" />
+                            <input type="text" name="equipName" class="layui-input layui-disabled" disabled placeholder="" />
                         </div>
                     </div>
                     <div class="layui-form-item">
                         <label for="bitian" class="layui-form-label">
                             监测点名称</label>
                         <div class="layui-input-inline">
-                            <input type="text" name="monitorName" class="layui-input" placeholder="" />
+                            <input type="text" name="monitorName" class="layui-input layui-disabled" disabled placeholder="" />
                         </div>
                     </div>
                     <div class="layui-form-item">
                         <label for="bitian" class="layui-form-label">
                             网关编码</label>
                         <div class="layui-input-inline">
-                            <input type="text" name="swicthId" class="layui-input" placeholder="" />
+                            <input type="text" name="swicthId" class="layui-input layui-disabled" disabled placeholder="" />
                         </div>
                     </div>
                     <div class="layui-form-item">
                         <label for="bitian" class="layui-form-label">
                             仪表地址</label>
                         <div class="layui-input-inline">
-                            <input type="text" name="meterId" class="layui-input" placeholder="" />
+                            <input type="text" name="meterId" class="layui-input layui-disabled" disabled placeholder="" />
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label for="bitian" class="layui-form-label">
+                            型号</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="model" class="layui-input layui-disabled" disabled placeholder="" />
                         </div>
                     </div>
                     <div class="layui-form-item">
                         <label for="bitian" class="layui-form-label">
                             发生时间</label>
                         <div class="layui-input-inline">
-                            <input type="text" name="lastTime" class="layui-input" placeholder="" />
+                            <input type="text" name="lastTime" class="layui-input layui-disabled" disabled placeholder="" />
+                        </div>
+                    </div>
+
+                    <div class="layui-form-item">
+                        <label for="bitian" class="layui-form-label">
+                            电压变比</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="pt" class="layui-input layui-disabled" disabled placeholder="" />
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label for="bitian" class="layui-form-label">
+                            电流变比</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="ct" class="layui-input layui-disabled" disabled placeholder="" />
                         </div>
                     </div>
 
@@ -122,15 +145,15 @@
                         <label for="bitian" class="layui-form-label">
                             异常原因</label>
                         <div class="layui-input-inline">
-                            <input type="text" name="reason" class="layui-input" placeholder="" />
+                            <input type="text" name="reason" class="layui-input layui-disabled" disabled placeholder="" />
                         </div>
                     </div>
                     <div class="layui-form-item">
                         <label for="bitian" class="layui-form-label">
                             详情</label>
                         <div class="layui-input-inline">
-                            <textarea placeholder="" class="layui-textarea" name="description"></textarea>
-                            <!-- <input type="text" name="reason" class="layui-input" placeholder="详情" /> -->
+                            <textarea placeholder="" class="layui-textarea layui-disabled" disabled name="description"></textarea>
+                            <!-- <input type="text" name="reason" class="layui-input"  placeholder="详情" /> -->
                         </div>
                     </div>
                     <div class="layui-form-item">
@@ -141,7 +164,39 @@
                             <!-- <input type="text" name="remark" class="layui-input" placeholder="备注" /> -->
                         </div>
                     </div>
+                    <div class="layui-form-item">
+                        <label for="bitian" class="layui-form-label">
+                            操作</label>
+                        <div class="layui-input-inline">
+                            <input type="radio" name="currentStatus" value="3" title="通过">
+                            <input type="radio" name="currentStatus" value="4" title="不通过">
+                        </div>
+                    </div>
+                    <!-- <div class="layui-form-item">
+                        <label for="bitian" class="layui-form-label">
+                            附件</label>
+                        <div class="layui-input-inline">
+                            <button type="button" class="layui-btn layui-btn-normal" id="handleUpload">
+                                选择文件</button>
+                            <div class="layui-upload-list">
+                                <table class="layui-table" style="width: 400px;">
+                                    <tbody id="demoList"></tbody>
+                                </table>
+                            </div>
+                            
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label for="bitian" class="layui-form-label">
+                            附件说明</label>
+                        <div class="layui-input-inline">
+                            <textarea placeholder="请输入内容" class="layui-textarea" name="attachmentDto"></textarea>
+                        </div>
+                    </div> -->
+
+
                     <div class="btn-box">
+                        <button class="layui-btn" lay-submit lay-filter="examineForm">确认</button>
                         <button class="layui-btn layui-btn-danger" @click="cancel">取消</button>
                     </div>
                 </form>
@@ -149,9 +204,10 @@
         </div>
     </div>
     <script>
-        layui.use(['form', 'jquery'], function () {
+        layui.use(['form', 'jquery', 'upload'], function () {
             var form = layui.form,
-                $ = layui.jquery;
+                $ = layui.jquery,
+                upload = layui.upload;
 
 
             // 单个信息数据展示
@@ -163,6 +219,7 @@
                     if (res.data.code == 0) {
                         var detailData = res.data.tFirmAbnormal;
                         form.val('detailFirm', {
+                            'id': detailData.id,
                             'eventType': detailData.eventType,
                             'enterpriseName': detailData.enterpriseName,
                             'shopName': detailData.shopName,
@@ -173,7 +230,10 @@
                             'description': detailData.description,
                             'remark': detailData.remark,
                             'equipName': detailData.equipName,
-                            'swicthId': detailData.swicthId
+                            'swicthId': detailData.swicthId,
+                            'model': detailData.model,
+                            'pt': detailData.pt,
+                            'ct': detailData.ct
                         })
                     } else {
                         vm.$notify.error({
@@ -185,35 +245,60 @@
                 }).catch(error => {
 
                 });
+
+            // form表单提交
+            form.on('submit(examineForm)', function (data) {
+                console.log(data);
+                // data.field.enterpriseName = vm.enterpriseName;
+                axios({
+                    method: "post",
+                    url: BASEURL + 'environmental_intelligent_monitoring/tfirmabnormal/saveForAttachment',
+                    data: {
+                        // attachmentDto: data.field.attachmentDto,
+                        // file: vm.fileBase64,
+                        // reason: data.field.reason,
+                        // description: data.field.description,
+                        remark: data.field.remark,
+                        id: data.field.id,
+                        currentStatus: data.field.currentStatus
+                    },
+                    headers: {
+                        "Content-Type": "application/json;charset=UTF-8"
+                    }
+                }).then(function (res) {
+                    if (res.data.code == 0) {
+                        console.log(res)
+                        layer.msg('提交成功！', {
+                            time: 500
+                        }, function () {
+                            window.parent.location.reload();
+                            parent.layer.close('iframe');
+                        });
+                    } else {
+                        vm.$notify.error({
+                            title: '错误',
+                            message: '提交异常'
+                        });
+                    }
+                }).catch(function (err) {
+                    console.log(err);
+                });
+                return false;
+            })
+           
         })
         var vm = new Vue({
             el: "#vm",
             data: {
-                normalShow: false,
-                nomalActive: 1
+                fileBase64: "",
             },
             methods: {
-                detailInit() {
-                    if (parent.currentStatus != 5) {
-                        this.normalShow = true;
-                        if (parent.currentStatus == 1) {
-                            this.nomalActive = 2;
-                        } else if (parent.currentStatus == 2) {
-                            this.nomalActive = 3;
-                        } else if (parent.currentStatus == 3) {
-                            this.nomalActive = 4;
-                        } else if (parent.currentStatus == 4) {
-                            this.nomalActive = 3;
-                        }
-                    }
-
-                },
                 cancel() {
                     parent.layer.closeAll('iframe');//关闭弹窗
                 }
             },
             created() {
-                this.detailInit();
+                // this.detailInit();
                 // console.log(parent.currentStatus);
             }
         });

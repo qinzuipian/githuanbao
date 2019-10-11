@@ -74,7 +74,7 @@
         }
         .red {
             color: #f00;
-            font-size: 12px;
+            font-size: 22px;
         }
     </style>
 </head>
@@ -88,7 +88,7 @@
                     <div class="layui-form-item">
                            
                         <label for="bitian" class="layui-form-label">
-                            监测点名称<span class="red">(必填)</span></label>
+                            监测点名称<span class="red">*</span></label>
                         <div class="layui-input-inline">
                             <input type="text" name="monitorName" lay-verify="required" class="layui-input" placeholder="监测点名称" />
                             
@@ -97,7 +97,7 @@
                         
                         
                         <label for="bitian" class="layui-form-label">
-                            信息分类<span class="red">（必填）</span></label>
+                            信息分类<span class="red">*</span></label>
                         <div class="layui-input-inline">
 
                             <!-- <input type="text" v-model="tDeviceMonitor.type" class="layui-input" placeholder="设备类型:1、生产设备 2、治污设备" /> -->
@@ -122,7 +122,7 @@
                         </div>
 
                         <label for="bitian" class="layui-form-label">
-                            类别<span class="red">（必填）</span></label>
+                            类别<span class="red">*</span></label>
                         <div class="layui-input-inline">
 
                             <!-- <input type="text" v-model="tDeviceMonitor.type" class="layui-input" placeholder="设备类型:1、生产设备 2、治污设备" /> -->
@@ -135,12 +135,12 @@
 
                     <div class="layui-form-item">
                         <label for="bitian" class="layui-form-label">
-                            网关编号<span class="red">（必填）</span></label>
+                            网关编号<span class="red">*</span></label>
                         <div class="layui-input-inline">
                             <input type="text" name="swicthId" lay-verify="required" class="layui-input" placeholder="网关编号" />
                         </div>
                         <label for="bitian" class="layui-form-label">
-                            工艺<span class="red">（必填）</span> </label>
+                            工艺<span class="red">*</span> </label>
                         <div class="layui-input-inline">
                             <select name="route" id="route" lay-filter="route" lay-verify="">
                                 <option value=""></option>
@@ -151,7 +151,7 @@
 
                     <div class="layui-form-item">
                         <label for="bitian" class="layui-form-label">
-                            仪表地址<span class="red">（必填）</span></label>
+                            仪表地址<span class="red">*</span></label>
                         <div class="layui-input-inline">
                             <input type="text" name="meterId" class="layui-input" lay-verify="required" placeholder="" />
                         </div>
@@ -183,7 +183,7 @@
 
                     <div class="layui-form-item">
                         <label for="bitian" class="layui-form-label">
-                            仪表类别<span class="red">（必填）</span></label>
+                            仪表类别<span class="red">*</span></label>
                         <div class="layui-input-inline">
                             <select name="collectType" id="collectType" lay-verify="required">
                                 <option value="">请选择仪表类别</option>
@@ -197,7 +197,7 @@
                         </div>
 
                         <label for="bitian" class="layui-form-label">
-                            功率启停阀值(kW)<span class="red">（必填）</span></label>
+                            功率启停阀值(kW)<span class="red">*</span></label>
                         <div class="layui-input-inline">
                             <input type="text" name="electricLimit" lay-verify="required" class="layui-input" placeholder="功率启停阀值(kW)"
                             />
@@ -205,12 +205,12 @@
                     </div>
                     <div class="layui-form-item">
                         <label for="bitian" class="layui-form-label">
-                            仪表型号<span class="red">（必填）</span></label>
+                            仪表型号<span class="red">*</span></label>
                         <div class="layui-input-inline">
                             <input type="text" name="model" lay-verify="required" class="layui-input" placeholder="仪表型号" />
                         </div>
                         <label for="bitian" class="layui-form-label">
-                            功率门限时间(m)<span class="red">（必填）</span></label>
+                            功率门限时间(m)<span class="red">*</span></label>
                         <div class="layui-input-inline">
                             <input type="text" name="electricTime" lay-verify="required" class="layui-input" placeholder="功率门限时间(分钟)"
                             />
@@ -234,7 +234,7 @@
                     </div>
                     <div class="layui-form-item">
                         <label for="bitian" class="layui-form-label">
-                            电压变比<span class="red">（必填）</span></label>
+                            电压变比<span class="red">*</span></label>
                         <div class="layui-input-inline">
                             <input type="text" name="pt" lay-verify="required" class="layui-input" placeholder="电压变比" />
                         </div>
@@ -246,7 +246,7 @@
                     </div>
                     <div class="layui-form-item">
                         <label for="bitian" class="layui-form-label">
-                            电流变比<span class="red">（必填）</span></label>
+                            电流变比<span class="red">*</span></label>
                         <div class="layui-input-inline">
                             <input type="text" name="ct" lay-verify="required" class="layui-input" placeholder="电流变比" />
                         </div>

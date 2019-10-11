@@ -1,6 +1,5 @@
 .DS_Store
-node_modules/
 /src/layuiadmin/
-.gitignore
-.vscode
+*.gitignore
+.vscode/
 /src/views/index.html

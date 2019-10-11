@@ -38,7 +38,7 @@
         }
 
         .layui-form-item .layui-input-inline {
-            width: 300px;
+            width: 320px;
         }
 
         .showStyle .el-step.is-simple .el-step__title {
@@ -61,67 +61,68 @@
                             <el-step title="异常审核" icon="el-icon-s-order"></el-step>
                         </el-steps>
                     </div> -->
+                    <input type="hidden" name="id">
                     <div class="layui-form-item">
                         <label for="bitian" class="layui-form-label">
                             事件类型</label>
                         <div class="layui-input-inline">
-                            <input type="text" name="eventType" class="layui-input layui-disabled" disabled placeholder="事件类型" />
+                            <input type="text" name="eventType" class="layui-input layui-disabled" disabled placeholder="" />
                         </div>
                     </div>
                     <div class="layui-form-item">
                         <label for="bitian" class="layui-form-label">
                             企业名称</label>
                         <div class="layui-input-inline">
-                            <input type="text" name="enterpriseName" class="layui-input layui-disabled" disabled placeholder="企业名称" />
+                            <input type="text" name="enterpriseName" class="layui-input layui-disabled" disabled placeholder="" />
                         </div>
                     </div>
                     <div class="layui-form-item">
                         <label for="bitian" class="layui-form-label">
                             车间名称</label>
                         <div class="layui-input-inline">
-                            <input type="text" name="shopName" class="layui-input layui-disabled" disabled placeholder="车间名称" />
+                            <input type="text" name="shopName" class="layui-input layui-disabled" disabled placeholder="" />
                         </div>
                     </div>
                     <div class="layui-form-item">
                         <label for="bitian" class="layui-form-label">
                             设备名称</label>
                         <div class="layui-input-inline">
-                            <input type="text" name="equipName" class="layui-input layui-disabled" disabled placeholder="设备名称" />
+                            <input type="text" name="equipName" class="layui-input layui-disabled" disabled placeholder="" />
                         </div>
                     </div>
                     <div class="layui-form-item">
                         <label for="bitian" class="layui-form-label">
                             监测点名称</label>
                         <div class="layui-input-inline">
-                            <input type="text" name="monitorName" class="layui-input layui-disabled" disabled placeholder="监测点名称" />
+                            <input type="text" name="monitorName" class="layui-input layui-disabled" disabled placeholder="" />
                         </div>
                     </div>
                     <div class="layui-form-item">
                         <label for="bitian" class="layui-form-label">
                             网关编码</label>
                         <div class="layui-input-inline">
-                            <input type="text" name="swicthId" class="layui-input layui-disabled" disabled placeholder="网关编码" />
+                            <input type="text" name="swicthId" class="layui-input layui-disabled" disabled placeholder="" />
                         </div>
                     </div>
                     <div class="layui-form-item">
                         <label for="bitian" class="layui-form-label">
                             仪表地址</label>
                         <div class="layui-input-inline">
-                            <input type="text" name="meterId" class="layui-input layui-disabled" disabled placeholder="仪表地址" />
+                            <input type="text" name="meterId" class="layui-input layui-disabled" disabled placeholder="" />
                         </div>
                     </div>
                     <div class="layui-form-item">
                         <label for="bitian" class="layui-form-label">
                             型号</label>
                         <div class="layui-input-inline">
-                            <input type="text" name="model" class="layui-input layui-disabled" disabled placeholder="型号" />
+                            <input type="text" name="model" class="layui-input layui-disabled" disabled placeholder="" />
                         </div>
                     </div>
                     <div class="layui-form-item">
                         <label for="bitian" class="layui-form-label">
                             发生时间</label>
                         <div class="layui-input-inline">
-                            <input type="text" name="lastTime" class="layui-input layui-disabled" disabled placeholder="发生时间" />
+                            <input type="text" name="lastTime" class="layui-input layui-disabled" disabled placeholder="" />
                         </div>
                     </div>
 
@@ -129,7 +130,7 @@
                         <label for="bitian" class="layui-form-label">
                             电压变比</label>
                         <div class="layui-input-inline">
-                            <input type="text" name="pt" class="layui-input layui-disabled" disabled placeholder="电压变比" />
+                            <input type="text" name="pt" class="layui-input layui-disabled" disabled placeholder="" />
                         </div>
                     </div>
                     <div class="layui-form-item">
@@ -144,14 +145,14 @@
                         <label for="bitian" class="layui-form-label">
                             异常原因</label>
                         <div class="layui-input-inline">
-                            <input type="text" name="reason" class="layui-input" placeholder="异常原因" />
+                            <input type="text" name="reason" class="layui-input" placeholder="" />
                         </div>
                     </div>
                     <div class="layui-form-item">
                         <label for="bitian" class="layui-form-label">
                             详情</label>
                         <div class="layui-input-inline">
-                            <textarea placeholder="详情" class="layui-textarea" name="description"></textarea>
+                            <textarea placeholder="" class="layui-textarea" name="description"></textarea>
                             <!-- <input type="text" name="reason" class="layui-input"  placeholder="详情" /> -->
                         </div>
                     </div>
@@ -159,8 +160,16 @@
                         <label for="bitian" class="layui-form-label">
                             备注</label>
                         <div class="layui-input-inline">
+                            <textarea placeholder="" class="layui-textarea" name="remark"></textarea>
                             <!-- <input type="text" name="remark" class="layui-input" placeholder="备注" /> -->
-                            <textarea placeholder="备注" class="layui-textarea" name="remark"></textarea>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label for="bitian" class="layui-form-label">
+                            操作</label>
+                        <div class="layui-input-inline">
+                            <input type="radio" name="currentStatus" value="1" title="需要申报">
+                            <input type="radio" name="currentStatus" value="5" title="不需要申报">
                         </div>
                     </div>
                     <div class="layui-form-item">
@@ -170,17 +179,37 @@
                             <button type="button" class="layui-btn layui-btn-normal" id="handleUpload">
                                 <!-- <i class="layui-icon layui-icon-upload"></i> -->
                                 选择文件</button>
+                            <div class="layui-upload-list">
+                                <table class="layui-table" style="width: 400px;">
+                                    <tbody id="demoList"></tbody>
+                                </table>
+                            </div>
+                            <!-- <div class="layui-upload-list">
+                                <table class="layui-table" style="width: 400px;">
+                                    <thead>
+                                        <tr>
+                                            <th>文件名</th>
+                                            <th>大小</th>
+                                            <th>状态</th>
+                                            <th>操作</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="demoList"></tbody>
+                                </table>
+                            </div> -->
                         </div>
                     </div>
                     <div class="layui-form-item">
                         <label for="bitian" class="layui-form-label">
                             附件说明</label>
                         <div class="layui-input-inline">
-                            <textarea placeholder="请输入内容" class="layui-textarea" name="desc"></textarea>
+                            <textarea placeholder="请输入内容" class="layui-textarea" name="attachmentDto"></textarea>
                         </div>
                     </div>
+
+
                     <div class="btn-box">
-                        <button class="layui-btn">确认</button>
+                        <button class="layui-btn" lay-submit lay-filter="handleForm">确认</button>
                         <button class="layui-btn layui-btn-danger" @click="cancel">取消</button>
                     </div>
                 </form>
@@ -203,6 +232,7 @@
                     if (res.data.code == 0) {
                         var detailData = res.data.tFirmAbnormal;
                         form.val('detailFirm', {
+                            'id': detailData.id,
                             'eventType': detailData.eventType,
                             'enterpriseName': detailData.enterpriseName,
                             'shopName': detailData.shopName,
@@ -231,47 +261,134 @@
 
 
             // 文件上传
-            upload.render({
-                elem: '#handleUpload'
-                // , url: '/upload/'
-                , auto: false
-                , multiple: true
-                // , bindAction: '#test9'
-                , choose: function (obj) {
-                    // console.log(obj)
-                    var files = obj.pushFile();
+            var demoListView = $('#demoList'),
+                uploadListIns = upload.render({
+                    elem: '#handleUpload'
+                    // , url: '/upload/'
+                    , accept: 'file'
+                    , multiple: false
+                    , auto: false
+                    // , bindAction: '#testListAction'
+                    , choose: function (obj) {
+                        var files = this.files = obj.pushFile(); //将每次选择的文件追加到文件队列
+                        console.log(files)
+                        //读取本地文件
+                        obj.preview(function (index, file, result) {
+                            // console.log(result);
+                            var tr = $(['<tr id="upload-' + index + '">'
+                                , '<td>' + file.name + '</td>'
+                                , '</tr>'].join(''));
+                            demoListView.append(tr);
+                            vm.fileBase64 = result;
+                            //     , '</tr>'].join(''));
+                            // var tr = $(['<tr id="upload-' + index + '">'
+                            //     , '<td>' + file.name + '</td>'
+                            //     , '<td>' + (file.size / 1014).toFixed(1) + 'kb</td>'
+                            //     , '<td>等待上传</td>'
+                            //     , '<td>'
+                            //     , '<button class="layui-btn layui-btn-xs demo-reload layui-hide">重传</button>'
+                            //     , '<button class="layui-btn layui-btn-xs layui-btn-danger demo-delete">删除</button>'
+                            //     , '</td>'
+                            //     , '</tr>'].join(''));
 
-                    //预读本地文件，如果是多文件，则会遍历。(不支持ie8/9)
-                    obj.preview(function (index, file, result) {
-                        // console.log(index); //得到文件索引
-                        console.log(file); //得到文件对象
-                        // console.log(result); //得到文件base64编码，比如图片
-                    })
-                }
-            });
+                            // //单个重传
+                            // tr.find('.demo-reload').on('click', function () {
+                            //     obj.upload(index, file);
+                            // });
+
+                            // //删除
+                            // tr.find('.demo-delete').on('click', function () {
+                            //     delete files[index]; //删除对应的文件
+                            //     tr.remove();
+                            //     uploadListIns.config.elem.next()[0].value = ''; //清空 input file 值，以免删除后出现同名文件不可选
+                            // });
+
+                            // demoListView.append(tr);
+                        });
+                    }
+                    // , done: function (res, index, upload) {
+                    //     console.log(res, index, upload)
+                    //     if (res.code == 0) { //上传成功
+                    //         var tr = demoListView.find('tr#upload-' + index)
+                    //             , tds = tr.children();
+                    //         tds.eq(2).html('<span style="color: #5FB878;">上传成功</span>');
+                    //         tds.eq(3).html(''); //清空操作
+                    //         return delete this.files[index]; //删除文件队列已经上传成功的文件
+                    //     }
+                    //     this.error(index, upload);
+                    // }
+                    // , error: function (index, upload) {
+                    //     var tr = demoListView.find('tr#upload-' + index)
+                    //         , tds = tr.children();
+                    //     tds.eq(2).html('<span style="color: #FF5722;">上传失败</span>');
+                    //     tds.eq(3).find('.demo-reload').removeClass('layui-hide'); //显示重传
+                    // }
+                });
+
+            // form表单提交
+            form.on('submit(handleForm)', function (data) {
+                console.log(data);
+                // data.field.enterpriseName = vm.enterpriseName;
+                axios({
+                    method: "post",
+                    url: BASEURL + 'environmental_intelligent_monitoring/tfirmabnormal/saveForAttachment',
+                    data: {
+                        attachmentDto: data.field.attachmentDto,
+                        file: vm.fileBase64,
+                        reason: data.field.reason,
+                        description: data.field.description,
+                        remark: data.field.remark,
+                        id: data.field.id,
+                        currentStatus: data.field.currentStatus
+                    },
+                    headers: {
+                        "Content-Type": "application/json;charset=UTF-8"
+                    }
+                }).then(function (res) {
+                    if (res.data.code == 0) {
+                        console.log(res)
+                        layer.msg('提交成功！', {
+                            time: 500
+                        }, function () {
+                            window.parent.location.reload();
+                            parent.layer.close('iframe');
+                        });
+                    } else {
+                        vm.$notify.error({
+                            title: '错误',
+                            message: '提交异常'
+                        });
+                    }
+                }).catch(function (err) {
+                    console.log(err);
+                });
+                return false;
+            })
+            // upload.render({
+            //     elem: '#handleUpload'
+            //     // , url: '/upload/'
+            //     , auto: false
+            //     , multiple: true
+            //     // , bindAction: '#test9'
+            //     , choose: function (obj) {
+            //         // console.log(obj)
+            //         var files = obj.pushFile();
+
+            //         //预读本地文件，如果是多文件，则会遍历。(不支持ie8/9)
+            //         obj.preview(function (index, file, result) {
+            //             // console.log(index); //得到文件索引
+            //             console.log(file); //得到文件对象
+            //             // console.log(result); //得到文件base64编码，比如图片
+            //         })
+            //     }
+            // });
         })
         var vm = new Vue({
             el: "#vm",
             data: {
-                // normalShow: false,
-                // nomalActive: 1
+                fileBase64: "",
             },
             methods: {
-                // detailInit() {
-                //     if (parent.currentStatus != 5) {
-                //         this.normalShow = true;
-                //         if (parent.currentStatus == 1) {
-                //             this.nomalActive = 2;
-                //         } else if (parent.currentStatus == 2) {
-                //             this.nomalActive = 3;
-                //         } else if (parent.currentStatus == 3) {
-                //             this.nomalActive = 4;
-                //         } else if (parent.currentStatus == 4) {
-                //             this.nomalActive = 3;
-                //         }
-                //     }
-
-                // },
                 cancel() {
                     parent.layer.closeAll('iframe');//关闭弹窗
                 }
