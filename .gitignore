@@ -1,4 +1,4 @@
 /src/layuiadmin/
 *.gitignore
 .vscode/
-/src/views/index.html
+# /src/views/index.html
