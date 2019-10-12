@@ -8,13 +8,21 @@
     <title>设备分组编辑</title>
     <link rel="stylesheet" type="text/css" href="../../../layuiadmin/layui/css/layui.css" />
     <link rel="stylesheet" href="./../../../layuiadmin/plugin/element.css">
-    <script src="./../../../layuiadmin/plugin/element.js"></script>
-    <script src="../../../layuiadmin/layui/layui.js" type="text/javascript" charset="utf-8"></script>
+    <style>
+        .btn-box {
+            text-align: center;
+            margin-bottom: 10px;
+        }
 
-    <!-- 引入vue -->
-    <script src="../../../layuiadmin/plugin/vue.js" type="text/javascript" charset="utf-8"></script>
-    <script src="../../../layuiadmin/plugin/axios.js" type="text/javascript" charset="utf-8"></script>
-    <script src="../../../layuiadmin/js/baseUrlConfig.js" type="text/javascript" charset="utf-8"></script>
+        .el-icon-close {
+            font-size: 18px;
+            font-weight: 700;
+            color: #f00;
+        }
+        .el-table td, .el-table th {
+            padding: 0;
+        }
+    </style>
 </head>
 
 <body>
@@ -30,18 +38,86 @@
                     <option value=""></option>
                 </select>
             </div>
+            <button type="button" class="layui-btn layui-btn-normal layui-btn-sm">
+                <i class="layui-icon layui-icon-add-1"></i>添加</button>
         </div>
-        <el-table :data="tableData" height="250" border style="width: 100%">
-            <el-table-column prop="date" label="日期" width="180">
-            </el-table-column>
-            <el-table-column prop="name" label="姓名" width="180">
-            </el-table-column>
-            <el-table-column prop="address" label="地址">
-            </el-table-column>
-        </el-table>
+        <div style="padding: 10px;">
+            <el-table :data="tableData" stripe style="width: 100%;">
+                <el-table-column prop="date" label="生产单元" width="180">
+                </el-table-column>
+                <el-table-column prop="name" label="设备类型" width="180">
+                </el-table-column>
+                <el-table-column prop="address" label="设备名称">
+                </el-table-column>
+                <el-table-column fixed="right" label="操作" width="80">
+                    <template slot-scope="scope">
+                        <el-button @click="deleteClick(scope.row)" type="text" icon="el-icon-close"></el-button>
+                    </template>
+                </el-table-column>
+            </el-table>
+        </div>
+        <div class="layui-form">
+            <div class="layui-inline">
+                <label for="bitian" class="layui-form-label">
+                    治污监测点
+                </label>
+                <div class="layui-input-inline">
+                    <!-- <input type="text" v-model="tWarnSubscribe.eventtype" class="layui-input" placeholder="事件类型名称" /> -->
+                    <select name="eventTypeId" id="" lay-filter="eventType" lay-verify="required">
+                        <option value=""></option>
+                        <option value=""></option>
+                    </select>
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label for="bitian" class="layui-form-label">
+                    备用关系
+                </label>
+                <div class="layui-input-inline" style="width: 100px;">
+                    <!-- <input type="text" v-model="tWarnSubscribe.eventtype" class="layui-input" placeholder="事件类型名称" /> -->
+                    <select name="eventTypeId" id="eventType" lay-filter="eventType">
+                        <option value="">用</option>
+                        <option value="">备</option>
+                    </select>
+                </div>
+            </div>
+            <button type="button" class="layui-btn layui-btn-normal layui-btn-sm">
+                <i class="layui-icon layui-icon-add-1"></i>添加</button>
+        </div>
+        <div style="padding: 10px;">
+            <el-table :data="tableData" stripe style="width: 100%">
+                <el-table-column prop="date" label="生产单元" width="180">
+                </el-table-column>
+                <el-table-column prop="name" label="设备类型" width="180">
+                </el-table-column>
+                <el-table-column prop="address" label="设备名称">
+                </el-table-column>
+                <el-table-column prop="address" label="备用关系">
+                </el-table-column>
+                <el-table-column fixed="right" label="操作" width="80">
+                    <template slot-scope="scope">
+                        <el-button @click="deleteClick(scope.row)" type="text" icon="el-icon-close"></el-button>
+                    </template>
+                </el-table-column>
 
+            </el-table>
+        </div>
+        <div class="btn-box">
+            <button class="layui-btn">添加</button>
+            <button class="layui-btn layui-btn-danger" @click="cancel">取消</button>
+        </div>
     </div>
 
+
+
+
+    <script src="../../../layuiadmin/layui/layui.js" type="text/javascript" charset="utf-8"></script>
+
+    <!-- 引入vue -->
+    <script src="../../../layuiadmin/plugin/vue.js" type="text/javascript" charset="utf-8"></script>
+    <script src="./../../../layuiadmin/plugin/element.js"></script>
+    <script src="../../../layuiadmin/plugin/axios.js" type="text/javascript" charset="utf-8"></script>
+    <script src="../../../layuiadmin/js/baseUrlConfig.js" type="text/javascript" charset="utf-8"></script>
     <script>
         layui.use(['form', 'jquery'], function () {
             var form = layui.form,
@@ -53,18 +129,25 @@
                 tableData: [{
                     date: '2016-05-03',
                     name: '王小虎',
-                    address: '上海市普陀区金沙江路 1518 弄'
+                    address: '上海市'
                 }, {
                     date: '2016-05-02',
                     name: '王小虎',
-                    address: '上海市普陀区金沙江路 1518 弄'
+                    address: '上海市'
                 }, {
                     date: '2016-05-04',
                     name: '王小虎',
-                    address: '上海市普陀区金沙江路 1518 弄'
+                    address: '上海市'
                 }]
             },
-            methods: {}
+            methods: {
+                deleteClick(row) {
+
+                },
+                cancel: function () {
+                    parent.layer.closeAll('iframe'); //关闭弹窗
+                }
+            }
         })
     </script>
 </body>

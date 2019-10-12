@@ -21,7 +21,7 @@
         .layui-select,
         .el-input__inner {
             height: 32px;
-            width: 150px;
+            width: 200px;
         }
 
         .user-list-box {
@@ -70,15 +70,15 @@
 <body>
     <div id="vm">
         <div class="layui-fluid layui-col-space30">
-            <div class="layui-card layui-col-md5 layui-col-lg5" style="min-height: 500px;">
+            <div class="layui-card layui-col-md4 layui-col-lg4" style="min-height: 500px;">
                 <div class="layui-card-header card-title">
                     <div class="layui-inline">
                         <div class="layui-input-inline">
-                            <input type="text" id="enterpriseName" placeholder="请输入企业名称" name="enterpriseName" class="layui-input">
+                            <input type="text" id="enterpriseName" placeholder="企业名称" name="enterpriseName" class="layui-input">
                         </div>
-                        <div class="layui-inline" style="width: 40px;">
+                        <!-- <div class="layui-inline" style="width: 40px;">
                             <i class="layui-icon layui-icon-search layuiadmin-button-btn" @click="laySearch"></i>
-                        </div>
+                        </div> -->
                     </div>
                 </div>
                 <div class="l-card-border">
@@ -89,7 +89,7 @@
 
 
             </div>
-            <div class="layui-card layui-col-md7 layui-col-lg7" style="min-height: 800px;">
+            <div class="layui-card layui-col-md8 layui-col-lg8" style="min-height: 800px;">
                 <div class="layui-card-header card-title">企业名称&nbsp;&nbsp;
                 </div>
                 <div class="l-card-border">
@@ -143,11 +143,11 @@
                                         if (dataList[i].enterpriseId === data.enterpriseId) {
                                             dataList[i].children.push({
                                                 label: data.shopName,
-                                                children: [{
-                                                    label: data.type === "1" ? '生产设备' : '治污设备',
-                                                    // id: data.type,
-                                                    children: [{ label: data.monitorName, monitorId: data.id }]
-                                                }]
+                                                // children: [{
+                                                //     label: data.type === "1" ? '生产设备' : '治污设备',
+                                                //     // id: data.type,
+                                                //     children: [{ label: data.monitorName, monitorId: data.id }]
+                                                // }]
                                             });
                                             dataList[i].num++;
                                             return;
@@ -161,11 +161,11 @@
                                         num: 1,
                                         children: [{
                                             label: data.shopName,
-                                            children: [{
-                                                label: data.type === "1" ? '生产设备' : '治污设备',
-                                                id: data.type,
-                                                children: [{ label: data.monitorName, monitorId: data.id }]
-                                            }]
+                                            // children: [{
+                                            //     label: data.type === "1" ? '生产设备' : '治污设备',
+                                            //     id: data.type,
+                                            //     children: [{ label: data.monitorName, monitorId: data.id }]
+                                            // }]
                                         }]
                                     });
                                 })
