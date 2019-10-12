@@ -39,17 +39,20 @@
     height: 38px;
     line-height: 38px;
     padding: 0 18px;
-    background-color: #23c6c8;
-    color: gray;
+    background-color: #23c6c8;  
     white-space: nowrap;
     text-align: center;
     font-size: 14px;
     border: none;
     border-radius: 2px;
     cursor: pointer;
+    color:#fff;
+    /* border-radius: 4px; */
 }
 .firmRight .title .active {
     background-color: #fff;
+    color: gray;
+   
 }
 .firmRight .rightContent,.firmLeft .leftContent {
     padding: 10px;
@@ -82,4 +85,29 @@
     margin-top: 10px;
 
 }
-
+.firmRight .rightContent .layui-badge {
+    height: 22px;
+    
+}
+.firmRight .rightContent .layui-card-header .layui-icon {
+    font-size: 20px;
+    font-weight: 700;
+}
+.firmRight .rightContent .blue {
+    border: 1px solid #1E9FFF;
+}
+.firmRight .rightContent .blue .layui-card-header {
+    border-bottom: 1px solid #1E9FFF;
+}
+.firmRight .rightContent .green {
+    border: 1px solid #2F4056;
+}
+.firmRight .rightContent .green .layui-card-header {
+    border-bottom: 1px solid #2F4056;
+}
+.firmRight .rightContent .yellow {
+    border: 1px solid #009688;
+}
+.firmRight .rightContent .yellow .layui-card-header {
+    border-bottom: 1px solid #009688;
+}

@@ -18,7 +18,7 @@
             <div class="firmLeft">
                 <div class="title"></div>
                 <div class="leftContent">
-                    <el-tree default-expand-all :data="firmTreeData" :props="defaultProps" @node-click="handleNodeClick"></el-tree>
+                    <el-tree default-expand-all :data="firmTreeData" highlight-current :expand-on-click-node="false" :props="defaultProps" @node-click="handleNodeClick"></el-tree>
                 </div>
             </div>
             <div class="firmRight">
@@ -43,6 +43,81 @@
                                     <input type="text" class="layui-input" id="timeDate" placeholder="请输入日期">
                                 </div>
                             </div>
+
+                            <div class="layui-fluid">
+                                <div class="layui-row layui-col-space15">
+                                    <div class="layui-col-sm6 layui-col-md4">
+                                        <div class="layui-card blue">
+                                            <div class="layui-card-header">
+                                                电压
+                                                <span class="layui-badge layui-bg-blue layuiadmin-badge layui-icon layui-icon-chart"></span>
+                                            </div>
+                                            <div class="layui-card-body layuiadmin-card-list">
+                                                <p>
+                                                    <span>A相电压</span>
+                                                    <span></span>
+                                                </p>
+                                                <p>
+                                                    <span>B相电压</span>
+                                                    <span></span>
+                                                </p>
+                                                <p>
+                                                    <span>C相电压</span>
+                                                    <span></span>
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="layui-col-sm6 layui-col-md4">
+                                        <div class="layui-card green">
+                                            <div class="layui-card-header">
+                                                功率
+                                                <span class="layui-badge layui-bg-cyan layuiadmin-badge layui-icon layui-icon-chart-screen"></span>
+                                            </div>
+                                            <div class="layui-card-body layuiadmin-card-list">
+                                                <p>
+                                                    <span>有功功率</span>
+                                                    <span></span>
+                                                </p>
+                                                <p>
+                                                    <span>无功功率</span>
+                                                    <span></span>
+                                                </p>
+                                                <p>
+                                                    <span>功率因数</span>
+                                                    <span></span>
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="layui-col-sm6 layui-col-md4">
+                                        <div class="layui-card yellow">
+                                            <div class="layui-card-header">
+                                                电流
+                                                <span class="layui-badge layui-bg-green layuiadmin-badge layui-icon layui-icon-chart"></span>
+                                            </div>
+                                            <div class="layui-card-body layuiadmin-card-list">
+
+                                                <p>
+                                                    <span>A相电流：</span>
+                                                    <span></span>
+                                                </p>
+                                                <p>
+                                                    <span>B相电流</span>
+                                                    <span></span>
+                                                </p>
+                                                <p>
+                                                    <span>C相电流</span>
+                                                    <span></span>
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                            </div>
+
                         </div>
                         <div v-show="firmShow==2">
                             <div class="layui-inline layui-form">

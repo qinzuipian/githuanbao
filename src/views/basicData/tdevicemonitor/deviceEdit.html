@@ -9,9 +9,11 @@
     <meta name="viewport" content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi"
     />
     <link rel="stylesheet" href="../../../layuiadmin/layui/css/layui.css">
+    <link rel="stylesheet" href="./../../../layuiadmin/plugin/element.css">
     <script type="text/javascript" src="../../../layuiadmin/layui/layui.js" charset="utf-8"></script>
     <!-- 引入vue -->
     <script type="text/javascript" src="../../../layuiadmin/plugin/vue.js"></script>
+    <script src="./../../../layuiadmin/plugin/element.js"></script>
     <script type="text/javascript" src="../../../layuiadmin/plugin/axios.js"></script>
     <script src="../../../layuiadmin/js/baseUrlConfig.js"></script>
     <!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
@@ -269,16 +271,38 @@
                     </div>
 
                     <div class="layui-form-item">
-                        <label for="bitian" class="layui-form-label">
+                        <!-- <label for="bitian" class="layui-form-label">
                             所选车间</label>
                         <div class="layui-input-inline">
                             <input type="text" v-model="shopname" name="shopName" disabled class="layui-input layui-disabled" placeholder="所选车间" />
+                        </div> -->
+                        <label for="bitian" class="layui-form-label">
+                            企业选择</label>
+                        <div class="layui-input-inline">
+                            <el-autocomplete v-model="firmName" :fetch-suggestions="querySearchAsync" placeholder="请输入内容" @select="handleSelect"></el-autocomplete>
+                            <!-- <input type="text" v-model="shopname" disabled class="layui-input layui-disabled" placeholder="所选车间" /> -->
                         </div>
+                       
+                    </div>
+
+
+                    <div class="layui-form-item">
+                        <label for="bitian" class="layui-form-label">
+                            所选车间</label>
+                        <div class="layui-input-inline">
+                            <!-- <input type="text" v-model="shopname" disabled class="layui-input layui-disabled" placeholder="所选车间" /> -->
+                            <el-select v-model="shopname" placeholder="请选择">
+                                <el-option v-for="item in shopOptions" :key="item.value" :label="item.name" :value="item.name">
+                                </el-option>
+                            </el-select>
+                        </div>
+
                         <label for="bitian" class="layui-form-label">
                             备注</label>
                         <div class="layui-input-inline">
                             <textarea placeholder="请输入内容" class="layui-textarea" name="remark"></textarea>
                         </div>
+
                     </div>
                     <!-- <div class="layui-form-item">
                                 <label for="bitian" class="layui-form-label">
@@ -288,21 +312,19 @@
                                 </div>
         
                             </div> -->
-                    <div class="layui-form-item treeCss">
+                    <!-- <div class="layui-form-item treeCss">
                         <label for="bitian" class="layui-form-label">车间选择</label>
-                        <!-- <div id="shopTree" class="demo-tree-more treeItem"></div> -->
+                     
                         <div id="shopTree" class="treeItem">
                             <ul class="ulShop">
                                 <li class="lishop" v-for="(item,index) in treeData" :key="index">
-                                    <!-- <span class="layui-icon layui-icon-pause"></span> -->
+                                  
                                     <span class="layui-icon layui-icon-add-circle" @click="treeItem(item)"></span>
                                     {{item.enterpriseName}}
 
-                                    <!-- vm.treeItemShow == item.enterpriseId; -->
+                              
                                     <ul>
-                                        <!--  <li>
-                                                    <input type="radio" name="userType" value="1" name="111">
-                                                </li> -->
+                                      
 
                                         <li v-for="(it,index) in treeItemData" :key="index" v-show="item.enterpriseId == i">
                                             <input type="hidden" name="enterpriseId" v-model="i">
@@ -313,7 +335,7 @@
                                 </li>
                             </ul>
                         </div>
-                    </div>
+                    </div> -->
                     <div class="btn-box">
                         <button class="layui-btn" lay-submit lay-filter="deviceForm">确认</button>
                         <button class="layui-btn layui-btn-danger" @click="cancel">取消</button>
@@ -484,6 +506,7 @@
                             , "remark": Devicedata.remark
                         });
                         vm.shopname = Devicedata.shopName;
+                        vm.firmName = Devicedata.enterpriseName;
                         $('#collectType').val(Devicedata.collectType);
                         //    $('#ecPolluteType').text(Devicedata.ecPolluteType);
                         /*  $('#ecType').val(Devicedata.ecType);
@@ -568,6 +591,9 @@
 
             // form表单的提交
             form.on('submit(deviceForm)', function (data) {
+                data.field.shopName = vm.shopname;
+                data.field.enterpriseName = vm.firmName;
+                console.log(data.field)
                 axios({
                     method: "post",
                     url: BASEURL + 'environmental_intelligent_monitoring/tdevicemonitor/update',
@@ -611,7 +637,9 @@
                 treeItemData: [],
                 i: -1,
                 shopname: "",
-                enterpriseName: ""
+                enterpriseName: "",
+                firmName: "",
+                shopOptions: []
             },
             updated: function () {
                 layui.use(['form'], function () {
@@ -691,7 +719,74 @@
                         console.log(err);
                     });
                 },
-                cancel() {
+
+                // 远程搜索框
+                querySearchAsync(queryString, callback) {
+                    console.log(queryString);
+                    var list = [{}];
+                    // 车间树状组件请求数据
+                    axios({
+                        method: "post",
+                        url: BASEURL + 'environmental_intelligent_monitoring/tbasshop/list?limit=10000',
+                        params: {
+                            enterpriseName: queryString
+                        }
+                        // data: {},
+                        // headers: {
+                        //     "Content-Type": "application/json;charset=UTF-8"
+                        // }
+                    }).then(function (res) {
+                        if (res.data.code == 0) {
+                            var datalist = res.data.page.list;
+                            for (let i = 0, len = datalist.length; i < len; i++) {
+                                for (let j = i + 1; j < len; j++) {
+                                    if (datalist[i].enterpriseId == datalist[j].enterpriseId) {
+                                        datalist.splice(j, 1);
+                                        // splice 会改变数组长度，所以要将数组长度 len 和下标 j 减一
+                                        len--;
+                                        j--;
+                                    }
+                                }
+                            }
+                            // console.log(datalist)
+                            for (let i of datalist) {
+                                i.value = i.enterpriseName; //将想要展示的数据作为value
+                                // console.log(i.value)
+                            }
+                            list = datalist;
+                            callback(list);
+                        } else {
+
+                        }
+                    }).catch(function (err) {
+                        console.log(err);
+                    });
+                },
+                handleSelect(item) {
+                    console.log(item);
+                    axios({
+                        method: "post",
+                        url: BASEURL + 'environmental_intelligent_monitoring/tbasshop/list',
+                        params: {
+                            enterpriseId: item.enterpriseId
+                        }
+                        /*  headers: {
+                             "Content-Type": "application/json;charset=UTF-8"
+                         } */
+                    }).then(function (res) {
+                        if (res.data.code == 0) {
+                            vm.shopOptions = res.data.page.list;
+                            console.log(vm.shopOptions)
+
+                        } else {
+
+                        }
+                    }).catch(function (err) {
+                        console.log(err);
+                    });
+
+                }
+                , cancel() {
                     parent.layer.closeAll('iframe');//关闭弹窗
                 }
             },
@@ -699,7 +794,7 @@
                 // this.pageInit();
             },
             created() {
-                this.treeInit();
+                // this.treeInit();
             }
         });
     </script>

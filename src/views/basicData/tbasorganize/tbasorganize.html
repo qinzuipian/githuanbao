@@ -63,7 +63,14 @@
 			</div> -->
 
 				<div class="layui-card-body">
-					<el-tree :highlight-current="treeHign" :data="treeData" :props="defaultProps" @node-click="handleNodeClick"></el-tree>
+					<el-tree :highlight-current="treeHign" :data="treeData" :props="defaultProps" @node-click="handleNodeClick">
+						<span class="custom-tree-node" slot-scope="{ node, data }">
+							<span>
+								<i :class="data.icon"></i>
+								{{ node.label }}
+							</span>
+						</span>
+					</el-tree>
 					<!-- <table id="LAY-app-content-list" lay-filter="LAY-app-content-list"></table> -->
 
 				</div>
@@ -225,9 +232,11 @@
 										label: treedata[j].name,
 										id: treedata[j].id,
 										parentId: treedata[j].parentId,
+										icon:"el-icon-tickets",
 										children: []
 									};
 									data.children.push(obj);
+									console.log(data.children)
 								}
 							}
 							// }
@@ -265,6 +274,7 @@
 								obj.id = data[i].id;
 								obj.parentId = data[i].parentId;
 								obj.children = [];
+								obj.icon= "el-icon-folder-opened";
 								vm.treeData.push(obj);
 							}
 
