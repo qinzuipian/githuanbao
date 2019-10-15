@@ -1,12 +1,172 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>能耗统计报表</title>
+    <link rel="stylesheet" href="./../../../layuiadmin/layui/css/layui.css" media="all">
+    <link rel="stylesheet" href="./../../../layuiadmin/style/admin.css" media="all">
+    <link rel="stylesheet" href="./../../../layuiadmin/style/firmMonitor.css">
+    <link rel="stylesheet" href="./../../../layuiadmin/plugin/element.css">
+    <style>
+        .layui-inline {
+            margin-left: 60px;
+        }
+    </style>
 </head>
+
 <body>
-    
+    <div id="vm">
+        <div class="firmMain">
+            <div class="firmLeft">
+                <div class="title"></div>
+                <div class="leftContent">
+                    <el-tree default-expand-all highlight-current :expand-on-click-node="false" :props="defaultProps" @node-click="handleNodeClick"></el-tree>
+                </div>
+            </div>
+            <div class="firmRight">
+                <span>企业名称：</span>
+                <span>环保演示箱</span>
+                <div class="layui-inline layui-form">
+
+                    <div class="layui-input-inline" style="width: 120px;">
+                        <select name="timeType" lay-filter="timeType" lay-verify="required">
+                            <option value="">选择类型</option>
+                            <option value="year">年</option>
+                            <option value="month">月</option>
+                            <option value="date">日</option>
+                            <option value="plus">累计</option>
+                        </select>
+                    </div>
+                    <div class="layui-input-inline" v-show="timeShow == 1">
+                        <input type="text" class="layui-input" id="timeDate" placeholder="请选择日期">
+                    </div>
+                    <div class="layui-input-inline" v-show="timeShow == 2">
+                        <input type="text" class="layui-input" id="yearDate" placeholder="请选择日期">
+                    </div>
+                    <div class="layui-input-inline" v-show="timeShow == 3">
+                        <input type="text" class="layui-input" id="monthDate" placeholder="请选择日期">
+                    </div>
+                    <button class="layui-btn layuiadmin-btn-list layui-bg-orange layui-icon  layui-icon-link">导出</button>
+                </div>
+                <table id="LAY-app-content-list" lay-filter="LAY-app-content-list"></table>
+
+            </div>
+        </div>
+    </div>
+
+    <script src="./../../../layuiadmin/layui/layui.js"></script>
+    <script src="./../../../layuiadmin/plugin/vue.js"></script>
+    <script src="./../../../layuiadmin/plugin/element.js"></script>
+    <script src="./../../../layuiadmin/plugin/axios.js"></script>
+    <script src="./../../../layuiadmin/js/baseUrlConfig.js"></script>
+    <script>
+        layui.config({
+            base: '../../../layuiadmin/' //静态资源所在路径
+        }).extend({
+            index: 'lib/index' //主入口模块
+        }).use(['index', 'table', 'laydate', 'form', 'jquery'], function () {
+            var form = layui.form,
+                table = layui.table,
+                $ = layui.jquery,
+                laydate = layui.laydate;
+            //时间日期
+            laydate.render({
+                elem: '#timeDate',
+                format: 'yyyy-MM-dd'
+            });
+            laydate.render({
+                elem: '#yearDate',
+                type: 'year'
+            });
+            laydate.render({
+                elem: '#monthDate',
+                type: 'month'
+            });
+
+            table.render({
+                elem: '#LAY-app-content-list',
+                height: 555 //容器高度
+                ,
+                url: layui.setter.BASEURL + '/environmental_intelligent_monitoring/tbasenterprise/list' //数据接口
+                ,
+                page: true,
+                parseData: function (res) { // 数据重新处理为layUI的数据格式
+                    var msg = {
+                        "code": res.code, //解析接口状态
+                        "msg": res.msg, //解析提示文本
+                        "count": res.page.totalCount, //解析数据长度
+                        "data": res.page.list //解析数据列表
+                    };
+                    return msg;
+                },
+                cols: [
+                    [{
+                        title: '企业名称',
+                        field: 'name',
+                        minWidth: 100
+                    }, {
+                        title: '企业社会信用代码',
+                        field: 'trustCode',
+                        minWidth: 100,
+                        width: 200
+                    }, {
+                        title: '地址',
+                        field: 'address',
+                        minWidth: 100,
+                        width: 200
+                    }, {
+                        title: '行业名称',
+                        field: 'tradeName',
+                        minWidth: 100
+                    }, {
+                        title: '创建时间',
+                        field: 'createDate',
+                        minWidth: 100
+                    }
+                    ]
+                ] //设置表头
+                ,
+                limit: 10,
+                limits: [10, 15, 20, 25, 30]
+            });
+
+            // 监听select框选择事件
+            form.on('select(timeType)', function (data) {
+                console.log(data)
+                if (data.value == 'year') {
+                    vm.timeShow = 2;
+
+                } else if (data.value == 'month') {
+                    vm.timeShow = 3;
+
+                } else if (data.value == 'date') {
+                    vm.timeShow = 1;
+                } else {
+                    vm.timeShow = 0;
+                }
+
+            })
+        })
+
+        var vm = new Vue({
+            el: "#vm",
+            data: {
+                defaultProps: {
+                    children: 'children',
+                    label: 'label'
+                },
+                timeShow: 1
+            },
+            methods: {
+                handleNodeClick() {
+
+                }
+            }
+        })
+    </script>
 </body>
+
 </html>
