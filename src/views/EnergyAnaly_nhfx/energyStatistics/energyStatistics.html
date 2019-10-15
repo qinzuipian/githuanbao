@@ -343,10 +343,7 @@
                     </div>
                 </div>
             </div>
-
-
         </div>
-    </div>
     </div>
 
     <script src="./../../../layuiadmin/layui/layui.js"></script>
@@ -373,6 +370,10 @@
                     left: 'center',
                     text: '功率曲线',
                 },
+                tooltip: {
+                    trigger: 'axis',
+                    formatter: '{b0}: {c0}<br />'
+                },
                 xAxis: {
                     type: 'category',
                     data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
@@ -395,6 +396,10 @@
                     left: 'center',
                     text: '电能趋势',
                 },
+                tooltip: {
+                    trigger: 'axis',
+                    formatter: '{b0}: {c0}<br />'
+                },
                 xAxis: {
                     type: 'category',
                     data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
@@ -404,7 +409,7 @@
                 },
                 series: [{
                     data: [120, 200, 150, 80, 70, 110, 130],
-                    barWidth : 40,
+                    barWidth: 40,
                     type: 'bar'
                 }]
             };
@@ -456,7 +461,7 @@
                                 formatter: '{b}'
                             }
                         },
-                        barWidth : 40,
+                        barWidth: 40,
                         data: [
                             {
                                 value: 0.2
