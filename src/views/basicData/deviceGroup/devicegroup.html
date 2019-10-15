@@ -12,6 +12,7 @@
     <link rel="stylesheet" href="./../../../layuiadmin/style/admin.css" media="all">
     <link rel="stylesheet" type="text/css" href="./../../../layuiadmin/style/tbasenterpriseallocate.css" />
     <link rel="stylesheet" type="text/css" href="./../../../layuiadmin/style/common.css" />
+    <!-- <link rel="stylesheet" href="./../../../layuiadmin/style/tree.css"> -->
     <style>
         .card-title {
             color: #fff;
@@ -82,8 +83,9 @@
                     </div>
                 </div>
                 <div class="l-card-border">
-                    <el-tree :data="enpriseData" default-expand-all @node-click="handleNodeClick" node-key="monitorId" ref="tree" highlight-current  :expand-on-click-node="false"
-                        :props="defaultProps">
+                        <!-- :indent="0" -->
+                    <el-tree v-loading="loading" :data="enpriseData" default-expand-all @node-click="handleNodeClick" node-key="monitorId" ref="tree" highlight-current
+                        :expand-on-click-node="false" :props="defaultProps">
                     </el-tree>
                 </div>
             </div>
@@ -112,7 +114,7 @@
                     treeData: [],
                     defaultProps: {
                         children: 'children',
-                        label: 'label'
+                        label: 'title'
                     },
                     atraName: "",
                     enpriseData: [],
@@ -120,54 +122,60 @@
                     trade: "",
                     monitorIdData: [],
                     checkKey: [],
-                    monitoridList: []
+                    monitoridList: [],
+                    loading:true
 
                 },
                 methods: {
                     // 企业列表树状图
                     enterPriseInit() {
+                        this.loading = true;
                         axios({
                             method: "post",
-                            url: BASEURL + 'environmental_intelligent_monitoring/tdevicemonitor/list?limit=10000',
-                            params: {}
+                            // url: BASEURL + 'environmental_intelligent_monitoring/tdevicemonitor/list?limit=10000',
+                            url: BASEURL + 'environmental_intelligent_monitoring/tbasorganize/dendrogramList',
+                            params: {
+                                type: "4"
+                            }
                         }).then(function (res) {
                             if (res.data.code == 0) {
-                                var treeData = res.data.page.list;
-                                var dataList = [];
-                                // vm.enpriseData = res.data.page.list;
-                                treeData.forEach(function (data) {
-                                    for (var i = 0; i < dataList.length; i++) {
-                                        if (dataList[i].enterpriseId === data.enterpriseId) {
-                                            dataList[i].children.push({
-                                                label: data.shopName,
-                                                // children: [{
-                                                //     label: data.type === "1" ? '生产设备' : '治污设备',
-                                                //     // id: data.type,
-                                                //     children: [{ label: data.monitorName, monitorId: data.id }]
-                                                // }]
-                                            });
-                                            dataList[i].num++;
-                                            return;
-                                        }
-                                    }
+                                vm.loading = false;
+                                var treeData = res.data.data;
+                                // var dataList = [];
+                                // // vm.enpriseData = res.data.page.list;
+                                // treeData.forEach(function (data) {
+                                //     for (var i = 0; i < dataList.length; i++) {
+                                //         if (dataList[i].enterpriseId === data.enterpriseId) {
+                                //             dataList[i].children.push({
+                                //                 label: data.shopName,
+                                //                 // children: [{
+                                //                 //     label: data.type === "1" ? '生产设备' : '治污设备',
+                                //                 //     // id: data.type,
+                                //                 //     children: [{ label: data.monitorName, monitorId: data.id }]
+                                //                 // }]
+                                //             });
+                                //             dataList[i].num++;
+                                //             return;
+                                //         }
+                                //     }
 
 
-                                    dataList.push({
-                                        label: data.enterpriseName,
-                                        enterpriseId: data.enterpriseId,
-                                        num: 1,
-                                        children: [{
-                                            label: data.shopName,
-                                            // children: [{
-                                            //     label: data.type === "1" ? '生产设备' : '治污设备',
-                                            //     id: data.type,
-                                            //     children: [{ label: data.monitorName, monitorId: data.id }]
-                                            // }]
-                                        }]
-                                    });
-                                })
+                                //     dataList.push({
+                                //         label: data.enterpriseName,
+                                //         enterpriseId: data.enterpriseId,
+                                //         num: 1,
+                                //         children: [{
+                                //             label: data.shopName,
+                                //             // children: [{
+                                //             //     label: data.type === "1" ? '生产设备' : '治污设备',
+                                //             //     id: data.type,
+                                //             //     children: [{ label: data.monitorName, monitorId: data.id }]
+                                //             // }]
+                                //         }]
+                                //     });
+                                // })
                                 // console.log(dataList)
-                                vm.enpriseData = dataList;
+                                vm.enpriseData = treeData;
 
                             }
 

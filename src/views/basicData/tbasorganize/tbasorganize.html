@@ -10,6 +10,7 @@
 	<link rel="stylesheet" href="../../../layuiadmin/layui/css/layui.css" media="all">
 	<link rel="stylesheet" href="../../../layuiadmin/style/admin.css" media="all">
 	<link rel="stylesheet" href="../../../layuiadmin/plugin/element.css">
+	<link rel="stylesheet" href="./../../../layuiadmin/style/tree.css">
 	<style>
 		#organizeTree .ulOrganize .layui-icon-add-circle {
 			cursor: pointer;
@@ -27,6 +28,7 @@
 		#organizeTree .ulOrganize li ul li {
 			margin-left: 50px;
 		}
+
 	</style>
 </head>
 
@@ -62,15 +64,21 @@
 				</div>
 			</div> -->
 
+				<!-- @node-click="handleNodeClick" -->
 				<div class="layui-card-body">
-					<el-tree :highlight-current="treeHign" :data="treeData" :props="defaultProps" @node-click="handleNodeClick">
-						<span class="custom-tree-node" slot-scope="{ node, data }">
-							<span>
-								<i :class="data.icon"></i>
-								{{ node.label }}
-							</span>
-						</span>
-					</el-tree>
+					<!-- <div id="organizeId" class="demo-tree demo-tree-box"></div> -->
+					<div class="tree-container">
+						<el-tree v-loading="loading" default-expand-all :indent="0" :highlight-current="treeHign" :data="treeData" @node-click="handleNodeClick"
+						 :expand-on-click-node="false" :props="defaultProps">
+							<!-- <span class="custom-tree-node" slot-scope="{ node, data }">
+										<span>
+											<i :class="data.icon"></i>
+											{{ node.label }}
+										</span>
+									</span> -->
+						</el-tree>
+					</div>
+
 					<!-- <table id="LAY-app-content-list" lay-filter="LAY-app-content-list"></table> -->
 
 				</div>
@@ -92,10 +100,32 @@
 			base: '../../../layuiadmin/' //静态资源所在路径
 		}).extend({
 			index: 'lib/index' //主入口模块
-		}).use(['index', 'table', 'form', 'tree'], function () {
+		}).use(['index', 'table', 'form', 'tree', 'layer', 'jquery'], function () {
 			var table = layui.table,
 				form = layui.form,
+				layer = layui.layer,
+				$ = layui.jquery,
 				tree = layui.tree;
+
+
+			//树状图获取数据
+			// var loading = layer.msg('加载中', { icon: 16, shade: 0.3, time: 0 });
+			setTimeout(function () {
+				tree.render({
+					elem: '#organizeId' //默认是点击节点可进行收缩
+					// , data: vm.treeData
+					, click: function (obj) {
+						console.log(obj.data); //得到当前点击的节点数据
+						console.log(obj.state); //得到当前节点的展开状态：open、close、normal
+						console.log(obj.elem); //得到当前节点元素
+
+						console.log(obj.data.children); //当前节点下是否有子节点
+					}
+				});
+				// layer.close(loading);
+			}, 500)
+
+			// console.log(vm.treeData)
 
 			//监听搜索
 			form.on('submit(LAY-app-contlist-search)', function (data) {
@@ -151,6 +181,7 @@
 					},
 					add: function () {
 						window.data = vm.nodedata;
+						console.log(window.data)
 						layer.open({
 							type: 2,
 							title: '添加行政区域信息',
@@ -196,90 +227,99 @@
 				treeData: [],
 				defaultProps: {
 					children: 'children',
-					label: 'label'
+					label: 'title'
 				},
 				nodedata: [],
-				treeHign: true
+				treeHign: true,
+				loading: true
 			},
 			methods: {
 				handleNodeClick(data, node) {
-					console.log(data);
+					console.log(data, node);
 					vm.treeHign = true;
 					// console.log(node.parent.childNodes[0].parent.data.label)
-					var localname = node.parent.childNodes[0].parent.data.label === undefined ? '无上级目录' : node.parent.childNodes[0].parent.data.label;
+					var localname = node.parent.childNodes[0].parent.data.title === undefined ? '无上级目录' : node.parent.childNodes[0].parent.data.title;
 					localStorage.setItem("nodeParentName", localname)
 					vm.nodedata = data;
+					// axios({
+					// 	method: "post",
+					// 	url: BASEURL + 'environmental_intelligent_monitoring/tbasorganize/list?limit=10000',
+					// 	params: {
+					// 		parentId: data.id
+					// 	}
+					// }).then(function (res) {
+					// 	if (res.data.code == 0) {
+
+					// 		// vm.treeData = res.data.page.list;
+					// 		var treedata = res.data.page.list;
+					// 		// console.log(treedata)
+					// 		// for (var i = 0; i < vm.treeData.length; i++) {
+					// 		data.children = [];
+					// 		for (var j = 0; j < treedata.length; j++) {
+
+					// 			// if (vm.treeData[i].id == data[j].parentId) {
+					// 			if (data.id == treedata[j].parentId) {
+					// 				// console.log(treedata[j])
+					// 				let obj = {
+					// 					label: treedata[j].name,
+					// 					id: treedata[j].id,
+					// 					parentId: treedata[j].parentId,
+					// 					icon: "el-icon-tickets",
+					// 					children: []
+					// 				};
+					// 				data.children.push(obj);
+					// 				console.log(data.children)
+					// 			}
+					// 		}
+					// 		// }
+
+
+					// 	} else {
+					// 		vm.$notify.error({
+					// 			title: '错误',
+					// 			message: res.data.msg
+					// 		});
+					// 	}
+					// }).catch(function (err) {
+					// 	console.log(err);
+					// });
+				},
+				// 获取树状组件的data值
+				organizeTree() {
+					this.loading = true;
 					axios({
 						method: "post",
-						url: BASEURL + 'environmental_intelligent_monitoring/tbasorganize/list?limit=10000',
+						// url: BASEURL + 'environmental_intelligent_monitoring/tbasorganize/list?limit=10000',
+						url: BASEURL + 'environmental_intelligent_monitoring/tbasorganize/dendrogramList',
 						params: {
-							parentId: data.id
+							type: "2"
 						}
 					}).then(function (res) {
 						if (res.data.code == 0) {
 
+							// vm.treeData = [];
 							// vm.treeData = res.data.page.list;
-							var treedata = res.data.page.list;
-							// console.log(treedata)
-							// for (var i = 0; i < vm.treeData.length; i++) {
-							data.children = [];
-							for (var j = 0; j < treedata.length; j++) {
+							vm.loading = false;
+							var data = res.data.data;
+							vm.treeData = data;
 
-								// if (vm.treeData[i].id == data[j].parentId) {
-								if (data.id == treedata[j].parentId) {
-									// console.log(treedata[j])
-									let obj = {
-										label: treedata[j].name,
-										id: treedata[j].id,
-										parentId: treedata[j].parentId,
-										icon:"el-icon-tickets",
-										children: []
-									};
-									data.children.push(obj);
-									console.log(data.children)
-								}
-							}
+							// for (var i = 0; i < data.length; i++) {
+							// 	var obj = {};
+							// 	obj.label = data[i].name;
+							// 	obj.id = data[i].id;
+							// 	obj.parentId = data[i].parentId;
+							// 	obj.children = [];
+							// 	obj.icon= "el-icon-folder-opened";
+							// 	vm.treeData.push(obj);
 							// }
 
 
 						} else {
+							vm.loading = false;
 							vm.$notify.error({
-								title: '错误',
-								message: res.data.msg
-							});
-						}
-					}).catch(function (err) {
-						console.log(err);
-					});
-				},
-				// 获取树状组件的data值
-				organizeTree() {
-
-					axios({
-						method: "post",
-						url: BASEURL + 'environmental_intelligent_monitoring/tbasorganize/list?limit=10000',
-						params: {
-							parentId: 0
-						}
-					}).then(function (res) {
-						if (res.data.code == 0) {
-
-							vm.treeData = [];
-							// vm.treeData = res.data.page.list;
-							var data = res.data.page.list;
-
-							for (var i = 0; i < data.length; i++) {
-								var obj = {};
-								obj.label = data[i].name;
-								obj.id = data[i].id;
-								obj.parentId = data[i].parentId;
-								obj.children = [];
-								obj.icon= "el-icon-folder-opened";
-								vm.treeData.push(obj);
-							}
-
-
-						} else {
+                                title: '错误',
+                                message: res.data.msg
+                            });
 
 						}
 					}).catch(function (err) {
@@ -291,8 +331,6 @@
 
 			created() {
 				this.organizeTree();
-
-
 			}
 		})
 	</script>

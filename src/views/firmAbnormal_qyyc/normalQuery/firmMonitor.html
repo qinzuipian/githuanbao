@@ -18,7 +18,8 @@
             <div class="firmLeft">
                 <div class="title"></div>
                 <div class="leftContent">
-                    <el-tree default-expand-all :data="firmTreeData" highlight-current :expand-on-click-node="false" :props="defaultProps" @node-click="handleNodeClick"></el-tree>
+                    <el-tree default-expand-all :data="firmTreeData" :highlight-current="firmHigh" :expand-on-click-node="false" :props="defaultProps"
+                        @node-click="handleNodeClick"></el-tree>
                 </div>
             </div>
             <div class="firmRight">
@@ -43,7 +44,7 @@
                                     <input type="text" class="layui-input" id="timeDate" placeholder="请输入日期">
                                 </div>
                             </div>
-
+                            <!-- 第一层样式 -->
                             <div class="layui-fluid">
                                 <div class="layui-row layui-col-space15">
                                     <div class="layui-col-sm6 layui-col-md4">
@@ -117,7 +118,13 @@
                                 </div>
 
                             </div>
+                            <!-- 第二层折线图展示 -->
+                            <!-- 第三层柱状图展示 -->
+                            <!-- 第四层table栏展示 -->
+                            <div class="fourthTable">
 
+                            </div>
+                            <!-- 第五层更多参数展示 -->
                         </div>
                         <div v-show="firmShow==2">
                             <div class="layui-inline layui-form">
@@ -376,7 +383,9 @@
                 ],
                 // 点击树状图切换右边
                 threeRun: 1,
-                firmEchartShow: 1
+                firmEchartShow: 1,
+                // 树状图高亮显示
+                firmHigh: true
 
             },
             methods: {
@@ -389,7 +398,6 @@
                         }
                     }).then(function (res) {
                         if (res.data.code == 0) {
-
 
                         } else {
 
