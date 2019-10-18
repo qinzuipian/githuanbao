@@ -163,19 +163,41 @@
                     </div>
 
                     <div class="layui-form-item">
-                        <label for="bitian" class="layui-form-label">
+                        <!-- <label for="bitian" class="layui-form-label">
                             仪表地址
                             <span class="red">*</span>
                         </label>
                         <div class="layui-input-inline">
                             <input type="text" name="meterId" class="layui-input" lay-verify="required" placeholder="" />
+                        </div> -->
+                        <label for="bitian" class="layui-form-label">
+                            企业选择</label>
+                        <div class="layui-input-inline">
+                            <el-autocomplete v-model="firmName" :fetch-suggestions="querySearchAsync" placeholder="请输入内容" @select="handleSelect"></el-autocomplete>
                         </div>
-
 
                         <label for="bitian" class="layui-form-label">
                             设备用途</label>
                         <div class="layui-input-inline">
                             <input type="text" name="equipmentUse" v-model="tDeviceMonitor.equipmentuse" class="layui-input" placeholder="设备用途" />
+                        </div>
+
+                    </div>
+                    <div class="layui-form-item">
+                        <label for="bitian" class="layui-form-label">
+                            所选车间</label>
+                        <div class="layui-input-inline">
+                            <!-- <input type="text" v-model="shopname" disabled class="layui-input layui-disabled" placeholder="所选车间" /> -->
+                            <el-select v-model="shopId" @change="selectGet" placeholder="请选择">
+                                <el-option v-for="item in shopOptions" :key="item.value" :label="item.name" :value="item.id">
+                                </el-option>
+                            </el-select>
+                        </div>
+
+                        <label for="bitian" class="layui-form-label">
+                            摄像头编号</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="cameraIndexCode" class="layui-input" placeholder="摄像头编号" />
                         </div>
 
                     </div>
@@ -294,19 +316,16 @@
                             <input type="text" name="ct" lay-verify="required" class="layui-input" placeholder="电流变比" />
                         </div>
                         <label for="bitian" class="layui-form-label">
-                            摄像头编号</label>
-                        <div class="layui-input-inline">
-                            <input type="text" name="cameraIndexCode" class="layui-input" placeholder="摄像头编号" />
-                        </div>
-
-
-                    </div>
-                    <div class="layui-form-item">
-                        <label for="bitian" class="layui-form-label">
                             额定功率(kW)</label>
                         <div class="layui-input-inline">
                             <input type="text" name="ratedPower" class="layui-input" placeholder="额定功率(kW)" />
                         </div>
+
+
+
+                    </div>
+                    <div class="layui-form-item">
+
                         <label for="bitian" class="layui-form-label">
                             备注</label>
                         <div class="layui-input-inline">
@@ -315,28 +334,26 @@
 
 
                     </div>
-                    <div class="layui-form-item">
+                    <!--    <div class="layui-form-item">
                         <label for="bitian" class="layui-form-label">
                             企业选择</label>
                         <div class="layui-input-inline">
                             <el-autocomplete v-model="firmName" :fetch-suggestions="querySearchAsync" placeholder="请输入内容" @select="handleSelect"></el-autocomplete>
-                            <!-- <input type="text" v-model="shopname" disabled class="layui-input layui-disabled" placeholder="所选车间" /> -->
                         </div>
 
-                    </div>
+                    </div> -->
 
-                    <div class="layui-form-item">
+                    <!-- <div class="layui-form-item">
                         <label for="bitian" class="layui-form-label">
                             所选车间</label>
                         <div class="layui-input-inline">
-                            <!-- <input type="text" v-model="shopname" disabled class="layui-input layui-disabled" placeholder="所选车间" /> -->
                             <el-select v-model="shopname" placeholder="请选择">
                                 <el-option v-for="item in shopOptions" :key="item.value" :label="item.name" :value="item.name">
                                 </el-option>
                             </el-select>
                         </div>
 
-                    </div>
+                    </div> -->
                     <!-- <div class="layui-form-item">
                         <label for="bitian" class="layui-form-label">
                             车间筛选</label>
@@ -535,15 +552,20 @@
                     vm.selectShow = 1;
 
                 } else {
-                    vm.selectShow = 2;
+                    vm.selectShow = 1;
                 }
             })
 
 
             // form表单添加数据提交
             form.on('submit(deviceForm)', function (data) {
-                console.log(data);
-                data.field.shopname = vm.shopname;
+
+
+                data.field.shopId = vm.shopId;
+                data.field.shopName = vm.shopName;
+                data.field.enterpriseName = vm.enterpriseName;
+                data.field.enterpriseId = vm.enterpriseId;
+                console.log(data.field);
 
                 /*    data.field.ecPolluteType = $("#ecPolluteType option:selected").text();
                    data.field.ecType = $("#ecType option:selected").text();
@@ -588,11 +610,13 @@
                 treeItemShow: 0,
                 treeItemData: [],
                 i: -1,
-                shopname: "",
+                shopId: "",
+                shopName: "",
                 enterpriseName: "",
+                enterpriseId: "",
                 selectShow: 1,
                 firmName: "",
-                shopOptions:[]
+                shopOptions: []
             },
             updated: function () {
                 layui.use(['form'], function () {
@@ -606,72 +630,72 @@
                 })
             },
             methods: {
-                treeInit() {
-                    // 车间树状组件请求数据
-                    axios({
-                        method: "post",
-                        url: BASEURL + 'environmental_intelligent_monitoring/tbasshop/list',
-                        data: {},
-                        headers: {
-                            "Content-Type": "application/json;charset=UTF-8"
-                        }
-                    }).then(function (res) {
-                        if (res.data.code == 0) {
-                            var datalist = res.data.page.list;
-                            for (let i = 0, len = datalist.length; i < len; i++) {
-                                for (let j = i + 1; j < len; j++) {
-                                    if (datalist[i].enterpriseId == datalist[j].enterpriseId) {
-                                        datalist.splice(j, 1);
-                                        // splice 会改变数组长度，所以要将数组长度 len 和下标 j 减一
-                                        len--;
-                                        j--;
-                                    }
-                                }
-                            }
+                // treeInit() {
+                //     // 车间树状组件请求数据
+                //     axios({
+                //         method: "post",
+                //         url: BASEURL + 'environmental_intelligent_monitoring/tbasshop/list',
+                //         data: {},
+                //         headers: {
+                //             "Content-Type": "application/json;charset=UTF-8"
+                //         }
+                //     }).then(function (res) {
+                //         if (res.data.code == 0) {
+                //             var datalist = res.data.page.list;
+                //             for (let i = 0, len = datalist.length; i < len; i++) {
+                //                 for (let j = i + 1; j < len; j++) {
+                //                     if (datalist[i].enterpriseId == datalist[j].enterpriseId) {
+                //                         datalist.splice(j, 1);
+                //                         // splice 会改变数组长度，所以要将数组长度 len 和下标 j 减一
+                //                         len--;
+                //                         j--;
+                //                     }
+                //                 }
+                //             }
 
-                            console.log(datalist)
-                            vm.treeData = datalist;
-                        } else {
+                //             console.log(datalist)
+                //             vm.treeData = datalist;
+                //         } else {
 
-                        }
-                    }).catch(function (err) {
-                        console.log(err);
-                    });
-                },
-                treeItem(item) {
-                    // vm.treeItemShow == item.enterpriseId;
-                    axios({
-                        method: "post",
-                        url: BASEURL + 'environmental_intelligent_monitoring/tbasshop/list',
-                        params: {
-                            enterpriseId: item.enterpriseId
-                        }
-                        /*  headers: {
-                             "Content-Type": "application/json;charset=UTF-8"
-                         } */
-                    }).then(function (res) {
-                        if (res.data.code == 0) {
-                            // vm.treeItemShow = !vm.treeItemShow;
+                //         }
+                //     }).catch(function (err) {
+                //         console.log(err);
+                //     });
+                // },
+                // treeItem(item) {
+                //     // vm.treeItemShow == item.enterpriseId;
+                //     axios({
+                //         method: "post",
+                //         url: BASEURL + 'environmental_intelligent_monitoring/tbasshop/list',
+                //         params: {
+                //             enterpriseId: item.enterpriseId
+                //         }
+                //         /*  headers: {
+                //              "Content-Type": "application/json;charset=UTF-8"
+                //          } */
+                //     }).then(function (res) {
+                //         if (res.data.code == 0) {
+                //             // vm.treeItemShow = !vm.treeItemShow;
 
-                            // console.log(res)
-                            vm.enterpriseName = item.enterpriseName;
-                            vm.i = item.enterpriseId
-                            var _vm = vm;
-                            vm.$nextTick(function () {
-                                _vm.treeItemData = res.data.page.list;
-                                console.log(_vm.treeItemData);
-                            })
-                            layui.form.render();
+                //             // console.log(res)
+                //             vm.enterpriseName = item.enterpriseName;
+                //             vm.i = item.enterpriseId
+                //             var _vm = vm;
+                //             vm.$nextTick(function () {
+                //                 _vm.treeItemData = res.data.page.list;
+                //                 console.log(_vm.treeItemData);
+                //             })
+                //             layui.form.render();
 
-                            // vm.treeItemData = res.data.page.list;
+                //             // vm.treeItemData = res.data.page.list;
 
-                        } else {
+                //         } else {
 
-                        }
-                    }).catch(function (err) {
-                        console.log(err);
-                    });
-                },
+                //         }
+                //     }).catch(function (err) {
+                //         console.log(err);
+                //     });
+                // },
                 cancel() {
                     parent.layer.closeAll('iframe');//关闭弹窗
                 },
@@ -719,6 +743,8 @@
                 },
                 handleSelect(item) {
                     console.log(item);
+                    this.enterpriseName = item.enterpriseName;
+                    this.enterpriseId = item.enterpriseId;
                     axios({
                         method: "post",
                         url: BASEURL + 'environmental_intelligent_monitoring/tbasshop/list',
@@ -741,10 +767,18 @@
                     });
 
                 }
-
+                , selectGet(val) {
+                    console.log(val);
+                    obj = this.shopOptions.find((item) => {//这里的userList就是上面遍历的数据源
+                        console.log(item)
+                        return item.id === val;//筛选出匹配数据
+                    });
+                    this.shopName = obj.name;
+                    console.log(obj.name);//我这边的name就是对应label的
+                }
             },
             created() {
-                this.treeInit();
+                // this.treeInit();
             }
 
         });

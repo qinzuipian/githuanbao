@@ -23,12 +23,13 @@
             <div class="firmLeft">
                 <div class="title"></div>
                 <div class="leftContent">
-                    <el-tree default-expand-all highlight-current :expand-on-click-node="false" :props="defaultProps" @node-click="handleNodeClick"></el-tree>
+                    <el-tree default-expand-all highlight-current :data="enterpriseData" :expand-on-click-node="false" :props="defaultProps"
+                        @node-click="handleNodeClick"></el-tree>
                 </div>
             </div>
             <div class="firmRight">
                 <span>企业名称：</span>
-                <span>环保演示箱</span>
+                <span v-text="enterpriseName"></span>
                 <div class="layui-inline layui-form">
 
                     <div class="layui-input-inline" style="width: 100px;">
@@ -137,21 +138,29 @@
                         field: 'name',
                         minWidth: 100
                     }, {
-                        title: '用电统计',
+                        title: '用电总计',
                         field: 'trustCode',
                         minWidth: 100,
                         width: 200
                     }, {
-                        title: '生活用电统计',
+                        title: '生活用电总计',
                         field: 'address',
                         minWidth: 100,
                         width: 200
                     }, {
-                        title: '生产用电统计',
+                        title: '生产用电总计',
                         field: 'tradeName',
                         minWidth: 100
                     }, {
-                        title: '创建时间',
+                        title: '治污用电总计',
+                        field: 'createDate',
+                        minWidth: 100
+                    }, {
+                        title: '产污/治污（用电比%）',
+                        field: 'createDate',
+                        minWidth: 100
+                    }, {
+                        title: '产污/全厂（用电比%）',
                         field: 'createDate',
                         minWidth: 100
                     }
@@ -181,14 +190,53 @@
             data: {
                 defaultProps: {
                     children: 'children',
-                    label: 'label'
+                    label: 'title'
                 },
-                timeShow: 1
+                timeShow: 1,
+                enterpriseData: [],
+                loading: false,
+                enterpriseName: ""
             },
             methods: {
-                handleNodeClick() {
+                energyTreeInit() {
+                    this.loading = true;
+                    axios({
+                        method: "post",
+                        // url: BASEURL + 'environmental_intelligent_monitoring/tbasorganize/list?limit=10000',
+                        url: BASEURL + 'environmental_intelligent_monitoring/tbasorganize/dendrogramList',
+                        params: {
+                            type: "3"
+                        }
+                    }).then(function (res) {
+                        if (res.data.code == 0) {
+
+
+                            vm.loading = false;
+                            var data = res.data.data;
+                            vm.enterpriseData = data;
+
+                        } else {
+                            vm.loading = false;
+                            vm.$notify.error({
+                                title: '错误',
+                                message: res.data.msg
+                            });
+
+                        }
+                    }).catch(function (err) {
+                        console.log(err);
+                    });
+                },
+                handleNodeClick(data, node) {
+                    // console.log(data)
+                    if (data.type == "t_bas_enterprise") {
+                        this.enterpriseName = data.title;
+                    }
 
                 }
+            },
+            created() {
+                this.energyTreeInit();
             }
         })
     </script>

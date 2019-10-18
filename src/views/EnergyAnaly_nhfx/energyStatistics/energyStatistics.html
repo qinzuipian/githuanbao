@@ -8,7 +8,38 @@
     <title>能耗统计</title>
     <link rel="stylesheet" href="./../../../layuiadmin/layui/css/layui.css" media="all">
     <link rel="stylesheet" href="./../../../layuiadmin/style/admin.css" media="all">
+    <link rel="stylesheet" href="./../../../layuiadmin/plugin/element.css">
     <link rel="stylesheet" href="./../../../layuiadmin/style/energyStatistics.css">
+    <style>
+        .AdminArea {
+            position: relative;
+        }
+
+        .AdminArea .Areashow {
+            position: absolute;
+            width: 100%;
+            border: 1px solid #e6e6e6;
+            /* border-radius: 4px; */
+            z-index: 999;
+            /* height: 200px; */
+            background-color: #fff;
+
+        }
+
+        .AdminArea .layui-icon {
+            position: absolute;
+            top: -5px;
+            right: 10px;
+            cursor: pointer;
+            color: #c2c2c2;
+        }
+
+        .layuiadmin-big-font span {
+            font-weight: normal;
+            font-size: 18px;
+            color: orange;
+        }
+    </style>
 </head>
 
 <body>
@@ -25,20 +56,18 @@
                         <span class="layui-icon layui-icon-note"></span>
                         <div class="layui-inline layui-form">
                             <div class="layui-input-inline">
-                                <select name="">
-                                    <option value="">请选择企业</option>
-                                    <option value="5">5</option>
-                                    <option value="10">10</option>
-                                    <option value="15">15</option>
-                                </select>
+                                <el-select v-model="enterprise" @change="enterSelect" placeholder="请选择">
+                                    <el-option v-for="item in enterpriseOptions" :key="item.value" :label="item.name" :value="item.id">
+                                    </el-option>
+                                </el-select>
                             </div>
                             <div class="layui-input-inline">
-                                <select name="">
-                                    <option value="">请选择监测点</option>
-                                    <option value="5">5</option>
-                                    <option value="10">10</option>
-                                    <option value="15">15</option>
-                                </select>
+                                <el-select v-model="monitorName" @change="monitorSelect" placeholder="请选择">
+                                    <el-option value="" label="全部">
+                                    </el-option>
+                                    <el-option v-for="item in monitorNameOptions" :key="item.value" :label="item.monitorName" :value="item.id">
+                                    </el-option>
+                                </el-select>
                             </div>
                         </div>
                     </div>
@@ -46,12 +75,14 @@
                         <span class="layui-icon layui-icon-component"></span>
                         <div class="layui-inline layui-form">
                             <div class="layui-input-inline">
-                                <select name="">
+                                <!--   <select name="industry" id="industry">
                                     <option value="">请选择行业</option>
-                                    <option value="5">5</option>
-                                    <option value="10">10</option>
-                                    <option value="15">15</option>
-                                </select>
+                                    <option value=""></option>
+                                </select> -->
+                                <el-select v-model="industry" @change="industrySelect" placeholder="请选择">
+                                    <el-option v-for="item in industryOptions" :key="item.value" :label="item.name" :value="item.id">
+                                    </el-option>
+                                </el-select>
                             </div>
 
                         </div>
@@ -59,13 +90,13 @@
                     <div class="title" v-show="energyShow==3">
                         <span class="layui-icon layui-icon-location"></span>
                         <div class="layui-inline layui-form">
-                            <div class="layui-input-inline">
-                                <select name="">
-                                    <option value="">请选择行政区域</option>
-                                    <option value="5">5</option>
-                                    <option value="10">10</option>
-                                    <option value="15">15</option>
-                                </select>
+                            <div class="layui-input-inline AdminArea">
+                                <input type="text" name="organizeName" v-model="atraName" placeholder="请选择行政区域" autocomplete="off" class="layui-input">
+                                <i class="layui-icon layui-icon-triangle-d" @click="AdminFocus"></i>
+                                <div class="Areashow layui-anim layui-anim-upbit" v-show="Areashow">
+                                    <el-tree :highlight-current="treeHign" default-expand-all :expand-on-click-node="false" :data="treeData" :props="defaultProps"
+                                        @node-click="handleNodeClick"></el-tree>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -83,11 +114,13 @@
                                                     <span class="layui-badge layui-bg-green layuiadmin-badge">日</span>
                                                 </div>
                                                 <div class="layui-card-body layuiadmin-card-list">
-                                                    <p class="layuiadmin-big-font">9,999,666</p>
+                                                    <p class="layuiadmin-big-font">{{powerData.nowp}}
+                                                        <span>kW</span>
+                                                    </p>
                                                     <!-- <p> -->
 
                                                     <span class="layuiadmin-span-color">
-                                                        <i class="layui-inline layui-icon layui-icon-date"></i> 12:02
+                                                        <i class="layui-inline layui-icon layui-icon-date"></i>{{powerData.nowday}}
                                                     </span>
                                                     <!-- </p> -->
                                                 </div>
@@ -105,11 +138,13 @@
                                                             <span class="layui-badge layui-bg-green layuiadmin-badge">日</span>
                                                         </div>
                                                         <div class="layui-card-body layuiadmin-card-list">
-                                                            <p class="layuiadmin-big-font">9,999,666</p>
+                                                            <p class="layuiadmin-big-font">{{powerData.ysp}}
+                                                                <span>kW</span>
+                                                            </p>
                                                             <!-- <p> -->
 
                                                             <span class="layuiadmin-span-color">
-                                                                <i class="layui-inline layui-icon layui-icon-date"></i> 12:02
+                                                                <i class="layui-inline layui-icon layui-icon-date"></i>{{powerData.ysday}}
                                                             </span>
                                                             <!-- </p> -->
                                                         </div>
@@ -128,11 +163,14 @@
                                                     <span class="layui-badge layui-bg-blue layuiadmin-badge">日</span>
                                                 </div>
                                                 <div class="layui-card-body layuiadmin-card-list">
-                                                    <p class="layuiadmin-big-font">9,999,666</p>
+                                                    <p class="layuiadmin-big-font">{{electricity.nowkWh}}
+                                                        <span>kW·h</span>
+                                                    </p>
+
                                                     <!-- <p> -->
 
                                                     <span class="layuiadmin-span-color">
-                                                        <i class="layui-inline layui-icon layui-icon-date"></i> 12:02
+                                                        <i class="layui-inline layui-icon layui-icon-date"></i>{{electricity.nowday}}:00
                                                     </span>
                                                     <!-- </p> -->
                                                 </div>
@@ -147,11 +185,13 @@
                                                     <span class="layui-badge layui-bg-blue layuiadmin-badge">日</span>
                                                 </div>
                                                 <div class="layui-card-body layuiadmin-card-list">
-                                                    <p class="layuiadmin-big-font">9,999,666</p>
+                                                    <p class="layuiadmin-big-font">{{electricity.yskWh}}
+                                                        <span>kW·h</span>
+                                                    </p>
                                                     <!-- <p> -->
 
                                                     <span class="layuiadmin-span-color">
-                                                        <i class="layui-inline layui-icon layui-icon-date"></i> 12:02
+                                                        <i class="layui-inline layui-icon layui-icon-date"></i>{{electricity.ysday}}:00
                                                     </span>
                                                     <!-- </p> -->
                                                 </div>
@@ -348,7 +388,9 @@
 
     <script src="./../../../layuiadmin/layui/layui.js"></script>
     <script src="./../../../layuiadmin/plugin/vue.js"></script>
+    <script src="./../../../layuiadmin/plugin/element.js"></script>
     <script src="./../../../layuiadmin/plugin/axios.js"></script>
+    <script src="./../../../layuiadmin/plugin/echarts.min.js"></script>
     <script src="./../../../layuiadmin/js/baseUrlConfig.js"></script>
     <script>
         layui.config({
@@ -363,31 +405,6 @@
                 laydate = layui.laydate;
 
             // 功率曲线
-            var myCharts = echarts.init($("#energyId")[0]);
-
-            var option = {
-                title: {
-                    left: 'center',
-                    text: '功率曲线',
-                },
-                tooltip: {
-                    trigger: 'axis',
-                    formatter: '{b0}: {c0}<br />'
-                },
-                xAxis: {
-                    type: 'category',
-                    data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
-                },
-                yAxis: {
-                    type: 'value'
-                },
-                series: [{
-                    data: [820, 932, 901, 934, 1290, 1330, 1320],
-                    type: 'line'
-                }]
-            };
-
-            myCharts.setOption(option)
 
             // 电能趋势
             var electricity = echarts.init($("#electricityId")[0]);
@@ -487,10 +504,75 @@
                 energyShow: 1,
                 electricShow: 1,
                 radiusShow: 0,
-                shopShow: 1
+                shopShow: 1,
+                Areashow: false,
+                atraName: "",
+                treeHign: false,
+                treeData: [],
+                defaultProps: {
+                    children: 'children',
+                    label: 'title'
+                },
+                // 用电量峰值数据
+                electricity: {
+                    nowkWh: '0',
+                    yskWh: "0",
+                    nowday: "00",
+                    ysday: "00"
+                },
+                // 选择框填充
+                enterprise: "",
+                enterpriseOptions: [],
+                monitorName: "",
+                monitorNameOptions: [],
+                industry: "",
+                industryOptions: [],
+                // 用电量数据请求参数
+                enterpriseId: "",
+                monitorId: "",
+                // 功率峰值
+                powerData: {
+                    nowday: "00:00",
+                    nowp: 0,
+                    ysday: "00:00",
+                    ysp: 0
+                }
+
 
             },
             methods: {
+                AdminFocus() {
+                    vm.Areashow = !vm.Areashow;
+                },
+                // 行政区域列表数据的获取
+                treeDataInit() {
+                    axios({
+                        method: "post",
+                        url: BASEURL + 'environmental_intelligent_monitoring/tbasorganize/dendrogramList',
+                        params: {
+                            type: "2"
+                        }
+                    }).then(function (res) {
+                        if (res.data.code == 0) {
+
+                            // vm.treeData = [];
+                            // vm.treeData = res.data.page.list;
+                            var data = res.data.data;
+                            vm.treeData = data;
+                        } else {
+
+                        }
+                    }).catch(function (err) {
+                        console.log(err);
+                    });
+
+                },
+                handleNodeClick(data, node) {
+                    vm.atraName = data.title;
+                    vm.treeHign = true;
+                    vm.Areashow = false;
+
+                },
                 electriClick(value) {
                     console.log(value);
                     if (value == 1) {
@@ -516,7 +598,266 @@
                         this.shopShow = 2;
                     }
 
+                },
+                // 企业列表填充
+                enterpriseInit() {
+                    axios({
+                        method: "post",
+                        url: BASEURL + 'environmental_intelligent_monitoring/tbasenterprise/list?limit=10000',
+                        params: {}
+                    }).then(function (res) {
+                        if (res.data.code == 0) {
+                            // console.log(res)
+                            vm.enterpriseOptions = res.data.page.list;
+
+                        } else {
+
+                        }
+                    }).catch(function (err) {
+                        console.log(err);
+                    });
+
                 }
+                , enterSelect(val) {
+                    console.log(val)
+                    vm.enterpriseId = val;
+                    this.electricityTop(vm.enterpriseId, vm.monitorId)
+                    this.powerInit(vm.enterpriseId, vm.monitorId)
+                    this.powerEcharts(vm.enterpriseId, vm.monitorId)
+                }
+                // 监测点列表展示
+                , monitorNameInit() {
+                    axios({
+                        method: "post",
+                        url: BASEURL + 'environmental_intelligent_monitoring/tdevicemonitor/list?limit=10000',
+                        params: {}
+                    }).then(function (res) {
+                        if (res.data.code == 0) {
+                            vm.monitorNameOptions = res.data.page.list
+
+                        } else {
+
+                        }
+                    }).catch(function (err) {
+                        console.log(err);
+                    });
+                }
+                , monitorSelect(val) {
+                    console.log(val);
+                    vm.monitorId = val;
+                    this.electricityTop(vm.enterpriseId, vm.monitorId)
+                    this.powerInit(vm.enterpriseId, vm.monitorId)
+                    this.powerEcharts(vm.enterpriseId, vm.monitorId)
+                }
+                // 用电量峰值展示
+                , electricityTop(enterpriseId, monitorId) {
+                    // console.log(enterpriseId, monitorId)
+                    axios({
+                        method: "post",
+                        url: BASEURL + 'environmental_intelligent_monitoring/tkwhhour/queryElePeak',
+                        params: {
+                            // enterpriseId:89
+                            enterpriseId: enterpriseId,
+                            monitorId: monitorId
+                        }
+                    }).then(function (res) {
+                        if (res.data.code == 0) {
+                            var data = res.data.data;
+                            if (data != undefined) {
+                                vm.electricity = data;
+                            } else {
+                                vm.electricity = {
+                                    nowkWh: "0",
+                                    yskWh: "0",
+                                    nowday: "00",
+                                    ysday: "00"
+                                };
+                            }
+                            console.log(vm.electricity)
+
+                        } else {
+
+                        }
+                    }).catch(function (err) {
+                        console.log(err);
+                    });
+                }
+                // 功率峰值展示
+                , powerInit(enterpriseId, monitorId) {
+                    axios({
+                        method: "post",
+                        url: BASEURL + 'environmental_intelligent_monitoring/tdevicehistory/queryPowerPeak',
+                        params: {
+                            // enterpriseId:89
+                            enterpriseId: enterpriseId,
+                            monitorId: monitorId
+                        }
+                    }).then(function (res) {
+                        if (res.data.code == 0) {
+                            var data = res.data.data;
+                            if (data != undefined) {
+                                vm.powerData = data;
+                            } else {
+                                vm.powerData = {
+                                    nowday: "00:00",
+                                    nowp: 0,
+                                    ysday: "00:00",
+                                    ysp: 0
+                                };
+                            }
+                            console.log(vm.powerData)
+
+                        } else {
+
+                        }
+                    }).catch(function (err) {
+                        console.log(err);
+                    });
+
+                }
+                // 功率曲线展示
+                , powerEcharts(enterpriseId, monitorId) {
+                    var myCharts = echarts.init(document.getElementById('energyId'));
+                    myCharts.showLoading({
+                        text: "加载中"
+                    });
+
+
+                    axios({
+                        method: "post",
+                        url: BASEURL + 'environmental_intelligent_monitoring/tdevicehistory/queryPowerCurve',
+                        params: {
+                            // enterpriseId:89
+                            enterpriseId: enterpriseId,
+                            monitorId: monitorId
+                        }
+                    }).then(function (res) {
+                        if (res.data.code == 0) {
+                            var powerData = res.data.data;
+
+                            var todayData = [],
+                                todayTime = [],
+                                yestodayData = [],
+                                yestodayTime = []
+                            for (var i = 0; i < powerData.yslist.length; i++) {
+                                console.log(powerData.yslist[i]);
+                                yestodayData.push(
+                                    powerData.yslist[i].ysp
+                                )
+                                yestodayTime.push(
+                                    powerData.yslist[i].ysday,
+                                )
+                            }
+                            for (var i = 0; i < powerData.nowlist.length; i++) {
+                                console.log(powerData.nowlist[i]);
+                                todayData.push(
+                                    powerData.nowlist[i].nowp
+                                )
+                                todayTime.push(
+                                    powerData.nowlist[i].nowday,
+                                )
+                            }
+                            console.log(yestodayData)
+                            console.log(yestodayTime)
+                            var option = {
+                                noDataLoadingOption: {
+                                    text: '暂无数据',//没有数据时显示的文字
+                                    effect: 'bubble',//loading效果，此为气泡，还有'spin' | 'bar' | 'ring' | 'whirling' | 'dynamicLine' | 'bubble'
+                                    effectOption: {
+                                        backgroundColor: "rgba(50,50,50,0)",//loading的背景
+                                    },
+                                    textStyle: {//没有数据时显示的文字的样式
+                                        fontSize: 32,
+                                        fontWeight: 'bold'
+                                    }
+                                },
+                                title: {
+                                    text: '功率曲线'
+                                },
+                                tooltip: {
+                                    trigger: 'axis',
+                                    formatter: '{b0}<br />{a0}:{c0}<br />{a1}:{c1}%',
+                                },
+                                legend: {
+                                    data: ['今日', '昨日']
+                                },
+                                grid: {
+                                    left: '3%',
+                                    right: '4%',
+                                    bottom: '3%',
+                                    containLabel: true
+                                },
+                                toolbox: {
+                                    feature: {
+                                        saveAsImage: {}
+                                    }
+                                },
+                                xAxis: {
+                                    type: 'category',
+                                    boundaryGap: false,
+                                    data: yestodayTime
+                                },
+                                yAxis: {
+                                    type: 'value',
+                                    name: '单位(kW)',
+                                },
+                                series: [
+                                    {
+                                        name: '昨日',
+                                        type: 'line',
+                                        stack: '总量',
+                                        data: yestodayData
+                                    }, {
+                                        name: '今日',
+                                        type: 'line',
+                                        stack: '总量',
+                                        data: todayData
+                                    }
+                                ]
+                            };
+                            myCharts.hideLoading();
+                            // myCharts.resize();
+                            myCharts.setOption(option, true);
+
+
+                        } else {
+
+                        }
+                    }).catch(function (err) {
+                        console.log(err);
+                    });
+                }
+                // 行业列表选择框填充
+                , industryInit() {
+                    axios({
+                        method: "post",
+                        url: BASEURL + 'environmental_intelligent_monitoring/tbastrade/list?limit=10000',
+                        params: {}
+                    }).then(function (res) {
+                        if (res.data.code == 0) {
+                            // console.log(res)
+                            vm.industryOptions = res.data.page.list;
+
+                        } else {
+
+                        }
+                    }).catch(function (err) {
+                        console.log(err);
+                    });
+                },
+                industrySelect(val) {
+
+                }
+            },
+            mounted() {
+                this.powerEcharts(-1, 0);
+            }
+            , created() {
+                this.treeDataInit();
+                this.enterpriseInit();
+                this.monitorNameInit();
+                this.industryInit();
+
             }
         })
     </script>

@@ -23,12 +23,12 @@
             <div class="firmLeft">
                 <div class="title"></div>
                 <div class="leftContent">
-                    <el-tree default-expand-all highlight-current :expand-on-click-node="false" :props="defaultProps" @node-click="handleNodeClick"></el-tree>
+                    <el-tree default-expand-all highlight-current :data="energyData" :expand-on-click-node="false" :props="defaultProps" @node-click="handleNodeClick"></el-tree>
                 </div>
             </div>
             <div class="firmRight">
                 <span>企业名称：</span>
-                <span>环保演示箱11</span>
+                <span v-text="enpriseName"></span>
                 <div class="layui-inline layui-form">
 
                     <div class="layui-input-inline" style="width: 120px;">
@@ -156,16 +156,58 @@
             data: {
                 defaultProps: {
                     children: 'children',
-                    label: 'label'
+                    label: 'title'
                 },
-                timeShow: 1
+                energyData: [],
+                timeShow: 1,
+                loading: false,
+                enpriseName: ""
             },
             methods: {
-                handleNodeClick() {
+                energyTreeInit() {
+                    this.loading = true;
+                    axios({
+                        method: "post",
+                        // url: BASEURL + 'environmental_intelligent_monitoring/tbasorganize/list?limit=10000',
+                        url: BASEURL + 'environmental_intelligent_monitoring/tbasorganize/dendrogramList',
+                        params: {
+                            type: "3"
+                        }
+                    }).then(function (res) {
+                        if (res.data.code == 0) {
+
+
+                            vm.loading = false;
+                            var data = res.data.data;
+                            vm.energyData = data;
+
+
+
+
+                        } else {
+                            vm.loading = false;
+                            vm.$notify.error({
+                                title: '错误',
+                                message: res.data.msg
+                            });
+
+                        }
+                    }).catch(function (err) {
+                        console.log(err);
+                    });
+                },
+                handleNodeClick(data, node) {
+                    if (data.type == "t_bas_enterprise") {
+                        this.enpriseName = data.title;
+                    }
 
                 }
+            },
+            created() {
+                this.energyTreeInit();
             }
         })
     </script>
 </body>
+
 </html>
