@@ -135,12 +135,12 @@
 
                     <div class="layui-form-item">
                         <label for="bitian" class="layui-form-label">
-                            网关编号
-                            <span class="red">*</span>
-                        </label>
+                            企业选择</label>
                         <div class="layui-input-inline">
-                            <input type="text" name="swicthId" lay-verify="required" class="layui-input" placeholder="网关编号" />
+                            <el-autocomplete v-model="firmName" :fetch-suggestions="querySearchAsync" placeholder="请输入内容" @select="handleSelect"></el-autocomplete>
+                            <!-- <input type="text" v-model="shopname" disabled class="layui-input layui-disabled" placeholder="所选车间" /> -->
                         </div>
+
                         <label for="bitian" class="layui-form-label">
                             工艺
                             <span class="red">*</span>
@@ -155,13 +155,13 @@
 
                     <div class="layui-form-item">
                         <label for="bitian" class="layui-form-label">
-                            仪表地址
+                            网关编号
                             <span class="red">*</span>
                         </label>
                         <div class="layui-input-inline">
-                            <input type="text" name="meterId" lay-verify="required" class="layui-input" placeholder="" />
+                            <el-autocomplete v-model="swicthId" :fetch-suggestions="querySwicthId" placeholder="请输入内容"></el-autocomplete>
+                            <!-- <input type="text" name="swicthId" lay-verify="required" class="layui-input" placeholder="网关编号" /> -->
                         </div>
-
 
                         <label for="bitian" class="layui-form-label">
                             设备用途</label>
@@ -171,6 +171,47 @@
 
                     </div>
 
+                    <div class="layui-form-item">
+                        <label for="bitian" class="layui-form-label">
+                            所选车间</label>
+                        <div class="layui-input-inline">
+                            <!-- <input type="text" v-model="shopname" disabled class="layui-input layui-disabled" placeholder="所选车间" /> -->
+                            <el-select v-model="shopId" @change="selectGet" placeholder="请选择">
+                                <el-option v-for="item in shopOptions" :key="item.value" :label="item.name" :value="item.id">
+                                </el-option>
+                            </el-select>
+                        </div>
+                        <label for="bitian" class="layui-form-label">
+                            功率启停阀值(kW)
+                            <span class="red">*</span>
+                        </label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="electricLimit" lay-verify="required" class="layui-input" placeholder="功率启停阀值(kW)" />
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <!-- <label for="bitian" class="layui-form-label">
+                            仪表型号
+                            <span class="red">*</span>
+                        </label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="model" lay-verify="required" class="layui-input" placeholder="仪表型号" />
+                        </div> -->
+                        <label for="bitian" class="layui-form-label">
+                            仪表地址
+                            <span class="red">*</span>
+                        </label>
+                        <div class="layui-input-inline">
+                            <input type="text" v-model="meterCode" lay-verify="required" class="layui-input" placeholder="请输入0-99中的任意数字" />
+                        </div>
+                        <label for="bitian" class="layui-form-label">
+                            功率门限时间(m)
+                            <span class="red">*</span>
+                        </label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="electricTime" lay-verify="required" class="layui-input" placeholder="功率门限时间(分钟)" />
+                        </div>
+                    </div>
                     <div class="layui-form-item">
                         <label for="bitian" class="layui-form-label">
                             仪表类别
@@ -187,29 +228,30 @@
                             </select>
                             <!-- <input type="text" name="meterid" v-model="tDeviceMonitor.meterid" class="layui-input" placeholder="仪表类别" /> -->
                         </div>
-
                         <label for="bitian" class="layui-form-label">
-                            功率启停阀值(kW)
-                            <span class="red">*</span>
-                        </label>
+                            额定功率(kW)</label>
                         <div class="layui-input-inline">
-                            <input type="text" name="electricLimit" lay-verify="required" class="layui-input" placeholder="功率启停阀值(kW)" />
+                            <input type="text" name="ratedPower" class="layui-input" placeholder="额定功率(kW)" />
                         </div>
+                        <!-- <label for="bitian" class="layui-form-label">
+                                所选车间</label>
+                            <div class="layui-input-inline">
+                                <input type="text" v-model="shopname" name="shopName" disabled class="layui-input layui-disabled" placeholder="所选车间" />
+                            </div> -->
+
+
                     </div>
                     <div class="layui-form-item">
                         <label for="bitian" class="layui-form-label">
-                            仪表型号
-                            <span class="red">*</span>
-                        </label>
+                            采集器代码</label>
                         <div class="layui-input-inline">
-                            <input type="text" name="model" lay-verify="required" class="layui-input" placeholder="仪表型号" />
+                            <input type="text" v-model="tnCode" class="layui-input" />
                         </div>
+
                         <label for="bitian" class="layui-form-label">
-                            功率门限时间(m)
-                            <span class="red">*</span>
-                        </label>
+                            摄像头编号</label>
                         <div class="layui-input-inline">
-                            <input type="text" name="electricTime" lay-verify="required" class="layui-input" placeholder="功率门限时间(分钟)" />
+                            <input type="text" name="cameraIndexCode" class="layui-input" placeholder="摄像头编号" />
                         </div>
                     </div>
 
@@ -256,46 +298,13 @@
                             <input type="text" name="ratedU" class="layui-input" placeholder="额定电压(V)" />
                         </div>
                     </div>
-                    <div class="layui-form-item">
-                        <label for="bitian" class="layui-form-label">
-                            额定功率(kW)</label>
-                        <div class="layui-input-inline">
-                            <input type="text" name="ratedPower" class="layui-input" placeholder="额定功率(kW)" />
-                        </div>
 
-                        <label for="bitian" class="layui-form-label">
-                            摄像头编号</label>
-                        <div class="layui-input-inline">
-                            <input type="text" name="cameraIndexCode" class="layui-input" placeholder="摄像头编号" />
-                        </div>
-                    </div>
 
-                    <div class="layui-form-item">
-                        <!-- <label for="bitian" class="layui-form-label">
-                            所选车间</label>
-                        <div class="layui-input-inline">
-                            <input type="text" v-model="shopname" name="shopName" disabled class="layui-input layui-disabled" placeholder="所选车间" />
-                        </div> -->
-                        <label for="bitian" class="layui-form-label">
-                            企业选择</label>
-                        <div class="layui-input-inline">
-                            <el-autocomplete v-model="firmName" :fetch-suggestions="querySearchAsync" placeholder="请输入内容" @select="handleSelect"></el-autocomplete>
-                            <!-- <input type="text" v-model="shopname" disabled class="layui-input layui-disabled" placeholder="所选车间" /> -->
-                        </div>
 
-                    </div>
 
 
                     <div class="layui-form-item">
-                        <label for="bitian" class="layui-form-label">
-                            所选车间</label>
-                        <div class="layui-input-inline">
-                            <!-- <input type="text" v-model="shopname" disabled class="layui-input layui-disabled" placeholder="所选车间" /> -->
-                            <el-select v-model="shopId" @change="selectGet" placeholder="请选择">
-                                <el-option v-for="item in shopOptions" :key="item.value" :label="item.name" :value="item.id">
-                                </el-option>
-                            </el-select>
-                        </div>
+
 
                         <label for="bitian" class="layui-form-label">
                             备注</label>
@@ -503,10 +512,15 @@
                             , "cameraIndexCode": Devicedata.cameraIndexCode
                             , "enterpriseName": Devicedata.enterpriseName
                             , "enterpriseId": Devicedata.enterpriseId
+                            , "mn": Devicedata.mn
                             , "remark": Devicedata.remark
                         });
                         vm.shopId = Devicedata.shopName;
                         vm.firmName = Devicedata.enterpriseName;
+                        vm.meterCode = Devicedata.meterId;
+                        vm.swicthId = Devicedata.swicthId;
+                        vm.tnCode = Devicedata.mn;
+                        vm.enterpriseId = Devicedata.enterpriseId;
                         $('#collectType').val(Devicedata.collectType);
                         //    $('#ecPolluteType').text(Devicedata.ecPolluteType);
                         /*  $('#ecType').val(Devicedata.ecType);
@@ -595,6 +609,9 @@
                 data.field.enterpriseName = vm.firmName;
                 data.field.shopId = vm.shopId;
                 data.field.enterpriseId = vm.enterpriseId;
+                data.field.swicthId = vm.swicthId;
+                data.field.meterId = vm.meterCode;
+                data.field.mn = vm.tnCode;
                 console.log(data.field)
                 axios({
                     method: "post",
@@ -616,7 +633,7 @@
                     } else {
                         vm.$notify.error({
                             title: '错误',
-                            message: '编辑失败'
+                            message: res.data.msg
                         });
                     }
                 }).catch(function (err) {
@@ -643,7 +660,25 @@
                 enterpriseId: "",
                 enterpriseName: "",
                 firmName: "",
-                shopOptions: []
+                shopOptions: [],
+                meterCode: "",
+                swicthId: "",
+                tnCode: ""
+            },
+            watch: {
+                meterCode(val) {
+                    if (val > 99) {
+                        this.$message.warning('必须为0-99中的任意数字');
+                    } else {
+                        console.log(vm.swicthId + val);
+                        vm.tnCode = vm.swicthId + val;
+
+                    }
+
+                },
+                swicthId(val) {
+                    vm.tnCode = val + vm.meterCode;
+                }
             },
             updated: function () {
                 layui.use(['form'], function () {
@@ -724,7 +759,7 @@
                 //     });
                 // },
 
-                // 远程搜索框
+                // 企业远程搜索框
                 querySearchAsync(queryString, callback) {
                     console.log(queryString);
                     var list = [{}];
@@ -772,6 +807,7 @@
                     console.log(item);
                     this.shopOptions = [];
                     this.shopId = "";
+                    this.swicthId = "";
                     axios({
                         method: "post",
                         url: BASEURL + 'environmental_intelligent_monitoring/tbasshop/list',
@@ -785,6 +821,49 @@
                         if (res.data.code == 0) {
                             vm.shopOptions = res.data.page.list;
                             console.log(vm.shopOptions)
+
+                        } else {
+
+                        }
+                    }).catch(function (err) {
+                        console.log(err);
+                    });
+
+                }
+                // 网管编码远程搜索
+                , querySwicthId(qs, callback) {
+                    var list = [{}];
+                    axios({
+                        method: "post",
+                        url: BASEURL + 'environmental_intelligent_monitoring/tdevicemonitor/querySwicthIdList',
+                        params: {
+                            enterpriseId: vm.enterpriseId
+                        }
+                    }).then(function (res) {
+                        if (res.data.code == 0) {
+                            var datalist = res.data.data;
+                            // for (let i = 0, len = datalist.length; i < len; i++) {
+                            //     for (let j = i + 1; j < len; j++) {
+                            //         if (datalist[i].enterpriseId == datalist[j].enterpriseId) {
+                            //             datalist.splice(j, 1);
+                            //             // splice 会改变数组长度，所以要将数组长度 len 和下标 j 减一
+                            //             len--;
+                            //             j--;
+                            //         }
+                            //     }
+                            // }
+                            // console.log(datalist)
+                            for (let i = 0, len = datalist.length; i < len; i++) {
+                                if (datalist[i] == null) {
+                                    datalist.splice(i, 1)
+                                }
+                            }
+                            for (let i of datalist) {
+                                i.value = i.swicthId; //将想要展示的数据作为value
+                                // console.log(i.value)
+                            }
+                            list = datalist;
+                            callback(list);
 
                         } else {
 

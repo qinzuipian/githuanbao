@@ -22,7 +22,7 @@
 
         .el-table td,
         .el-table th {
-            padding: 0;
+            padding: 10px;
         }
     </style>
 </head>
@@ -30,32 +30,33 @@
 <body>
     <div id="vm">
         <div class="layui-inline layui-form">
-            <label for="bitian" class="layui-form-label">
-                产污监测点
-            </label>
-            <div class="layui-input-inline">
-                <!-- <input type="text" v-model="tWarnSubscribe.eventtype" class="layui-input" placeholder="事件类型名称" /> -->
-                <select name="eventTypeId" id="eventType" lay-filter="eventType" lay-verify="required">
-                    <option value="">请选择事件类型</option>
-                    <option value=""></option>
-                </select>
-            </div>
-            <button type="button" class="layui-btn layui-btn-normal layui-btn-sm">
-                <i class="layui-icon layui-icon-add-1"></i>添加</button>
+            <!-- <label for="bitian" class="layui-form-label">
+               
+            </label> -->
+            <p> 产污监测点</p>
+            <!--  <div class="layui-input-inline">
+                <el-select v-model="product" @change="productSelect" placeholder="请选择">
+                    <el-option v-for="item in productOptions" :key="item.value" :label="item.productName" :value="item.productId">
+                    </el-option>
+                </el-select>
+            </div> -->
+            <!--  <button type="button" @click="productClick" class="layui-btn layui-btn-normal layui-btn-sm">
+                <i class="layui-icon layui-icon-add-1"></i>
+            </button> -->
         </div>
         <div style="padding: 10px;">
-            <el-table :data="tableData" stripe style="width: 100%;">
-                <el-table-column prop="date" label="生产单元" width="180">
+            <el-table :data="productData" stripe style="width: 100%;">
+                <el-table-column prop="shopName" label="生产单元" width="180">
                 </el-table-column>
                 <el-table-column prop="name" label="设备类型" width="180">
                 </el-table-column>
-                <el-table-column prop="address" label="设备名称">
+                <el-table-column prop="productName" label="设备名称">
                 </el-table-column>
-                <el-table-column fixed="right" label="操作" width="80">
+                <!-- <el-table-column fixed="right" label="操作" width="80">
                     <template slot-scope="scope">
-                        <el-button @click="deleteClick(scope.row)" type="text" icon="el-icon-close"></el-button>
+                        <el-button @click="deleteClick(scope.$index, scope.row)" v-if="scope.row.productName!=productName" type="text" icon="el-icon-close"></el-button>
                     </template>
-                </el-table-column>
+                </el-table-column> -->
             </el-table>
         </div>
         <div class="layui-form">
@@ -64,48 +65,45 @@
                     治污监测点
                 </label>
                 <div class="layui-input-inline">
-                    <!-- <input type="text" v-model="tWarnSubscribe.eventtype" class="layui-input" placeholder="事件类型名称" /> -->
-                    <select name="eventTypeId" id="" lay-filter="eventType" lay-verify="required">
-                        <option value=""></option>
-                        <option value=""></option>
-                    </select>
+                    <el-select v-model="treat" @change="treatSelect" placeholder="请选择">
+                        <el-option v-for="item in treatOptions" :key="item.value" :label="item.treatName" :value="item.treatId">
+                        </el-option>
+                    </el-select>
                 </div>
             </div>
             <div class="layui-inline">
                 <label for="bitian" class="layui-form-label">
                     备用关系
                 </label>
-                <div class="layui-input-inline" style="width: 100px;">
-                    <!-- <input type="text" v-model="tWarnSubscribe.eventtype" class="layui-input" placeholder="事件类型名称" /> -->
-                    <select name="eventTypeId" id="eventType" lay-filter="eventType">
-                        <option value="">用</option>
-                        <option value="">备</option>
-                    </select>
-                </div>
+                <el-select v-model="backup" style="width: 80px;">
+                    <el-option v-for="item in backupOptions" :key="item.value" :label="item.label" :value="item.label">
+                    </el-option>
+                </el-select>
             </div>
-            <button type="button" class="layui-btn layui-btn-normal layui-btn-sm">
-                <i class="layui-icon layui-icon-add-1"></i>添加</button>
+            <button type="button" @click="treatClick" class="layui-btn layui-btn-normal layui-btn-sm">
+                <i class="layui-icon layui-icon-add-1"></i>
+            </button>
         </div>
         <div style="padding: 10px;">
-            <el-table :data="tableData" stripe style="width: 100%">
-                <el-table-column prop="date" label="生产单元" width="180">
+            <el-table :data="treatData" stripe style="width: 100%">
+                <el-table-column prop="shopName" label="生产单元" width="180">
                 </el-table-column>
-                <el-table-column prop="name" label="设备类型" width="180">
+                <el-table-column prop="tName" label="设备类型" width="180">
                 </el-table-column>
-                <el-table-column prop="address" label="设备名称">
+                <el-table-column prop="treatName" label="设备名称">
                 </el-table-column>
-                <el-table-column prop="address" label="备用关系">
+                <el-table-column prop="backup" label="备用关系">
                 </el-table-column>
                 <el-table-column fixed="right" label="操作" width="80">
                     <template slot-scope="scope">
-                        <el-button @click="deleteClick(scope.row)" type="text" icon="el-icon-close"></el-button>
+                        <el-button @click="deleteClick(scope.$index, scope.row)" type="text" icon="el-icon-close"></el-button>
                     </template>
                 </el-table-column>
 
             </el-table>
         </div>
         <div class="btn-box">
-            <button class="layui-btn">添加</button>
+            <button class="layui-btn" @click="addData">添加</button>
             <button class="layui-btn layui-btn-danger" @click="cancel">取消</button>
         </div>
     </div>
@@ -128,27 +126,262 @@
         var vm = new Vue({
             el: "#vm",
             data: {
-                tableData: [{
-                    date: '2016-05-03',
-                    name: '王小虎',
-                    address: '上海市'
-                }, {
-                    date: '2016-05-02',
-                    name: '王小虎',
-                    address: '上海市'
-                }, {
-                    date: '2016-05-04',
-                    name: '王小虎',
-                    address: '上海市'
-                }]
+                productData: [],
+                treatData: [],
+                product: "",
+                // productOptions: [],
+                treat: "",
+                treatOptions: [],
+                productName: "",
+                pName: "",
+                backup: "",
+                backupOptions: [
+                    {
+                        value: 0,
+                        label: '使用'
+                    }, {
+                        value: 1,
+                        label: '备用'
+                    }
+                ],
+                vmObj: {}
             },
             methods: {
-                deleteClick(row) {
+                productInit() {
+                    var Pdata = [];
+                    Pdata.push(parent.data)
+                    for (var i = 0; i < Pdata.length; i++) {
+                        Pdata[i].name = '生产设备';
+                    }
+                    this.productData = Pdata;
+                    // console.log(Pdata)
+                    axios({
+                        method: "post",
+                        url: BASEURL + 'environmental_intelligent_monitoring/tdevicemonitor/queryProductAndTreatList',
+                        params: {
+                            id: parent.data.productId
+                        },
+                        /* headers: {
+                            "Content-Type": "application/json;charset=UTF-8"
+                        } */
+                    }).then(function (res) {
+                        // console.log(res)
+                        if (res.data.code == 0) {
+                            var data = res.data.data.list;
+                            for (var i = 0; i < data.length; i++) {
+                                // data[i].name = '生产设备';
+                                data[i].tName = '治污设备';
+                                if (data[i].treatId != undefined) {
+                                    if (data[i].backup == false) {
+                                        data[i].backup = '使用';
+                                    } else if (data[i].backup == true) {
+                                        data[i].backup = '备用';
+                                    }
+                                    vm.treatData.push(data[i])
+                                } 
+                            }
+                            // vm.productData = data;
+                            vm.productName = parent.data.productName;
+                            console.log(vm.treatData)
+
+                        } else {
+
+                        }
+                    }).catch(function (err) {
+                        console.log(err);
+                    });
 
                 },
+                selectInit() {
+                    axios({
+                        method: "post",
+                        url: BASEURL + 'environmental_intelligent_monitoring/tdevicemonitor/querytreatNameList',
+                        params: {
+                            enterpriseId:parent.data.enterpriseId
+                        },
+                        /* headers: {
+                            "Content-Type": "application/json;charset=UTF-8"
+                        } */
+                    }).then(function (res) {
+                        // console.log(res)
+                        if (res.data.code == 0) {
+                            // vm.productOptions = res.data.data.list;
+                            vm.treatOptions = res.data.data;
+                            // var data = res.data.data.list;
+                            // for (var i = 0; i < data.length; i++) {
+                            //     data[i].name = '生产设备';
+                            //     data[i].tName = '治污设备';
+                            //     if (data[i].treatId != undefined) {
+                            //         vm.treatData.push(data[i])
+                            //     }
+                            // }
+                            // vm.productData = data;
+                            // console.log(vm.productData)
+                            // console.log(vm.treatData)
+
+
+
+
+                        } else {
+
+                        }
+                    }).catch(function (err) {
+                        console.log(err);
+                    });
+
+                },
+                // 产污监测点添加
+                treatSelect(value) {
+                    console.log(value);
+                    let obj = {};
+                    obj = this.treatOptions.find((item) => {
+                        console.log(item)
+                        return item.treatId === value;
+                    });
+                    vm.pName = obj.treatName;
+                    // console.log(obj.productName);
+                },
+                treatClick() {
+                    var obj = {
+                        shopName: parent.data.shopName,
+                        tName: '治污设备',
+                        treatName: this.pName,
+                        treatId: this.treat,
+                        shopId: parent.data.shopId,
+                        backup: vm.backup,
+                        flag: 1
+                    };
+                    if (vm.treatData.length != 0) {
+                        for (var i = 0; i < vm.treatData.length; i++) {
+                            if (vm.treatData[i].backup == obj.backup && obj.backup == '使用') {
+                                vm.$notify.error({
+                                    title: '错误',
+                                    position: 'top-center',
+                                    message: '不可重复添加'
+                                });
+                                return false;
+                            } else if (vm.treatData[i].backup == obj.backup && vm.treatData[i].treatName == obj.treatName) {
+                                vm.$notify.error({
+                                    title: '错误',
+                                    position: 'top-center',
+                                    message: '不可重复添加'
+                                });
+                                return false;
+
+                            }
+                        }
+                        vm.treatData.push(obj);
+                        vm.vmObj = obj;
+                    } else {
+                        vm.treatData.push(obj)
+                        console.log(obj)
+                        vm.vmObj = obj;
+
+                    }
+
+
+                },
+                deleteClick(index, row) {
+                    // console.log(index, row);
+                    if (row.flag != undefined) {
+                        vm.treatData.splice(index);
+                    } else {
+                        this.$confirm('确认删除', '确认信息', {
+                            distinguishCancelAndClose: true,
+                            confirmButtonText: '确认',
+                            cancelButtonText: '取消'
+                        })
+                            .then(() => {
+                                axios({
+                                    method: "post",
+                                    url: BASEURL + 'environmental_intelligent_monitoring/tdevicemonitor/update',
+                                    data: {
+                                        id: row.treatId
+                                    },
+                                    headers: {
+                                        "Content-Type": "application/json;charset=UTF-8"
+                                    }
+                                }).then(function (res) {
+                                    if (res.data.code == 0) {
+                                        vm.$message.success('删除成功');
+                                        vm.treatData.splice(index)
+                                    } else {
+                                        vm.$notify.error({
+                                            title: '错误',
+                                            message: res.data.msg
+                                        });
+                                    }
+                                }).catch(function (err) {
+                                    console.log(err);
+                                });
+
+                            })
+                            .catch(action => {
+
+                            });
+                    }
+
+
+
+                },
+                // 数据添加
+                addData() {
+                    console.log(vm.vmObj);
+                    var vmObjList = [];
+                    vmObjList.push(vm.vmObj)
+                    var idList = [];
+                    var backupId;
+                    vmObjList.forEach(function (item) {
+                        // console.log(item)
+                        idList.push(item.treatId);
+                        if (item.backup == '使用') {
+                            backupId = item.treatId;
+                        }
+                    })
+                    console.log(idList)
+                    console.log(backupId)
+
+                    axios({
+                        method: "post",
+                        url: BASEURL + 'environmental_intelligent_monitoring/tdevicemonitor/saveProductAndTreat',
+                        data: {
+                            parentId: parent.data.productId,
+                            ids: idList,
+                            backupId: backupId
+                        },
+                        headers: {
+                            "Content-Type": "application/json;charset=UTF-8"
+                        }
+                    }).then(function (res) {
+                        // console.log(res)
+                        if (res.data.code == 0) {
+                            layer.msg('关联成功！', {
+                                time: 500
+                            }, function () {
+                                window.parent.location.reload();
+                                parent.layer.close('iframe');
+                            });
+
+                        } else {
+                            vm.$notify.error({
+                                title: '错误',
+                                message: res.data.msg
+                            });
+
+                        }
+                    }).catch(function (err) {
+                        console.log(err);
+                    });
+
+                },
+
                 cancel: function () {
                     parent.layer.closeAll('iframe'); //关闭弹窗
                 }
+            }, created() {
+                this.productInit();
+                this.selectInit();
+                console.log(parent.data)
             }
         })
     </script>

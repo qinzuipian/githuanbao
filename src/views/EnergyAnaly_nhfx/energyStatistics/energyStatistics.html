@@ -46,9 +46,9 @@
     <div id="vm">
         <div class="energyMain">
             <div class="head">
-                <button type="button" :class="{'active': energyShow == 1}" @click="energyShow = 1">企业</button>
-                <button type="button" :class="{'active': energyShow == 2}" @click="energyShow = 2">行业</button>
-                <button type="button" :class="{'active': energyShow == 3}" @click="energyShow = 3">行政区域</button>
+                <button type="button" :class="{'active': energyShow == 1}" @click="energyShowClick(1)">企业</button>
+                <button type="button" :class="{'active': energyShow == 2}" @click="energyShowClick(2)">行业</button>
+                <button type="button" :class="{'active': energyShow == 3}" @click="energyShowClick(3)">行政区域</button>
             </div>
             <div class="mainContent">
                 <div>
@@ -114,13 +114,13 @@
                                                     <span class="layui-badge layui-bg-green layuiadmin-badge">日</span>
                                                 </div>
                                                 <div class="layui-card-body layuiadmin-card-list">
-                                                    <p class="layuiadmin-big-font">{{powerData.nowp}}
+                                                    <p class="layuiadmin-big-font">{{NpowerData.nowp}}
                                                         <span>kW</span>
                                                     </p>
                                                     <!-- <p> -->
 
                                                     <span class="layuiadmin-span-color">
-                                                        <i class="layui-inline layui-icon layui-icon-date"></i>{{powerData.nowday}}
+                                                        <i class="layui-inline layui-icon layui-icon-date"></i>{{NpowerData.nowday}}
                                                     </span>
                                                     <!-- </p> -->
                                                 </div>
@@ -138,13 +138,13 @@
                                                             <span class="layui-badge layui-bg-green layuiadmin-badge">日</span>
                                                         </div>
                                                         <div class="layui-card-body layuiadmin-card-list">
-                                                            <p class="layuiadmin-big-font">{{powerData.ysp}}
+                                                            <p class="layuiadmin-big-font">{{YpowerData.nowp}}
                                                                 <span>kW</span>
                                                             </p>
                                                             <!-- <p> -->
 
                                                             <span class="layuiadmin-span-color">
-                                                                <i class="layui-inline layui-icon layui-icon-date"></i>{{powerData.ysday}}
+                                                                <i class="layui-inline layui-icon layui-icon-date"></i>{{YpowerData.nowday}}
                                                             </span>
                                                             <!-- </p> -->
                                                         </div>
@@ -163,14 +163,14 @@
                                                     <span class="layui-badge layui-bg-blue layuiadmin-badge">日</span>
                                                 </div>
                                                 <div class="layui-card-body layuiadmin-card-list">
-                                                    <p class="layuiadmin-big-font">{{electricity.nowkWh}}
+                                                    <p class="layuiadmin-big-font">{{Nelectricity.nowkWh}}
                                                         <span>kW·h</span>
                                                     </p>
 
                                                     <!-- <p> -->
 
                                                     <span class="layuiadmin-span-color">
-                                                        <i class="layui-inline layui-icon layui-icon-date"></i>{{electricity.nowday}}:00
+                                                        <i class="layui-inline layui-icon layui-icon-date"></i>{{Nelectricity.nowday}}:00
                                                     </span>
                                                     <!-- </p> -->
                                                 </div>
@@ -185,13 +185,13 @@
                                                     <span class="layui-badge layui-bg-blue layuiadmin-badge">日</span>
                                                 </div>
                                                 <div class="layui-card-body layuiadmin-card-list">
-                                                    <p class="layuiadmin-big-font">{{electricity.yskWh}}
+                                                    <p class="layuiadmin-big-font">{{Yelectricity.nowkWh}}
                                                         <span>kW·h</span>
                                                     </p>
                                                     <!-- <p> -->
 
                                                     <span class="layuiadmin-span-color">
-                                                        <i class="layui-inline layui-icon layui-icon-date"></i>{{electricity.ysday}}:00
+                                                        <i class="layui-inline layui-icon layui-icon-date"></i>{{Yelectricity.nowday}}:00
                                                     </span>
                                                     <!-- </p> -->
                                                 </div>
@@ -213,35 +213,43 @@
                             <div class="layui-col-md5">
                                 <h3>电能环比</h3>
                                 <div class="layui-row grid-demo">
-                                    <div class="layui-col-md4">
+                                    <div class="layui-col-md4" v-for="(item,index) in EleRadius[0]" :key="'info1-'+index">
                                         <div class="grid-demo grid-demo-bg2">
                                             <div class="layui-card">
-                                                <div class="layui-card-header">
-                                                    今日用电（KWh）
+                                                <div class="layui-card-header" v-if="item.flag == 'n'">
+                                                    今日用电
                                                     <span class="layui-badge layui-bg-green layuiadmin-badge">日</span>
                                                 </div>
-                                                <div class="layui-card-body layuiadmin-card-list">
-                                                    <p class="layuiadmin-big-font">9,999,666</p>
-
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="layui-col-md4">
-                                        <div class="grid-demo grid-demo-bg2">
-                                            <div class="layui-card">
-                                                <div class="layui-card-header">
-                                                    昨日用电（KWh）
+                                                <div class="layui-card-header" v-else-if="item.flag == 'y'">
+                                                    昨日用电
                                                     <span class="layui-badge layui-bg-green layuiadmin-badge">日</span>
                                                 </div>
-                                                <div class="layui-card-body layuiadmin-card-list">
-                                                    <p class="layuiadmin-big-font">9,999,666</p>
-
+                                                <div class="layui-card-header" v-else-if="item.flag == 'p'">
+                                                    趋势
+                                                    <span class="layui-badge layui-bg-green layuiadmin-badge">势</span>
+                                                </div>
+                                                <div class="layui-card-body layuiadmin-card-list" v-if="item.flag == 'n'">
+                                                    <p class="layuiadmin-big-font">{{item.kwh}}
+                                                        <span>KWh</span>
+                                                    </p>
+                                                </div>
+                                                <div class="layui-card-body layuiadmin-card-list" v-else-if="item.flag == 'y'">
+                                                    <p class="layuiadmin-big-font">{{item.kwh}}
+                                                        <span>KWh</span>
+                                                    </p>
+                                                </div>
+                                                <div class="layui-card-body layuiadmin-card-list" v-else>
+                                                    <p>
+                                                        {{item.pt}}%
+                                                        <p style="width:100%;height: 1px; background-color: #000;"></p>
+                                                        <span>{{item.pb}}</span>
+                                                        <span>KWh</span>
+                                                    </p>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="layui-col-md4">
+                                    <!-- <div class="layui-col-md4">
                                         <div class="grid-demo grid-demo-bg2">
                                             <div class="layui-card">
                                                 <div class="layui-card-header">
@@ -249,42 +257,57 @@
                                                     <span class="layui-badge layui-bg-green layuiadmin-badge">势</span>
                                                 </div>
                                                 <div class="layui-card-body layuiadmin-card-list">
-                                                    <p class="layuiadmin-big-font">9,999,666</p>
+                                                    <p class="layuiadmin-big-font">9
+                                                        <span>kwh</span>
+                                                    </p>
 
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
+                                    </div> -->
 
-                                    <div class="layui-col-md4">
+
+                                    <div class="layui-col-md4" v-for="(item,index) in EleRadius[1]" :key="'info2-'+index">
                                         <div class="grid-demo grid-demo-bg2">
                                             <div class="layui-card">
-                                                <div class="layui-card-header">
-                                                    当月用电（KWh）
+                                                <div class="layui-card-header" v-if="item.flag == 'n'">
+                                                    当月用电
                                                     <span class="layui-badge layui-bg-green layuiadmin-badge">月</span>
                                                 </div>
-                                                <div class="layui-card-body layuiadmin-card-list">
-                                                    <p class="layuiadmin-big-font">9,999,666</p>
-
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="layui-col-md4">
-                                        <div class="grid-demo grid-demo-bg2">
-                                            <div class="layui-card">
-                                                <div class="layui-card-header">
-                                                    上月同期（KWh）
+                                                <div class="layui-card-header" v-else-if="item.flag == 'y'">
+                                                    上月用电
                                                     <span class="layui-badge layui-bg-green layuiadmin-badge">月</span>
                                                 </div>
-                                                <div class="layui-card-body layuiadmin-card-list">
-                                                    <p class="layuiadmin-big-font">9,999,666</p>
+                                                <div class="layui-card-header" v-else-if="item.flag == 'p'">
+                                                    上月用电
+                                                    <span class="layui-badge layui-bg-green layuiadmin-badge">月</span>
+                                                </div>
+                                                <div class="layui-card-body layuiadmin-card-list" v-if="item.flag == 'n'">
+                                                    <p class="layuiadmin-big-font">{{item.kwh}}
+                                                        <span>KWh</span>
+                                                    </p>
 
+
+                                                </div>
+                                                <div class="layui-card-body layuiadmin-card-list" v-else-if="item.flag == 'y'">
+                                                    <p class="layuiadmin-big-font">{{item.kwh}}
+                                                        <span>KWh</span>
+                                                    </p>
+
+                                                </div>
+                                                <div class="layui-card-body layuiadmin-card-list" v-else>
+                                                    <p>
+                                                        {{item.pt}}%
+                                                        <p style="width:100%;height: 1px; background-color: #000;"></p>
+                                                        <span>{{item.pb}}</span>
+                                                        <span>KWh</span>
+                                                    </p>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="layui-col-md4">
+
+                                    <!-- <div class="layui-col-md4">
                                         <div class="grid-demo grid-demo-bg2">
                                             <div class="layui-card">
                                                 <div class="layui-card-header">
@@ -292,55 +315,56 @@
                                                     <span class="layui-badge layui-bg-green layuiadmin-badge">势</span>
                                                 </div>
                                                 <div class="layui-card-body layuiadmin-card-list">
-                                                    <p class="layuiadmin-big-font">9,999,666</p>
+                                                    <p class="layuiadmin-big-font">9
+                                                        <span>kwh</span>
+                                                    </p>
 
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
+                                    </div> -->
 
-                                    <div class="layui-col-md4">
+                                    <div class="layui-col-md4" v-for="(item,index) in EleRadius[2]" :key="'info3-'+index">
                                         <div class="grid-demo grid-demo-bg2">
                                             <div class="layui-card">
-                                                <div class="layui-card-header">
-                                                    当年用电（KWh）
+                                                <div class="layui-card-header" v-if="item.flag == 'n'">
+                                                    当年用电
                                                     <span class="layui-badge layui-bg-green layuiadmin-badge">年</span>
                                                 </div>
-                                                <div class="layui-card-body layuiadmin-card-list">
-                                                    <p class="layuiadmin-big-font">9,999,666</p>
-
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="layui-col-md4">
-                                        <div class="grid-demo grid-demo-bg2">
-                                            <div class="layui-card">
-                                                <div class="layui-card-header">
-                                                    上年同期（KWh）
+                                                <div class="layui-card-header" v-else-if="item.flag == 'y'">
+                                                    上年同期
                                                     <span class="layui-badge layui-bg-green layuiadmin-badge">年</span>
                                                 </div>
-                                                <div class="layui-card-body layuiadmin-card-list">
-                                                    <p class="layuiadmin-big-font">9,999</p>
-
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="layui-col-md4">
-                                        <div class="grid-demo grid-demo-bg2">
-                                            <div class="layui-card">
-                                                <div class="layui-card-header">
+                                                <div class="layui-card-header" v-else-if="item.flag == 'p'">
                                                     趋势
                                                     <span class="layui-badge layui-bg-green layuiadmin-badge">势</span>
                                                 </div>
-                                                <div class="layui-card-body layuiadmin-card-list">
-                                                    <p class="layuiadmin-big-font">9,999,666</p>
+                                                <div class="layui-card-body layuiadmin-card-list" v-if="item.flag == 'n'">
+                                                    <p class="layuiadmin-big-font">{{item.kwh}}
+                                                        <span>KWh</span>
+                                                    </p>
 
+
+                                                </div>
+                                                <div class="layui-card-body layuiadmin-card-list" v-else-if="item.flag == 'y'">
+                                                    <p class="layuiadmin-big-font">{{item.kwh}}
+                                                        <span>KWh</span>
+                                                    </p>
+
+                                                </div>
+                                                <div class="layui-card-body layuiadmin-card-list" v-else>
+                                                    <p>
+                                                        {{item.pt}}%
+                                                        <p style="width:100%;height: 1px; background-color: #000;"></p>
+                                                        <span>{{item.pb}}</span>
+                                                        <span>KWh</span>
+                                                    </p>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
+
+
 
                                 </div>
                             </div>
@@ -389,8 +413,9 @@
     <script src="./../../../layuiadmin/layui/layui.js"></script>
     <script src="./../../../layuiadmin/plugin/vue.js"></script>
     <script src="./../../../layuiadmin/plugin/element.js"></script>
-    <script src="./../../../layuiadmin/plugin/axios.js"></script>
     <script src="./../../../layuiadmin/plugin/echarts.min.js"></script>
+    <script src="./../../../layuiadmin/plugin/axios.js"></script>
+
     <script src="./../../../layuiadmin/js/baseUrlConfig.js"></script>
     <script>
         layui.config({
@@ -407,30 +432,7 @@
             // 功率曲线
 
             // 电能趋势
-            var electricity = echarts.init($("#electricityId")[0]);
-            var option = {
-                title: {
-                    left: 'center',
-                    text: '电能趋势',
-                },
-                tooltip: {
-                    trigger: 'axis',
-                    formatter: '{b0}: {c0}<br />'
-                },
-                xAxis: {
-                    type: 'category',
-                    data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
-                },
-                yAxis: {
-                    type: 'value'
-                },
-                series: [{
-                    data: [120, 200, 150, 80, 70, 110, 130],
-                    barWidth: 40,
-                    type: 'bar'
-                }]
-            };
-            electricity.setOption(option);
+
 
             // 用电排名
             var electricNum = echarts.init($("#electricNum")[0]);
@@ -503,7 +505,7 @@
             data: {
                 energyShow: 1,
                 electricShow: 1,
-                radiusShow: 0,
+                radiusShow: 1,
                 shopShow: 1,
                 Areashow: false,
                 atraName: "",
@@ -514,11 +516,13 @@
                     label: 'title'
                 },
                 // 用电量峰值数据
-                electricity: {
+                Yelectricity: {
                     nowkWh: '0',
-                    yskWh: "0",
                     nowday: "00",
-                    ysday: "00"
+                },
+                Nelectricity: {
+                    nowkWh: '0',
+                    nowday: "00",
                 },
                 // 选择框填充
                 enterprise: "",
@@ -531,12 +535,18 @@
                 enterpriseId: "",
                 monitorId: "",
                 // 功率峰值
-                powerData: {
+                YpowerData: {
                     nowday: "00:00",
-                    nowp: 0,
-                    ysday: "00:00",
-                    ysp: 0
-                }
+                    nowp: 0
+                },
+                NpowerData: {
+                    nowday: "00:00",
+                    nowp: 0
+                },
+                // 用电量环比
+                EleRadius: [],
+                industryId: "",
+                atraId: ""
 
 
             },
@@ -568,19 +578,86 @@
 
                 },
                 handleNodeClick(data, node) {
+                    console.log(data, node)
                     vm.atraName = data.title;
+                    vm.atraId = data.id;
                     vm.treeHign = true;
                     vm.Areashow = false;
+                    this.electricyRadius(-1, -1, -1, vm.atraId);
+                    if (this.electricShow == 1) {
+                        // 电能趋势按日统计
+                        this.electricityDay(-1, -1, -1, vm.atraId);
 
+                    } else if (this.electricShow == 2) {
+                        // 电能趋势按月统计
+                        this.electricityMonth(-1, -1, -1, vm.atraId);
+
+                    } else {
+                        this.electricityYear(-1, -1, -1, vm.atraId)
+                    }
+
+
+                },
+                // 大页面的按钮切换
+                energyShowClick(val) {
+                    if (val == 1) {
+                        this.energyShow = 1;
+                        if (this.electricShow == 1) {
+                            // 电能趋势按日统计
+                            this.electricityDay(-1, 0);
+
+                        } else if (this.electricShow == 2) {
+                            // 电能趋势按月统计
+                            this.electricityMonth(-1, 0);
+
+                        } else {
+                            this.electricityYear(-1,0);
+                        }
+
+
+                    } else if (val == 2) {
+                        this.energyShow = 2;
+                        if (this.electricShow == 1) {
+                            // 电能趋势按日统计
+                            this.electricityDay(0, 0, 0);
+
+                        } else if (this.electricShow == 2) {
+                            // 电能趋势按月统计
+                            this.electricityMonth(0, 0, 0);
+                        } else {
+                            this.electricityYear(0,0,0)
+                        }
+
+
+                    } else if (val == 3) {
+                        this.energyShow = 3;
+                        if (this.electricShow == 1) {
+                            // 电能趋势按日统计
+                            this.electricityDay(-1, -1, -1, 0);
+
+                        } else if (this.electricShow == 2) {
+                            // 电能趋势按月统计
+                            this.electricityMonth(-1, -1, -1, 0);
+                        } else {
+                            this.electricityYear(-1,-1,-1,0)
+                        }
+
+
+                    }
                 },
                 electriClick(value) {
                     console.log(value);
                     if (value == 1) {
                         this.electricShow = 1;
+                        // 电能趋势按日统计
+                        this.electricityDay(vm.enterpriseId, vm.monitorId);
                     } else if (value == 2) {
                         this.electricShow = 2;
+                        // 电能趋势按月统计
+                        this.electricityMonth(vm.enterpriseId, vm.monitorId)
                     } else if (value == 3) {
                         this.electricShow = 3;
+                        this.electricityYear(vm.enterpriseId, vm.monitorId)
                     }
 
                 },
@@ -590,6 +667,51 @@
                     } else {
                         this.radiusShow = 2;
                     }
+
+                    if (this.energyShow == 1) {
+                        if (this.electricShow == 1) {
+                            // 电能趋势按日统计
+                            this.electricityDay(vm.enterpriseId, vm.monitorId);
+
+                        } else if (this.electricShow == 2) {
+                            this.electricityMonth(vm.enterpriseId, vm.monitorId);
+                        } else {
+                            this.electricityYear(vm.enterpriseId, vm.monitorId)
+                        }
+
+
+
+
+                    } else if (this.energyShow == 2) {
+                        if (this.electricShow == 1) {
+                            // 电能趋势按日统计
+                            this.electricityDay(0, 0, vm.industryId);
+
+                        } else if (this.electricShow == 2) {
+                            this.electricityMonth(0, 0, vm.industryId);
+                        } else{
+                            this.electricityYear(0, 0, vm.industryId)
+                        }
+
+
+
+
+                    } else {
+                        if (this.electricShow == 1) {
+                            // 电能趋势按日统计
+                            this.electricityDay(-1, -1, -1, vm.atraId);
+
+                        } else if (this.electricShow == 2) {
+                            this.electricityMonth(-1, -1, -1, vm.atraId);
+                        }else {
+                            this.electricityYear(-1, -1, -1, vm.atraId)
+                        }
+
+
+
+                    }
+
+
                 },
                 shopClick(value) {
                     if (value == 1) {
@@ -624,6 +746,19 @@
                     this.electricityTop(vm.enterpriseId, vm.monitorId)
                     this.powerInit(vm.enterpriseId, vm.monitorId)
                     this.powerEcharts(vm.enterpriseId, vm.monitorId)
+                    this.electricyRadius(vm.enterpriseId, vm.monitorId)
+                    if (this.electricShow == 1) {
+                        // 电能趋势按日统计
+                        this.electricityDay(vm.enterpriseId, vm.monitorId);
+                    } else if (this.electricShow == 2) {
+                        // 电能趋势按月统计
+                        this.electricityMonth(vm.enterpriseId, vm.monitorId);
+
+                    } else {
+                        this.electricityYear(vm.enterpriseId, vm.monitorId)
+                    }
+
+
                 }
                 // 监测点列表展示
                 , monitorNameInit() {
@@ -648,6 +783,17 @@
                     this.electricityTop(vm.enterpriseId, vm.monitorId)
                     this.powerInit(vm.enterpriseId, vm.monitorId)
                     this.powerEcharts(vm.enterpriseId, vm.monitorId)
+                    this.electricyRadius(vm.enterpriseId, vm.monitorId)
+                    if (this.electricShow == 1) {
+                        // 电能趋势按日统计
+                        this.electricityDay(vm.enterpriseId, vm.monitorId);
+                    } else if (this.electricShow == 2) {
+                        // 电能趋势按月统计
+                        this.electricityMonth(vm.enterpriseId, vm.monitorId);
+
+                    } else {
+                        this.electricityYear(vm.enterpriseId, vm.monitorId)
+                    }
                 }
                 // 用电量峰值展示
                 , electricityTop(enterpriseId, monitorId) {
@@ -663,14 +809,24 @@
                     }).then(function (res) {
                         if (res.data.code == 0) {
                             var data = res.data.data;
-                            if (data != undefined) {
-                                vm.electricity = data;
+                            if (data.length != 0) {
+                                data.forEach(function (data) {
+                                    console.log(data);
+                                    if (data.flag == "y") {
+                                        vm.Yelectricity = data;
+                                    } else {
+                                        vm.Nelectricity = data;
+                                    }
+
+                                })
                             } else {
-                                vm.electricity = {
+                                vm.Yelectricity = {
                                     nowkWh: "0",
-                                    yskWh: "0",
                                     nowday: "00",
-                                    ysday: "00"
+                                };
+                                vm.Nelectricity = {
+                                    nowkWh: "0",
+                                    nowday: "00",
                                 };
                             }
                             console.log(vm.electricity)
@@ -695,14 +851,25 @@
                     }).then(function (res) {
                         if (res.data.code == 0) {
                             var data = res.data.data;
-                            if (data != undefined) {
-                                vm.powerData = data;
+                            if (data.length != 0) {
+                                data.forEach(function (data) {
+                                    console.log(data);
+                                    if (data.flag == "y") {
+                                        vm.YpowerData = data;
+                                    } else {
+                                        vm.NpowerData = data;
+                                    }
+
+                                })
+
                             } else {
-                                vm.powerData = {
+                                vm.YpowerData = {
                                     nowday: "00:00",
-                                    nowp: 0,
-                                    ysday: "00:00",
-                                    ysp: 0
+                                    nowp: 0
+                                };
+                                vm.NpowerData = {
+                                    nowday: "00:00",
+                                    nowp: 0
                                 };
                             }
                             console.log(vm.powerData)
@@ -757,8 +924,8 @@
                                     powerData.nowlist[i].nowday,
                                 )
                             }
-                            console.log(yestodayData)
-                            console.log(yestodayTime)
+                            /*  console.log(yestodayData)
+                             console.log(yestodayTime) */
                             var option = {
                                 noDataLoadingOption: {
                                     text: '暂无数据',//没有数据时显示的文字
@@ -776,7 +943,7 @@
                                 },
                                 tooltip: {
                                     trigger: 'axis',
-                                    formatter: '{b0}<br />{a0}:{c0}<br />{a1}:{c1}%',
+                                    formatter: '{b0}<br />{a0}:{c0}<br />{a1}:{c1}',
                                 },
                                 legend: {
                                     data: ['今日', '昨日']
@@ -795,7 +962,7 @@
                                 xAxis: {
                                     type: 'category',
                                     boundaryGap: false,
-                                    data: yestodayTime
+                                    data: todayTime
                                 },
                                 yAxis: {
                                     type: 'value',
@@ -817,7 +984,7 @@
                             };
                             myCharts.hideLoading();
                             // myCharts.resize();
-                            myCharts.setOption(option, true);
+                            myCharts.setOption(option);
 
 
                         } else {
@@ -826,6 +993,542 @@
                     }).catch(function (err) {
                         console.log(err);
                     });
+                }
+                // 电能环比展示
+                , electricyRadius(enterpriseId, monitorId, industryId, atraId) {
+                    var data = {};
+                    if (enterpriseId == 0 && monitorId == 0) {
+                        data.tradeId = industryId;
+                    } else if (enterpriseId == -1 && monitorId == -1 && industryId == -1) {
+                        data.organizeId = atraId;
+                    } else {
+                        data.enterpriseId = enterpriseId;
+                        data.monitorId = monitorId;
+                    }
+                    vm.EleRadius = [];
+                    axios({
+                        method: "post",
+                        url: BASEURL + 'environmental_intelligent_monitoring/tkwhdaily/queryEleRatio',
+                        // params: {
+                        //     // enterpriseId:89
+                        //     enterpriseId: enterpriseId,
+                        //     monitorId: monitorId,
+                        //     tradeId: industryId
+                        //     // organizeId:1
+                        // }
+                        params: data
+                    }).then(function (res) {
+                        if (res.data.code == 0) {
+                            var data = res.data.data;
+                            var daily = [];
+                            var month = [];
+                            var year = [];
+                            for (var i = 0; i < data.daily.length; i++) {
+                                var today, yestoday, powerbot, powertop;
+
+                                if (data.daily[i].flag == 'n') {
+                                    today = data.daily[i].kwh === undefined ? 0 : data.daily[i].kwh;
+                                } else {
+                                    yestoday = data.daily[i].kwh === undefined ? 0 : data.daily[i].kwh;
+                                }
+                                powerbot = today - yestoday < 0 ? '-' + (today - yestoday) : '+' + (today - yestoday);
+                                powertop = isNaN(powerbot / today) === true ? 0 : (powerbot / today).toFixed(2);
+                                console.log(powerbot, powertop, today, yestoday)
+
+                            }
+                            daily.push({
+                                flag: 'n',
+                                kwh: today
+                            }, {
+                                    flag: 'y',
+                                    kwh: yestoday,
+
+                                }, {
+                                    flag: 'p',
+                                    pt: powertop,
+                                    pb: powerbot
+                                })
+
+                            for (var i = 0; i < data.month.length; i++) {
+                                var today, yestoday, powerbot, powertop;
+
+                                if (data.month[i].flag == 'n') {
+                                    today = data.month[i].kwh === undefined ? 0 : data.month[i].kwh;
+                                } else {
+                                    yestoday = data.month[i].kwh === undefined ? 0 : data.month[i].kwh;
+                                }
+                                powerbot = today - yestoday < 0 ? '-' + (today - yestoday) : '+' + (today - yestoday);
+                                powertop = isNaN(powerbot / today) === true ? 0 : (powerbot / today).toFixed(2);
+                                if (powertop === NaN) {
+                                    powertop = 0;
+                                }
+
+                            }
+                            // console.log(vm.EleRadius.daily)
+
+                            month.push({
+                                flag: 'n',
+                                kwh: today
+                            }, {
+                                    flag: 'y',
+                                    kwh: yestoday,
+
+                                }, {
+                                    flag: 'p',
+                                    pt: powertop,
+                                    pb: powerbot
+                                })
+                            for (var i = 0; i < data.year.length; i++) {
+                                var today, yestoday, powerbot, powertop;
+
+                                if (data.year[i].flag == 'n') {
+                                    today = data.year[i].kwh === undefined ? 0 : data.year[i].kwh;
+                                } else {
+                                    yestoday = data.year[i].kwh === undefined ? 0 : data.year[i].kwh;
+                                }
+                                powerbot = today - yestoday < 0 ? '-' + (today - yestoday) : '+' + (today - yestoday);
+                                powertop = isNaN(powerbot / today) === true ? 0 : (powerbot / today).toFixed(2);
+                                if (powertop === NaN) {
+                                    powertop = 0;
+                                }
+
+                            }
+                            year.push({
+                                flag: 'n',
+                                kwh: today
+                            }, {
+                                    flag: 'y',
+                                    kwh: yestoday,
+
+                                }, {
+                                    flag: 'p',
+                                    pt: powertop,
+                                    pb: powerbot
+                                })
+                            vm.EleRadius.push(daily, month, year)
+                            console.log(vm.EleRadius)
+
+
+                        } else {
+
+                        }
+                    }).catch(function (err) {
+                        console.log(err);
+                    });
+
+                }
+                // 电能趋势按日统计
+                , electricityDay(enterpriseId, monitorId, industryId, atraId) {
+                    var type;
+                    if (this.radiusShow == 1) {
+                        type = 'same';
+                    } else {
+                        type = 'ring';
+                    }
+
+                    var data = {};
+                    if (enterpriseId == 0 && monitorId == 0) {
+                        data.tradeId = industryId;
+                        data.ratioType = type;
+                    } else if (enterpriseId == -1 && monitorId == -1 && industryId == -1) {
+                        data.organizeId = atraId;
+                        data.ratioType = type;
+                    } else {
+                        data.enterpriseId = enterpriseId;
+                        data.monitorId = monitorId;
+                        data.ratioType = type;
+                    }
+                    axios({
+                        method: "post",
+                        url: BASEURL + 'environmental_intelligent_monitoring/tkwhhour/queryEleTrendByDaily',
+                        /* params: {
+                            enterpriseId: enterpriseId,
+                            monitorId: monitorId,
+                            tradeId: industryId,
+                            ratioType: type
+                        } */
+                        params: data
+                    }).then(function (res) {
+                        if (res.data.code == 0) {
+                            var nowdata = res.data.now;
+                            var ysNowdata = res.data.ys;
+                            var timeData = [];
+                            var nowData = [];
+                            var yesTodayData = [];
+                            for (var i = 0; i < 24; i++) {
+                                if (i < 10) {
+                                    i = '0' + i
+                                }
+                                timeData.push(i);
+                            }
+
+                            let c = [];
+                            let yes = [];
+                            timeData.forEach(t1 => {
+                                let exist = nowdata.some(t2 => t1 == t2.hour);
+                                let Ysexist = ysNowdata.some(t2 => t1 == t2.hour);
+                                console.log(exist);
+                                if (!exist) {
+                                    c.push({
+                                        hour: t1,
+                                        kwh: 0
+                                    });
+                                }
+                                if (!Ysexist) {
+                                    yes.push({
+                                        hour: t1,
+                                        kwh: 0
+                                    });
+                                }
+                            });
+                            nowdata.forEach(function (item) {
+                                console.log(item)
+                                c.push(item)
+                            })
+                            ysNowdata.forEach(function (item) {
+                                console.log(item)
+                                yes.push(item)
+                            })
+                            // console.log(c)
+                            function compare(property) {
+                                return function (a, b) {
+                                    var value1 = a[property];
+                                    var value2 = b[property];
+                                    return value1 - value2;
+                                }
+                            }
+                            var nowdata = c.sort(compare('hour'));
+                            var yesdata = yes.sort(compare('hour'));
+                            for (var i = 0; i < nowdata.length; i++) {
+                                nowData.push(nowdata[i].kwh);
+                            }
+                            for (var i = 0; i < yesdata.length; i++) {
+                                yesTodayData.push(yesdata[i].kwh);
+                            }
+                            // console.log(yesTodayData)
+                            // console.log(nowdata)
+
+                            var electricity = echarts.init(document.getElementById("electricityId"));
+                            var option = {
+                                title: {
+                                    left: 'left',
+                                    text: '电能趋势',
+                                },
+                                tooltip: {
+                                    trigger: 'axis',
+                                    axisPointer: {            // 坐标轴指示器，坐标轴触发有效
+                                        type: 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
+                                    }
+                                },
+                                legend: {
+                                    data: ['今日', '昨日'],
+                                    x: '16%',
+
+                                },
+                                xAxis: {
+                                    type: 'category',
+                                    data: timeData
+                                },
+                                yAxis: {
+                                    type: 'value',
+                                    name: '单位(kW.h)',
+                                },
+                                series: [{
+                                    name: '今日',
+                                    data: nowData,
+                                    barWidth: 10,
+                                    type: 'bar'
+                                }, {
+                                    name: '昨日',
+                                    data: yesTodayData,
+                                    barWidth: 10,
+                                    type: 'bar'
+                                }]
+                            };
+                            electricity.setOption(option);
+
+                        } else {
+
+                        }
+                    }).catch(function (err) {
+                        console.log(err);
+                    });
+
+                }
+                // 电能趋势按月统计
+                , electricityMonth(enterpriseId, monitorId, industryId, atraId) {
+                    var type;
+                    if (this.radiusShow == 1) {
+                        type = 'same';
+                    } else {
+                        type = 'ring';
+                    }
+                    var data = {};
+                    if (enterpriseId == 0 && monitorId == 0) {
+                        data.tradeId = industryId;
+                        data.ratioType = type;
+                    } else if (enterpriseId == -1 && monitorId == -1 && industryId == -1) {
+                        data.organizeId = atraId;
+                        data.ratioType = type;
+                    } else {
+                        data.enterpriseId = enterpriseId;
+                        data.monitorId = monitorId;
+                        data.ratioType = type;
+                    }
+                    axios({
+                        method: "post",
+                        url: BASEURL + 'environmental_intelligent_monitoring/tkwhdaily/queryEleTrendByMonth',
+                        /*  params: {
+                             enterpriseId: enterpriseId,
+                             monitorId: monitorId,
+                             // tradeId: industryId,
+                             ratioType: type
+                         } */
+                        params: data
+                    }).then(function (res) {
+                        if (res.data.code == 0) {
+                            var nowdata = res.data.now;
+                            var ysNowdata = res.data.ys;
+                            var timeData = [];
+                            var nowData = [];
+                            var yesTodayData = [];
+                            for (var i = 1; i < 32; i++) {
+                                if (i < 10) {
+                                    i = '0' + i
+                                }
+                                timeData.push(i);
+                            }
+
+                            let c = [];
+                            let yes = [];
+                            timeData.forEach(t1 => {
+                                let exist = nowdata.some(t2 => t1 == t2.day);
+                                let Ysexist = ysNowdata.some(t2 => t1 == t2.day);
+                                console.log(exist);
+                                if (!exist) {
+                                    c.push({
+                                        day: t1,
+                                        kwh: 0
+                                    });
+                                }
+                                if (!Ysexist) {
+                                    yes.push({
+                                        day: t1,
+                                        kwh: 0
+                                    });
+                                }
+                            });
+                            nowdata.forEach(function (item) {
+                                console.log(item)
+                                c.push(item)
+                            })
+                            ysNowdata.forEach(function (item) {
+                                console.log(item)
+                                yes.push(item)
+                            })
+                            // console.log(c)
+                            function compare(property) {
+                                return function (a, b) {
+                                    var value1 = a[property];
+                                    var value2 = b[property];
+                                    return value1 - value2;
+                                }
+                            }
+                            var nowdata = c.sort(compare('day'));
+                            var yesdata = yes.sort(compare('day'));
+                            for (var i = 0; i < nowdata.length; i++) {
+                                nowData.push(nowdata[i].kwh);
+                            }
+                            for (var i = 0; i < yesdata.length; i++) {
+                                yesTodayData.push(yesdata[i].kwh);
+                            }
+                            // console.log(yesTodayData)
+                            // console.log(nowdata)
+
+                            var electricity = echarts.init(document.getElementById("electricityId"));
+                            var option = {
+                                title: {
+                                    left: 'left',
+                                    text: '电能趋势',
+                                },
+                                tooltip: {
+                                    trigger: 'axis',
+                                    axisPointer: {            // 坐标轴指示器，坐标轴触发有效
+                                        type: 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
+                                    }
+                                },
+                                legend: {
+                                    data: ['当月', '上月'],
+                                    x: '16%',
+
+                                },
+                                xAxis: {
+                                    type: 'category',
+                                    data: timeData
+                                },
+                                yAxis: {
+                                    type: 'value',
+                                    name: '单位(kW.h)',
+                                },
+                                series: [{
+                                    name: '当月',
+                                    data: nowData,
+                                    barWidth: 10,
+                                    type: 'bar'
+                                }, {
+                                    name: '上月',
+                                    data: yesTodayData,
+                                    barWidth: 10,
+                                    type: 'bar'
+                                }]
+                            };
+                            electricity.setOption(option);
+
+                        } else {
+
+                        }
+                    })
+                        .catch(function (err) {
+                            console.log(err);
+                        });
+
+                }
+                // 电能趋势按年统计
+                , electricityYear(enterpriseId, monitorId, industryId, atraId) {
+                    var type;
+                    if (this.radiusShow == 1) {
+                        type = 'same';
+                    } else {
+                        type = 'ring';
+                    }
+                    var data = {};
+                    if (enterpriseId == 0 && monitorId == 0) {
+                        data.tradeId = industryId;
+                        data.ratioType = type;
+                    } else if (enterpriseId == -1 && monitorId == -1 && industryId == -1) {
+                        data.organizeId = atraId;
+                        data.ratioType = type;
+                    } else {
+                        data.enterpriseId = enterpriseId;
+                        data.monitorId = monitorId;
+                        data.ratioType = type;
+                    }
+                    axios({
+                        method: "post",
+                        url: BASEURL + 'environmental_intelligent_monitoring/tkwhmonthly/queryEleTrendByYear',
+                        /*  params: {
+                             enterpriseId: enterpriseId,
+                             monitorId: monitorId,
+                             // tradeId: industryId,
+                             ratioType: type
+                         } */
+                        params: data
+                    }).then(function (res) {
+                        if (res.data.code == 0) {
+                            var nowdata = res.data.now;
+                            var ysNowdata = res.data.ys;
+                            var timeData = [];
+                            var nowData = [];
+                            var yesTodayData = [];
+                            for (var i = 1; i < 13; i++) {
+                                if (i < 10) {
+                                    i = '0' + i
+                                }
+                                timeData.push(i);
+                            }
+
+                            let c = [];
+                            let yes = [];
+                            timeData.forEach(t1 => {
+                                let exist = nowdata.some(t2 => t1 == t2.month);
+                                let Ysexist = ysNowdata.some(t2 => t1 == t2.month);
+                                console.log(exist);
+                                if (!exist) {
+                                    c.push({
+                                        month: t1,
+                                        kwh: 0
+                                    });
+                                }
+                                if (!Ysexist) {
+                                    yes.push({
+                                        month: t1,
+                                        kwh: 0
+                                    });
+                                }
+                            });
+                            nowdata.forEach(function (item) {
+                                console.log(item)
+                                c.push(item)
+                            })
+                            ysNowdata.forEach(function (item) {
+                                console.log(item)
+                                yes.push(item)
+                            })
+                            // console.log(c)
+                            function compare(property) {
+                                return function (a, b) {
+                                    var value1 = a[property];
+                                    var value2 = b[property];
+                                    return value1 - value2;
+                                }
+                            }
+                            var nowdata = c.sort(compare('month'));
+                            var yesdata = yes.sort(compare('month'));
+                            for (var i = 0; i < nowdata.length; i++) {
+                                nowData.push(nowdata[i].kwh);
+                            }
+                            for (var i = 0; i < yesdata.length; i++) {
+                                yesTodayData.push(yesdata[i].kwh);
+                            }
+                            // console.log(yesTodayData)
+                            // console.log(nowdata)
+
+                            var electricity = echarts.init(document.getElementById("electricityId"));
+                            var option = {
+                                title: {
+                                    left: 'left',
+                                    text: '电能趋势',
+                                },
+                                tooltip: {
+                                    trigger: 'axis',
+                                    axisPointer: {            // 坐标轴指示器，坐标轴触发有效
+                                        type: 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
+                                    }
+                                },
+                                legend: {
+                                    data: ['当年', '上年'],
+                                    x: '16%',
+
+                                },
+                                xAxis: {
+                                    type: 'category',
+                                    data: timeData
+                                },
+                                yAxis: {
+                                    type: 'value',
+                                    name: '单位(kW.h)',
+                                },
+                                series: [{
+                                    name: '当年',
+                                    data: nowData,
+                                    barWidth: 40,
+                                    type: 'bar'
+                                }, {
+                                    name: '上年',
+                                    data: yesTodayData,
+                                    barWidth: 40,
+                                    type: 'bar'
+                                }]
+                            };
+                            electricity.setOption(option);
+
+                        } else {
+
+                        }
+                    })
+                        .catch(function (err) {
+                            console.log(err);
+                        });
                 }
                 // 行业列表选择框填充
                 , industryInit() {
@@ -846,11 +1549,27 @@
                     });
                 },
                 industrySelect(val) {
+                    vm.industryId = val;
+                    this.electricyRadius(0, 0, vm.industryId);
+                    if (this.electricShow == 1) {
+                        // 电能趋势按日统计
+                        this.electricityDay(0, 0, vm.industryId);
+
+                    } else if (this.electricShow == 2) {
+                        this.electricityMonth(0, 0, vm.industryId);
+
+                    } else {
+                        this.electricityYear(0, 0, vm.industryId)
+                    }
+
+
 
                 }
             },
             mounted() {
                 this.powerEcharts(-1, 0);
+                // 电能趋势按日统计
+                this.electricityDay(-1, 0);
             }
             , created() {
                 this.treeDataInit();

@@ -84,8 +84,8 @@
                 </div>
                 <div class="l-card-border">
                     <!-- :indent="0" -->
-                    <el-tree v-loading="loading" :indent="0" :data="enpriseData" default-expand-all @node-click="handleNodeClick" ref="tree" highlight-current
-                        :expand-on-click-node="false" :props="defaultProps">
+                    <el-tree v-loading="loading" :indent="0" :data="enpriseData" default-expand-all @node-click="handleNodeClick" ref="tree"
+                        highlight-current :expand-on-click-node="false" :props="defaultProps">
                     </el-tree>
                 </div>
             </div>
@@ -97,7 +97,7 @@
                     <table id="LAY-app-content-list" lay-filter="LAY-app-content-list"></table>
                     <script type="text/html" id="barDemo">
 						<a class="layui-icon layui-icon-edit" lay-event="deviceEdit"></a>
-						<a class="layui-icon layui-icon-close" lay-event="deviceDelete"></a>
+						<!-- <a class="layui-icon layui-icon-close" lay-event="deviceDelete"></a> -->
 					</script>
                 </div>
             </div>
@@ -171,9 +171,6 @@
                             vm.atraName = data.title;
                             this.treeInit();
                         }
-
-
-
 
                     },
                     treeInit() {
@@ -251,9 +248,9 @@
                     , limits: [10, 15, 20, 25, 30]
                     , done: function (res, page, count) {
                         $("[data-field='backup']").children().each(function () {
-                            if ($(this).text() == '1') {
+                            if ($(this).text() == 'true') {
                                 $(this).text("备用")
-                            } else if ($(this).text() == '0') {
+                            } else if ($(this).text() == 'false') {
                                 $(this).text("使用")
                             }
                         })
@@ -271,21 +268,38 @@
                     if (layEvent === 'deviceDelete') {
                         layer.confirm('确定删除吗？', function (index) {
 
-                            //执行 Ajax 后重载
-                            /*
-                            admin.req({
-                              url: 'xxx'
-                              //,……
+                            axios({
+                                method: "post",
+                                url: BASEURL + 'environmental_intelligent_monitoring/tdevicemonitor/update',
+                                data: {
+                                    // id: data.treatId
+                                    id: data.shopId
+                                },
+                                headers: {
+                                    "Content-Type": "application/json;charset=UTF-8"
+                                }
+                            }).then(function (res) {
+                                // console.log(res)
+                                if (res.data.code == 0) {
+                                    table.reload('LAY-app-content-list');
+                                    layer.msg('已删除');
+
+                                } else {
+                                    layer.msg('删除失败');
+                                }
+                            }).catch(function (err) {
+                                console.log(err);
                             });
-                            */
-                            table.reload('LAY-app-content-list');
-                            layer.msg('已删除');
+
+
                         });
 
 
                     } else if (layEvent === 'deviceEdit') {
-                        window.id = data.id;
-                        window.currentStatus = data.currentStatus;
+                        window.data = data
+                        /* window.id = data.productId;
+                        window.productName = data.productName; */
+                        // window.currentStatus = data.currentStatus;
                         layer.open({
                             type: 2,
                             title: '设备关联信息',
