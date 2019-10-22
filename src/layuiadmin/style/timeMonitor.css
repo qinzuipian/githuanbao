@@ -1,0 +1,9 @@
+@charset "utf-8";
+
+.nowData{
+	padding: 20px;
+	cursor:pointer;
+}
+.nowData:hover{
+	color: #0000FF;
+}

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html style="background-color: #fff;">
 	<head>
 		<meta charset="utf-8">
 		<title>企业分配</title>
@@ -15,11 +15,11 @@
 	<body>
 		<div id="vm">
 			<div class="layui-fluid layui-col-space30">
-				<div class="layui-card layui-col-md4 layui-col-lg4" style="min-height: 500px;">
+				<div class="layui-card layui-col-md4 layui-col-lg4">
 					<div class="layui-card-header card-title">用户列表</div>
 					<div class="l-card-border">
 						<el-radio-group v-model="selectUser" text-color="#000000" class="user-list-box">
-							<div v-for="it in userList">
+							<div v-for="it in userList" class="user-item">
 								<el-radio class="user-list-radio" :label="it.username"></el-radio>
 							</div>
 						</el-radio-group>
@@ -59,8 +59,8 @@
 						</div>
 
 						<div style="max-height: 800px;overflow: scroll;">
-							<el-checkbox-group v-model="selectEnterprise" text-color="#000000" class="user-list-box">
-								<div v-for="it in enterpriseList">
+							<el-checkbox-group v-model="selectEnterprise" text-color="#000000" class="enterprise-list-box">
+								<div v-for="it in enterpriseList" class="enterprise-item">
 									<el-checkbox :label="it.name" class="user-list-checkbox"></el-checkbox>
 								</div>
 							</el-checkbox-group>
