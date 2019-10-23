@@ -12,6 +12,16 @@
 		<link rel="stylesheet" href="./../../../layuiadmin/plugin/element.css">
 	</head>
 	<style type="text/css">
+		.leftContent {
+			min-height: 600px;
+		}
+
+		.firmRight {
+			overflow: scroll;
+			min-height: 600px;
+			background: white;
+		}
+
 		/* .layui-table-page .layui-laypage{
 			margin: -10px;
 		} */
@@ -23,8 +33,7 @@
 				<div class="firmLeft">
 					<div class="title"></div>
 					<div class="leftContent">
-						<el-tree default-expand-all :data="firmTreeData" :highlight-current="firmHigh" :expand-on-click-node="false"
-						 :props="defaultProps" @node-click="handleNodeClick"></el-tree>
+						<div id="enterpriseList" class="demo-tree demo-tree-box"></div>
 					</div>
 				</div>
 				<div class="firmRight">
@@ -33,18 +42,11 @@
 							<button type="button" :class="{'active': firmShow == 1}" v-show="threeRun==2||threeRun==1" @click="firmShow = 1">实时数据</button>
 							<button type="button" :class="{'active': firmShow == 2}" v-show="threeRun==1" @click="firmShow = 2">运行工况</button>
 							<button type="button" :class="{'active': firmShow == 3}" v-show="threeRun==1" @click="firmShow = 3">污处异常</button>
+
 						</div>
 						<div class="rightContent">
 							<div v-show="firmShow==1">
 								<div class="layui-inline layui-form">
-									<div class="layui-input-inline">
-										<select name="eventTypeId" lay-verify="required">
-											<option value="">请选择时间间隔</option>
-											<option value="5">5</option>
-											<option value="10">10</option>
-											<option value="15">15</option>
-										</select>
-									</div>
 									<div class="layui-input-inline">
 										<input type="text" class="layui-input" placeholder="请输入日期">
 									</div>
@@ -73,6 +75,8 @@
 													</p>
 												</div>
 											</div>
+											<div id="indexchart" style="width: 100%;height: 300px;"></div>
+											<div id="indexcharts" style="width: 100%;height: 300px;"></div>
 										</div>
 										<div class="layui-col-sm6 layui-col-md4">
 											<div class="layui-card green">
@@ -149,30 +153,7 @@
 								</div>
 							</div>
 						</div>
-
 					</div>
-
-					<!-- <div v-show="threeRun==2">
-                    <div class="title">
-                        <button type="button" class="active">实时数据</button>
-                    </div>
-                    <div class="rightContent">
-                        <div class="layui-inline layui-form">
-                            <div class="layui-input-inline">
-                                <select name="eventTypeId" lay-verify="required">
-                                    <option value="">请选择时间间隔</option>
-                                    <option value="5">5</option>
-                                    <option value="10">10</option>
-                                    <option value="15">15</option>
-                                </select>
-                            </div>
-                            <div class="layui-input-inline">
-                                <input type="text" class="layui-input" id="EstimeDate" placeholder="请输入日期">
-                            </div>
-                        </div>
-                    </div>
-
-                </div> -->
 					<div v-show="threeRun==3">
 						<div class="rightContent">
 							<div class="firmTable">
@@ -235,39 +216,6 @@
 								<table id="LAY-app-echart-list" lay-filter="LAY-app-echart-list"></table>
 							</div>
 
-
-
-							<!-- <div v-show="firmEchartShow==2">
-                                <div class="layui-inline layui-form">
-                                    <div class="layui-input-inline">
-                                        <input type="text" class="layui-input" id="startDate" placeholder="请输入开始日期">
-                                    </div>
-                                    <div class="layui-input-inline">
-                                        <input type="text" class="layui-input" id="endDate" placeholder="请输入结束日期">
-                                    </div>
-                                </div>
-                            </div>
-                            <div v-show="firmEchartShow==3">
-                                <div class="layui-inline layui-form">
-                                    <div class="layui-input-inline">
-                                        <input type="text" class="layui-input" id="startDate" placeholder="请输入开始日期">
-                                    </div>
-                                    <div class="layui-input-inline">
-                                        <input type="text" class="layui-input" id="endDate" placeholder="请输入结束日期">
-                                    </div>
-                                </div>
-                            </div>
-                            <div v-show="firmEchartShow==4">
-                                <div class="layui-inline layui-form">
-                                    <div class="layui-input-inline">
-                                        <input type="text" class="layui-input" id="startDate" placeholder="请输入开始日期">
-                                    </div>
-                                    <div class="layui-input-inline">
-                                        <input type="text" class="layui-input" id="endDate" placeholder="请输入结束日期">
-                                    </div>
-                                </div>
-                            </div> -->
-
 						</div>
 					</div>
 
@@ -277,9 +225,9 @@
 		</div>
 
 
-		<script src="./../../../layuiadmin/layui/layui.js"></script>
+		<script src="../../../layuiadmin/layui/layui.all.js" type="text/javascript" charset="utf-8"></script>
 		<script src="./../../../layuiadmin/plugin/vue.js"></script>
-		<script src="./../../../layuiadmin/plugin/element.js"></script>
+		<!-- <script src="./../../../layuiadmin/plugin/element.js"></script> -->
 		<script src="./../../../layuiadmin/plugin/axios.js"></script>
 		<script src="./../../../layuiadmin/js/baseUrlConfig.js"></script>
 		<script>
@@ -287,50 +235,108 @@
 				base: '../../../layuiadmin/' //静态资源所在路径
 			}).extend({
 				index: 'lib/index' //主入口模块
-			}).use(['index', 'table', 'laydate', 'form', 'jquery', 'echarts'], function() {
+			}).use(['index', 'table', 'laydate', 'form', 'jquery', 'echarts', "tree"], function() {
 				var form = layui.form,
 					table = layui.table,
 					$ = layui.jquery,
 					echarts = layui.echarts,
 					laydate = layui.laydate;
+					tree = layui.tree;
+					data = vm.enterpriseTreeList
+				
+				
+				tree.render({
+					elem: '#enterpriseList', //默认是点击节点可进行收缩
+					onlyIconControl: true,
+					data: data,
+					click: function(obj) {
+						//根据数据返回类型判断
+						if(obj.data.type == "t_bas_enterprise"){
+							vm.threeRun = 3
+						}else if(obj.data.type == "t_device_monitor"){
+							vm.monitorId = obj.data.id
+							vm.threeRun = 2
+						}
+						console.log(JSON.stringify(obj.data.type));
+					}
+				});
+				
 
 
 				//时间日期
-
 				laydate.render({
 					elem: '#timeDate',
 					done: function(value) {
 						vm.timeDate = value;
-						console.log(vm.timeDate);
+						// console.log(vm.timeDate);
 					}
 				});
-				
+
+
+				vm.companyId = window.localStorage.getItem("enterpriseId");
+				window.localStorage.removeItem("enterpriseId") //获取上个页面传来的企业id
+
+
 				
 
-				// laydate.render({
-				// 	elem: '#yunData',
-				// 	format: 'yyyy-MM-dd'
-				// });
-				// laydate.render({
-				// 	elem: '#startDate',
-				// 	format: 'yyyy-MM-dd'
-				// });
-				// laydate.render({
-				// 	elem: '#endDate',
-				// 	format: 'yyyy-MM-dd'
-				// });
-				// // 企业时间
-				// laydate.render({
-				// 	elem: '#EstimeDate',
-				// 	format: 'yyyy-MM-dd'
-				// });
+				//一进来页面的的折线图
+				setTimeout(function() {
+					var inchart = echarts.init(document.getElementById("indexchart"));
+					option = {
+						xAxis: {
+							type: 'category',
+							boundaryGap: false,
+							data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+						},
+						yAxis: {
+							type: 'value'
+						},
+						series: [{
+							data: [820, 932, 901, 934, 1290, 1330, 1320],
+							type: 'line',
+							areaStyle: {}
+						}]
+					};
+					inchart.setOption(option, true)
+
+					var botCharts = echarts.init(document.getElementById("indexcharts"));
+					var option = {
+						title: {
+							left: 'center',
+							text: '周期用电详情',
+						},
+						xAxis: {
+							type: 'category',
+							data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+						},
+						yAxis: {
+							type: 'value'
+						},
+						series: [{
+							data: [120, 200, 150, 80, 70, 110, 130],
+							type: 'bar',
+							barWidth: 40
+						}]
+					};
+					botCharts.setOption(option)
+
+				}, 8000)
+
+
+				//按照输入的企业的名称来进行筛选
+
+
+
+
+
+
 
 				//获取企业的详情
 				axios({
 						method: "post",
 						url: BASEURL + 'environmental_intelligent_monitoring/dataMonitor/queryEnterpriseReportList',
 						params: {
-							enterpriseId: localStorage.getItem("enterpriseId")
+							enterpriseId: vm.companyId
 						}
 					}).then(function(res) {
 						console.log(res.data.page.list);
@@ -362,7 +368,7 @@
 						,
 					page: true,
 					where: {
-						enterpriseId: localStorage.getItem("enterpriseId")
+						enterpriseId: vm.companyId
 					},
 					parseData: function(res) { // 数据重新处理为layUI的数据格式
 						var msg = {
@@ -442,7 +448,7 @@
 						,
 					page: true,
 					where: {
-						enterpriseId: localStorage.getItem("enterpriseId"),
+						enterpriseId: vm.companyId,
 						productEventType: '2'
 					},
 					parseData: function(res) { // 数据重新处理为layUI的数据格式
@@ -508,7 +514,7 @@
 						,
 					page: true,
 					where: {
-						enterpriseId: localStorage.getItem("enterpriseId"),
+						enterpriseId: vm.companyId,
 						productEventType: '1'
 					},
 					parseData: function(res) { // 数据重新处理为layUI的数据格式
@@ -573,7 +579,7 @@
 						,
 					page: true,
 					where: {
-						enterpriseId: localStorage.getItem("enterpriseId"),
+						enterpriseId: vm.companyId,
 						productEventType: '0'
 					},
 					parseData: function(res) { // 数据重新处理为layUI的数据格式
@@ -637,7 +643,7 @@
 					var data = new Date();
 					var date = data.getFullYear() + "-" + (data.getMonth() + 1) + "-" + data.getDate();
 					vm.timeDate = date
-					console.log(vm.timeDate);
+					// console.log(vm.timeDate);
 					//功率曲线,取消了无数据冒泡泡的事件
 					myCharts = echarts.init(document.getElementById('dataEcharts'), {
 						noDataLoadingOption: {
@@ -654,8 +660,7 @@
 						method: "post",
 						url: BASEURL + 'environmental_intelligent_monitoring/tdevicehistory/queryPowerCurve',
 						params: {
-							enterpriseId: "89",
-							// localStorage.getItem("enterpriseId"),
+							enterpriseId: vm.companyId,
 							actTime: vm.timeDate
 						}
 					}).then(function(res) {
@@ -737,6 +742,7 @@
 				data: {
 					address: "",
 					list_time: [],
+					companyId: '',
 					list_value: [],
 					timeDate: '',
 					tradeName: "",
@@ -746,34 +752,13 @@
 					company: "",
 					chargePerson: '',
 					firmShow: 1,
-					defaultProps: {
-						children: 'children',
-						label: 'label'
-					},
-					firmTreeData: [{
-						label: '西安卫康数据',
-						id: 1,
-						children: [{
-								label: '企业总表',
-								id: 2
-							},
-							{
-								label: '测试车间123',
-								children: [{
-									label: '治污监测点',
-									children: [{
-										label: '治污点位',
-										id: 3
-									}]
-								}]
-							}
-						]
-					}],
+					enterpriseTreeList: [],
 					// 点击树状图切换右边
 					threeRun: 1,
 					firmEchartShow: 1,
 					// 树状图高亮显示
-					firmHigh: true
+					firmHigh: true,
+					monitorId:""
 
 				},
 				methods: {
@@ -823,124 +808,114 @@
 						})
 
 					},
-					treeMonitor() {
+					getEnterPriseTreeList: function() {
 						axios({
-								method: "post",
-								url: BASEURL + 'environmental_intelligent_monitoring/tfirmabnormal/list?limit=10000',
+								method: "POST",
+								url: BASEURL + 'environmental_intelligent_monitoring/tbasenterprise/enterpriseDendrogramList',
 								params: {
-									enterpriseId: localStorage.getItem("enterpriseId")
+									enterpriseId: "90"
 								}
-							}).then(function(res) {
+							})
+							.then(function(res) {
 								if (res.data.code == 0) {
-
+									console.log(res.data.data);
+									for (var i = 0; i < res.data.data.length; i++) {
+										res.data.data[i].spread = true;
+									}
+									vm.enterpriseTreeList.push(res.data.data);
 								} else {
-
+									vm.$notify.error({
+										title: '错误',
+										message: res.data.msg
+									})
 								}
 							})
-							.catch(function() {
-
-							})
-
-					},
-					handleNodeClick(data) {
-						console.log(data);
-						if (data.id == 1) {
-							vm.threeRun = 3;
-
-						} else if (data.id == 2) {
-							vm.threeRun = 2;
-
-						} else if (data.id == 3) {
-							vm.threeRun = 1;
-
-						}
 					},
 					getinfo() {
 
 					}
 
 				},
-				created() {
-					this.treeMonitor();
-
+				mounted: function() {
+					this.getEnterPriseTreeList();
 				}
 			})
 
 			window.onclick = function() {
-				myCharts.resize();
+				// myCharts.resize();
+				// inchart.resize();
 			}
 
 			function search() {
-				setTimeout(function(){ 
-				console.log(vm.timeDate);
-				myCharts = echarts.init(document.getElementById('dataEcharts'), {
-					noDataLoadingOption: {
-						text: '暂无数据',
-						effect: 'bubble',
-						effectOption: {
-							effect: {
-								n: 0 //气泡个数为0 
+				setTimeout(function() {
+					console.log(vm.timeDate);
+					myCharts = echarts.init(document.getElementById('dataEcharts'), {
+						noDataLoadingOption: {
+							text: '暂无数据',
+							effect: 'bubble',
+							effectOption: {
+								effect: {
+									n: 0 //气泡个数为0 
+								}
 							}
 						}
-					}
-				});
-				axios({
-					method: "post",
-					url: BASEURL + 'environmental_intelligent_monitoring/tdevicehistory/queryPowerCurve',
-					params: {
-						enterpriseId: "89",
-						// localStorage.getItem("enterpriseId"),
-						actTime: vm.timeDate
-					}
-				}).then(function(res) {
-					vm.list_time = []
-					vm.list_value = []
-					// myCharts.hideLoading();
-					if (res.data.code == 0) {
-						console.log(res.data.data);
-						for (var i = 0; i < res.data.data.length; i++) {
-							value = res.data.data[i].ysp;
-							time = res.data.data[i].ysday;
-							vm.list_time.push(time);
-							vm.list_value.push(value)
+					});
+					axios({
+						method: "post",
+						url: BASEURL + 'environmental_intelligent_monitoring/tdevicehistory/queryPowerCurve',
+						params: {
+							enterpriseId: vm.companyId,
+							actTime: vm.timeDate
 						}
-						console.log(vm.list_value);
-						myCharts.setOption({
-							title: {
-								left: 'center',
-								text: '功率曲线',
-							},
-							tooltip: {
-								trigger: 'axis'
-							},
-							xAxis: {
-								type: 'category',
-								boundaryGap: false,
-								data: vm.list_time
-							},
-							yAxis: {
-								type: 'value'
-							},
-							series: [{
-								name: "今日",
-								data: vm.list_value,
-								type: 'line',
-								areaStyle: {
-									normal: {
-										color: '#091e3b' //改变区域颜色
+					}).then(function(res) {
+						vm.list_time = []
+						vm.list_value = []
+						// myCharts.hideLoading();
+						if (res.data.code == 0) {
+							console.log(res.data.data);
+							for (var i = 0; i < res.data.data.length; i++) {
+								value = res.data.data[i].ysp;
+								time = res.data.data[i].ysday;
+								vm.list_time.push(time);
+								vm.list_value.push(value)
+							}
+							console.log(vm.list_value);
+							myCharts.setOption({
+								title: {
+									left: 'center',
+									text: '功率曲线',
+								},
+								tooltip: {
+									trigger: 'axis'
+								},
+								xAxis: {
+									type: 'category',
+									boundaryGap: false,
+									data: vm.list_time
+								},
+								yAxis: {
+									type: 'value'
+								},
+								series: [{
+									name: "今日",
+									data: vm.list_value,
+									type: 'line',
+									areaStyle: {
+										normal: {
+											color: '#091e3b' //改变区域颜色
+										}
 									}
-								}
-							}]
-						}, true)
+								}]
+							}, true)
 
-					} else {
+						} else {
 
-					}
-				}).catch(function(err) {
-					console.log(err);
-				});
-},1000)
-				
+						}
+					}).catch(function(err) {
+						console.log(err);
+					});
+				}, 1000)
+
 
 			}
 		</script>
