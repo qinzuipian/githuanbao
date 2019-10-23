@@ -18,7 +18,7 @@
 
 		.firmRight {
 			overflow: scroll;
-			min-height: 600px;
+			height: 800px;
 			background: white;
 		}
 
@@ -241,26 +241,27 @@
 					$ = layui.jquery,
 					echarts = layui.echarts,
 					laydate = layui.laydate;
-					tree = layui.tree;
-					data = vm.enterpriseTreeList
-				
-				
+				tree = layui.tree;
+				data = vm.enterpriseTreeList
+
+
 				tree.render({
 					elem: '#enterpriseList', //默认是点击节点可进行收缩
 					onlyIconControl: true,
+					showLine: true,
 					data: data,
 					click: function(obj) {
 						//根据数据返回类型判断
-						if(obj.data.type == "t_bas_enterprise"){
+						//企业总表是 vm.threeRun =  2
+						if (obj.data.type == "t_bas_enterprise") {
 							vm.threeRun = 3
-						}else if(obj.data.type == "t_device_monitor"){
+						} else if (obj.data.type == "t_device_monitor") {
 							vm.monitorId = obj.data.id
-							vm.threeRun = 2
+							vm.threeRun = 1
 						}
-						console.log(JSON.stringify(obj.data.type));
 					}
 				});
-				
+
 
 
 				//时间日期
@@ -275,9 +276,10 @@
 
 				vm.companyId = window.localStorage.getItem("enterpriseId");
 				window.localStorage.removeItem("enterpriseId") //获取上个页面传来的企业id
+				console.log(vm.companyId);
 
 
-				
+
 
 				//一进来页面的的折线图
 				setTimeout(function() {
@@ -733,7 +735,7 @@
 						}]
 					};
 					botCharts.setOption(option)
-				}, 2000);
+				}, 1000);
 			})
 
 
@@ -758,7 +760,7 @@
 					firmEchartShow: 1,
 					// 树状图高亮显示
 					firmHigh: true,
-					monitorId:""
+					monitorId: ""
 
 				},
 				methods: {
@@ -813,16 +815,19 @@
 								method: "POST",
 								url: BASEURL + 'environmental_intelligent_monitoring/tbasenterprise/enterpriseDendrogramList',
 								params: {
-									enterpriseId: "90"
+									enterpriseId: localStorage.getItem("enterpriseId")
 								}
 							})
 							.then(function(res) {
 								if (res.data.code == 0) {
-									console.log(res.data.data);
-									for (var i = 0; i < res.data.data.length; i++) {
-										res.data.data[i].spread = true;
-									}
 									vm.enterpriseTreeList.push(res.data.data);
+									for (var i = 0; i < vm.enterpriseTreeList.length; i++) {
+										vm.enterpriseTreeList[i].spread = true;
+										console.log(vm.enterpriseTreeList[i].children.length);
+										for (var j = 0; j < vm.enterpriseTreeList[i].children.length; j++) {
+											vm.enterpriseTreeList[i].children[j].spread = true;
+										}
+									}
 								} else {
 									vm.$notify.error({
 										title: '错误',
@@ -842,9 +847,9 @@
 			})
 
 			window.onclick = function() {
-				// myCharts.resize();
-				// inchart.resize();
+				myCharts.resize();
 			}
+
 
 			function search() {
 				setTimeout(function() {
