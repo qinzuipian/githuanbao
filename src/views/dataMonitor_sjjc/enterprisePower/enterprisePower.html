@@ -2,7 +2,7 @@
 <html>
 	<head>
 		<meta charset="utf-8">
-		<title>企业电力负荷明细</title>
+		<title>企业用电明细统计</title>
 		<meta name="renderer" content="webkit">
 		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
@@ -17,11 +17,25 @@
 			<div class="layui-fluid layui-col-space30">
 				<div class="layui-card layui-col-md3 layui-col-lg3">
 					<div class="layui-card-header card-title">
-						<input type="text" name="title" placeholder="请输入关键字" v-model="searchTxt" class="layui-input" >
+						<input type="text" name="title" placeholder="请输入关键字" v-model="searchTxt" class="layui-input search-input">
 					</div>
 					<div class="l-card-border enterprise-box">
 						<div id="enterpriseList" class="demo-tree demo-tree-box"></div>
-						<p @click="testFunc" style="height: 40px;width: 40px;margin-top: 50px;">anniu</p>
+					</div>
+				</div>
+				<div class="layui-card layui-col-md9 layui-col-lg9">
+					<div class="layui-card-header card-title box">
+						<div class="test-name">
+							<span>监测点名称:</span>
+							<span v-text="testNameTxt"></span>
+						</div>
+						<div class="test-time block">
+							<label class="layui-form-label">时间:</label>
+							<div class="layui-input-inline">
+								<el-date-picker v-model="testTime" type="date" value-format="yyyy-MM-dd" placeholder="选择日期" default-value >
+								</el-date-picker>
+							</div>
+						</div>
 					</div>
 				</div>
 			</div>
@@ -39,6 +53,8 @@
 				data: {
 					searchTxt: '', // 搜索框关键字
 					enterpriseTreeList: [], // 左边树形结构的数据
+					testNameTxt: '', //监测点名称
+					testTime: '', // 时间
 				},
 				methods: {
 					getEnterPriseTreeList: function() {
@@ -48,6 +64,9 @@
 							})
 							.then(function(res) {
 								if (res.data.code == 0) {
+									for(var i = 0; i < res.data.data.length; i++){
+										res.data.data[i].spread = true;
+									}
 									vm.enterpriseTreeList = res.data.data;
 								} else {
 									vm.$notify.error({
