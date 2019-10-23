@@ -13,7 +13,7 @@
 
 	</head>
 	<body>
-		<div id="#vm">
+		<div id="vm">
 			<div class="layui-fluid layui-col-space30">
 				<div class="layui-card layui-col-md3 layui-col-lg3">
 					<div class="layui-card-header card-title">
@@ -32,18 +32,24 @@
 						<div class="test-time block">
 							<label class="layui-form-label">时间:</label>
 							<div class="layui-input-inline">
-								<el-date-picker v-model="testTime" type="date" value-format="yyyy-MM-dd" placeholder="选择日期" default-value >
+								<el-date-picker v-model="testTime" type="date" value-format="yyyy-MM-dd" placeholder="选择日期" class="time-input"
+								 default-value>
 								</el-date-picker>
 							</div>
 						</div>
+						<div class="export-box">
+							<button type="button" class="layui-btn layui-btn-primary">导出</button>
+						</div>
 					</div>
+
+					<table id="testData" lay-filter="testData"></table>
 				</div>
 			</div>
 		</div>
 
 
 		<script src="../../../layuiadmin/js/baseUrlConfig.js"></script>
-		<script src="../../../layuiadmin/layui/layui.js"></script>
+		<script src="../../../layuiadmin/layui/layui.all.js"></script>
 		<script src="../../../layuiadmin/plugin/vue.min.js"></script>
 		<script src="../../../layuiadmin/plugin/element.js"></script>
 		<script src="../../../layuiadmin/plugin/axios.js"></script>
@@ -54,17 +60,35 @@
 					searchTxt: '', // 搜索框关键字
 					enterpriseTreeList: [], // 左边树形结构的数据
 					testNameTxt: '', //监测点名称
+					monitorId: '', // 监测点ID
 					testTime: '', // 时间
 				},
 				methods: {
 					getEnterPriseTreeList: function() {
+						// 获取当前时间用来传入表格
+						var date = new Date();
+						var seperator1 = "-";
+						var year = date.getFullYear();
+						var month = date.getMonth() + 1;
+						var strDate = date.getDate();
+						if (month >= 1 && month <= 9) {
+							month = "0" + month;
+						}
+						if (strDate >= 0 && strDate <= 9) {
+							strDate = "0" + strDate;
+						}
+						this.testTime = year + seperator1 + month + seperator1 + strDate;
+
 						axios({
 								method: "POST",
-								url: BASEURL + 'environmental_intelligent_monitoring/tbasorganize/dendrogramList'
+								url: BASEURL + 'environmental_intelligent_monitoring/tbasorganize/dendrogramList',
+								params: {
+									type: 5,
+								}
 							})
 							.then(function(res) {
 								if (res.data.code == 0) {
-									for(var i = 0; i < res.data.data.length; i++){
+									for (var i = 0; i < res.data.data.length; i++) {
 										res.data.data[i].spread = true;
 									}
 									vm.enterpriseTreeList = res.data.data;
@@ -76,16 +100,25 @@
 								}
 							})
 					},
-					testFunc: function(){
-						console.log(this.searchTxt);
-					}
+
 				},
 				mounted: function() {
 					this.getEnterPriseTreeList();
 				},
 				watch: {
-					searchTxt: function(){
-						console.log(1);
+					searchTxt: function() {
+						console.log(this.enterpriseTreeList);
+					},
+					testTime: function() {
+						if(layui.setter){
+							layui.table.reload('testData', {
+								url: layui.setter.BASEURL + '/environmental_intelligent_monitoring/tdevicehistory/list',
+								where: {
+									monitorId: vm.monitorId,
+									acttime: vm.testTime
+								}
+							});
+						}
 					}
 				}
 			});
@@ -93,14 +126,110 @@
 				base: '../../../layuiadmin/' //静态资源所在路径
 			}).extend({
 				index: 'lib/index' //主入口模块
-			}).use(['index', 'tree'], function() {
+			}).use(['index', 'tree', 'table'], function() {
 				var tree = layui.tree;
 				var data = vm.enterpriseTreeList;
+				var table = layui.table;
 
 				tree.render({
 					elem: '#enterpriseList', //默认是点击节点可进行收缩
-					data: data
+					data: data,
+					click: function(obj) {
+						// console.log(obj.data); //得到当前点击的节点数据
+						if (obj.data.type == "t_device_monitor") { // 如果当前点击的是监测点
+							vm.monitorId = obj.data.id;
+							table.reload('testData', {
+								url: layui.setter.BASEURL + '/environmental_intelligent_monitoring/tdevicehistory/list',
+								where: {
+									monitorId: vm.monitorId
+								}
+							});
+						}
+					}
 				});
+				table.render({
+					elem: '#testData',
+					height: 650,
+					url: layui.setter.BASEURL + '/environmental_intelligent_monitoring/tdevicehistory/list', //数据接口
+					where: {
+						monitorId: vm.monitorId,
+						acttime: vm.testTime
+					},
+					parseData: function(res) { // 数据重新处理为layUI的数据格式
+						var msg = {
+							"code": res.code, //解析接口状态
+							"msg": res.msg, //解析提示文本
+							"count": res.page.totalCount, //解析数据长度
+							"data": res.page.list //解析数据列表
+						};
+						return msg;
+					},
+					page: true, //开启分页
+					cols: [
+						[ //表头
+							{
+								field: 'monitorName',
+								title: '监测点名称',
+								width: 140,
+								sort: true
+							}, {
+								field: 'acttime',
+								title: '时间',
+								width: 170,
+								sort: true
+							}, {
+								field: 'ua',
+								title: 'Ua(V)',
+								// width: 80,
+								sort: true
+							}, {
+								field: 'ub',
+								title: 'Ub(V)',
+								// width: 80
+							}, {
+								field: 'uc',
+								title: 'Uc(V)',
+								// width: 80
+							}, {
+								field: 'ia',
+								title: 'Ia(A)',
+								// width: 80,
+								sort: true
+							}, {
+								field: 'ib',
+								title: 'Ib(A)',
+								// width: 80,
+								sort: true
+							}, {
+								field: 'ic',
+								title: 'Ic(A)',
+								// width: 80
+							}, {
+								field: 'p',
+								title: 'P(kW)',
+								// width: 80,
+								sort: true
+							}, {
+								field: 'q',
+								title: 'Q(kVAR)',
+								width: 100,
+								sort: true
+							}, {
+								field: 'pi',
+								title: 'Pv(KWH)',
+								width: 120,
+								sort: true
+							}, {
+								field: 'the',
+								title: 'The',
+								// width: 80,
+								sort: true
+							}
+						]
+					]
+				});
+
+
 			});
 		</script>
 	</body>

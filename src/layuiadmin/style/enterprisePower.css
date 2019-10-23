@@ -16,7 +16,7 @@
 }
 
 .enterprise-box {
-	height: 650px;
+	height: 610px;
 	overflow: scroll;
 }
 
@@ -43,6 +43,30 @@
 	color: white;
 }
 
+.time-input input{
+	background: white;
+	line-height: 20px;
+	height: 30px;
+}
+.time-input::-webkit-input-placeholder {
+	color: white;
+}
+
+.time-input::-moz-placeholder {
+	/* Mozilla Firefox 19+ */
+	color: white;
+}
+
+.time-input:-moz-placeholder {
+	/* Mozilla Firefox 4 to 18 */
+	color: white;
+}
+
+.time-input:-ms-input-placeholder {
+	/* Internet Explorer 10-11 */
+	color: white;
+}
+
 
 .box{
 	display: flex;
@@ -54,5 +78,16 @@
 
 .test-time{
 	width: 30%;
-	/* display: flex; */
+	display: flex;
+}
+
+.export-box{
+	width: 30%;
+	text-align: right;
+}
+.export-box button{
+	font-size: 15px;
+	height: 30px;
+	line-height: 30px;
+	color: #2F4056;
 }
