@@ -25,18 +25,21 @@
 		}
 	</style>
 	<body>
-		<div class="chart">
-			<p class="title">最近七天访问量-柱状图</p>
-			<div id="botchart" style="width: 100%;height: 300px;"></div>
+		<div id="app">
+			<div class="chart">
+				<p class="title">最近七天访问量-柱状图</p>
+				<div id="botchart" style="width: 100%;height: 300px;"></div>
+			</div>
+			<div class="chart">
+				<p class="title">最近七天访问量-折线图</p>
+				<div id="zchart" style="width: 100%;height: 300px;"></div>
+			</div>
+			<div class="chart">
+				<p class="title">最近七天访问量-扇形图</p>
+				<div id="schart" style="width: 100%;height: 300px;"></div>
+			</div>
 		</div>
-		<div class="chart">
-			<p class="title">最近七天访问量-折线图</p>
-			<div id="zchart" style="width: 100%;height: 300px;"></div>
-		</div>
-		<div class="chart">
-			<p class="title">最近七天访问量-扇形图</p>
-			<div id="schart" style="width: 100%;height: 300px;"></div>
-		</div>
+
 	</body>
 	<script src="../../layuiadmin/layui/layui.js" type="text/javascript" charset="utf-8"></script>
 	<script src="../../layuiadmin/plugin/vue.js" type="text/javascript" charset="utf-8"></script>
@@ -57,117 +60,238 @@
 				$ = layui.jquery;
 
 
-			var botcharts = echart.init(document.getElementById("botchart"));
-			var zcharts = echart.init(document.getElementById("zchart"));
-			var scharts = echart.init(document.getElementById("schart"));
-			option = {
-				color: ['#3398DB'],
-				tooltip: {
-					trigger: 'axis',
-					axisPointer: { // 坐标轴指示器，坐标轴触发有效
-						type: 'shadow' // 默认为直线，可选为：'line' | 'shadow'
+			var botcharts = echart.init(document.getElementById("botchart"), {
+				noDataLoadingOption: {
+					text: '暂无数据',
+					effect: 'bubble',
+					effectOption: {
+						effect: {
+							n: 0 //气泡个数为0 
+						}
 					}
-				},
-				grid: {
-					left: '3%',
-					right: '4%',
-					bottom: '4%',
-					containLabel: true
-				},
-				xAxis: [{
-					type: 'category',
-					data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
-					axisTick: {
-						alignWithLabel: true
+				}
+			});
+			var zcharts = echart.init(document.getElementById("zchart"), {
+				noDataLoadingOption: {
+					text: '暂无数据',
+					effect: 'bubble',
+					effectOption: {
+						effect: {
+							n: 0 //气泡个数为0 
+						}
 					}
-				}],
-				yAxis: [{
-					type: 'value'
-				}],
-				series: [{
-					name: '直接访问',
-					type: 'bar',
-					barWidth: '60',
-					data: [10, 52, 200, 334, 390, 330, 220]
-				}]
-			};
-			botcharts.setOption(option)
+				}
+			});
+			var scharts = echart.init(document.getElementById("schart"), {
+				noDataLoadingOption: {
+					text: '暂无数据',
+					effect: 'bubble',
+					effectOption: {
+						effect: {
+							n: 0 //气泡个数为0 
+						}
+					}
+				}
+			});
 
-			options = {
-				xAxis: {
-					type: 'category',
-					data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
-				},
-				yAxis: {
-					type: 'value'
-				},
-				series: [{
-					data: [820, 932, 901, 934, 1290, 1330, 1320],
-					type: 'line'
-				}]
-			};
-			zcharts.setOption(options);
 
-			optionss = {
-				tooltip: {
-					trigger: 'item',
-					formatter: "{a} <br/>{b}: {c} ({d}%)"
-				},
-				legend: {
-					orient: 'vertical',
-					x: 'left',
-					data: ['直接访问', '邮件营销', '联盟广告', '视频广告', '搜索引擎']
-				},
-				series: [{
-					name: '访问来源',
-					type: 'pie',
-					radius: ['30%', '60%'],
-					avoidLabelOverlap: false,
-					label: {
-						normal: {
-							show: false,
-							position: 'center'
-						},
-						emphasis: {
-							show: true,
-							textStyle: {
-								fontSize: '30',
-								fontWeight: 'bold'
+			//获取登录七天的数据
+			axios({
+				method: "post",
+				url: BASEURL + '/sys-mgr/sys/log/queryViews',
+				params: {
+					areaCode: '610102',
+					enterpriseId: "89"
+				}
+			}).then(function(res) {
+				console.log(res.data.data)
+				if (res.data.code == 0) {
+					console.log(res.data.data);
+					for (var i = 0; i < res.data.data.length; i++) {
+						vm.list_data.push(res.data.data[i].createDate);
+						vm.list_num.push(res.data.data[i].num);
+						obj = {},
+							obj.name = res.data.data[i].createDate;
+						obj.value = res.data.data[i].num;
+						vm.list_all.push(obj);
+					}
+					botcharts.setOption({
+						color: ['#3398DB'],
+						tooltip: {
+							trigger: 'axis',
+							axisPointer: { // 坐标轴指示器，坐标轴触发有效
+								type: 'shadow' // 默认为直线，可选为：'line' | 'shadow'
 							}
-						}
-					},
-					labelLine: {
-						normal: {
-							show: false
-						}
-					},
-					data: [{
-							value: 335,
-							name: '直接访问'
 						},
-						{
-							value: 310,
-							name: '邮件营销'
+						grid: {
+							left: '3%',
+							right: '4%',
+							bottom: '4%',
+							containLabel: true
 						},
-						{
-							value: 234,
-							name: '联盟广告'
+						xAxis: [{
+							type: 'category',
+							data: vm.list_data,
+							axisTick: {
+								alignWithLabel: true
+							}
+						}],
+						yAxis: [{
+							type: 'value'
+						}],
+						series: [{
+							name: '',
+							type: 'bar',
+							barWidth: '60',
+							data: vm.list_num
+						}]
+
+					}, true);
+
+					zcharts.setOption({
+						xAxis: {
+							type: 'category',
+							data: vm.list_data
 						},
-						{
-							value: 135,
-							name: '视频广告'
+						yAxis: {
+							type: 'value'
 						},
-						{
-							value: 1548,
-							name: '搜索引擎'
-						}
-					]
-				}]
-			};
-			scharts.setOption(optionss)
+						series: [{
+							data: vm.list_num,
+							type: 'line'
+						}]
+
+					}, true);
+
+					scharts.setOption({
+						tooltip: {
+							trigger: 'item',
+							formatter: "{a} <br/>{b}: {c} ({d}%)"
+						},
+						legend: {
+							orient: 'vertical',
+							x: 'left',
+							data: vm.list_data
+						},
+						series: [{
+							name: '访问来源',
+							type: 'pie',
+							radius: ['30%', '60%'],
+							avoidLabelOverlap: false,
+							label: {
+								normal: {
+									show: false,
+									position: 'center'
+								},
+								emphasis: {
+									show: true,
+									textStyle: {
+										fontSize: '30',
+										fontWeight: 'bold'
+									}
+								}
+							},
+							labelLine: {
+								normal: {
+									show: false
+								}
+							},
+							data: vm.list_all
+						}]
+					}, true);
+				} else {
+
+				}
+			}).catch(function(err) {
+				console.log(err);
+			});
+
+
+			// options = {
+			// 	xAxis: {
+			// 		type: 'category',
+			// 		data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+			// 	},
+			// 	yAxis: {
+			// 		type: 'value'
+			// 	},
+			// 	series: [{
+			// 		data: [820, 932, 901, 934, 1290, 1330, 1320],
+			// 		type: 'line'
+			// 	}]
+			// };
+			// zcharts.setOption(options);
+
+			// optionss = {
+			// 	tooltip: {
+			// 		trigger: 'item',
+			// 		formatter: "{a} <br/>{b}: {c} ({d}%)"
+			// 	},
+			// 	legend: {
+			// 		orient: 'vertical',
+			// 		x: 'left',
+			// 		data: ['直接访问', '邮件营销', '联盟广告', '视频广告', '搜索引擎']
+			// 	},
+			// 	series: [{
+			// 		name: '访问来源',
+			// 		type: 'pie',
+			// 		radius: ['30%', '60%'],
+			// 		avoidLabelOverlap: false,
+			// 		label: {
+			// 			normal: {
+			// 				show: false,
+			// 				position: 'center'
+			// 			},
+			// 			emphasis: {
+			// 				show: true,
+			// 				textStyle: {
+			// 					fontSize: '30',
+			// 					fontWeight: 'bold'
+			// 				}
+			// 			}
+			// 		},
+			// 		labelLine: {
+			// 			normal: {
+			// 				show: false
+			// 			}
+			// 		},
+			// 		data: [{
+			// 				value: 335,
+			// 				name: '直接访问'
+			// 			},
+			// 			{
+			// 				value: 310,
+			// 				name: '邮件营销'
+			// 			},
+			// 			{
+			// 				value: 234,
+			// 				name: '联盟广告'
+			// 			},
+			// 			{
+			// 				value: 135,
+			// 				name: '视频广告'
+			// 			},
+			// 			{
+			// 				value: 1548,
+			// 				name: '搜索引擎'
+			// 			}
+			// 		]
+			// 	}]
+			// };
+			// scharts.setOption(optionss)
 
 
 
+		})
+
+
+		var vm = new Vue({
+			el: '#app',
+			data: {
+				list_data: [],
+				list_num: [],
+				list_all: []
+			}
 		})
 	</script>
 </html>

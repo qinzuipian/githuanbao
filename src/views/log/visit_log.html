@@ -14,11 +14,10 @@
 						<div class="layui-inline">
 							<label class="layui-form-label">创建日期</label>
 							<div class="layui-input-inline">
-								<input type="text" name="startCreateDate" v-model="startCreateDate" class="layui-input" id="startDate"
-								 placeholder="请输入开始日期">
+								<input type="text" name="startTime" v-model="startCreateDate" class="layui-input" id="startDate" placeholder="请输入开始日期">
 							</div>
 							<div class="layui-input-inline">
-								<input type="text" name="endCreateDate" v-model="endCreateDate" class="layui-input" id="endDate" placeholder="请输入结束日期">
+								<input type="text" name="endTime" v-model="endCreateDate" class="layui-input" id="endDate" placeholder="请输入结束日期">
 							</div>
 						</div>
 						<div class="layui-input-inline" style="width: 80%;margin-top: 10px;margin-left: 15px;border-radius: 5px;">
@@ -59,13 +58,33 @@
 				util = layui.util,
 				$ = layui.jquery;
 
-		
+
+			//开始日期
+			laydate.render({
+				elem: '#startDate'
+			});
+
+			//结束日期
+			laydate.render({
+				elem: '#endDate'
+			});
+
+
+
 			table.render({
 				elem: '#LAY-app-content-list',
 				height: 555 //容器高度
 					,
-				url: layui.setter.BASEURL + '//sys-mgr/sys/log/list' //数据接口
+				url: layui.setter.BASEURL + '/sys-mgr/sys/log/list' //数据接口
 					,
+				where: {
+					areaCode: '610102',
+					endTime: "",
+					enterpriseId: "89",
+					key: '',
+					operation: 'operating',
+					startTime: ""
+				},
 				page: true,
 				parseData: function(res) { // 数据重新处理为layUI的数据格式
 					var msg = {
@@ -88,11 +107,6 @@
 							}, {
 								title: '操作',
 								field: 'operation',
-								minWidth: 100,
-								width: 200
-							}, {
-								title: '内容',
-								field: 'address',
 								minWidth: 100,
 								width: 200
 							}, {
@@ -137,14 +151,14 @@
 						if (checkData.length === 0) {
 							return layer.msg('请选择数据');
 						}
-						
+
 					},
 					add: function() {
-						
+
 					},
 					edit: function() {},
 					out: function() {
-						
+
 					}
 				}
 
@@ -154,8 +168,7 @@
 			});
 
 
-			
+
 		})
-		
 	</script>
 </html>

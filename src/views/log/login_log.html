@@ -7,22 +7,34 @@
 		<link rel="stylesheet" type="text/css" href="../../layuiadmin/style/admin.css" />
 	</head>
 	<body>
-		<div id="app">
-			<div class="layui-form layui-card-header layuiadmin-card-header-auto">
-				<div class="layui-input-inline" style="width: 80%;margin-top: 30px;margin-left: 15px;border-radius: 5px;">
-					<input type="text" name="key" v-model="username" placeholder="请输入" autocomplete="off" class="layui-input">
-				</div>
-				<div class="layui-inline" style="margin-top: 30px;margin-left: 1%;">
-					<button class="layui-btn layuiadmin-btn-list" lay-submit lay-filter="LAY-app-contlist-search" >
-						<i class="layui-icon layui-icon-search layuiadmin-button-btn"></i>
-					</button>
-				</div>
-				<div class="layui-fluid" id="app">
-					<div class="layui-card">
-						<div class="layui-card-body">
-							<table id="LAY-app-content-list" lay-filter="LAY-app-content-list"></table>
+		<div class="layui-fluid" id="app">
+			<div class="layui-card">
+				<div class="layui-form layui-card-header layuiadmin-card-header-auto">
+					<div class="layui-form-item">
+						<div class="layui-inline">
+							<label class="layui-form-label">创建日期</label>
+							<div class="layui-input-inline">
+								<input type="text" name="startTime" class="layui-input" id="startDate" placeholder="请输入开始日期">
+							</div>
+							<div class="layui-input-inline">
+								<input type="text" name="endTime" class="layui-input" id="endDate" placeholder="请输入结束日期">
+							</div>
 						</div>
+						<div class="layui-input-inline" style="width: 80%;margin-top: 10px;margin-left: 15px;border-radius: 5px;">
+							<input type="text" name="key" placeholder="搜索关键字" autocomplete="off" class="layui-input">
+						</div>
+						<div class="layui-inline">
+							<button class="layui-btn layuiadmin-btn-list" lay-submit lay-filter="LAY-app-contlist-search">
+								<i class="layui-icon layui-icon-search layuiadmin-button-btn" @click="search()"></i>
+							</button>
+						</div>
+
 					</div>
+				</div>
+
+				<div class="layui-card-body">
+
+					<table id="LAY-app-content-list" lay-filter="LAY-app-content-list"></table>
 				</div>
 			</div>
 		</div>
@@ -46,6 +58,17 @@
 				util = layui.util,
 				$ = layui.jquery;
 
+			//开始日期
+			laydate.render({
+				elem: '#startDate'
+			});
+			
+			//结束日期
+			laydate.render({
+				elem: '#endDate'
+			});
+			
+
 
 
 			table.render({
@@ -55,6 +78,14 @@
 				url: layui.setter.BASEURL + '/sys-mgr/sys/log/list' //数据接口
 					,
 				page: true,
+				where: {
+					areaCode: '610102',
+					endTime: "",
+					enterpriseId: "89",
+					key: '',
+					operation: 'login',
+					startTime: ""
+				},
 				parseData: function(res) { // 数据重新处理为layUI的数据格式
 					var msg = {
 						"code": res.code, //解析接口状态
@@ -161,8 +192,7 @@
 				username: ""
 
 			},
-			methods: {
-			}
+			methods: {}
 		})
 	</script>
 </html>
