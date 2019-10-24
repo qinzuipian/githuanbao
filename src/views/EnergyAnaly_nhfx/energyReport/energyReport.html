@@ -12,7 +12,37 @@
     <link rel="stylesheet" href="./../../../layuiadmin/plugin/element.css">
     <style>
         .layui-inline {
-            margin-left: 60px;
+            margin: 0 0 10px 60px;
+        }
+
+        .allTable {
+            text-align: center;
+            white-space: nowrap;
+            overflow-x: auto;
+            width: auto;
+        }
+
+        .tableList {
+            width: 100%;
+            /* position: absolute; */
+            background-color: #fff;
+
+        }
+
+        .tableList tr {
+            height: 48px;
+            line-height: 48px;
+        }
+
+        .tableList tr th {
+            color: #909399;
+        }
+
+        .tableList tr th,
+        .tableList tr td {
+            border: 1px solid #eee;
+            text-align: center;
+            padding: 6px;
         }
     </style>
 </head>
@@ -32,27 +62,50 @@
                 <div class="layui-inline layui-form">
 
                     <div class="layui-input-inline" style="width: 120px;">
-                        <select name="timeType" lay-filter="timeType" lay-verify="required">
+                        <el-select v-model="timeType" @change="timeSelect" placeholder="请选择">
+                            <el-option v-for="item in timeOptions" :key="item.value" :label="item.label" :value="item.value">
+                            </el-option>
+                        </el-select>
+                        <!-- <select name="timeType" lay-filter="timeType" lay-verify="required">
                             <option value="">选择类型</option>
                             <option value="year">年</option>
                             <option value="month">月</option>
                             <option value="date">日</option>
                             <option value="plus">累计</option>
-                        </select>
+                        </select> -->
                     </div>
                     <div class="layui-input-inline" v-show="timeShow == 1">
-                        <input type="text" class="layui-input" id="timeDate" placeholder="请选择日期">
+                        <el-date-picker v-model="timeDate" value-format="yyyy-MM-dd" type="date" placeholder="选择日期">
+                        </el-date-picker>
+                        <!-- <input type="text" class="layui-input" id="timeDate" placeholder="请选择日期"> -->
                     </div>
                     <div class="layui-input-inline" v-show="timeShow == 2">
-                        <input type="text" class="layui-input" id="yearDate" placeholder="请选择年">
+                        <el-date-picker v-model="yearDate" value-format="yyyy" type="year" placeholder="选择年">
+                        </el-date-picker>
+                        <!-- <input type="text" class="layui-input" id="yearDate" placeholder="请选择年"> -->
                     </div>
                     <div class="layui-input-inline" v-show="timeShow == 3">
-                        <input type="text" class="layui-input" id="monthDate" placeholder="请选择月">
+                        <el-date-picker v-model="monthDate" value-format="yyyyMM" type="month" placeholder="选择月">
+                        </el-date-picker>
+                        <!-- <input type="text" class="layui-input" id="monthDate" placeholder="请选择月"> -->
                     </div>
-                    <button class="layui-btn layuiadmin-btn-list layui-bg-orange layui-icon  layui-icon-link">导出</button>
+                    <button class="layui-btn layuiadmin-btn-list layui-bg-orange layui-icon  layui-icon-link" @click="downExport">导出</button>
                 </div>
-                <table id="LAY-app-content-list" lay-filter="LAY-app-content-list"></table>
-
+                <div class="allTable">
+                    <table class="tableList" v-show="reportDataDay.length!=0">
+                        <tr>
+                            <th>监测点名称</th>
+                            <th v-for="(item,index) in dataTime" v-text="item"></th>
+                        </tr>
+                        <tr v-for="(it,index) in reportDataDay">
+                            <td v-text="it.monitorName"></td>
+                            <td v-for="(item,index) in it.list" v-text="item.kwh"></td>
+                        </tr>
+                    </table>
+                    <div v-show="reportDataDay.length==0">
+                        暂无数据
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -73,82 +126,82 @@
                 $ = layui.jquery,
                 laydate = layui.laydate;
             //时间日期
-            laydate.render({
-                elem: '#timeDate',
-                format: 'yyyy-MM-dd'
-            });
-            laydate.render({
-                elem: '#yearDate',
-                type: 'year'
-            });
-            laydate.render({
-                elem: '#monthDate',
-                type: 'month'
-            });
+            // laydate.render({
+            //     elem: '#timeDate',
+            //     format: 'yyyy-MM-dd'
+            // });
+            // laydate.render({
+            //     elem: '#yearDate',
+            //     type: 'year'
+            // });
+            // laydate.render({
+            //     elem: '#monthDate',
+            //     type: 'month'
+            // });
 
-            table.render({
-                elem: '#LAY-app-content-list',
-                height: 555 //容器高度
-                ,
-                url: layui.setter.BASEURL + '/environmental_intelligent_monitoring/tbasenterprise/list' //数据接口
-                ,
-                page: true,
-                parseData: function (res) { // 数据重新处理为layUI的数据格式
-                    var msg = {
-                        "code": res.code, //解析接口状态
-                        "msg": res.msg, //解析提示文本
-                        "count": res.page.totalCount, //解析数据长度
-                        "data": res.page.list //解析数据列表
-                    };
-                    return msg;
-                },
-                cols: [
-                    [{
-                        title: '企业名称',
-                        field: 'name',
-                        minWidth: 100
-                    }, {
-                        title: '企业社会信用代码',
-                        field: 'trustCode',
-                        minWidth: 100,
-                        width: 200
-                    }, {
-                        title: '地址',
-                        field: 'address',
-                        minWidth: 100,
-                        width: 200
-                    }, {
-                        title: '行业名称',
-                        field: 'tradeName',
-                        minWidth: 100
-                    }, {
-                        title: '创建时间',
-                        field: 'createDate',
-                        minWidth: 100
-                    }
-                    ]
-                ] //设置表头
-                ,
-                limit: 10,
-                limits: [10, 15, 20, 25, 30]
-            });
+            // table.render({
+            //     elem: '#LAY-app-content-list',
+            //     height: 555 //容器高度
+            //     ,
+            //     url: layui.setter.BASEURL + '/environmental_intelligent_monitoring/tbasenterprise/list' //数据接口
+            //     ,
+            //     page: true,
+            //     parseData: function (res) { // 数据重新处理为layUI的数据格式
+            //         var msg = {
+            //             "code": res.code, //解析接口状态
+            //             "msg": res.msg, //解析提示文本
+            //             "count": res.page.totalCount, //解析数据长度
+            //             "data": res.page.list //解析数据列表
+            //         };
+            //         return msg;
+            //     },
+            //     cols: [
+            //         [{
+            //             title: '企业名称',
+            //             field: 'name',
+            //             minWidth: 100
+            //         }, {
+            //             title: '企业社会信用代码',
+            //             field: 'trustCode',
+            //             minWidth: 100,
+            //             width: 200
+            //         }, {
+            //             title: '地址',
+            //             field: 'address',
+            //             minWidth: 100,
+            //             width: 200
+            //         }, {
+            //             title: '行业名称',
+            //             field: 'tradeName',
+            //             minWidth: 100
+            //         }, {
+            //             title: '创建时间',
+            //             field: 'createDate',
+            //             minWidth: 100
+            //         }
+            //         ]
+            //     ] //设置表头
+            //     ,
+            //     limit: 10,
+            //     limits: [10, 15, 20, 25, 30]
+            // });
 
             // 监听select框选择事件
-            form.on('select(timeType)', function (data) {
-                console.log(data)
-                if (data.value == 'year') {
-                    vm.timeShow = 2;
+            // form.on('select(timeType)', function (data) {
+            //     console.log(data)
+            //     if (data.value == 'year') {
+            //         vm.timeShow = 2;
 
-                } else if (data.value == 'month') {
-                    vm.timeShow = 3;
+            //     } else if (data.value == 'month') {
+            //         vm.timeShow = 3;
 
-                } else if (data.value == 'date') {
-                    vm.timeShow = 1;
-                } else {
-                    vm.timeShow = 0;
-                }
+            //     } else if (data.value == 'date') {
+            //         vm.timeShow = 1;
+            //     } else {
+            //         vm.timeShow = 0;
+            //     }
 
-            })
+            // })
         })
 
         var vm = new Vue({
@@ -161,9 +214,62 @@
                 energyData: [],
                 timeShow: 1,
                 loading: false,
-                enpriseName: ""
+                enpriseName: "",
+                enpriseId: "",
+                // 时间选择
+                timeType: "date",
+                timeOptions: [{
+                    label: '日',
+                    value: 'date'
+
+                }, {
+                    label: '月',
+                    value: 'month'
+
+                }, {
+                    label: '年',
+                    value: 'year'
+
+                }, {
+                    label: '累计',
+                    value: 'plus'
+
+                }],
+                reportDataDay: [],
+                dataTime: [],
+                // 时间
+                timeDate: "",
+                yearDate: "",
+                monthDate: ""
+            },
+            watch: {
+                timeDate(val) {
+                    this.enpriseDay(this.enpriseId)
+                },
+                yearDate(val) {
+                    this.enpriseDay(this.enpriseId)
+                },
+                monthDate(val) {
+                    this.enpriseDay(this.enpriseId)
+                }
             },
             methods: {
+                // select选择
+                timeSelect() {
+                    if (this.timeType == 'year') {
+                        vm.timeShow = 2;
+
+                    } else if (this.timeType == 'month') {
+                        vm.timeShow = 3;
+
+                    } else if (this.timeType == 'date') {
+                        vm.timeShow = 1;
+                    } else {
+                        vm.timeShow = 0;
+                        this.enprisePlus(this.enpriseId)
+                    }
+
+                },
                 energyTreeInit() {
                     this.loading = true;
                     axios({
@@ -198,10 +304,363 @@
                 },
                 handleNodeClick(data, node) {
                     if (data.type == "t_bas_enterprise") {
+                        console.log(data)
                         this.enpriseName = data.title;
+                        this.enpriseId = data.id;
+
+                        if (this.timeType == 'year') {
+                            console.log(1)
+                            if (this.yearDate == "") {
+                                vm.$message.warning('请输入日期')
+                            } else {
+                                this.enpriseYear(this.enpriseId);
+                            }
+                        } else if (this.timeType == 'month') {
+                            console.log(2)
+                            if (this.monthDate == "") {
+                                vm.$message.warning('请输入日期')
+                            } else {
+                                this.enpriseMonth(this.enpriseId);
+                            }
+                        } else if (this.timeType == 'date') {
+                            console.log(3)
+                            if (this.timeDate == "") {
+                                vm.$message.warning('请输入日期')
+                            } else {
+                                this.enpriseDay(this.enpriseId);
+                            }
+
+                        } else if (this.timeType == 'plus') {
+                            this.enprisePlus(this.enpriseId);
+                        }
+
                     }
 
+                },
+                // 企业能耗统计报表按天统计
+                enpriseDay(enterpriseId) {
+                    axios({
+                        method: "post",
+                        url: BASEURL + 'environmental_intelligent_monitoring/tkwhhour/query',
+                        params: {
+                            dailyTime: this.timeDate,
+                            enterpriseId: enterpriseId
+                        }
+                    }).then(function (res) {
+                        if (res.data.code == 0) {
+                            vm.reportDataDay = [];
+                            var allData = res.data.data;
+                            var timeData = [];
+                            for (var i = 0; i < 24; i++) {
+                                if (i < 10) {
+                                    i = '0' + i;
+                                }
+                                timeData.push(i);
+                            }
+                            vm.dataTime = timeData;
+                            function compare(property) {
+                                return function (a, b) {
+                                    var value1 = a[property];
+                                    var value2 = b[property];
+                                    return value1 - value2;
+                                }
+                            }
+                            // console.log(timeData);
+                            var dataItem = [];
+
+                            allData.forEach(function (data) {
+                                console.log(data);
+                                var obj = {};
+                                var sortData = [];
+                                timeData.forEach(t1 => {
+
+                                    let exist = data.tKwhlist.some(t2 => t1 == t2.time);
+                                    console.log(exist);
+                                    if (!exist) {
+                                        sortData.push({
+                                            time: t1,
+                                            kwh: 0
+                                        });
+                                    }
+
+                                });
+                                // console.log(sortData)       
+                                data.tKwhlist.forEach(function (item) {
+                                    sortData.push(item)
+                                })
+                                console.log(sortData)
+                                dataItem = sortData.sort(compare('time'));
+                                obj.monitorName = data.monitorName;
+                                obj.list = dataItem;
+                                vm.reportDataDay.push(obj);
+                            })
+                            console.log(vm.reportDataDay)
+                        }
+                        else {
+                            vm.$notify.error({
+                                title: '错误',
+                                message: res.data.msg
+                            });
+
+                        }
+                    })
+                        .catch(function (err) {
+                            console.log(err);
+                        });
+
+                },
+                // 企业能耗统计报表按月统计
+                enpriseMonth(enterpriseId) {
+                    axios({
+                        method: "post",
+                        url: BASEURL + 'environmental_intelligent_monitoring/tkwhdaily/query',
+                        params: {
+                            monthTime: this.monthDate,
+                            enterpriseId: enterpriseId
+                        }
+                    }).then(function (res) {
+                        if (res.data.code == 0) {
+                            vm.reportDataDay = [];
+                            var allData = res.data.data;
+                            var timeData = [];
+                            for (var i = 1; i < 32; i++) {
+                                if (i < 10) {
+                                    i = '0' + i;
+                                }
+                                timeData.push(i);
+                            }
+                            vm.dataTime = timeData;
+                            function compare(property) {
+                                return function (a, b) {
+                                    var value1 = a[property];
+                                    var value2 = b[property];
+                                    return value1 - value2;
+                                }
+                            }
+                            // console.log(timeData);
+                            var dataItem = [];
+
+                            allData.forEach(function (data) {
+                                console.log(data);
+                                var obj = {};
+                                var sortData = [];
+                                timeData.forEach(t1 => {
+
+                                    let exist = data.tKwhlist.some(t2 => t1 == t2.time);
+                                    console.log(exist);
+                                    if (!exist) {
+                                        sortData.push({
+                                            time: t1,
+                                            kwh: 0
+                                        });
+                                    }
+
+                                });
+                                // console.log(sortData)       
+                                data.tKwhlist.forEach(function (item) {
+                                    sortData.push(item)
+                                })
+                                console.log(sortData)
+                                dataItem = sortData.sort(compare('time'));
+                                obj.monitorName = data.monitorName;
+                                obj.list = dataItem;
+                                vm.reportDataDay.push(obj);
+                            })
+                            console.log(vm.reportDataDay)
+                        } else {
+
+                        }
+
+                    })
+                        .catch(function (err) {
+                            console.log(err);
+                        });
+
+                },
+                // 企业能耗统计报表按年统计
+                enpriseYear(enterpriseId) {
+                    axios({
+                        method: "post",
+                        url: BASEURL + 'environmental_intelligent_monitoring/tkwhmonthly/query',
+                        params: {
+                            yearTime: this.yearDate,
+                            enterpriseId: enterpriseId
+                        }
+                    }).then(function (res) {
+                        if (res.data.code == 0) {
+                            vm.reportDataDay = [];
+                            var allData = res.data.data;
+                            var timeData = [];
+                            for (var i = 1; i < 13; i++) {
+                                if (i < 10) {
+                                    i = '0' + i;
+                                }
+                                timeData.push(i);
+                            }
+                            vm.dataTime = timeData;
+                            function compare(property) {
+                                return function (a, b) {
+                                    var value1 = a[property];
+                                    var value2 = b[property];
+                                    return value1 - value2;
+                                }
+                            }
+                            // console.log(timeData);
+                            var dataItem = [];
+
+                            allData.forEach(function (data) {
+                                console.log(data);
+                                var obj = {};
+                                var sortData = [];
+                                timeData.forEach(t1 => {
+
+                                    let exist = data.tKwhlist.some(t2 => t1 == t2.time);
+                                    console.log(exist);
+                                    if (!exist) {
+                                        sortData.push({
+                                            time: t1,
+                                            kwh: 0
+                                        });
+                                    }
+
+                                });
+                                // console.log(sortData)       
+                                data.tKwhlist.forEach(function (item) {
+                                    sortData.push(item)
+                                })
+                                console.log(sortData)
+                                dataItem = sortData.sort(compare('time'));
+                                obj.monitorName = data.monitorName;
+                                obj.list = dataItem;
+                                vm.reportDataDay.push(obj);
+                            })
+                            console.log(vm.reportDataDay)
+                        } else {
+
+                        }
+
+                    })
+                        .catch(function (err) {
+                            console.log(err);
+                        });
+
+                },
+                // 企业能耗统计报表累计统计
+                enprisePlus(enterpriseId) {
+                    if (enterpriseId != "") {
+                        axios({
+                            method: "post",
+                            url: BASEURL + 'environmental_intelligent_monitoring/tkwhyear/query',
+                            params: {
+                                enterpriseId: enterpriseId
+                            }
+                        }).then(function (res) {
+                            if (res.data.code == 0) {
+                                vm.reportDataDay = [];
+                                var allData = res.data.data;
+                                var all = [];
+                                var timeData = [];
+                                allData.forEach(function (data) {
+                                    for (var i = 0; i < data.tKwhlist.length; i++) {
+                                        console.log(data.tKwhlist[i])
+                                        all.push(data.tKwhlist[i])
+                                    }
+
+                                })
+                                for (var i = 0; i < all.length; i++) {
+                                    timeData.push(all[i].time);
+                                }
+                                vm.dataTime = timeData.filter((item, index, self) => self.indexOf(item) === index);
+
+                                function compare(property) {
+                                    return function (a, b) {
+                                        var value1 = a[property];
+                                        var value2 = b[property];
+                                        return value1 - value2;
+                                    }
+                                }
+                                // console.log(timeData);
+                                var dataItem = [];
+
+                                allData.forEach(function (data) {
+                                    console.log(data);
+                                    var obj = {};
+                                    var sortData = [];
+                                    timeData.forEach(t1 => {
+
+                                        let exist = data.tKwhlist.some(t2 => t1 == t2.time);
+                                        console.log(exist);
+                                        if (!exist) {
+                                            sortData.push({
+                                                time: t1,
+                                                kwh: 0
+                                            });
+                                        }
+
+                                    });
+                                    // console.log(sortData)       
+                                    data.tKwhlist.forEach(function (item) {
+                                        sortData.push(item)
+                                    })
+                                    console.log(sortData)
+                                    dataItem = sortData.sort(compare('time'));
+                                    obj.monitorName = data.monitorName;
+                                    obj.list = dataItem;
+                                    vm.reportDataDay.push(obj);
+                                })
+                                console.log(vm.reportDataDay)
+
+
+                                // for (var i = 1; i < allData.length; i++) {
+                                //     allData[i].list =  allData[i].tKwhlist;
+                                // }
+                                // vm.reportDataDay = allData;               
+                            } else {
+
+                            }
+                        })
+                            .catch(function (err) {
+                                console.log(err);
+                            });
+
+                    } else {
+                        vm.$message.warning('请选择企业')
+                    }
+
+
+                },
+                downExport() {
+                    // 数据处理
+                    console.log(vm.reportDataDay);
+                    
+                    // var monitor = [];
+                    // var allData = [];
+                    // for (var i = 0; i < vm.reportDataDay.length; i++) {
+                    //     monitor.push(vm.reportDataDay[i].monitorName);
+                    //     console.log(monitor);
+
+                    //     for (var k = 0; k < vm.reportDataDay.length - 1 - i; k++) {
+                    //         for (var j = 0; j < vm.reportDataDay[i].list.length; j++) {
+                    //             var downData = [];
+                    //             if (vm.reportDataDay[k].list[j].time == vm.reportDataDay[k + 1].list[j].time) {
+                    //                 downData.push(vm.reportDataDay[k].list[j].time, vm.reportDataDay[k].list[j].kwh, vm.reportDataDay[k + 1].list[j].kwh);
+                    //                 console.log(downData);
+                    //                 allData.push(downData)
+                    //             }
+
+                    //         }
+                    //         allData.push(monitor)
+                    //     }
+                    // }
+                    // console.log(allData)
+                    // var all = JSON.stringify(allData)
+                    // location = BASEURL + 'environmental_intelligent_monitoring/tkwhhour/exportExcel?'
+                    //     + all
+
+
+
                 }
+
             },
             created() {
                 this.energyTreeInit();

@@ -12,7 +12,7 @@
     <link rel="stylesheet" href="./../../../layuiadmin/plugin/element.css">
     <style>
         .layui-inline {
-            margin-left: 20px;
+            margin: 0 0 10px 20px;
         }
     </style>
 </head>
@@ -28,45 +28,78 @@
                 </div>
             </div>
             <div class="firmRight">
-                <span>企业名称：</span>
+                <span>名称：</span>
                 <span v-text="enterpriseName"></span>
                 <div class="layui-inline layui-form">
 
                     <div class="layui-input-inline" style="width: 100px;">
-                        <select name="timeSelect" lay-filter="timeSelect">
+                        <el-select v-model="timeType" @change="timeSelect" placeholder="请选择">
+                            <el-option v-for="item in timeOptions" :key="item.value" :label="item.label" :value="item.value">
+                            </el-option>
+                        </el-select>
+                        <!-- <select name="timeSelect" lay-filter="timeSelect">
                             <option value="">选择类别</option>
                             <option value="year">年</option>
                             <option value="month">月</option>
                             <option value="date">日</option>
-                        </select>
+                        </select> -->
                     </div>
                     <!-- 日期 -->
                     <div class="layui-input-inline" v-show="timeShow == 1">
-                        <input type="text" class="layui-input" id="startDate" placeholder="请输入开始日期">
+                        <el-date-picker v-model="startDate" value-format="yyyy-MM-dd" type="date" placeholder="选择日期">
+                        </el-date-picker>
+                        <!-- <input type="text" class="layui-input" id="startDate" placeholder="请输入开始日期"> -->
                     </div>
                     <span v-show="timeShow == 1">至</span>
                     <div class="layui-input-inline" v-show="timeShow == 1">
-                        <input type="text" class="layui-input" id="endDate" placeholder="请输入结束日期">
+                        <el-date-picker v-model="endDate" value-format="yyyy-MM-dd" type="date" placeholder="选择日期">
+                        </el-date-picker>
+                        <!-- <input type="text" class="layui-input" id="endDate" placeholder="请输入结束日期"> -->
                     </div>
                     <!-- 年份 -->
                     <div class="layui-input-inline" v-show="timeShow == 2">
-                        <input type="text" class="layui-input" id="startYearDate" placeholder="请输入开始年份">
+                        <el-date-picker v-model="startYearDate" value-format="yyyy" type="year" placeholder="选择年">
+                        </el-date-picker>
+                        <!-- <input type="text" class="layui-input" id="startYearDate" placeholder="请输入开始年份"> -->
                     </div>
                     <span v-show="timeShow == 2">至</span>
                     <div class="layui-input-inline" v-show="timeShow == 2">
-                        <input type="text" class="layui-input" id="endYearDate" placeholder="请输入结束年份">
+                        <el-date-picker v-model="endYearDate" value-format="yyyy" type="year" placeholder="选择年">
+                        </el-date-picker>
+                        <!-- :picker-options="pickerOptions" -->
+                        <!-- <input type="text" class="layui-input" id="endYearDate" placeholder="请输入结束年份"> -->
                     </div>
                     <!-- 年月 -->
                     <div class="layui-input-inline" v-show="timeShow == 3">
-                        <input type="text" class="layui-input" id="startMonthDate" placeholder="请输入开始月份">
+                        <el-date-picker v-model="startMonthDate" value-format="yyyy-MM" type="month" placeholder="选择月">
+                        </el-date-picker>
+                        <!-- <input type="text" class="layui-input" id="startMonthDate" placeholder="请输入开始月份"> -->
                     </div>
                     <span v-show="timeShow == 3">至</span>
                     <div class="layui-input-inline" v-show="timeShow == 3">
-                        <input type="text" class="layui-input" id="endMonthDate" placeholder="请输入结束月份">
+                        <el-date-picker v-model="endMonthDate" value-format="yyyy-MM" type="month" placeholder="选择月">
+                        </el-date-picker>
+                        <!-- <input type="text" class="layui-input" id="endMonthDate" placeholder="请输入结束月份"> -->
                     </div>
-                    <button class="layui-btn layuiadmin-btn-list layui-bg-orange layui-icon  layui-icon-link">导出</button>
+                    <button class="layui-btn layuiadmin-btn-list layui-bg-orange layui-icon  layui-icon-link" @click="enterpriseDownload">导出</button>
                 </div>
-                <table id="LAY-app-content-list" lay-filter="LAY-app-content-list"></table>
+                <el-table :data="tableData" stripe style="width: 100%">
+                    <el-table-column prop="enterpriseName" label="企业名" width="100">
+                    </el-table-column>
+                    <el-table-column prop="epEleSum" label="用电总计" width="120">
+                    </el-table-column>
+                    <!-- <el-table-column prop="address" label="生活用电总计" width="120">
+                    </el-table-column> -->
+                    <el-table-column prop="produceEle" label="生产用电总计" width="120">
+                    </el-table-column>
+                    <el-table-column prop="conPullEle" label="治污用电总计" width="120">
+                    </el-table-column>
+                    <el-table-column prop="proConPullElePro" label="产污/治污(用电比%)" width="160">
+                    </el-table-column>
+                    <el-table-column prop="conPullAllElePro" label="治污/全厂(电量比%)" width="160">
+                    </el-table-column>
+                </el-table>
+                <!-- <table id="LAY-app-content-list" lay-filter="LAY-app-content-list"></table> -->
 
             </div>
         </div>
@@ -98,91 +131,89 @@
             });
 
             // 年份
-            laydate.render({
-                elem: '#startYearDate',
-                type: 'year'
-            });
-            laydate.render({
-                elem: '#endYearDate',
-                type: 'year'
-            });
-            // 年月
-            laydate.render({
-                elem: '#startMonthDate',
-                type: 'month'
-            });
-            laydate.render({
-                elem: '#endMonthDate',
-                type: 'month'
-            });
+            // laydate.render({
+            //     elem: '#startYearDate',
+            //     type: 'year'
+            // });
+            // laydate.render({
+            //     elem: '#endYearDate',
+            //     type: 'year'
+            // });
+            // // 年月
+            // laydate.render({
+            //     elem: '#startMonthDate',
+            //     type: 'month'
+            // });
+            // laydate.render({
+            //     elem: '#endMonthDate',
+            //     type: 'month'
+            // });
 
-            table.render({
-                elem: '#LAY-app-content-list',
-                height: 555 //容器高度
-                ,
-                url: layui.setter.BASEURL + '/environmental_intelligent_monitoring/tbasenterprise/list' //数据接口
-                ,
-                page: true,
-                parseData: function (res) { // 数据重新处理为layUI的数据格式
-                    var msg = {
-                        "code": res.code, //解析接口状态
-                        "msg": res.msg, //解析提示文本
-                        "count": res.page.totalCount, //解析数据长度
-                        "data": res.page.list //解析数据列表
-                    };
-                    return msg;
-                },
-                cols: [
-                    [{
-                        title: '企业名称',
-                        field: 'name',
-                        minWidth: 100
-                    }, {
-                        title: '用电总计',
-                        field: 'trustCode',
-                        minWidth: 100,
-                        width: 200
-                    }, {
-                        title: '生活用电总计',
-                        field: 'address',
-                        minWidth: 100,
-                        width: 200
-                    }, {
-                        title: '生产用电总计',
-                        field: 'tradeName',
-                        minWidth: 100
-                    }, {
-                        title: '治污用电总计',
-                        field: 'createDate',
-                        minWidth: 100
-                    }, {
-                        title: '产污/治污（用电比%）',
-                        field: 'createDate',
-                        minWidth: 100
-                    }, {
-                        title: '产污/全厂（用电比%）',
-                        field: 'createDate',
-                        minWidth: 100
-                    }
-                    ]
-                ] //设置表头
-                ,
-                limit: 10,
-                limits: [10, 15, 20, 25, 30]
-            });
+            // table.render({
+            //     elem: '#LAY-app-content-list',
+            //     height: 555, //容器高度
+            //     url: layui.setter.BASEURL + '/environmental_intelligent_monitoring/tbasenterprise/list', //数据接口
+            //     page: true,
+            //     parseData: function (res) { // 数据重新处理为layUI的数据格式
+            //         var msg = {
+            //             "code": res.code, //解析接口状态
+            //             "msg": res.msg, //解析提示文本
+            //             "count": res.page.totalCount, //解析数据长度
+            //             "data": res.page.list //解析数据列表
+            //         };
+            //         return msg;
+            //     },
+            //     cols: [
+            //         [{
+            //             title: '企业名称',
+            //             field: 'name',
+            //             minWidth: 100
+            //         }, {
+            //             title: '用电总计',
+            //             field: 'trustCode',
+            //             minWidth: 100,
+            //             width: 200
+            //         }, {
+            //             title: '生活用电总计',
+            //             field: 'address',
+            //             minWidth: 100,
+            //             width: 200
+            //         }, {
+            //             title: '生产用电总计',
+            //             field: 'tradeName',
+            //             minWidth: 100
+            //         }, {
+            //             title: '治污用电总计',
+            //             field: 'createDate',
+            //             minWidth: 100
+            //         }, {
+            //             title: '产污/治污（用电比%）',
+            //             field: 'createDate',
+            //             minWidth: 100
+            //         }, {
+            //             title: '产污/全厂（用电比%）',
+            //             field: 'createDate',
+            //             minWidth: 100
+            //         }
+            //         ]
+            //     ] //设置表头
+            //     ,
+            //     limit: 10,
+            //     limits: [10, 15, 20, 25, 30]
+            // });
 
             // 监听select事件
-            form.on('select(timeSelect)', function (data) {
-                // console.log(data)
-                if (data.value == 'year') {
-                    vm.timeShow = 2;
+            // form.on('select(timeSelect)', function (data) {
+            //     // console.log(data)
+            //     if (data.value == 'year') {
+            //         vm.timeShow = 2;
 
-                } else if (data.value == 'month') {
-                    vm.timeShow = 3;
-                } else {
-                    vm.timeShow = 1;
-                }
-            })
+            //     } else if (data.value == 'month') {
+            //         vm.timeShow = 3;
+            //     } else {
+            //         vm.timeShow = 1;
+            //     }
+            // })
         })
 
         var vm = new Vue({
@@ -195,9 +226,55 @@
                 timeShow: 1,
                 enterpriseData: [],
                 loading: false,
-                enterpriseName: ""
+                enterpriseName: "",
+                enterpriseId: "",
+                organizeId: "",
+                // 时间选择
+                timeType: "",
+                timeOptions: [{
+                    label: '日',
+                    value: 'date'
+
+                }, {
+                    label: '月',
+                    value: 'month'
+
+                }, {
+                    label: '年',
+                    value: 'year'
+
+                }],
+                startDate: "",
+                endDate: "",
+                startYearDate: "",
+                endYearDate: "",
+                startMonthDate: "",
+                endMonthDate: "",
+                tableData: [],
+                flag: ""
+                // pickerOptions: {
+                //     disabledDate(time) {
+                //         console.log(time)
+                //         console.log(time.getTime())
+                //         console.log(Date.now())
+                //         return time.getTime() > Date.now() + new Date().getFullYear();
+                //         // 
+                //     }
+                // },
             },
             methods: {
+
+                timeSelect(val) {
+                    // console.log(val)
+                    if (val == 'year') {
+                        vm.timeShow = 2;
+                    } else if (val == 'month') {
+                        vm.timeShow = 3;
+                    } else {
+                        vm.timeShow = 1;
+                    }
+
+                },
                 energyTreeInit() {
                     this.loading = true;
                     axios({
@@ -228,11 +305,136 @@
                     });
                 },
                 handleNodeClick(data, node) {
-                    // console.log(data)
+                    this.enterpriseName = data.title;
+                    console.log(data)
                     if (data.type == "t_bas_enterprise") {
-                        this.enterpriseName = data.title;
+                        this.enterpriseId = data.id;
+                        this.organizeId = 0;
+                    } else if (data.type == "t_bas_organize") {
+                        this.organizeId = data.id;
+                        this.enterpriseId = 0;
+                    }
+                    if (vm.timeShow == 1) {
+                        if (this.startDate == "" || this.endDate == "") {
+                            vm.$message.warning('请输入开始日期与结束日期');
+                        } else {
+                            this.enterpriseInit();
+                        }
+
+                    } else if (vm.timeShow = 2) {
+                        if (this.startYearDate == "" || this.endYearDate == "") {
+                            vm.$message.warning('请输入开始日期与结束日期');
+                        } else {
+                            this.enterpriseInit();
+                        }
+                    } else {
+                        if (this.startMonthDate == "" || this.endMonthDate == "") {
+                            vm.$message.warning('请输入开始日期与结束日期');
+                        } else {
+                            this.enterpriseInit();
+                        }
                     }
 
+                },
+                // 企业用电量汇总表
+                enterpriseInit() {
+                    var type, startTime, endTime;
+                    if (this.timeType == 'year') {
+                        type = 'year';
+                        startTime = this.startYearDate;
+                        endTime = this.endYearDate;
+                    } else if (this.timeType == 'month') {
+                        type = 'month';
+                        startTime = this.startMonthDate;
+                        endTime = this.endMonthDate;
+                    } else {
+                        type = 'daily';
+                        startTime = this.startDate;
+                        endTime = this.endDate;
+                    }
+                    var data = {};
+                    if (this.enterpriseId == 0) {
+                        data.organizeId = this.organizeId;
+                        data.actStartTime = startTime;
+                        data.actEndTime = endTime;
+                        data.flag = type;
+                    } else {
+                        data.enterpriseId = this.enterpriseId;
+                        data.actStartTime = startTime;
+                        data.actEndTime = endTime;
+                        data.flag = type;
+
+                    }
+                    console.log(data)
+                    axios({
+                        method: "post",
+                        url: BASEURL + 'environmental_intelligent_monitoring/tdevicehistory/queryEnergyStatistics',
+                        // params: {
+                        //     organizeId: this.organizeId,
+                        //     enterpriseId: this.enterpriseId,
+                        //     actStartTime: this.startDate,
+                        //     actEndTime: this.endDate,
+                        //     flag: type
+                        // }
+                        params: data
+                    }).then(function (res) {
+                        if (res.data.code == 0) {
+                            var elecityData = res.data.data;
+                            // for (var i = 0; i < elecityData.length; i++) {
+                            //     if (elecityData[i].enterpriseName == undefined) {
+                            //         elecityData[i].enterpriseName = '总计';
+                            //     }
+                            // }
+                            vm.tableData = elecityData;
+                            console.log(vm.tableData);
+                            vm.flag = "";
+
+                        } else if (res.data.code == 203) {
+                            vm.$message.warning('暂无数据');
+                            vm.flag = 'noData';
+                        }
+                    })
+                        .catch(function (err) {
+                            console.log(err);
+                        });
+                },
+                // excel表导出
+                enterpriseDownload() {
+                    if (vm.flag == 'noData') {
+                        vm.$message.warning('无数据导出');
+                    } else {
+                        var type, startTime, endTime;
+                        if (this.timeType == 'year') {
+                            type = 'year';
+                            startTime = this.startYearDate;
+                            endTime = this.endYearDate;
+                        } else if (this.timeType == 'month') {
+                            type = 'month';
+                            startTime = this.startMonthDate;
+                            endTime = this.endMonthDate;
+                        } else {
+                            type = 'daily';
+                            startTime = this.startDate;
+                            endTime = this.endDate;
+                        }
+                        console.log(this.enterpriseName)
+                        if (this.enterpriseId == 0) {
+                            location = BASEURL + 'environmental_intelligent_monitoring/tdevicehistory/exportExcel?'
+                                + "organizeId=" + this.organizeId + "&"
+                                + "actStartTime=" + startTime + "&"
+                                + "actEndTime=" + endTime + "&"
+                                + "flag=" + type + "&"
+                                + "title=" + this.enterpriseName
+                        } else {
+                            location = BASEURL + 'environmental_intelligent_monitoring/tdevicehistory/exportExcel?'
+                                + "enterpriseId=" + this.enterpriseId + "&"
+                                + "actStartTime=" + startTime + "&"
+                                + "actEndTime=" + endTime + "&"
+                                + "flag=" + type + "&"
+                                + "title=" + this.enterpriseName
+                        }
+
+                    }
                 }
             },
             created() {

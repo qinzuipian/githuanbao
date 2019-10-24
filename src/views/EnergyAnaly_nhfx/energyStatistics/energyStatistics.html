@@ -203,12 +203,11 @@
                             <div class="layui-col-md9">
                                 <div class="layui-row grid-demo grid-demo-bg1">
                                     <!-- <span>功率曲线</span> -->
-                                    <div style="width:100%; height: 500px;" id="energyId"></div>
+                                    <div style="width:100%; height: 460px;" id="energyId"></div>
                                 </div>
                             </div>
                         </div>
                         <!-- 电能环比 -->
-
                         <div class="layui-row rowline">
                             <div class="layui-col-md5">
                                 <h3>电能环比</h3>
@@ -279,8 +278,8 @@
                                                     <span class="layui-badge layui-bg-green layuiadmin-badge">月</span>
                                                 </div>
                                                 <div class="layui-card-header" v-else-if="item.flag == 'p'">
-                                                    上月用电
-                                                    <span class="layui-badge layui-bg-green layuiadmin-badge">月</span>
+                                                    趋势
+                                                    <span class="layui-badge layui-bg-green layuiadmin-badge">势</span>
                                                 </div>
                                                 <div class="layui-card-body layuiadmin-card-list" v-if="item.flag == 'n'">
                                                     <p class="layuiadmin-big-font">{{item.kwh}}
@@ -385,16 +384,19 @@
                                 </div>
                             </div>
                         </div>
-
                         <!-- 用电排比 -->
-
                         <div class="layui-row rowline">
                             <div class="layui-col-md12">
                                 <!-- <span>用电排名</span> -->
                                 <div class="layui-row grid-demo">
-                                    <div class="shopLine" v-show="energyShow==1">
+                                    <div class="shopLine">
                                         <button type="button" :class="{'active': shopShow == 1}" @click="shopClick(1)" class="layui-btn layui-btn-warm">车间</button>
                                         <button type="button" :class="{'active': shopShow == 2}" @click="shopClick(2)" class="layui-btn layui-btn-warm">回路</button>
+                                    </div>
+                                    <div class="shopThree">
+                                        <button type="button" :class="{'active': threeShow == 1}" @click="threeClick(1)" class="layui-btn layui-btn-sm layui-btn-warm">日</button>
+                                        <button type="button" :class="{'active': threeShow == 2}" @click="threeClick(2)" class="layui-btn layui-btn-sm layui-btn-warm">月</button>
+                                        <button type="button" :class="{'active': threeShow == 3}" @click="threeClick(3)" class="layui-btn layui-btn-sm layui-btn-warm">年</button>
                                     </div>
                                     <div style="width: 100%; height: 400px;" id="electricNum"></div>
 
@@ -402,8 +404,6 @@
                             </div>
 
                         </div>
-
-
                     </div>
                 </div>
             </div>
@@ -413,9 +413,8 @@
     <script src="./../../../layuiadmin/layui/layui.js"></script>
     <script src="./../../../layuiadmin/plugin/vue.js"></script>
     <script src="./../../../layuiadmin/plugin/element.js"></script>
-    <script src="./../../../layuiadmin/plugin/echarts.min.js"></script>
     <script src="./../../../layuiadmin/plugin/axios.js"></script>
-
+    <script src="./../../../layuiadmin/plugin/echarts.min.js"></script>
     <script src="./../../../layuiadmin/js/baseUrlConfig.js"></script>
     <script>
         layui.config({
@@ -428,74 +427,6 @@
                 $ = layui.jquery,
                 echarts = layui.echarts,
                 laydate = layui.laydate;
-
-            // 功率曲线
-
-            // 电能趋势
-
-
-            // 用电排名
-            var electricNum = echarts.init($("#electricNum")[0]);
-            var labelRight = {
-                normal: {
-                    position: 'right'
-                }
-            };
-            var option = {
-                title: {
-                    left: 'center',
-                    text: '用电排名',
-                },
-                tooltip: {
-                    trigger: 'axis',
-                    axisPointer: {            // 坐标轴指示器，坐标轴触发有效
-                        type: 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
-                    }
-                },
-                grid: {
-                    top: 80,
-                    bottom: 30
-                },
-                xAxis: {
-                    type: 'value',
-                    position: 'top',
-                    splitLine: { lineStyle: { type: 'dashed' } },
-                },
-                yAxis: {
-                    type: 'category',
-                    axisLine: { show: false },
-                    axisLabel: { show: true },
-                    axisTick: { show: false },
-                    splitLine: { show: false },
-                    data: ['ten', 'nine', 'eight', 'seven']
-                },
-                series: [
-                    {
-                        name: '生活费',
-                        type: 'bar',
-                        stack: '总量',
-                        label: {
-                            normal: {
-                                show: true,
-                                formatter: '{b}'
-                            }
-                        },
-                        barWidth: 40,
-                        data: [
-                            {
-                                value: 0.2
-                            }, {
-                                value: 0.5
-                            }, {
-                                value: 8
-                            }, {
-                                value: 6.2
-                            },
-                        ]
-                    }
-                ]
-            };
-            electricNum.setOption(option);
 
         });
 
@@ -544,10 +475,47 @@
                     nowp: 0
                 },
                 // 用电量环比
-                EleRadius: [],
-                industryId: "",
-                atraId: ""
+                EleRadius: [
+                    [{
+                        flag: 'n',
+                        kwh: 0
+                    }, {
+                        flag: 'y',
+                        kwh: 0,
 
+                    }, {
+                        flag: 'p',
+                        pt: 0,
+                        pb: 0
+                    }], [{
+                        flag: 'n',
+                        kwh: 0
+                    }, {
+                        flag: 'y',
+                        kwh: 0,
+
+                    }, {
+                        flag: 'p',
+                        pt: 0,
+                        pb: 0
+                    }], [{
+                        flag: 'n',
+                        kwh: 0
+                    }, {
+                        flag: 'y',
+                        kwh: 0,
+
+                    }, {
+                        flag: 'p',
+                        pt: 0,
+                        pb: 0
+                    }]
+
+                ],
+                industryId: "",
+                atraId: "",
+                // 用电排名
+                threeShow: 1
 
             },
             methods: {
@@ -587,13 +555,16 @@
                     if (this.electricShow == 1) {
                         // 电能趋势按日统计
                         this.electricityDay(-1, -1, -1, vm.atraId);
+                        this.electricitySortDay(-1, -1, vm.atraId)
 
                     } else if (this.electricShow == 2) {
                         // 电能趋势按月统计
                         this.electricityMonth(-1, -1, -1, vm.atraId);
+                        this.electricitySortMonth(-1, -1, vm.atraId)
 
                     } else {
                         this.electricityYear(-1, -1, -1, vm.atraId)
+                        this.electricitySortYear(-1, -1, vm.atraId)
                     }
 
 
@@ -602,6 +573,7 @@
                 energyShowClick(val) {
                     if (val == 1) {
                         this.energyShow = 1;
+
                         if (this.electricShow == 1) {
                             // 电能趋势按日统计
                             this.electricityDay(-1, 0);
@@ -611,8 +583,21 @@
                             this.electricityMonth(-1, 0);
 
                         } else {
-                            this.electricityYear(-1,0);
+                            this.electricityYear(-1, 0);
                         }
+
+                        // 用电排名
+                        if (this.threeShow == 1) {
+                            // 用电量排名按日统计
+                            this.electricitySortDay(-1)
+
+                        } else if (this.threeShow == 2) {
+                            this.electricitySortMonth(-1)
+
+                        } else {
+                            this.electricitySortYear(-1)
+                        }
+
 
 
                     } else if (val == 2) {
@@ -620,12 +605,23 @@
                         if (this.electricShow == 1) {
                             // 电能趋势按日统计
                             this.electricityDay(0, 0, 0);
-
                         } else if (this.electricShow == 2) {
                             // 电能趋势按月统计
                             this.electricityMonth(0, 0, 0);
                         } else {
-                            this.electricityYear(0,0,0)
+                            this.electricityYear(0, 0, 0)
+                        }
+
+                        // 用电排名
+                        if (this.threeShow == 1) {
+                            // 用电量排名按日统计
+                            this.electricitySortDay(0, 0)
+
+                        } else if (this.threeShow == 2) {
+                            this.electricitySortMonth(0, 0)
+
+                        } else {
+                            this.electricitySortYear(0, 0)
                         }
 
 
@@ -634,16 +630,28 @@
                         if (this.electricShow == 1) {
                             // 电能趋势按日统计
                             this.electricityDay(-1, -1, -1, 0);
-
                         } else if (this.electricShow == 2) {
                             // 电能趋势按月统计
                             this.electricityMonth(-1, -1, -1, 0);
                         } else {
-                            this.electricityYear(-1,-1,-1,0)
+                            this.electricityYear(-1, -1, -1, 0)
+                        }
+
+                        // 用电排名
+                        if (this.threeShow == 1) {
+                            // 用电量排名按日统计
+                            this.electricitySortDay(-1, -1, -1)
+
+                        } else if (this.threeShow == 2) {
+                            this.electricitySortMonth(-1, -1, -1)
+
+                        } else {
+                            this.electricitySortYear(-1, -1, -1)
                         }
 
 
                     }
+                    vm.EleRadius = [];
                 },
                 electriClick(value) {
                     console.log(value);
@@ -678,10 +686,6 @@
                         } else {
                             this.electricityYear(vm.enterpriseId, vm.monitorId)
                         }
-
-
-
-
                     } else if (this.energyShow == 2) {
                         if (this.electricShow == 1) {
                             // 电能趋势按日统计
@@ -689,13 +693,9 @@
 
                         } else if (this.electricShow == 2) {
                             this.electricityMonth(0, 0, vm.industryId);
-                        } else{
+                        } else {
                             this.electricityYear(0, 0, vm.industryId)
                         }
-
-
-
-
                     } else {
                         if (this.electricShow == 1) {
                             // 电能趋势按日统计
@@ -703,12 +703,9 @@
 
                         } else if (this.electricShow == 2) {
                             this.electricityMonth(-1, -1, -1, vm.atraId);
-                        }else {
+                        } else {
                             this.electricityYear(-1, -1, -1, vm.atraId)
                         }
-
-
-
                     }
 
 
@@ -718,6 +715,52 @@
                         this.shopShow = 1;
                     } else {
                         this.shopShow = 2;
+                    }
+                    if (this.energyShow == 1) {
+                        if (this.threeShow == 1) {
+                            this.electricitySortDay(vm.enterpriseId)
+                        } else if (this.threeShow == 2) {
+                            this.electricitySortMonth(vm.enterpriseId)
+                        } else {
+                            this.electricitySortYear(vm.enterpriseId)
+
+                        }
+
+                    } else if (this.energyShow == 2) {
+                        if (this.threeShow == 1) {
+                            this.electricitySortDay(0, vm.industryId)
+                        } else if (this.threeShow == 2) {
+                            this.electricitySortMonth(0, vm.industryId)
+                        } else {
+                            this.electricitySortYear(0, vm.industryId)
+
+                        }
+
+                    } else {
+                        if (this.threeShow == 1) {
+                            this.electricitySortDay(-1, -1, vm.atraId)
+                        } else if (this.threeShow == 2) {
+                            this.electricitySortMonth(-1, -1, vm.atraId)
+                        } else {
+                            this.electricitySortYear(-1, -1, vm.atraId)
+                        }
+
+                    }
+
+
+                },
+                // 用电排名
+                threeClick(val) {
+                    if (val == 1) {
+                        this.threeShow = 1;
+                        this.electricitySortDay(vm.enterpriseId)
+                    } else if (val == 2) {
+                        this.threeShow = 2;
+                        this.electricitySortMonth(vm.enterpriseId)
+                    } else {
+                        this.threeShow = 3;
+                        this.electricitySortYear(vm.enterpriseId)
+
                     }
 
                 },
@@ -750,13 +793,19 @@
                     if (this.electricShow == 1) {
                         // 电能趋势按日统计
                         this.electricityDay(vm.enterpriseId, vm.monitorId);
+                        // 用电排名按天统计
+                        this.electricitySortDay(vm.enterpriseId);
                     } else if (this.electricShow == 2) {
                         // 电能趋势按月统计
                         this.electricityMonth(vm.enterpriseId, vm.monitorId);
+                        // 用电排名按月统计
+                        this.electricitySortMonth(vm.enterpriseId);
 
                     } else {
-                        this.electricityYear(vm.enterpriseId, vm.monitorId)
+                        this.electricityYear(vm.enterpriseId, vm.monitorId);
+                        this.electricitySortYear(vm.enterpriseId, vm.monitorId);
                     }
+
 
 
                 }
@@ -888,62 +937,87 @@
                     myCharts.showLoading({
                         text: "加载中"
                     });
-
-
                     axios({
                         method: "post",
                         url: BASEURL + 'environmental_intelligent_monitoring/tdevicehistory/queryPowerCurve',
                         params: {
-                            // enterpriseId:89
+                            // enterpriseId:89,
                             enterpriseId: enterpriseId,
                             monitorId: monitorId
+                            // monitorId: ""
                         }
                     }).then(function (res) {
                         if (res.data.code == 0) {
-                            var powerData = res.data.data;
+                            // 数据处理
+                            var nowList = res.data.data.nowlist;
+                            var yesList = res.data.data.yslist;
+                            var now = [];
+                            var yes = [];
+                            var nowdata = [];
+                            var yesdata = [];
+                            for (var i = 0; i < nowList.length; i++) {
+                                now.push(nowList[i].nowday);
+                            }
+                            for (var i = 0; i < yesList.length; i++) {
+                                yes.push(yesList[i].ysday);
+                            }
+                            console.log(now, yes);
+                            let RemoveSame = [...new Set([...now, ...yes])]
+                            RemoveSame.sort(function (a, b) {
+                                return a > b ? 1 : -1
+                            });
+                            console.log(RemoveSame);
+                            RemoveSame.forEach(t1 => {
+                                let exist = nowList.some(t2 => t1 == t2.nowday);
+                                let Ysexist = yesList.some(t2 => t1 == t2.ysday);
+                                console.log(exist);
+                                if (!exist) {
+                                    nowdata.push({
+                                        nowp: 0,
+                                        nowday: t1
+                                    });
+                                }
+                                if (!Ysexist) {
+                                    yesdata.push({
+                                        ysp: 0,
+                                        ysday: t1
 
-                            var todayData = [],
-                                todayTime = [],
-                                yestodayData = [],
-                                yestodayTime = []
-                            for (var i = 0; i < powerData.yslist.length; i++) {
-                                console.log(powerData.yslist[i]);
-                                yestodayData.push(
-                                    powerData.yslist[i].ysp
-                                )
-                                yestodayTime.push(
-                                    powerData.yslist[i].ysday,
-                                )
+                                    });
+                                }
+                            });
+
+                            nowList.forEach(function (item) {
+                                console.log(item)
+                                nowdata.push(item)
+                            })
+                            yesList.forEach(function (item) {
+                                console.log(item)
+                                yesdata.push(item)
+                            })
+                            console.log(nowdata, yesdata);
+                            var a = nowdata.sort(function (a, b) {
+                                return a.nowday > b.nowday ? 1 : -1
+                            });
+                            var b = yesdata.sort(function (a, b) {
+                                return a.ysday > b.ysday ? 1 : -1
+                            });
+                            // console.log(a, b);
+                            var Anow = [];
+                            var Byes = [];
+                            for (var i = 0; i < a.length; i++) {
+                                Anow.push(a[i].nowp)
                             }
-                            for (var i = 0; i < powerData.nowlist.length; i++) {
-                                console.log(powerData.nowlist[i]);
-                                todayData.push(
-                                    powerData.nowlist[i].nowp
-                                )
-                                todayTime.push(
-                                    powerData.nowlist[i].nowday,
-                                )
+                            for (var i = 0; i < b.length; i++) {
+                                Byes.push(b[i].ysp);
+
                             }
-                            /*  console.log(yestodayData)
-                             console.log(yestodayTime) */
+
                             var option = {
-                                noDataLoadingOption: {
-                                    text: '暂无数据',//没有数据时显示的文字
-                                    effect: 'bubble',//loading效果，此为气泡，还有'spin' | 'bar' | 'ring' | 'whirling' | 'dynamicLine' | 'bubble'
-                                    effectOption: {
-                                        backgroundColor: "rgba(50,50,50,0)",//loading的背景
-                                    },
-                                    textStyle: {//没有数据时显示的文字的样式
-                                        fontSize: 32,
-                                        fontWeight: 'bold'
-                                    }
-                                },
                                 title: {
                                     text: '功率曲线'
                                 },
                                 tooltip: {
-                                    trigger: 'axis',
-                                    formatter: '{b0}<br />{a0}:{c0}<br />{a1}:{c1}',
+                                    trigger: 'axis'
                                 },
                                 legend: {
                                     data: ['今日', '昨日']
@@ -962,29 +1036,32 @@
                                 xAxis: {
                                     type: 'category',
                                     boundaryGap: false,
-                                    data: todayTime
+                                    data: RemoveSame
                                 },
                                 yAxis: {
-                                    type: 'value',
-                                    name: '单位(kW)',
+                                    type: 'value'
                                 },
                                 series: [
+                                    {
+                                        name: '今日',
+                                        type: 'line',
+                                        stack: '总量',
+                                        data: Anow
+                                    },
                                     {
                                         name: '昨日',
                                         type: 'line',
                                         stack: '总量',
-                                        data: yestodayData
-                                    }, {
-                                        name: '今日',
-                                        type: 'line',
-                                        stack: '总量',
-                                        data: todayData
+                                        data: Byes
                                     }
                                 ]
                             };
+
                             myCharts.hideLoading();
-                            // myCharts.resize();
-                            myCharts.setOption(option);
+                            myCharts.setOption(option, true)
+
+
+                            //   myCharts.resize();
 
 
                         } else {
@@ -1032,7 +1109,7 @@
                                     yestoday = data.daily[i].kwh === undefined ? 0 : data.daily[i].kwh;
                                 }
                                 powerbot = today - yestoday < 0 ? '-' + (today - yestoday) : '+' + (today - yestoday);
-                                powertop = isNaN(powerbot / today) === true ? 0 : (powerbot / today).toFixed(2);
+                                powertop = isNaN(powerbot / today) === true ? 0 : ((powerbot / today).toFixed(2)) * 100;
                                 console.log(powerbot, powertop, today, yestoday)
 
                             }
@@ -1058,7 +1135,7 @@
                                     yestoday = data.month[i].kwh === undefined ? 0 : data.month[i].kwh;
                                 }
                                 powerbot = today - yestoday < 0 ? '-' + (today - yestoday) : '+' + (today - yestoday);
-                                powertop = isNaN(powerbot / today) === true ? 0 : (powerbot / today).toFixed(2);
+                                powertop = isNaN(powerbot / today) === true ? 0 : ((powerbot / today).toFixed(2)) * 100;
                                 if (powertop === NaN) {
                                     powertop = 0;
                                 }
@@ -1087,7 +1164,7 @@
                                     yestoday = data.year[i].kwh === undefined ? 0 : data.year[i].kwh;
                                 }
                                 powerbot = today - yestoday < 0 ? '-' + (today - yestoday) : '+' + (today - yestoday);
-                                powertop = isNaN(powerbot / today) === true ? 0 : (powerbot / today).toFixed(2);
+                                powertop = isNaN(powerbot / today) === true ? 0 : ((powerbot / today).toFixed(2)) * 100;
                                 if (powertop === NaN) {
                                     powertop = 0;
                                 }
@@ -1530,6 +1607,327 @@
                             console.log(err);
                         });
                 }
+                // 用电排名按日统计
+                , electricitySortDay(enterpriseId, industryId, atraId) {
+                    var type;
+                    if (this.shopShow == 1) {
+                        type = "shop";
+
+                    } else {
+                        type = "";
+                    }
+                    var data = {};
+                    if (enterpriseId == 0) {
+                        data.tradeId = industryId;
+                        data.flag = type;
+                        data.type = 'industry';
+                    } else if (enterpriseId == -1 && industryId == -1) {
+                        data.organizeId = atraId;
+                        data.flag = type;
+                        data.type = 'region';
+                    } else {
+                        data.enterpriseId = enterpriseId;
+                        data.flag = type;
+                        data.type = 'company';
+                    }
+                    var myCharts = echarts.init(document.getElementById('electricNum'));
+                    myCharts.showLoading({
+                        text: "加载中"
+                    });
+                    axios({
+                        method: "post",
+                        url: BASEURL + 'environmental_intelligent_monitoring/tkwhdaily/queryEleRankingByDay',
+                        // params: {
+                        //     enterpriseId: enterpriseId,
+                        //     flag: 'shop',
+                        //     type: 'company'
+                        // }
+                        params: data
+                    }).then(function (res) {
+                        if (res.data.code == 0) {
+                            var sortData = res.data.data;
+                            var shopData = [];
+                            var kwhData = [];
+                            for (var i = 0; i < sortData.length; i++) {
+                                shopData.push(sortData[i].name);
+                                kwhData.push(sortData[i].kwh);
+                            }
+
+
+                            var labelRight = {
+                                normal: {
+                                    position: 'right'
+                                }
+                            };
+                            var option = {
+                                title: {
+                                    left: 'center',
+                                    text: '用电排名',
+                                },
+                                tooltip: {
+                                    trigger: 'axis',
+                                    axisPointer: {            // 坐标轴指示器，坐标轴触发有效
+                                        type: 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
+                                    }
+                                },
+                                grid: {
+                                    top: 80,
+                                    bottom: 30
+                                },
+                                xAxis: {
+                                    type: 'value',
+                                    position: 'top',
+                                    splitLine: { lineStyle: { type: 'dashed' } },
+                                },
+                                yAxis: {
+                                    type: 'category',
+                                    axisLine: { show: false },
+                                    axisLabel: { show: true },
+                                    axisTick: { show: false },
+                                    splitLine: { show: false },
+                                    data: shopData
+                                },
+                                series: [
+                                    {
+                                        name: '用电量',
+                                        type: 'bar',
+                                        stack: '总量',
+                                        label: {
+                                            normal: {
+                                                show: true,
+                                                formatter: '{b}'
+                                            }
+                                        },
+                                        barWidth: 40,
+                                        data: kwhData
+                                    }
+                                ]
+                            };
+                            myCharts.hideLoading();
+                            myCharts.setOption(option);
+                        }
+                    })
+                        .catch(function (err) {
+                            console.log(err);
+                        });
+
+                }
+                // 用电排名按月统计
+                , electricitySortMonth(enterpriseId, industryId, atraId) {
+                    var type;
+                    if (this.shopShow == 1) {
+                        type = "shop";
+
+                    } else {
+                        type = "";
+                    }
+                    var data = {};
+                    if (enterpriseId == 0) {
+                        data.tradeId = industryId;
+                        data.flag = type;
+                        data.type = 'industry';
+                    } else if (enterpriseId == -1 && industryId == -1) {
+                        data.organizeId = atraId;
+                        data.flag = type;
+                        data.type = 'region';
+                    } else {
+                        data.enterpriseId = enterpriseId;
+                        data.flag = type;
+                        data.type = 'company';
+                    }
+                    var myCharts = echarts.init(document.getElementById('electricNum'));
+                    myCharts.showLoading({
+                        text: "加载中"
+                    });
+                    axios({
+                        method: "post",
+                        url: BASEURL + 'environmental_intelligent_monitoring/tkwhmonthly/queryEleRankingByMonth',
+                        // params: {
+                        //     enterpriseId: enterpriseId,
+                        //     flag: 'shop',
+                        //     type: 'company'
+                        // }
+                        params: data
+                    }).then(function (res) {
+                        if (res.data.code == 0) {
+                            var sortData = res.data.data;
+                            var shopData = [];
+                            var kwhData = [];
+                            for (var i = 0; i < sortData.length; i++) {
+                                shopData.push(sortData[i].name);
+                                kwhData.push(sortData[i].kwh);
+                            }
+
+
+                            var labelRight = {
+                                normal: {
+                                    position: 'right'
+                                }
+                            };
+                            var option = {
+                                title: {
+                                    left: 'center',
+                                    text: '用电排名',
+                                },
+                                tooltip: {
+                                    trigger: 'axis',
+                                    axisPointer: {            // 坐标轴指示器，坐标轴触发有效
+                                        type: 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
+                                    }
+                                },
+                                grid: {
+                                    top: 80,
+                                    bottom: 30
+                                },
+                                xAxis: {
+                                    type: 'value',
+                                    position: 'top',
+                                    splitLine: { lineStyle: { type: 'dashed' } },
+                                },
+                                yAxis: {
+                                    type: 'category',
+                                    axisLine: { show: false },
+                                    axisLabel: { show: true },
+                                    axisTick: { show: false },
+                                    splitLine: { show: false },
+                                    data: shopData
+                                },
+                                series: [
+                                    {
+                                        name: '用电量',
+                                        type: 'bar',
+                                        stack: '总量',
+                                        label: {
+                                            normal: {
+                                                show: true,
+                                                formatter: '{b}'
+                                            }
+                                        },
+                                        barWidth: 40,
+                                        data: kwhData
+                                    }
+                                ]
+                            };
+                            myCharts.hideLoading();
+                            myCharts.setOption(option);
+
+                        } else {
+
+                        }
+                    })
+                        .catch(function (err) {
+                            console.log(err);
+                        });
+
+                }
+                // 用电排名按年统计
+                , electricitySortYear(enterpriseId, industryId, atraId) {
+                    var type;
+                    if (this.shopShow == 1) {
+                        type = "shop";
+
+                    } else {
+                        type = "";
+                    }
+                    var data = {};
+                    if (enterpriseId == 0) {
+                        data.tradeId = industryId;
+                        data.flag = type;
+                        data.type = 'industry';
+                    } else if (enterpriseId == -1 && industryId == -1) {
+                        data.organizeId = atraId;
+                        data.flag = type;
+                        data.type = 'region';
+                    } else {
+                        data.enterpriseId = enterpriseId;
+                        data.flag = type;
+                        data.type = 'company';
+                    }
+                    var myCharts = echarts.init(document.getElementById('electricNum'));
+                    myCharts.showLoading({
+                        text: "加载中"
+                    });
+                    axios({
+                        method: "post",
+                        url: BASEURL + 'environmental_intelligent_monitoring/tkwhyear/queryEleRankingByYear',
+                        // params: {
+                        //     enterpriseId: enterpriseId,
+                        //     flag: 'shop',
+                        //     type: 'company'
+                        // }
+                        params: data
+                    }).then(function (res) {
+                        if (res.data.code == 0) {
+                            var sortData = res.data.data;
+                            var shopData = [];
+                            var kwhData = [];
+                            for (var i = 0; i < sortData.length; i++) {
+                                shopData.push(sortData[i].name);
+                                kwhData.push(sortData[i].kwh);
+                            }
+
+
+                            var labelRight = {
+                                normal: {
+                                    position: 'right'
+                                }
+                            };
+                            var option = {
+                                title: {
+                                    left: 'center',
+                                    text: '用电排名',
+                                },
+                                tooltip: {
+                                    trigger: 'axis',
+                                    axisPointer: {            // 坐标轴指示器，坐标轴触发有效
+                                        type: 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
+                                    }
+                                },
+                                grid: {
+                                    top: 80,
+                                    bottom: 30
+                                },
+                                xAxis: {
+                                    type: 'value',
+                                    position: 'top',
+                                    splitLine: { lineStyle: { type: 'dashed' } },
+                                },
+                                yAxis: {
+                                    type: 'category',
+                                    axisLine: { show: false },
+                                    axisLabel: { show: true },
+                                    axisTick: { show: false },
+                                    splitLine: { show: false },
+                                    data: shopData
+                                },
+                                series: [
+                                    {
+                                        name: '用电量',
+                                        type: 'bar',
+                                        stack: '总量',
+                                        label: {
+                                            normal: {
+                                                show: true,
+                                                formatter: '{b}'
+                                            }
+                                        },
+                                        barWidth: 40,
+                                        data: kwhData
+                                    }
+                                ]
+                            };
+                            myCharts.hideLoading();
+                            myCharts.setOption(option);
+
+                        } else {
+
+                        }
+                    })
+                        .catch(function (err) {
+                            console.log(err);
+                        });
+
+                }
                 // 行业列表选择框填充
                 , industryInit() {
                     axios({
@@ -1554,12 +1952,16 @@
                     if (this.electricShow == 1) {
                         // 电能趋势按日统计
                         this.electricityDay(0, 0, vm.industryId);
+                        // 用电排名按天统计
+                        this.electricitySortDay(0, vm.industryId)
 
                     } else if (this.electricShow == 2) {
                         this.electricityMonth(0, 0, vm.industryId);
+                        this.electricitySortMonth(0, vm.industryId);
 
                     } else {
-                        this.electricityYear(0, 0, vm.industryId)
+                        this.electricityYear(0, 0, vm.industryId);
+                        this.electricitySortYear(0, vm.industryId);
                     }
 
 
@@ -1570,6 +1972,8 @@
                 this.powerEcharts(-1, 0);
                 // 电能趋势按日统计
                 this.electricityDay(-1, 0);
+                // 用电排名按日统计
+                // this.electricitySortDay(-2)
             }
             , created() {
                 this.treeDataInit();
