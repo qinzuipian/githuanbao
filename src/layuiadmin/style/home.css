@@ -1,35 +1,50 @@
-
-.message-box{
+.message-box {
 	display: flex;
+	background: #009999;
+	color: white;
 }
-.message-box p:nth-child(1){
+
+.message-box p:nth-child(1) {
 	width: 100px;
 	text-align: left;
 	padding-left: 20px;
 	font-size: 15px;
-	border-right: 1px solid #23c6c8;
+	border-right: 1px solid white;
 	height: 50px;
 	line-height: 50px;
 }
-.message-box p:nth-child(2){
+
+.message-box p:nth-child(2) {
 	text-align: left;
 	padding-left: 20px;
 	font-size: 14px;
 	height: 50px;
 	line-height: 50px;
 }
+
 .content {
 	background: #fff;
 	padding-bottom: 50px;
 	width: 100%;
 }
-.left,.center,.right{
-	padding-right: 10px;
-	padding-left: 10px;
+
+.left,
+.center,
+.right {
+	/* padding-right: 10px; */
+	/* padding-left: 10px; */
 	padding-top: 15px;
 }
 
-.left-row,.ceter-row{
+.left-row,
+.ceter-row {
 	height: 40px;
 	line-height: 40px;
+}
+.el-card__header{
+	background: #009999;
+	color: white;
+}
+.layui-table td, .layui-table th, .layui-table-col-set, .layui-table-fixed-r, .layui-table-grid-down, .layui-table-header, .layui-table-page, .layui-table-tips-main, .layui-table-tool, .layui-table-total, .layui-table-view, .layui-table[lay-skin=line], .layui-table[lay-skin=row]{
+	border: none;!important
 }

@@ -11,7 +11,13 @@
 		<link rel="stylesheet" href="../../layuiadmin/style/admin.css" media="all">
 		<link rel="stylesheet" type="text/css" href="../../layuiadmin/style/common.css" />
 		<link rel="stylesheet" type="text/css" href="../../layuiadmin/style/home.css" />
-
+		<style type="text/css">
+			.chart {
+				width: 95%;
+				height: 231px;
+				background: white;
+			}
+		</style>
 	</head>
 	<body>
 		<div id="vm">
@@ -21,10 +27,10 @@
 			</div>
 
 			<div class="layui-container content">
-				<div class="layui-row">
+				<div class="layui-row layui-col-space10">
 					<div class="left layui-col-sm4 layui-col-xs12">
 						<el-card class="box-card">
-							<div slot="header" class="clearfix">
+							<div slot="header">
 								<span>概况</span>
 							</div>
 							<div class=" ">
@@ -50,93 +56,57 @@
 						</el-card>
 					</div>
 					<div class="center layui-col-sm4 layui-col-xs6">
-						<el-card class="box-card">
-							<div slot="header" class="clearfix">
+						<el-card class="box-card" style="height: 256px;">
+							<div slot="header">
 								<span>治污设施情况</span>
 							</div>
 							<div class="layui-row layui-col-space10">
-								<div class="layui-col-sm6 layui-col-xs12">
-									<el-card class="box-card">
-										<div slot="header" class="clearfix">
-											<span>今日</span>
-										</div>
-										<div class="layui-row center-row">
-											<p class="layui-col-sm6">企业数量</p>
-											<p class="layui-col-sm-6">
-												<span>13</span>家
-											</p>
-										</div>
-										<div class="layui-row left-row">
-											<p class="layui-col-sm6">产污监测点</p>
-											<span><span>15</span>个</span>
-										</div>
-									</el-card>
-								</div>
-								<div class="layui-col-sm6 layui-col-xs12">
-									<el-card class="box-card">
-										<div slot="header" class="clearfix">
-											<span>昨日</span>
-										</div>
-										<div class="layui-row center-row">
-											<p class="layui-col-sm6">企业数量</p>
-											<p class="layui-col-sm-6">
-												<span>13</span>家
-											</p>
-										</div>
-										<div class="layui-row left-row">
-											<p class="layui-col-sm6">产污监测点</p>
-											<span><span>15</span>个</span>
-										</div>
-									</el-card>
+								<div class="layui-col-sm12 layui-col-xs12">
+									<span>0</span><span> 家企业已申报异常</span>
 								</div>
 							</div>
-
-							<!-- <div>
-								<div class="layui-row center-row">
-									<p class="layui-col-sm6">企业数量</p>
-									<p class="layui-col-sm-6">
-										<span>13</span>家
-									</p>
-								</div>
-								<div class="layui-row left-row">
-									<p class="layui-col-sm6">产污监测点</p>
-									<span><span>15</span>个</span>
-								</div>
-								<div class="layui-row left-row">
-									<p class="layui-col-sm6">治污监测点</p>
-									<span><span>10</span>个</span>
-								</div>
-								<div class="layui-row left-row">
-									<p class="layui-col-sm6">监测点数量</p>
-									<span><span>25</span>个</span>
-								</div>
-							</div> -->
+							<div class="layui-col-sm12 layui-col-xs12 ceter-row" style="margin-top: 20px;">
+								<p class="layui-col-sm7 layui-col-xs7">异常企业:</p>
+								<p class="layui-col-sm5 layui-col-xs5"><span>0</span> 家</p>
+							</div>
+							<div class="layui-col-sm12 layui-col-xs12 ceter-row">
+								<p class="layui-col-sm7 layui-col-xs7">涉及污染设施:</p>
+								<p class="layui-col-sm5 layui-col-xs5"><span>0</span> 处</p>
+							</div>
 						</el-card>
 					</div>
 					<div class="right layui-col-sm4 layui-col-xs6">
-						<el-card class="box-card">
-							<div slot="header" class="clearfix">
+						<el-card class="box-card" style="height: 256px;">
+							<div slot="header">
 								<span>限产/停产执行情况</span>
 							</div>
-							<div class=" ">
-								<div class="layui-row left-row">
-									<p class="layui-col-sm6">企业数量</p>
-									<p class="layui-col-sm-6">
-										<span>13</span>家
-									</p>
-								</div>
-								<div class="layui-row left-row">
-									<p class="layui-col-sm6">产污监测点</p>
-									<span><span>15</span>个</span>
-								</div>
-								<div class="layui-row left-row">
-									<p class="layui-col-sm6">治污监测点</p>
-									<span><span>10</span>个</span>
-								</div>
-								<div class="layui-row left-row">
-									<p class="layui-col-sm6">监测点数量</p>
-									<span><span>25</span>个</span>
-								</div>
+							<div class="layui-col-sm12 layui-col-xs12 ceter-row">
+								<p class="layui-col-sm7 layui-col-xs7">限产/停产企业:</p>
+								<p class="layui-col-sm5 layui-col-xs5"><span>0</span><span>/</span><span>3</span> 家</p>
+							</div>
+							<div class="layui-col-sm12 layui-col-xs12 ceter-row">
+								<p class="layui-col-sm7 layui-col-xs7">未执行企业:</p>
+								<p class="layui-col-sm5 layui-col-xs5"><span>1</span> 家</p>
+							</div>
+						</el-card>
+					</div>
+				</div>
+				<div class="layui-row layui-col-space10" style="margin-top: 10px;">
+					<div class="layui-col-sm6 layui-col-xs12">
+						<el-card class="box-card">
+							<div slot="header" class="clearfix">
+								<span>停限产列表</span>
+							</div>
+							<table id="demo" lay-filter="test"></table>
+						</el-card>
+					</div>
+					<div class="layui-col-sm6 layui-col-xs12">
+						<el-card class="box-card">
+							<div slot="header" class="clearfix">
+								<span>AQI/错峰生产对比</span>
+							</div>
+							<div class="chart">
+								<div id="zchart" style="width: 100%;height: 200px;"></div>
 							</div>
 						</el-card>
 					</div>
@@ -151,16 +121,78 @@
 		<script src="../../layuiadmin/plugin/element.js"></script>
 		<script src="../../layuiadmin/plugin/axios.js"></script>
 		<script>
+
+			var vm = new Vue({
+				el: "#vm",
+				data: {
+					table_data: [{
+							name: '上海雨东服装公司',
+							hangye: '其他',
+							ting: '100%'
+						},
+						{
+							name: '上海雨东服装公司',
+							hangye: '其他',
+							ting: '100%'
+						},
+						{
+							name: '上海雨东服装公司',
+							hangye: '其他',
+							ting: '100%'
+						}
+					]
+				}
+			})
+
 			layui.config({
 				base: '../../layuiadmin/' //静态资源所在路径
 			}).extend({
 				index: 'lib/index' //主入口模块
-			}).use(['index']);
-
-			var vm = new Vue({
-				el: "#vm",
-				data: {}
-			})
+			}).use(['index', 'table', "jquery", "echarts"], function() {
+				var table = layui.table;
+				var echart = layui.echarts;
+				
+				var zcharts = echart.init(document.getElementById("zchart"));
+				table.render({
+					elem: '#demo',
+					height: 212
+						// ,url: '/demo/table/user/' //数据接口
+						,
+					page: false //开启分页
+						,
+					data: vm.table_data,
+					cols: [
+						[ //表头
+							{
+								field: 'name',
+								title: '企业名称',
+								width: '60%'
+							}, {
+								field: 'hangye',
+								title: '行业'
+							}, {
+								field: 'ting',
+								title: '停限产'
+							}
+						]
+					]
+				});
+				
+				options = {
+					xAxis: {
+						type: 'category',
+						data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+					},
+					yAxis: {
+						type: 'value'
+					},
+					series: [{
+						data: [820, 932, 901, 934, 1290, 1330, 1320],
+						type: 'line'
+					}]
+				};
+				zcharts.setOption(options);
+			});
 		</script>
 	</body>
 </html>

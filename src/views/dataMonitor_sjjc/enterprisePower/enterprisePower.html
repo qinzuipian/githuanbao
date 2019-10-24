@@ -94,6 +94,23 @@
 									}
 									vm.enterpriseTreeList = res.data.data;
 									vm.enterpriseTreeListCopy = res.data.data;
+									layui.tree.render({
+										elem: '#enterpriseList', //默认是点击节点可进行收缩
+										data: vm.enterpriseTreeList,
+										id: 'enterpriseList',
+										click: function(obj) {
+											// console.log(obj.data); //得到当前点击的节点数据
+											if (obj.data.type == "t_device_monitor") { // 如果当前点击的是监测点
+												vm.monitorId = obj.data.id;
+												layui.table.reload('testData', {
+													url: layui.setter.BASEURL + '/environmental_intelligent_monitoring/tdevicehistory/list',
+													where: {
+														monitorId: vm.monitorId
+													}
+												});
+											}
+										}
+									});
 								} else {
 									vm.$notify.error({
 										title: '错误',
@@ -109,52 +126,52 @@
 				},
 				watch: {
 					searchTxt: function() {
-						
-						var searchTxtCopy = this.searchTxt.replace(/\s*/g,""); // 去掉空格
-						
-						if(searchTxtCopy == ''){
-							this.enterpriseTreeList = this.enterpriseTreeListCopy;
-							layui.tree.reload('enterpriseList', {
-								elem: '#enterpriseList', //默认是点击节点可进行收缩
-								data: vm.enterpriseTreeList,
-							});
-						}else{
-							this.enterpriseTreeList = [];
-							console.log(this.enterpriseTreeListCopy);
-							for(var i = 0; i < this.enterpriseTreeListCopy.length; i++){
-								if(this.enterpriseTreeListCopy[i].type == "t_bas_enterprise"){ // 判断是否为企业
-									if(this.enterpriseTreeListCopy[i].title.indexOf(searchTxtCopy) != -1){
-										this.enterpriseTreeList.push(this.enterpriseTreeListCopy[i])
-									}
-								}else{
-									if(this.enterpriseTreeListCopy[i].children.length > 0){
-										for(var j = 0; j < this.enterpriseTreeListCopy[i].children.length; j++){
-											if(this.enterpriseTreeListCopy[i].children[j].type == "t_bas_enterprise"){ // 判断是否为企业
-												if(this.enterpriseTreeListCopy[i].children[j].title.indexOf(searchTxtCopy) != -1){
-													if(this.enterpriseTreeList.length > 0){ // 判断最上级是否为空
-														if(this.enterpriseTreeList[i].id == this.enterpriseTreeList[i-1].id){ // 这一次的上级和上一次的上级是同一个
-															this.enterpriseTreeList[i-1].children.push(this.enterpriseTreeListCopy[i].children[j])
-														}else{
-															// var obj
-														}
-													}
-												}
-											}
-										}
-									}
-								}
-							}
-							
-							
-							layui.tree.reload('enterpriseList', {
-								elem: '#enterpriseList', //默认是点击节点可进行收缩
-								data: vm.enterpriseTreeList,
-							});
-						}
-						
+						console.log(vm.enterpriseTreeList);
+						// var searchTxtCopy = this.searchTxt.replace(/\s*/g,""); // 去掉空格
+
+						// if(searchTxtCopy == ''){
+						// 	this.enterpriseTreeList = this.enterpriseTreeListCopy;
+						// 	layui.tree.reload('enterpriseList', {
+						// 		elem: '#enterpriseList', //默认是点击节点可进行收缩
+						// 		data: vm.enterpriseTreeList,
+						// 	});
+						// }else{
+						// 	this.enterpriseTreeList = [];
+						// 	console.log(this.enterpriseTreeListCopy);
+						// 	for(var i = 0; i < this.enterpriseTreeListCopy.length; i++){
+						// 		if(this.enterpriseTreeListCopy[i].type == "t_bas_enterprise"){ // 判断是否为企业
+						// 			if(this.enterpriseTreeListCopy[i].title.indexOf(searchTxtCopy) != -1){
+						// 				this.enterpriseTreeList.push(this.enterpriseTreeListCopy[i])
+						// 			}
+						// 		}else{
+						// 			if(this.enterpriseTreeListCopy[i].children.length > 0){
+						// 				for(var j = 0; j < this.enterpriseTreeListCopy[i].children.length; j++){
+						// 					if(this.enterpriseTreeListCopy[i].children[j].type == "t_bas_enterprise"){ // 判断是否为企业
+						// 						if(this.enterpriseTreeListCopy[i].children[j].title.indexOf(searchTxtCopy) != -1){
+						// 							if(this.enterpriseTreeList.length > 0){ // 判断最上级是否为空
+						// 								if(this.enterpriseTreeList[i].id == this.enterpriseTreeList[i-1].id){ // 这一次的上级和上一次的上级是同一个
+						// 									this.enterpriseTreeList[i-1].children.push(this.enterpriseTreeListCopy[i].children[j])
+						// 								}else{
+						// 									// var obj
+						// 								}
+						// 							}
+						// 						}
+						// 					}
+						// 				}
+						// 			}
+						// 		}
+						// 	}
+
+
+						// 	layui.tree.reload('enterpriseList', {
+						// 		elem: '#enterpriseList', //默认是点击节点可进行收缩
+						// 		data: vm.enterpriseTreeList,
+						// 	});
+						// }
+
 					},
 					testTime: function() {
-						if(layui.setter){
+						if (layui.setter) {
 							layui.table.reload('testData', {
 								url: layui.setter.BASEURL + '/environmental_intelligent_monitoring/tdevicehistory/list',
 								where: {
@@ -174,24 +191,7 @@
 				var tree = layui.tree;
 				var data = vm.enterpriseTreeList;
 				var table = layui.table;
-
-				tree.render({
-					elem: '#enterpriseList', //默认是点击节点可进行收缩
-					data: data,
-					id: 'enterpriseList',
-					click: function(obj) {
-						// console.log(obj.data); //得到当前点击的节点数据
-						if (obj.data.type == "t_device_monitor") { // 如果当前点击的是监测点
-							vm.monitorId = obj.data.id;
-							table.reload('testData', {
-								url: layui.setter.BASEURL + '/environmental_intelligent_monitoring/tdevicehistory/list',
-								where: {
-									monitorId: vm.monitorId
-								}
-							});
-						}
-					}
-				});
+				
 				table.render({
 					elem: '#testData',
 					height: 650,
