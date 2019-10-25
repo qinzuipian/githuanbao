@@ -344,6 +344,7 @@
                         url: BASEURL + 'environmental_intelligent_monitoring/tkwhhour/query',
                         params: {
                             dailyTime: this.timeDate,
+                            // enterpriseId: 89
                             enterpriseId: enterpriseId
                         }
                     }).then(function (res) {
@@ -632,7 +633,27 @@
                 downExport() {
                     // 数据处理
                     console.log(vm.reportDataDay);
-                    
+                    var titleData = [];
+                    titleData.push('监测点名称');
+                    for (var i = 0; i < vm.reportDataDay.length; i++) {
+                        for (j = 0; j < vm.reportDataDay[i].list.length; j++) {
+                            titleData.push(vm.reportDataDay[i].list[j].time);
+                        }
+                        break;
+                    }
+
+                    var data = [];
+                    for (var i = 0; i < vm.reportDataDay.length; i++) {
+                        var obj = {};
+                        obj.monitorName = vm.reportDataDay[i].monitorName;
+                        for (j = 0; j < vm.reportDataDay[i].list.length; j++) {
+                            obj[kwh+j] = vm.reportDataDay[i].list[j].kwh;
+                            // obj.kwh = vm.reportDataDay[i].list[j].kwh;
+                            data.push(obj)
+                        }
+                    }
+                    console.log(titleData)
+                    console.log(data)
                     // var monitor = [];
                     // var allData = [];
                     // for (var i = 0; i < vm.reportDataDay.length; i++) {
@@ -660,7 +681,6 @@
 
 
                 }
-
             },
             created() {
                 this.energyTreeInit();
