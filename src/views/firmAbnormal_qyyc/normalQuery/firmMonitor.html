@@ -22,9 +22,31 @@
 			background: white;
 		}
 
-		/* .layui-table-page .layui-laypage{
-			margin: -10px;
-		} */
+		.flex {
+			display: flex;
+
+
+			line-height: 30px;
+			border: 1px solid black;
+		}
+
+		.flex p {
+			width: 33.3%;
+			text-align: center;
+		}
+
+		.flex_data {
+			display: flex;
+			line-height: 30px;
+			border-right: 1px solid black;
+			border-left: 1px solid black;
+			border-bottom: 1px solid black;
+		}
+
+		.flex_data p {
+			width: 33.3%;
+			text-align: center;
+		}
 	</style>
 
 	<body>
@@ -39,9 +61,9 @@
 				<div class="firmRight">
 					<div v-show="threeRun!=3">
 						<div class="title">
-							<button type="button" :class="{'active': firmShow == 1}" v-show="threeRun==2||threeRun==1" @click="firmShow = 1">实时数据</button>
-							<button type="button" :class="{'active': firmShow == 2}" v-show="threeRun==1" @click="firmShow = 2">运行工况</button>
-							<button type="button" :class="{'active': firmShow == 3}" v-show="threeRun==1" @click="firmShow = 3">污处异常</button>
+							<button type="button" v-show="threeRun==2||threeRun==1" @click="firmShow = 1">实时数据</button>
+							<!-- <button type="button" :class="{'active': firmShow == 2}" v-show="threeRun==1" @click="firmShow = 2">运行工况</button> -->
+							<!-- <button type="button" :class="{'active': firmShow == 3}" v-show="threeRun==1" @click="firmShow = 3">污处异常</button> -->
 
 						</div>
 						<div class="rightContent">
@@ -63,16 +85,19 @@
 												</div>
 												<div class="layui-card-body layuiadmin-card-list">
 													<p>
-														<span>A相电压</span>
-														<span></span>
+														<span>A相电压 :</span>
+														<span v-text="ua"></span>
+														<span>V</span>
 													</p>
 													<p>
-														<span>B相电压</span>
-														<span></span>
+														<span>B相电压 :</span>
+														<span v-text="ub"></span>
+														<span>V</span>
 													</p>
 													<p>
-														<span>C相电压</span>
-														<span></span>
+														<span>C相电压 :</span>
+														<span v-text="uc"></span>
+														<span>V</span>
 													</p>
 												</div>
 											</div>
@@ -86,15 +111,17 @@
 												<div class="layui-card-body layuiadmin-card-list">
 													<p>
 														<span>有功功率</span>
-														<span></span>
+														<span v-text="p"></span>
+														<span>kW</span>
 													</p>
 													<p>
 														<span>无功功率</span>
-														<span></span>
+														<span v-text="q"></span>
+														<span>kVar</span>
 													</p>
 													<p>
 														<span>功率因数</span>
-														<span></span>
+														<span v-text="the"></span>
 													</p>
 												</div>
 											</div>
@@ -109,15 +136,18 @@
 
 													<p>
 														<span>A相电流：</span>
-														<span></span>
+														<span v-text="ia"></span>
+														<span>A</span>
 													</p>
 													<p>
 														<span>B相电流</span>
-														<span></span>
+														<span v-text="ib"></span>
+														<span>A</span>
 													</p>
 													<p>
 														<span>C相电流</span>
-														<span></span>
+														<span v-text="ic"></span>
+														<span>A</span>
 													</p>
 												</div>
 											</div>
@@ -126,6 +156,21 @@
 									</div>
 									<div id="indexchart" style="width: 100%;height: 300px;"></div>
 									<div id="indexcharts" style="width: 100%;height: 300px;"></div>
+
+
+									<div class="flex">
+										<p>名称</p>
+										<p>负荷启停阈值(KW)</p>
+										<p>电量启停阈值(KW~h)</p>
+									</div>
+									<div class="flex_data">
+										<p v-text="monitorName"></p>
+										<p v-text="electricLimit"></p>
+										<p v-text="powerLimit"></p>
+									</div>
+
+
+
 								</div>
 								<!-- 第二层折线图展示 -->
 								<!-- 第三层柱状图展示 -->
@@ -206,7 +251,7 @@
 								<div id="dataEcharts" style="width: 100%;height: 300px;"></div>
 								<div id="dataBottom" style="width: 100%;height: 300px;"></div>
 							</div>
-							<div v-show="firmEchartShow ==2">
+							<div v-show="firmEchartShow == 2">
 								<table id="LAY-app-echarted-list" lay-filter="LAY-app-echarted-list"></table>
 							</div>
 							<div v-show="firmEchartShow == 3">
@@ -256,12 +301,14 @@
 							vm.threeRun = 3
 						} else if (obj.data.type == "t_device_monitor") {
 							vm.monitorId = obj.data.id
-							vm.list_zmotime =[]
+							vm.list_zmotime = []//将所有的统计图都全部置空
 							vm.list_zmovalue = []
 							vm.list_zzmovalue = []
 							vm.list_zzmovalue = []
 							vm.threeRun = 1
-							monitorchart();
+							getdetail();//获取电流功率电压的数据
+							monitorchart(); //获取监测点的的图表
+							getmonitordetail(); // 获取监测点信息的小表格
 						}
 					}
 				});
@@ -323,7 +370,6 @@
 					elem: '#timeDate',
 					done: function(value) {
 						vm.timeDate = value;
-						// console.log(vm.timeDate);
 					}
 				});
 
@@ -332,7 +378,6 @@
 					elem: '#indexTime',
 					done: function(value) {
 						vm.indextime = value;
-						// console.log(vm.indextime);
 					}
 				});
 
@@ -342,6 +387,7 @@
 				vm.companyId = window.localStorage.getItem("enterpriseId");
 				window.localStorage.removeItem("enterpriseId") //获取上个页面传来的企业id
 				console.log(vm.companyId);
+
 
 
 
@@ -663,10 +709,8 @@
 						method: "post",
 						url: BASEURL + 'environmental_intelligent_monitoring/tdevicehistory/queryPowerCurve',
 						params: {
-							enterpriseId: "89",
-							// vm.companyId,
-							actTime: "2019-10-21"
-							// vm.timeDate
+							enterpriseId: vm.companyId,
+							actTime:  vm.timeDate
 						}
 					}).then(function(res) {
 						myCharts.hideLoading();
@@ -791,7 +835,21 @@
 					list_zmotime: [],
 					list_zmovalue: [],
 					list_zzmotime: [],
-					list_zzmovalue: []
+					list_zzmovalue: [],
+					ua: 0,
+					ub: 0,
+					uc: 0,
+					ia: 0,
+					ib: 0,
+					ic: 0,
+					p: 0,
+					q: 0,
+					the: 0,
+					monitorName: "",
+					electricLimit: "",
+					powerLimit: ""
+
+
 
 				},
 				methods: {
@@ -846,8 +904,7 @@
 								method: "POST",
 								url: BASEURL + 'environmental_intelligent_monitoring/tbasenterprise/enterpriseDendrogramList',
 								params: {
-									enterpriseId: "90"
-									// localStorage.getItem("enterpriseId")
+									enterpriseId: localStorage.getItem("enterpriseId")
 								}
 							})
 							.then(function(res) {
@@ -940,7 +997,7 @@
 						method: "post",
 						url: BASEURL + 'environmental_intelligent_monitoring/tkwhhour/queryCycleEle',
 						params: {
-							enterpriseId:vm.companyId,
+							enterpriseId: vm.companyId,
 							actTime: vm.timeDate
 						}
 					}).then(function(res) {
@@ -1191,6 +1248,62 @@
 				}, 1000)
 			}
 
+			//获取电压功率电流
+			function getdetail() {
+				axios({
+						method: "post",
+						url: BASEURL + '/environmental_intelligent_monitoring/tdevicehistory/queryEnterMonitoringActTime',
+						params: {
+							monitorId: vm.monitorId
+						}
+					}).then(function(res) {
+						console.log(res.data.data);
+						if (res.data.code == 0) {
+							vm.ua = res.data.data.ua; //A相电压
+							vm.ub = res.data.data.ub;
+							vm.uc = res.data.data.uc;
+							vm.ia = res.data.data.ia;
+							vm.ib = res.data.data.ib;
+							vm.ic = res.data.data.ic;
+							vm.p = res.data.data.p;
+							vm.q = res.data.data.q;
+							vm.the = res.data.data.the;
+
+							// vm.address = res.data.page.list[0].province + res.data.page.list[0].city + res.data.page.list[0].area + res.data
+							// 	.page.list[0].address // 企业地址
+							// vm.tradeName = res.data.page.list[0].tradeName; //行业
+							// vm.productMonitorNum = res.data.page.list[0].productMonitorNum //产污监测点
+							// vm.treatMonitorNum = res.data.page.list[0].treatMonitorNum // 治污检测点
+							// vm.total = res.data.page.list[0].productMonitorNum + res.data.page.list[0].treatMonitorNum //检测点数
+							// vm.chargePerson = res.data.page.list[0].chargePerson //企业负责人
+							// vm.company = res.data.page.list[0].enterpriseName // 企业的名称
+						} else {
+
+						}
+					})
+					.catch(function() {
+
+					})
+			}
+			//获取单个监测点的信息
+			function getmonitordetail() {
+				axios({
+						method: "get",
+						url: BASEURL + 'environmental_intelligent_monitoring/tdevicemonitor/info/' + vm.monitorId
+					}).then(function(res) {
+						console.log(res.data.tDeviceMonitor);
+						if (res.data.code == 0) {
+							vm.monitorName = res.data.tDeviceMonitor.monitorName; //A相电压
+							vm.electricLimit = res.data.tDeviceMonitor.electricLimit;
+							vm.powerLimit = res.data.tDeviceMonitor.powerLimit;
+						} else {
+
+						}
+					})
+					.catch(function() {
+
+					})
+			}
 
 			window.onclick = function() {
 				inchart.resize();
