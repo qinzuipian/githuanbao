@@ -191,7 +191,8 @@
                                 <span class="red">*</span>
                             </label>
                             <div class="layui-input-inline">
-                                <input type="text" name="radarProport"  id="radarProport" lay-verify="required" class="layui-input" placeholder="雷达回波时间比例阀值" />
+                                <input type="text" name="radarProport" id="radarProport" lay-verify="required" class="layui-input" placeholder="雷达回波时间比例阀值"
+                                />
                             </div>
                         </div>
                         <!-- 流量计 -->
@@ -233,7 +234,8 @@
                                 <span class="red">*</span>
                             </label>
                             <div class="layui-input-inline">
-                                <input type="text" name="electricLimit" id="electricLimit" lay-verify="required" class="layui-input" placeholder="功率启停阀值(kW)" />
+                                <input type="text" name="electricLimit" id="electricLimit" lay-verify="required" class="layui-input" placeholder="功率启停阀值(kW)"
+                                />
                             </div>
 
                         </div>
@@ -290,7 +292,8 @@
                                 <span class="red">*</span>
                             </label>
                             <div class="layui-input-inline">
-                                <input type="text" name="electricTime" id="electricTime" lay-verify="required" class="layui-input" placeholder="功率门限时间(分钟)" />
+                                <input type="text" name="electricTime" id="electricTime" lay-verify="required" class="layui-input" placeholder="功率门限时间(分钟)"
+                                />
                             </div>
                         </div>
                         <div class="layui-inline" v-show="selectShow == 2">
@@ -606,6 +609,8 @@
 
 
             })
+
+
             // 监听select选择框
             form.on("select(collectType)", function (data) {
                 if (data.value == '用电') {
@@ -804,7 +809,117 @@
                         //    $('#ecPolluteType').text(Devicedata.ecPolluteType);
                         /*  $('#ecType').val(Devicedata.ecType);
                          $('#route').val(Devicedata.route); */
-
+                        if (Devicedata.collectType == '用电') {
+                            vm.selectShow = 1;
+                            $("#pt").attr("lay-verify", 'required');
+                            $("#ct").attr("lay-verify", 'required');
+                            $("#xAccelerat").attr("lay-verify", '');
+                            $("#radarProport").attr("lay-verify", '');
+                            $("#currentSpeed").attr("lay-verify", '');
+                            $("#temperature").attr("lay-verify", '');
+                            $("#yAccelerat").attr("lay-verify", '');
+                            $("#radarCount").attr("lay-verify", '');
+                            $("#flow").attr("lay-verify", '');
+                            $("#electricLimit").attr("lay-verify", 'required');
+                            $("#zAccelerat").attr("lay-verify", '');
+                            $("#electricTime").attr("lay-verify", 'required');
+                            $("#xFrequen").attr("lay-verify", '');
+                            $("#powerLimit").attr("lay-verify", 'required');
+                            $("#zFrequen").removeAttr("lay-verify");
+                            $("#powerTime").attr("lay-verify", 'required');
+                            $("#yFrequen").attr("lay-verify", '');
+                            $("#ratedPower").attr("lay-verify", 'required');
+                            $("#ratedU").attr("lay-verify", 'required');
+                            $("#ratedPower").attr("lay-verify", 'required');
+                        } else if (Devicedata.collectType == '流量计') {
+                            vm.selectShow = 4;
+                            $("#pt").attr("lay-verify", '');
+                            $("#ct").attr("lay-verify", '');
+                            $("#xAccelerat").attr("lay-verify", '');
+                            $("#radarProport").attr("lay-verify", '');
+                            $("#temperature").attr("lay-verify", '');
+                            $("#currentSpeed").attr("lay-verify", 'required');
+                            $("#yAccelerat").attr("lay-verify", '');
+                            $("#radarCount").attr("lay-verify", '');
+                            $("#flow").attr("lay-verify", 'required');
+                            $("#electricLimit").attr("lay-verify", '');
+                            $("#zAccelerat").attr("lay-verify", '');
+                            $("#electricTime").attr("lay-verify", '');
+                            $("#xFrequen").attr("lay-verify", '');
+                            $("#powerLimit").attr("lay-verify", '');
+                            $("#zFrequen").attr("lay-verify", '');
+                            $("#powerTime").attr("lay-verify", '');
+                            $("#yFrequen").attr("lay-verify", '');
+                            $("#ratedPower").attr("lay-verify", '');
+                            $("#ratedU").attr("lay-verify", '');
+                            $("#ratedPower").attr("lay-verify", '');
+                        } else if (Devicedata.collectType == '温度') {
+                            vm.selectShow = 5;
+                            $("#pt").attr("lay-verify", '');
+                            $("#ct").attr("lay-verify", '');
+                            $("#xAccelerat").attr("lay-verify", '');
+                            $("#radarProport").attr("lay-verify", '');
+                            $("#currentSpeed").attr("lay-verify", '');
+                            $("#temperature").attr("lay-verify", 'required');
+                            $("#yAccelerat").attr("lay-verify", '');
+                            $("#radarCount").attr("lay-verify", '');
+                            $("#flow").attr("lay-verify", '');
+                            $("#electricLimit").attr("lay-verify", '');
+                            $("#zAccelerat").attr("lay-verify", '');
+                            $("#electricTime").attr("lay-verify", '');
+                            $("#xFrequen").attr("lay-verify", '');
+                            $("#powerLimit").attr("lay-verify", '');
+                            $("#zFrequen").attr("lay-verify", '');
+                            $("#powerTime").attr("lay-verify", '');
+                            $("#yFrequen").attr("lay-verify", '');
+                            $("#ratedPower").attr("lay-verify", '');
+                            $("#ratedU").attr("lay-verify", '');
+                            $("#ratedPower").attr("lay-verify", '');
+                        } else if (Devicedata.collectType == '雷达设备') {
+                            vm.selectShow = 3;
+                            $("#pt").attr("lay-verify", '');
+                            $("#ct").attr("lay-verify", '');
+                            $("#xAccelerat").attr("lay-verify", '');
+                            $("#radarProport").attr("lay-verify", 'required');
+                            $("#currentSpeed").attr("lay-verify", '');
+                            $("#temperature").attr("lay-verify", '');
+                            $("#yAccelerat").attr("lay-verify", '');
+                            $("#radarCount").attr("lay-verify", 'required');
+                            $("#flow").attr("lay-verify", '');
+                            $("#electricLimit").attr("lay-verify", '');
+                            $("#zAccelerat").attr("lay-verify", '');
+                            $("#electricTime").attr("lay-verify", '');
+                            $("#xFrequen").attr("lay-verify", '');
+                            $("#powerLimit").attr("lay-verify", '');
+                            $("#zFrequen").attr("lay-verify", '');
+                            $("#powerTime").attr("lay-verify", '');
+                            $("#yFrequen").attr("lay-verify", '');
+                            $("#ratedPower").attr("lay-verify", '');
+                            $("#ratedU").attr("lay-verify", '');
+                            $("#ratedPower").attr("lay-verify", '');
+                        } else if (Devicedata.collectType == '振动量设备') {
+                            vm.selectShow = 2;
+                            $("#pt").attr("lay-verify", '');
+                            $("#ct").attr("lay-verify", '');
+                            $("#xAccelerat").attr("lay-verify", 'required');
+                            $("#radarProport").attr("lay-verify", '');
+                            $("#currentSpeed").attr("lay-verify", '');
+                            $("#temperature").attr("lay-verify", '');
+                            $("#yAccelerat").attr("lay-verify", 'required');
+                            $("#radarCount").attr("lay-verify", '');
+                            $("#flow").attr("lay-verify", '');
+                            $("#electricLimit").attr("lay-verify", '');
+                            $("#zAccelerat").attr("lay-verify", 'required');
+                            $("#electricTime").attr("lay-verify", '');
+                            $("#xFrequen").attr("lay-verify", 'required');
+                            $("#powerLimit").attr("lay-verify", '');
+                            $("#zFrequen").attr("lay-verify", 'required');
+                            $("#powerTime").attr("lay-verify", '');
+                            $("#yFrequen").attr("lay-verify", 'required');
+                            $("#ratedPower").attr("lay-verify", '');
+                            $("#ratedU").attr("lay-verify", '');
+                            $("#ratedPower").attr("lay-verify", '');
+                        }
                         $("#ecType").empty();
                         axios({
                             method: "post",
@@ -902,13 +1017,13 @@
                 }).then(function (res) {
                     if (res.data.code == 0) {
                         console.log(res)
-                        // layer.msg('编辑成功！', {
-                        //     time: 500
-                        // }, function () {
-                        //     window.parent.location.reload();
-                        //     parent.layer.close('iframe');
-                        // }
-                        // );
+                        layer.msg('编辑成功！', {
+                            time: 500
+                        }, function () {
+                            window.parent.location.reload();
+                            parent.layer.close('iframe');
+                        }
+                        );
                     } else {
                         vm.$notify.error({
                             title: '错误',

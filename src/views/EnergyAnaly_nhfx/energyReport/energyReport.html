@@ -89,17 +89,15 @@
                         </el-date-picker>
                         <!-- <input type="text" class="layui-input" id="monthDate" placeholder="请选择月"> -->
                     </div>
-                    <!-- <button class="layui-btn layuiadmin-btn-list layui-bg-orange layui-icon  layui-icon-link" @click="downExport">导出</button> -->
+                    <button class="layui-btn layuiadmin-btn-list layui-bg-orange layui-icon  layui-icon-link" @click="downExport">导出</button>
                 </div>
                 <div class="allTable">
                     <table class="tableList" v-show="reportDataDay.length!=0">
                         <tr>
-                            <th>监测点名称</th>
                             <th v-for="(item,index) in dataTime" v-text="item"></th>
                         </tr>
                         <tr v-for="(it,index) in reportDataDay">
-                            <td v-text="it.monitorName"></td>
-                            <td v-for="(item,index) in it.list" v-text="item.kwh"></td>
+                            <td v-for="(item,index) in it">{{item}}</td>
                         </tr>
                     </table>
                     <div v-show="reportDataDay.length==0">
@@ -240,17 +238,18 @@
                 // 时间
                 timeDate: "",
                 yearDate: "",
-                monthDate: ""
+                monthDate: "",
+                flag: ""
             },
             watch: {
                 timeDate(val) {
                     this.enpriseDay(this.enpriseId)
                 },
                 yearDate(val) {
-                    this.enpriseDay(this.enpriseId)
+                    this.enpriseYear(this.enpriseId)
                 },
                 monthDate(val) {
-                    this.enpriseDay(this.enpriseId)
+                    this.enpriseMonth(this.enpriseId)
                 }
             },
             methods: {
@@ -281,15 +280,9 @@
                         }
                     }).then(function (res) {
                         if (res.data.code == 0) {
-
-
                             vm.loading = false;
                             var data = res.data.data;
                             vm.energyData = data;
-
-
-
-
                         } else {
                             vm.loading = false;
                             vm.$notify.error({
@@ -337,6 +330,11 @@
                     }
 
                 },
+                // 获取月份的时间
+                getMonthDays(year, month) {
+                    var thisDate = new Date(year, month, 0); //当天数为0 js自动处理为上一月的最后一天
+                    return thisDate.getDate();
+                },
                 // 企业能耗统计报表按天统计
                 enpriseDay(enterpriseId) {
                     axios({
@@ -349,55 +347,80 @@
                         }
                     }).then(function (res) {
                         if (res.data.code == 0) {
-                            vm.reportDataDay = [];
+                            console.log(res.data.data)
                             var allData = res.data.data;
-                            var timeData = [];
-                            for (var i = 0; i < 24; i++) {
-                                if (i < 10) {
-                                    i = '0' + i;
-                                }
-                                timeData.push(i);
-                            }
-                            vm.dataTime = timeData;
-                            function compare(property) {
-                                return function (a, b) {
-                                    var value1 = a[property];
-                                    var value2 = b[property];
-                                    return value1 - value2;
-                                }
-                            }
-                            // console.log(timeData);
-                            var dataItem = [];
 
                             allData.forEach(function (data) {
                                 console.log(data);
-                                var obj = {};
-                                var sortData = [];
-                                timeData.forEach(t1 => {
-
-                                    let exist = data.tKwhlist.some(t2 => t1 == t2.time);
-                                    console.log(exist);
-                                    if (!exist) {
-                                        sortData.push({
-                                            time: t1,
-                                            kwh: 0
-                                        });
+                                var hourData = [];
+                                for (let key in data) {
+                                    if (key == 'monitorName') {
+                                        key = '监测点名称';
                                     }
+                                    hourData.push(key);
+                                }
+                                vm.dataTime = hourData;
+                                /*  var json = JSON.parse(JSON.stringify(data).replace(/monitorName/g,"监测点名称"));
+                                 hourData.push(json); */
+                            });
 
-                                });
-                                // console.log(sortData)       
-                                data.tKwhlist.forEach(function (item) {
-                                    sortData.push(item)
-                                })
-                                console.log(sortData)
-                                dataItem = sortData.sort(compare('time'));
-                                obj.monitorName = data.monitorName;
-                                obj.list = dataItem;
-                                vm.reportDataDay.push(obj);
-                            })
-                            console.log(vm.reportDataDay)
-                        }
-                        else {
+                            vm.reportDataDay = allData;
+                            // vm.reportDataDay = [];
+                            // var allData = res.data.data;
+                            // var timeData = [];
+                            // for (var i = 0; i < 24; i++) {
+                            //     if (i < 10) {
+                            //         i = '0' + i;
+                            //     }
+                            //     timeData.push(i);
+                            // }
+                            // vm.dataTime = timeData;
+                            // function compare(property) {
+                            //     return function (a, b) {
+                            //         var value1 = a[property];
+                            //         var value2 = b[property];
+                            //         return value1 - value2;
+                            //     }
+                            // }
+                            // // console.log(timeData);
+                            // var dataItem = [];
+
+                            // allData.forEach(function (data) {
+                            //     console.log(data);
+                            //     var obj = {};
+                            //     var sortData = [];
+                            //     timeData.forEach(t1 => {
+
+                            //         let exist = data.tKwhlist.some(t2 => t1 == t2.time);
+                            //         console.log(exist);
+                            //         if (!exist) {
+                            //             sortData.push({
+                            //                 time: t1,
+                            //                 kwh: 0
+                            //             });
+                            //         }
+
+                            //     });
+                            //     // console.log(sortData)       
+                            //     data.tKwhlist.forEach(function (item) {
+                            //         sortData.push(item)
+                            //     })
+                            //     console.log(sortData)
+                            //     dataItem = sortData.sort(compare('time'));
+                            //     obj.monitorName = data.monitorName;
+                            //     obj.list = dataItem;
+                            //     vm.reportDataDay.push(obj);
+                            // })
+                            // console.log(vm.reportDataDay)
+                            vm.flag = '';
+                        } else if (res.data.code == 203) {
+                            vm.$notify({
+                                title: '提示',
+                                message: res.data.msg,
+                                type: 'warning'
+                            });
+                            vm.flag = 'noData';
+                        } else {
                             vm.$notify.error({
                                 title: '错误',
                                 message: res.data.msg
@@ -410,68 +433,57 @@
                         });
 
                 },
+
                 // 企业能耗统计报表按月统计
                 enpriseMonth(enterpriseId) {
+                    console.log(this.monthDate);
+                    var year = this.monthDate.substring(0, 4);
+                    var month = this.monthDate.substring(4, 6);
+                    var num = this.getMonthDays(year, month);
+                    console.log(num)
+
                     axios({
                         method: "post",
                         url: BASEURL + 'environmental_intelligent_monitoring/tkwhdaily/query',
                         params: {
                             monthTime: this.monthDate,
-                            enterpriseId: enterpriseId
+                            enterpriseId: enterpriseId,
+                            num: num
                         }
                     }).then(function (res) {
                         if (res.data.code == 0) {
-                            vm.reportDataDay = [];
                             var allData = res.data.data;
-                            var timeData = [];
-                            for (var i = 1; i < 32; i++) {
-                                if (i < 10) {
-                                    i = '0' + i;
-                                }
-                                timeData.push(i);
-                            }
-                            vm.dataTime = timeData;
-                            function compare(property) {
-                                return function (a, b) {
-                                    var value1 = a[property];
-                                    var value2 = b[property];
-                                    return value1 - value2;
-                                }
-                            }
-                            // console.log(timeData);
-                            var dataItem = [];
 
                             allData.forEach(function (data) {
+                                var hourData = [];
                                 console.log(data);
-                                var obj = {};
-                                var sortData = [];
-                                timeData.forEach(t1 => {
-
-                                    let exist = data.tKwhlist.some(t2 => t1 == t2.time);
-                                    console.log(exist);
-                                    if (!exist) {
-                                        sortData.push({
-                                            time: t1,
-                                            kwh: 0
-                                        });
+                                for (let key in data) {
+                                    console.log(key + '---' + data[key]);
+                                    if (key == 'monitorName') {
+                                        key = '监测点名称';
                                     }
-
-                                });
-                                // console.log(sortData)       
-                                data.tKwhlist.forEach(function (item) {
-                                    sortData.push(item)
-                                })
-                                console.log(sortData)
-                                dataItem = sortData.sort(compare('time'));
-                                obj.monitorName = data.monitorName;
-                                obj.list = dataItem;
-                                vm.reportDataDay.push(obj);
-                            })
-                            console.log(vm.reportDataDay)
+                                    hourData.push(key);
+                                }
+                                vm.dataTime = hourData;
+                                /*  var json = JSON.parse(JSON.stringify(data).replace(/monitorName/g,"监测点名称"));
+                                 hourData.push(json); */
+                            });
+                            vm.reportDataDay = allData;
+                            vm.flag = '';
+                        } else if (res.data.code == 203) {
+                            vm.$notify({
+                                title: '提示',
+                                message: res.data.msg,
+                                type: 'warning'
+                            });
+                            vm.flag = 'noData';
                         } else {
+                            vm.$notify.error({
+                                title: '错误',
+                                message: res.data.msg
+                            });
 
                         }
-
                     })
                         .catch(function (err) {
                             console.log(err);
@@ -489,54 +501,37 @@
                         }
                     }).then(function (res) {
                         if (res.data.code == 0) {
-                            vm.reportDataDay = [];
                             var allData = res.data.data;
-                            var timeData = [];
-                            for (var i = 1; i < 13; i++) {
-                                if (i < 10) {
-                                    i = '0' + i;
-                                }
-                                timeData.push(i);
-                            }
-                            vm.dataTime = timeData;
-                            function compare(property) {
-                                return function (a, b) {
-                                    var value1 = a[property];
-                                    var value2 = b[property];
-                                    return value1 - value2;
-                                }
-                            }
-                            // console.log(timeData);
-                            var dataItem = [];
 
                             allData.forEach(function (data) {
+                                var hourData = [];
                                 console.log(data);
-                                var obj = {};
-                                var sortData = [];
-                                timeData.forEach(t1 => {
-
-                                    let exist = data.tKwhlist.some(t2 => t1 == t2.time);
-                                    console.log(exist);
-                                    if (!exist) {
-                                        sortData.push({
-                                            time: t1,
-                                            kwh: 0
-                                        });
+                                for (let key in data) {
+                                    console.log(key + '---' + data[key]);
+                                    if (key == 'monitorName') {
+                                        key = '监测点名称';
                                     }
+                                    hourData.push(key);
+                                }
+                                vm.dataTime = hourData;
+                                /*  var json = JSON.parse(JSON.stringify(data).replace(/monitorName/g,"监测点名称"));
+                                 hourData.push(json); */
+                            });
 
-                                });
-                                // console.log(sortData)       
-                                data.tKwhlist.forEach(function (item) {
-                                    sortData.push(item)
-                                })
-                                console.log(sortData)
-                                dataItem = sortData.sort(compare('time'));
-                                obj.monitorName = data.monitorName;
-                                obj.list = dataItem;
-                                vm.reportDataDay.push(obj);
-                            })
-                            console.log(vm.reportDataDay)
+                            vm.reportDataDay = allData;
+                            vm.flag = '';
+                        } else if (res.data.code == 203) {
+                            vm.$notify({
+                                title: '提示',
+                                message: res.data.msg,
+                                type: 'warning'
+                            });
+                            vm.flag = 'noData';
                         } else {
+                            vm.$notify.error({
+                                title: '错误',
+                                message: res.data.msg
+                            });
 
                         }
 
@@ -557,66 +552,96 @@
                             }
                         }).then(function (res) {
                             if (res.data.code == 0) {
-                                vm.reportDataDay = [];
                                 var allData = res.data.data;
-                                var all = [];
-                                var timeData = [];
-                                allData.forEach(function (data) {
-                                    for (var i = 0; i < data.tKwhlist.length; i++) {
-                                        console.log(data.tKwhlist[i])
-                                        all.push(data.tKwhlist[i])
-                                    }
-
-                                })
-                                for (var i = 0; i < all.length; i++) {
-                                    timeData.push(all[i].time);
-                                }
-                                vm.dataTime = timeData.filter((item, index, self) => self.indexOf(item) === index);
-
-                                function compare(property) {
-                                    return function (a, b) {
-                                        var value1 = a[property];
-                                        var value2 = b[property];
-                                        return value1 - value2;
-                                    }
-                                }
-                                // console.log(timeData);
-                                var dataItem = [];
 
                                 allData.forEach(function (data) {
+                                    var hourData = [];
                                     console.log(data);
-                                    var obj = {};
-                                    var sortData = [];
-                                    timeData.forEach(t1 => {
+                                    for (let key in data) {
+                                        console.log(key + '---' + data[key]);
+                                        // if (key == 'monitorName') {
+                                        //     key = '监测点名称';
+                                        // }
+                                        hourData.push(key);
+                                    }
+                                    vm.dataTime = hourData;
+                                    /*  var json = JSON.parse(JSON.stringify(data).replace(/monitorName/g,"监测点名称"));
+                                     hourData.push(json); */
+                                });
 
-                                        let exist = data.tKwhlist.some(t2 => t1 == t2.time);
-                                        console.log(exist);
-                                        if (!exist) {
-                                            sortData.push({
-                                                time: t1,
-                                                kwh: 0
-                                            });
-                                        }
+                                vm.reportDataDay = allData;
+                                // vm.reportDataDay = [];
+                                // var allData = res.data.data;
+                                // var all = [];
+                                // var timeData = [];
+                                // allData.forEach(function (data) {
+                                //     for (var i = 0; i < data.tKwhlist.length; i++) {
+                                //         console.log(data.tKwhlist[i])
+                                //         all.push(data.tKwhlist[i])
+                                //     }
 
-                                    });
-                                    // console.log(sortData)       
-                                    data.tKwhlist.forEach(function (item) {
-                                        sortData.push(item)
-                                    })
-                                    console.log(sortData)
-                                    dataItem = sortData.sort(compare('time'));
-                                    obj.monitorName = data.monitorName;
-                                    obj.list = dataItem;
-                                    vm.reportDataDay.push(obj);
-                                })
-                                console.log(vm.reportDataDay)
+                                // })
+                                // for (var i = 0; i < all.length; i++) {
+                                //     timeData.push(all[i].time);
+                                // }
+                                // vm.dataTime = timeData.filter((item, index, self) => self.indexOf(item) === index);
+
+                                // function compare(property) {
+                                //     return function (a, b) {
+                                //         var value1 = a[property];
+                                //         var value2 = b[property];
+                                //         return value1 - value2;
+                                //     }
+                                // }
+                                // // console.log(timeData);
+                                // var dataItem = [];
+
+                                // allData.forEach(function (data) {
+                                //     console.log(data);
+                                //     var obj = {};
+                                //     var sortData = [];
+                                //     timeData.forEach(t1 => {
+
+                                //         let exist = data.tKwhlist.some(t2 => t1 == t2.time);
+                                //         console.log(exist);
+                                //         if (!exist) {
+                                //             sortData.push({
+                                //                 time: t1,
+                                //                 kwh: 0
+                                //             });
+                                //         }
+
+                                //     });
+                                //     // console.log(sortData)       
+                                //     data.tKwhlist.forEach(function (item) {
+                                //         sortData.push(item)
+                                //     })
+                                //     console.log(sortData)
+                                //     dataItem = sortData.sort(compare('time'));
+                                //     obj.monitorName = data.monitorName;
+                                //     obj.list = dataItem;
+                                //     vm.reportDataDay.push(obj);
+                                // })
+                                // console.log(vm.reportDataDay)
 
 
                                 // for (var i = 1; i < allData.length; i++) {
                                 //     allData[i].list =  allData[i].tKwhlist;
                                 // }
-                                // vm.reportDataDay = allData;               
+                                // vm.reportDataDay = allData; 
+                                vm.flag = '';
+                            } else if (res.data.code == 203) {
+                                vm.$notify({
+                                    title: '提示',
+                                    message: res.data.msg,
+                                    type: 'warning'
+                                });
+                                vm.flag = 'noData';
                             } else {
+                                vm.$notify.error({
+                                    title: '错误',
+                                    message: res.data.msg
+                                });
 
                             }
                         })
@@ -625,58 +650,67 @@
                             });
 
                     } else {
-                        vm.$message.warning('请选择企业')
+                        vm.$notify({
+                            title: '提示',
+                            message: '请选择企业',
+                            type: 'warning'
+                        });
                     }
 
 
                 },
                 downExport() {
                     // 数据处理
-                    console.log(vm.reportDataDay);
-                    var titleData = [];
-                    titleData.push('监测点名称');
-                    for (var i = 0; i < vm.reportDataDay.length; i++) {
-                        for (j = 0; j < vm.reportDataDay[i].list.length; j++) {
-                            titleData.push(vm.reportDataDay[i].list[j].time);
+                    if (vm.flag == 'noData') {
+                        vm.$message.warning('无数据导出');
+                    } else {
+                        var type;
+                        if (this.enpriseId != 0) {
+                            if (this.timeType == 'year') {
+                                type = 'year';
+                                // console.log(this.enpriseId, this.enpriseName)
+                                location = BASEURL + 'environmental_intelligent_monitoring/tkwhhour/exportExcel?'
+                                    + "yearTime=" + this.yearDate + "&"
+                                    + "enterpriseId=" + this.enpriseId + "&"
+                                    + "flag=" + type + "&"
+                                    + "title=" + this.enpriseName;
+                            } else if (this.timeType == 'month') {
+                                type = 'month';
+                                console.log(this.enpriseId, this.enpriseName)
+                                var year = this.monthDate.substring(0, 4);
+                                var month = this.monthDate.substring(4, 6);
+                                var num = this.getMonthDays(year, month);
+                                console.log(num)
+                                location = BASEURL + 'environmental_intelligent_monitoring/tkwhhour/exportExcel?'
+                                    + "monthTime=" + this.monthDate + "&"
+                                    + "enterpriseId=" + this.enpriseId + "&"
+                                    + "flag=" + type + "&"
+                                    + "num=" + num + "&"
+                                    + "title=" + this.enpriseName;
+                            } else if (this.timeType == 'date') {
+                                type = 'daily';
+                                console.log(this.enpriseId, this.enpriseName)
+                                location = BASEURL + 'environmental_intelligent_monitoring/tkwhhour/exportExcel?'
+                                    + "dailyTime=" + this.timeDate + "&"
+                                    + "enterpriseId=" + this.enpriseId + "&"
+                                    + "flag=" + type + "&"
+                                    + "title=" + this.enpriseName;
+                            } else {
+                                type = 'sumyear';
+                                console.log(this.enpriseId, this.enpriseName)
+                                location = BASEURL + 'environmental_intelligent_monitoring/tkwhhour/exportExcel?'
+                                    + "enterpriseId=" + this.enpriseId + "&"
+                                    + "flag=" + type + "&"
+                                    + "title=" + this.enpriseName;
+
+                            }
+
+                        } else {
+                            vm.$message.warning('请选择企业');
                         }
-                        break;
+
                     }
 
-                    var data = [];
-                    for (var i = 0; i < vm.reportDataDay.length; i++) {
-                        var obj = {};
-                        obj.monitorName = vm.reportDataDay[i].monitorName;
-                        for (j = 0; j < vm.reportDataDay[i].list.length; j++) {
-                            obj[kwh+j] = vm.reportDataDay[i].list[j].kwh;
-                            // obj.kwh = vm.reportDataDay[i].list[j].kwh;
-                            data.push(obj)
-                        }
-                    }
-                    console.log(titleData)
-                    console.log(data)
-                    // var monitor = [];
-                    // var allData = [];
-                    // for (var i = 0; i < vm.reportDataDay.length; i++) {
-                    //     monitor.push(vm.reportDataDay[i].monitorName);
-                    //     console.log(monitor);
-
-                    //     for (var k = 0; k < vm.reportDataDay.length - 1 - i; k++) {
-                    //         for (var j = 0; j < vm.reportDataDay[i].list.length; j++) {
-                    //             var downData = [];
-                    //             if (vm.reportDataDay[k].list[j].time == vm.reportDataDay[k + 1].list[j].time) {
-                    //                 downData.push(vm.reportDataDay[k].list[j].time, vm.reportDataDay[k].list[j].kwh, vm.reportDataDay[k + 1].list[j].kwh);
-                    //                 console.log(downData);
-                    //                 allData.push(downData)
-                    //             }
-
-                    //         }
-                    //         allData.push(monitor)
-                    //     }
-                    // }
-                    // console.log(allData)
-                    // var all = JSON.stringify(allData)
-                    // location = BASEURL + 'environmental_intelligent_monitoring/tkwhhour/exportExcel?'
-                    //     + all
 
 
 
