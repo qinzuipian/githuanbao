@@ -33,7 +33,7 @@
         }
 
         .layui-form-label {
-            width: 120px;
+            width: 140px;
 
         }
 
@@ -119,16 +119,17 @@
 
                     </div>
                     <div class="layui-form-item">
-                        <label for="bitian" class="layui-form-label">
+                        <label for="bitian" class="layui-form-label" style="width: 100px;">
                             设备类型</label>
-                        <div class="layui-input-inline">
+                        <div class="layui-input-inline" style="width: 315px;">
 
                             <!-- <input type="text" v-model="tDeviceMonitor.type" class="layui-input" placeholder="设备类型:1、生产设备 2、治污设备" /> -->
-                            <input type="radio" name="type" value="1" title="生产设备">
-                            <input type="radio" name="type" value="2" title="治污设备">
+                            <input type="radio" name="codeType" value="0" title="生产设备">
+                            <input type="radio" name="codeType" value="1" title="治污设备">
+                            <input type="radio" name="codeType" value="2" title="总进线">
                         </div>
 
-                        <label for="bitian" class="layui-form-label">
+                        <label for="bitian" class="layui-form-label" style="width: 60px;">
                             类别
                             <span class="red">*</span>
                         </label>
@@ -180,11 +181,58 @@
                             <!-- <input type="text" name="swicthId" lay-verify="required" class="layui-input" placeholder="网关编号" /> -->
                         </div>
 
-                        <label for="bitian" class="layui-form-label">
-                            设备用途</label>
-                        <div class="layui-input-inline">
-                            <input type="text" name="equipmentUse" v-model="tDeviceMonitor.equipmentuse" class="layui-input" placeholder="设备用途" />
+                        <div class="layui-inline" v-show="selectShow == 1">
+                            <label for="bitian" class="layui-form-label">
+                                电压变比
+                                <span class="red">*</span>
+                            </label>
+                            <div class="layui-input-inline">
+                                <input type="text" name="pt" id="pt" lay-verify="required" class="layui-input" placeholder="电压变比" />
+                            </div>
                         </div>
+                        <!-- 振动量设备 -->
+                        <div class="layui-inline" v-show="selectShow == 2">
+                            <label for="bitian" class="layui-form-label">
+                                X轴震动加速度阀值
+                                <span class="red">*</span>
+                            </label>
+                            <div class="layui-input-inline">
+                                <input type="text" name="xAccelerat" id="xAccelerat" lay-verify="required" class="layui-input" placeholder="X轴震动加速度阀值" />
+                            </div>
+                        </div>
+                        <!-- 雷达设备 -->
+                        <div class="layui-inline" v-show="selectShow == 3">
+                            <label for="bitian" class="layui-form-label">
+                                雷达回波时间比例阀值
+                                <span class="red">*</span>
+                            </label>
+                            <div class="layui-input-inline">
+                                <input type="text" name="radarProport" id="radarProport" lay-verify="required" class="layui-input" placeholder="雷达回波时间比例阀值"
+                                />
+                            </div>
+                        </div>
+                        <!-- 流量计 -->
+                        <div class="layui-inline" v-show="selectShow == 4">
+                            <label for="bitian" class="layui-form-label">
+                                流速阀值
+                                <span class="red">*</span>
+                            </label>
+                            <div class="layui-input-inline">
+                                <input type="text" name="currentSpeed" id="currentSpeed" lay-verify="required" class="layui-input" placeholder="流速阀值" />
+                            </div>
+                        </div>
+                        <!-- 温度 -->
+                        <div class="layui-inline" v-show="selectShow == 5">
+                            <label for="bitian" class="layui-form-label">
+                                温度阀值
+                                <span class="red">*</span>
+                            </label>
+                            <div class="layui-input-inline">
+                                <input type="text" name="temperature" id="temperature" lay-verify="required" class="layui-input" placeholder="温度阀值" />
+                            </div>
+                        </div>
+
+
 
                     </div>
                     <div class="layui-form-item">
@@ -198,10 +246,45 @@
                             </el-select>
                         </div>
 
-                        <label for="bitian" class="layui-form-label">
-                            摄像头编号</label>
-                        <div class="layui-input-inline">
-                            <input type="text" name="cameraIndexCode" class="layui-input" placeholder="摄像头编号" />
+
+                        <div class="layui-inline" v-show="selectShow == 1">
+                            <label for="bitian" class="layui-form-label">
+                                电流变比
+                                <span class="red">*</span>
+                            </label>
+                            <div class="layui-input-inline">
+                                <input type="text" name="ct" id="ct" lay-verify="required" class="layui-input" placeholder="电流变比" />
+                            </div>
+                        </div>
+                        <!-- 振动量设备 -->
+                        <div class="layui-inline" v-show="selectShow == 2">
+                            <label for="bitian" class="layui-form-label">
+                                Y轴震动加速度阀值
+                                <span class="red">*</span>
+                            </label>
+                            <div class="layui-input-inline">
+                                <input type="text" name="yAccelerat" id="yAccelerat" lay-verify="required" class="layui-input" placeholder="Y轴震动加速度阀值" />
+                            </div>
+                        </div>
+                        <!-- 雷达设备 -->
+                        <div class="layui-inline" v-show="selectShow == 3">
+                            <label for="bitian" class="layui-form-label">
+                                雷达计数阀值
+                                <span class="red">*</span>
+                            </label>
+                            <div class="layui-input-inline">
+                                <input type="text" name="radarCount" id="radarCount" lay-verify="required" class="layui-input" placeholder="雷达计数阀值" />
+                            </div>
+                        </div>
+                        <!-- 流量计 -->
+                        <div class="layui-inline" v-show="selectShow == 4">
+                            <label for="bitian" class="layui-form-label">
+                                流量阀值
+                                <span class="red">*</span>
+                            </label>
+                            <div class="layui-input-inline">
+                                <input type="text" name="flow" id="flow" lay-verify="required" class="layui-input" placeholder="流量阀值" />
+                            </div>
                         </div>
 
                     </div>
@@ -216,12 +299,24 @@
                         </div>
 
 
-                        <label for="bitian" class="layui-form-label">
-                            功率启停阀值(kW)
-                            <span class="red">*</span>
-                        </label>
-                        <div class="layui-input-inline">
-                            <input type="text" name="electricLimit" lay-verify="required" class="layui-input" placeholder="功率启停阀值(kW)" />
+                        <div class="layui-inline" v-show="selectShow == 1">
+                            <label for="bitian" class="layui-form-label">
+                                功率启停阀值(kW)
+                                <span class="red">*</span>
+                            </label>
+                            <div class="layui-input-inline">
+                                <input type="text" name="electricLimit" id="electricLimit" lay-verify="required" class="layui-input" placeholder="功率启停阀值(kW)"
+                                />
+                            </div>
+                        </div>
+                        <div class="layui-inline" v-show="selectShow == 2">
+                            <label for="bitian" class="layui-form-label">
+                                Z轴震动加速度阀值
+                                <span class="red">*</span>
+                            </label>
+                            <div class="layui-input-inline">
+                                <input type="text" name="zAccelerat" id="zAccelerat" lay-verify="required" class="layui-input" placeholder="Z轴震动加速度阀值" />
+                            </div>
                         </div>
 
 
@@ -242,20 +337,36 @@
                             <select name="collectType" id="collectType" lay-filter="collectType" lay-verify="required">
                                 <option value="">请选择仪表类别</option>
                                 <option value="用电">用电</option>
-                                <option value="扬尘设备">扬尘设备</option>
-                                <option value="VOC设备">VOC设备</option>
+                                <option value="流量计">流量计</option>
+                                <option value="温度">温度</option>
                                 <option value="雷达设备">雷达设备</option>
                                 <option value="振动量设备">振动量设备</option>
                             </select>
                             <!-- <input type="text" name="meterid" v-model="tDeviceMonitor.meterid" class="layui-input" placeholder="仪表类别" /> -->
                         </div>
-                        <label for="bitian" class="layui-form-label">
-                            功率门限时间(m)
-                            <span class="red">*</span>
-                        </label>
-                        <div class="layui-input-inline">
-                            <input type="text" name="electricTime" lay-verify="required" class="layui-input" placeholder="功率门限时间(分钟)" />
+
+
+                        <div class="layui-inline" v-show="selectShow == 1">
+                            <label for="bitian" class="layui-form-label">
+                                功率门限时间(m)
+                                <span class="red">*</span>
+                            </label>
+                            <div class="layui-input-inline">
+                                <input type="text" name="electricTime" id="electricTime" lay-verify="required" class="layui-input" placeholder="功率门限时间(分钟)"
+                                />
+                            </div>
+
                         </div>
+                        <div class="layui-inline" v-show="selectShow == 2">
+                            <label for="bitian" class="layui-form-label">
+                                X轴震动主频率阀值
+                                <span class="red">*</span>
+                            </label>
+                            <div class="layui-input-inline">
+                                <input type="text" name="xFrequen" id="xFrequen" lay-verify="required" class="layui-input" placeholder="X轴震动主频率阀值" />
+                            </div>
+                        </div>
+
 
 
                     </div>
@@ -277,7 +388,17 @@
                             <label for="bitian" class="layui-form-label">
                                 电量阀值(kW·h)</label>
                             <div class="layui-input-inline">
-                                <input type="text" name="powerLimit" class="layui-input" placeholder="电量阀值(kW·h)" />
+                                <input type="text" name="powerLimit" id="powerLimit" class="layui-input" placeholder="电量阀值(kW·h)" />
+                            </div>
+                        </div>
+
+                        <div class="layui-inline" v-show="selectShow == 2">
+                            <label for="bitian" class="layui-form-label">
+                                Y轴震动主频率阀值
+                                <span class="red">*</span>
+                            </label>
+                            <div class="layui-input-inline">
+                                <input type="text" name="zFrequen" id="zFrequen" lay-verify="required" class="layui-input" placeholder="Y轴震动主频率阀值" />
                             </div>
                         </div>
 
@@ -286,7 +407,7 @@
 
                     <div class="layui-form-item">
                         <label for="bitian" class="layui-form-label">
-                            是否是演示箱</label>
+                            是否正式上线</label>
                         <div class="layui-input-inline">
                             <input type="radio" name="isShow" value="true" title="是">
                             <input type="radio" name="isShow" value="false" title="否">
@@ -295,7 +416,16 @@
                             <label for="bitian" class="layui-form-label">
                                 电量门限时间(m)</label>
                             <div class="layui-input-inline">
-                                <input type="text" name="powerTime" class="layui-input" placeholder="电量门限时间(分钟)" />
+                                <input type="text" name="powerTime" id="powerTime" class="layui-input" placeholder="电量门限时间(分钟)" />
+                            </div>
+                        </div>
+                        <div class="layui-inline" v-show="selectShow == 2">
+                            <label for="bitian" class="layui-form-label">
+                                Z轴震动主频率阀值
+                                <span class="red">*</span>
+                            </label>
+                            <div class="layui-input-inline">
+                                <input type="text" name="yFrequen" id="yFrequen" lay-verify="required" class="layui-input" placeholder="Z轴震动主频率阀值" />
                             </div>
                         </div>
 
@@ -303,18 +433,17 @@
 
                     </div>
                     <div class="layui-form-item">
+
                         <label for="bitian" class="layui-form-label">
-                            电压变比
-                            <span class="red">*</span>
-                        </label>
+                            设备用途</label>
                         <div class="layui-input-inline">
-                            <input type="text" name="pt" lay-verify="required" class="layui-input" placeholder="电压变比" />
+                            <input type="text" name="equipmentUse" v-model="tDeviceMonitor.equipmentuse" class="layui-input" placeholder="设备用途" />
                         </div>
                         <div class="layui-inline" v-show="selectShow == 1">
                             <label for="bitian" class="layui-form-label">
                                 额定电压(V)</label>
                             <div class="layui-input-inline">
-                                <input type="text" name="ratedU" class="layui-input" placeholder="额定电压(V)" />
+                                <input type="text" name="ratedU" id="ratedU" class="layui-input" placeholder="额定电压(V)" />
                             </div>
                         </div>
 
@@ -322,20 +451,19 @@
                     </div>
                     <div class="layui-form-item">
                         <label for="bitian" class="layui-form-label">
-                            电流变比
-                            <span class="red">*</span>
-                        </label>
+                            摄像头编号</label>
                         <div class="layui-input-inline">
-                            <input type="text" name="ct" lay-verify="required" class="layui-input" placeholder="电流变比" />
+                            <input type="text" name="cameraIndexCode" class="layui-input" placeholder="摄像头编号" />
                         </div>
-                        <label for="bitian" class="layui-form-label">
-                            额定功率(kW)</label>
-                        <div class="layui-input-inline">
-                            <input type="text" name="ratedPower" class="layui-input" placeholder="额定功率(kW)" />
+                        <div class="layui-inline" v-show="selectShow == 1">
+                            <label for="bitian" class="layui-form-label">
+                                额定功率(kW)
+                                <span class="red">*</span>
+                            </label>
+                            <div class="layui-input-inline">
+                                <input type="text" name="ratedPower" lay-verify="required" id="ratedPower" class="layui-input" placeholder="额定功率(kW)" />
+                            </div>
                         </div>
-
-
-
                     </div>
                     <div class="layui-form-item">
 
@@ -345,54 +473,8 @@
                             <textarea placeholder="请输入内容" class="layui-textarea" name="remark"></textarea>
                         </div>
 
-
                     </div>
-                    <!--    <div class="layui-form-item">
-                        <label for="bitian" class="layui-form-label">
-                            企业选择</label>
-                        <div class="layui-input-inline">
-                            <el-autocomplete v-model="firmName" :fetch-suggestions="querySearchAsync" placeholder="请输入内容" @select="handleSelect"></el-autocomplete>
-                        </div>
 
-                    </div> -->
-
-                    <!-- <div class="layui-form-item">
-                        <label for="bitian" class="layui-form-label">
-                            所选车间</label>
-                        <div class="layui-input-inline">
-                            <el-select v-model="shopname" placeholder="请选择">
-                                <el-option v-for="item in shopOptions" :key="item.value" :label="item.name" :value="item.name">
-                                </el-option>
-                            </el-select>
-                        </div>
-
-                    </div> -->
-                    <!-- <div class="layui-form-item">
-                        <label for="bitian" class="layui-form-label">
-                            车间筛选</label>
-                        <div class="layui-input-inline">
-                            <input type="text" class="layui-input" />
-                        </div>
-
-                    </div> -->
-                    <!-- <div class="layui-form-item treeCss">
-                        <label for="bitian" class="layui-form-label">车间选择</label>
-                        <div id="shopTree" class="treeItem">
-                            <ul class="ulShop">
-                                <li class="lishop" v-for="(item,index) in treeData" :key="index">
-                                    <span class="layui-icon layui-icon-add-circle" @click="treeItem(item)"></span>
-                                    {{item.enterpriseName}}
-                                    <ul>
-                                        <li v-for="(it,index) in treeItemData" :key="index" v-show="item.enterpriseId == i">
-                                            <input type="hidden" name="enterpriseId" v-model="i">
-                                            <input type="hidden" name="enterpriseName" v-model="enterpriseName">
-                                            <input type="radio" name="shopName" lay-filter="beshared" :value=it.name :title=it.name>
-                                        </li>
-                                    </ul>
-                                </li>
-                            </ul>
-                        </div>
-                    </div> -->
                     <div class="btn-box">
                         <button class="layui-btn" lay-submit lay-filter="deviceForm">添加</button>
                         <button class="layui-btn layui-btn-danger" @click="cancel">取消</button>
@@ -563,17 +645,120 @@
             form.on("select(collectType)", function (data) {
                 if (data.value == '用电') {
                     vm.selectShow = 1;
+                    $("#pt").attr("lay-verify", 'required');
+                    $("#ct").attr("lay-verify", 'required');
+                    $("#xAccelerat").attr("lay-verify", '');
+                    $("#radarProport").attr("lay-verify", '');
+                    $("#currentSpeed").attr("lay-verify", '');
+                    $("#temperature").attr("lay-verify", '');
+                    $("#yAccelerat").attr("lay-verify", '');
+                    $("#radarCount").attr("lay-verify", '');
+                    $("#flow").attr("lay-verify", '');
+                    $("#electricLimit").attr("lay-verify", 'required');
+                    $("#zAccelerat").attr("lay-verify", '');
+                    $("#electricTime").attr("lay-verify", 'required');
+                    $("#xFrequen").attr("lay-verify", '');
+                    $("#powerLimit").attr("lay-verify", 'required');
+                    $("#zFrequen").removeAttr("lay-verify");
+                    $("#powerTime").attr("lay-verify", 'required');
+                    $("#yFrequen").attr("lay-verify", '');
+                    $("#ratedPower").attr("lay-verify", 'required');
+                    $("#ratedU").attr("lay-verify", 'required');
+                    $("#ratedPower").attr("lay-verify", 'required');
+                } else if (data.value == '振动量设备') {
+                    vm.selectShow = 2;
+                    $("#pt").attr("lay-verify", '');
+                    $("#ct").attr("lay-verify", '');
+                    $("#xAccelerat").attr("lay-verify", 'required');
+                    $("#radarProport").attr("lay-verify", '');
+                    $("#currentSpeed").attr("lay-verify", '');
+                    $("#temperature").attr("lay-verify", '');
+                    $("#yAccelerat").attr("lay-verify", 'required');
+                    $("#radarCount").attr("lay-verify", '');
+                    $("#flow").attr("lay-verify", '');
+                    $("#electricLimit").attr("lay-verify", '');
+                    $("#zAccelerat").attr("lay-verify", 'required');
+                    $("#electricTime").attr("lay-verify", '');
+                    $("#xFrequen").attr("lay-verify", 'required');
+                    $("#powerLimit").attr("lay-verify", '');
+                    $("#zFrequen").attr("lay-verify", 'required');
+                    $("#powerTime").attr("lay-verify", '');
+                    $("#yFrequen").attr("lay-verify", 'required');
+                    $("#ratedPower").attr("lay-verify", '');
+                    $("#ratedU").attr("lay-verify", '');
+                    $("#ratedPower").attr("lay-verify", '');
+                } else if (data.value == '雷达设备') {
+                    vm.selectShow = 3;
+                    $("#pt").attr("lay-verify", '');
+                    $("#ct").attr("lay-verify", '');
+                    $("#xAccelerat").attr("lay-verify", '');
+                    $("#radarProport").attr("lay-verify", 'required');
+                    $("#currentSpeed").attr("lay-verify", '');
+                    $("#temperature").attr("lay-verify", '');
+                    $("#yAccelerat").attr("lay-verify", '');
+                    $("#radarCount").attr("lay-verify", 'required');
+                    $("#flow").attr("lay-verify", '');
+                    $("#electricLimit").attr("lay-verify", '');
+                    $("#zAccelerat").attr("lay-verify", '');
+                    $("#electricTime").attr("lay-verify", '');
+                    $("#xFrequen").attr("lay-verify", '');
+                    $("#powerLimit").attr("lay-verify", '');
+                    $("#zFrequen").attr("lay-verify", '');
+                    $("#powerTime").attr("lay-verify", '');
+                    $("#yFrequen").attr("lay-verify", '');
+                    $("#ratedPower").attr("lay-verify", '');
+                    $("#ratedU").attr("lay-verify", '');
+                    $("#ratedPower").attr("lay-verify", '');
 
-                } else {
-                    vm.selectShow = 1;
+                } else if (data.value == '流量计') {
+                    vm.selectShow = 4;
+                    $("#pt").attr("lay-verify", '');
+                    $("#ct").attr("lay-verify", '');
+                    $("#xAccelerat").attr("lay-verify", '');
+                    $("#radarProport").attr("lay-verify", '');
+                    $("#temperature").attr("lay-verify", '');
+                    $("#currentSpeed").attr("lay-verify", 'required');
+                    $("#yAccelerat").attr("lay-verify", '');
+                    $("#radarCount").attr("lay-verify", '');
+                    $("#flow").attr("lay-verify", 'required');
+                    $("#electricLimit").attr("lay-verify", '');
+                    $("#zAccelerat").attr("lay-verify", '');
+                    $("#electricTime").attr("lay-verify", '');
+                    $("#xFrequen").attr("lay-verify", '');
+                    $("#powerLimit").attr("lay-verify", '');
+                    $("#zFrequen").attr("lay-verify", '');
+                    $("#powerTime").attr("lay-verify", '');
+                    $("#yFrequen").attr("lay-verify", '');
+                    $("#ratedPower").attr("lay-verify", '');
+                    $("#ratedU").attr("lay-verify", '');
+                    $("#ratedPower").attr("lay-verify", '');
+                } else if (data.value == '温度') {
+                    vm.selectShow = 5;
+                    $("#pt").attr("lay-verify", '');
+                    $("#ct").attr("lay-verify", '');
+                    $("#xAccelerat").attr("lay-verify", '');
+                    $("#radarProport").attr("lay-verify", '');
+                    $("#currentSpeed").attr("lay-verify", '');
+                    $("#temperature").attr("lay-verify", 'required');
+                    $("#yAccelerat").attr("lay-verify", '');
+                    $("#radarCount").attr("lay-verify", '');
+                    $("#flow").attr("lay-verify", '');
+                    $("#electricLimit").attr("lay-verify", '');
+                    $("#zAccelerat").attr("lay-verify", '');
+                    $("#electricTime").attr("lay-verify", '');
+                    $("#xFrequen").attr("lay-verify", '');
+                    $("#powerLimit").attr("lay-verify", '');
+                    $("#zFrequen").attr("lay-verify", '');
+                    $("#powerTime").attr("lay-verify", '');
+                    $("#yFrequen").attr("lay-verify", '');
+                    $("#ratedPower").attr("lay-verify", '');
+                    $("#ratedU").attr("lay-verify", '');
+                    $("#ratedPower").attr("lay-verify", '');
                 }
             })
 
-
             // form表单添加数据提交
             form.on('submit(deviceForm)', function (data) {
-
-
                 data.field.shopId = vm.shopId;
                 data.field.shopName = vm.shopName;
                 data.field.enterpriseName = vm.enterpriseName;
@@ -582,7 +767,7 @@
                 data.field.meterId = vm.meterCode;
                 data.field.mn = vm.tnCode;
                 console.log(data.field);
-
+                console.log(vm.selectShow)
                 /*    data.field.ecPolluteType = $("#ecPolluteType option:selected").text();
                    data.field.ecType = $("#ecType option:selected").text();
                    data.field.route = $("#route option:selected").text(); */
@@ -601,8 +786,7 @@
                         }, function () {
                             window.parent.location.reload();
                             parent.layer.close('iframe');
-                        }
-                        );
+                        });
                     } else {
                         vm.$notify.error({
                             title: '错误',

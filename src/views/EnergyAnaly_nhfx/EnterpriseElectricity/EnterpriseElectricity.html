@@ -252,15 +252,44 @@
                 endMonthDate: "",
                 tableData: [],
                 flag: ""
-                // pickerOptions: {
-                //     disabledDate(time) {
-                //         console.log(time)
-                //         console.log(time.getTime())
-                //         console.log(Date.now())
-                //         return time.getTime() > Date.now() + new Date().getFullYear();
-                //         // 
-                //     }
-                // },
+            },
+            watch: {
+                endDate(val) {
+                    console.log(val);
+                    if (this.enterpriseId == "") {
+                        this.$notify({
+                            title: '提示',
+                            message: '请选择企业',
+                            type: 'warning'
+                        });
+                    } else {
+                        this.enterpriseInit();
+                    }
+                },
+                endYearDate(val) {
+                    if (this.enterpriseId == "") {
+                        this.$notify({
+                            title: '提示',
+                            message: '请选择企业',
+                            type: 'warning'
+                        });
+                    } else {
+                        this.enterpriseInit();
+                    }
+                },
+                endMonthDate(val) {
+                    if (this.enterpriseId == "") {
+                        this.$notify({
+                            title: '提示',
+                            message: '请选择企业',
+                            type: 'warning'
+                        });
+                    } else {
+                        this.enterpriseInit();
+                    }
+
+                }
+
             },
             methods: {
 
@@ -314,6 +343,7 @@
                         this.organizeId = data.id;
                         this.enterpriseId = 0;
                     }
+                    console.log(vm.timeShow)
                     if (vm.timeShow == 1) {
                         if (this.startDate == "" || this.endDate == "") {
                             vm.$message.warning('请输入开始日期与结束日期');
@@ -321,7 +351,7 @@
                             this.enterpriseInit();
                         }
 
-                    } else if (vm.timeShow = 2) {
+                    } else if (vm.timeShow == 2) {
                         if (this.startYearDate == "" || this.endYearDate == "") {
                             vm.$message.warning('请输入开始日期与结束日期');
                         } else {
@@ -390,7 +420,11 @@
                             vm.flag = "";
 
                         } else if (res.data.code == 203) {
-                            vm.$message.warning('暂无数据');
+                            vm.$notify({
+                                title: '提示',
+                                message: res.data.msg,
+                                type: 'warning'
+                            });
                             vm.flag = 'noData';
                         }
                     })

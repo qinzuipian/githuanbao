@@ -101,7 +101,7 @@
 					{ title: '所属企业', field: 'enterpriseName', minWidth: 200 },
 					{ title: '所属车间', field: 'shopName', minWidth: 100 },
 					// { title: '所属设备', field: 'equipmentName', minWidth: 100 },
-					{ title: '设备类型', field: 'type', minWidth: 100 },
+					{ title: '设备类型', field: 'codeType', minWidth: 100 },
 					{ title: '设备用途', field: 'equipmentUse', minWidth: 100 },
 					// { title: '状态', field: 'status', minWidth: 100 },
 					{ title: '备注', field: 'remark', minWidth: 100 }
@@ -111,11 +111,13 @@
 				, limit: 10
 				, limits: [10, 15, 20, 25, 30]
 				, done: function (res, page, count) {
-					$("[data-field='type']").children().each(function () {
-						if ($(this).text() == '1') {
+					$("[data-field='codeType']").children().each(function () {
+						if ($(this).text() == '0') {
 							$(this).text("生产设备")
-						} else if ($(this).text() == '2') {
+						} else if ($(this).text() == '1') {
 							$(this).text("治污设备")
+						}else if ($(this).text() == '2') {
+							$(this).text("总进线")
 						}
 					});
 					$("[data-field='status']").children().each(function () {
@@ -189,7 +191,7 @@
 							title: '添加监测点',
 							content: 'deviceAdd.html',
 							maxmin: true,
-							area: ['860px', '550px']
+							area: ['900px', '550px']
 
 						});
 					},
@@ -209,7 +211,7 @@
 							title: '编辑监测点',
 							content: 'deviceEdit.html',
 							maxmin: true,
-							area: ['860px', '550px']
+							area: ['900px', '550px']
 
 						});
 
