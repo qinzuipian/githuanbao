@@ -18,7 +18,7 @@
 						<div class="layui-inline">
 							<label class="layui-form-label">企业名称</label>
 							<div class="layui-input-inline">
-								<input type="text" name="enterpriseName" placeholder="请输入" autocomplete="off" class="layui-input">
+								<input type="text" name="enterprisename" placeholder="请输入" autocomplete="off" class="layui-input">
 							</div>
 						</div>
 						<div class="layui-inline">
@@ -30,13 +30,13 @@
 						<div class="layui-inline">
 							<label class="layui-form-label">网关编号</label>
 							<div class="layui-input-inline">
-								<input type="text" name ="swicthId" placeholder="请输入" autocomplete="off" class="layui-input">
+								<input type="text" name ="swicthid" placeholder="请输入" autocomplete="off" class="layui-input">
 							</div>
 						</div>
 						<div class="layui-inline">
 							<label class="layui-form-label">状态</label>
 							<div class="layui-input-block">
-								<select name="state">
+								<select name="status">
 									<option value="">请选择</option>
 									<option value="运行">运行</option>
 									<option value="失联">失联</option>
@@ -96,15 +96,15 @@
 								},
 								{
 									title: '企业名称',
-									field: 'enterpriseName',
+									field: 'enterprisename',
 									minWidth: 200
 								}, {
 									title: '车间名称',
-									field: 'shopName',
+									field: 'shopname',
 									minWidth: 100
 								}, {
 									title: '设备名称',
-									field: 'equipName',
+									field: 'codename',
 									minWidth: 100
 								}, {
 									title: '监测点名称',
@@ -112,15 +112,15 @@
 									minWidth: 60
 								}, {
 									title: '网关编号',
-									field: 'swicthId',
+									field: 'swicthid',
 									minWidth: 100
 								}, {
 									title: '表地址',
-									field: 'meterId',
+									field: 'meterid',
 									minWidth: 100
 								}, {
 									title: '状态',
-									field: 'state',
+									field: 'status',
 									Width: 30
 								}, {
 									title: '详情',
@@ -131,7 +131,18 @@
 						] //设置表头
 						,
 					limit: 10,
-					limits: [10, 15, 20, 25, 30]
+					limits: [10, 15, 20, 25, 30],
+					done: function(res, page, count) {
+						$("[data-field='status']").children().each(function() {
+							if ($(this).text() == '1') {
+								$(this).text("运行")
+							} else if ($(this).text() == '2') {
+								$(this).text("停机")
+							} else if ($(this).text() == '3') {
+								$(this).text("失联")
+							}
+						})
+					}
 				});
 				table.on('tool(LAY-app-content-list)', function(obj) {
 					var data = obj.data;
