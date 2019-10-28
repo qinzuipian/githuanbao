@@ -781,12 +781,12 @@
                 }).then(function (res) {
                     if (res.data.code == 0) {
                         console.log(res)
-                        // layer.msg('保存成功！', {
-                        //     time: 500
-                        // }, function () {
-                        //     window.parent.location.reload();
-                        //     parent.layer.close('iframe');
-                        // });
+                        layer.msg('保存成功！', {
+                            time: 500
+                        }, function () {
+                            window.parent.location.reload();
+                            parent.layer.close('iframe');
+                        });
                     } else {
                         vm.$notify.error({
                             title: '错误',

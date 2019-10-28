@@ -248,9 +248,9 @@
                     , limits: [10, 15, 20, 25, 30]
                     , done: function (res, page, count) {
                         $("[data-field='backup']").children().each(function () {
-                            if ($(this).text() == 'true') {
+                            if ($(this).text() == '1') {
                                 $(this).text("备用")
-                            } else if ($(this).text() == 'false') {
+                            } else if ($(this).text() == '0') {
                                 $(this).text("使用")
                             }
                         })
