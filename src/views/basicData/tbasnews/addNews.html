@@ -52,10 +52,10 @@
 							</div>
 						</div>
 						<div class="layui-form-item">
-							<label for="bitian" class="layui-form-label">内容</label>
-							<div class="layui-input-inline">
+							<textarea class="layui-textarea" id="LAY_demo1"></textarea>
+							<!-- <div class="layui-input-inline">
 								<input type="text" name="content" class="layui-input" placeholder="请输入新闻内容" />
-							</div>
+							</div> -->
 						</div>
 						<div class="btn-box">
 							<button class="layui-btn layui-bg-green" lay-submit lay-filter="save">保存</button>
@@ -71,9 +71,37 @@
 				base: '../../../layuiadmin/' //静态资源所在路径
 			}).extend({
 				index: 'lib/index' //主入口模块
-			}).use(['index', "jquery", 'form'], function() {
+			}).use(['index', "jquery", 'form',"layedit"], function() {
 				var form = layui.form,
-					$ = layui.jquery;
+					$ = layui.jquery,
+					layedit = layui.layedit;
+					
+					
+					//todo  富文本编辑框
+					 //构建一个默认的编辑器
+					  var index = layedit.build('LAY_demo1',{
+						  width:"100"
+					  });
+					  
+					  //编辑器外部操作
+					  var active = {
+					    content: function(){
+					      alert(layedit.getContent(index)); //获取编辑器内容
+					    }
+					    ,text: function(){
+					      alert(layedit.getText(index)); //获取编辑器纯文本内容
+					    }
+					    ,selection: function(){
+					      alert(layedit.getSelection(index));
+					    }
+					  };
+					  
+					  $('.site-demo-layedit').on('click', function(){
+					    var type = $(this).data('type');
+					    active[type] ? active[type].call(this) : '';
+					  });
+					  
+					  
 					
 				form.on('submit(save)', function(data) {
 					axios({

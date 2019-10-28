@@ -59,11 +59,33 @@
 			display: flex;
 			justify-content: center;
 		}
+		p{
+			margin: 0rem;
+			padding: 0px;
+		}
 	</style>
 	<body>
 		<div class="layui-fluid" id="app">
 			<div class="layui-card">
 				<div class="layui-form layui-card-header layuiadmin-card-header-auto">
+					<div>
+						<div class="flex">
+							<p>企业 :</p>
+							<p>陕西西安卫康</p>
+						</div>
+						<div class="flex">
+							<p>监测点 :</p>
+							<p>陕西西安卫康</p>
+						</div>
+						<div class="flex">
+							<p>当前状态 :</p>
+							<p>陕西西安卫康</p>
+						</div>
+						<div class="flex">
+							<p>时间 :</p>
+							<p>陕西西安卫康</p>
+						</div>
+					</div>
 					<div class="data">实时数据</div>
 					<div class="flex">
 						<div class="bar">
@@ -213,7 +235,7 @@
 
 				axios({
 						method: "get",
-						url: BASEURL + "environmental_intelligent_monitoring/tdeviceequipstatus/info/" + parent.id,
+						url: BASEURL + "environmental_intelligent_monitoring/tdevicerealtime/info/" + parent.id,
 					})
 					.then(res => {
 						if (res.data.code == 0) {
