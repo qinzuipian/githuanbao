@@ -115,9 +115,9 @@
                         <div class="layui-input-inline" style="width: 315px;">
 
                             <!-- <input type="text" v-model="tDeviceMonitor.type" class="layui-input" placeholder="设备类型:1、生产设备 2、治污设备" /> -->
-                            <input type="radio" name="codeType" value="0" title="生产设备">
-                            <input type="radio" name="codeType" value="1" title="治污设备">
-                            <input type="radio" name="codeType" value="2" title="总进线">
+                            <input type="radio" disabled="" name="codeType" value="0" title="生产设备">
+                            <input type="radio" disabled="" name="codeType" value="1" title="治污设备">
+                            <input type="radio" disabled="" name="codeType" value="2" title="总进线">
                         </div>
 
                         <label for="bitian" class="layui-form-label" style="width: 60px;">
@@ -312,7 +312,7 @@
                             <span class="red">*</span>
                         </label>
                         <div class="layui-input-inline">
-                            <select name="collectType " id="collectType" lay-filter="collectType" lay-verify="required">
+                            <select name="collectType" disabled="" id="collectType" lay-filter="collectType" lay-verify="required">
                                 <option value="">请选择仪表类别</option>
                                 <option value="用电">用电</option>
                                 <option value="流量计">流量计</option>
@@ -375,7 +375,7 @@
                                 <span class="red">*</span>
                             </label>
                             <div class="layui-input-inline">
-                                <input type="text" name="zFrequen" id="zFrequen" lay-verify="required" class="layui-input" placeholder="Y轴震动主频率阀值" />
+                                <input type="text" name="yFrequen" id="yFrequen" lay-verify="required" class="layui-input" placeholder="Y轴震动主频率阀值" />
                             </div>
                         </div>
                     </div>
@@ -403,7 +403,7 @@
                                 <span class="red">*</span>
                             </label>
                             <div class="layui-input-inline">
-                                <input type="text" name="yFrequen" id="yFrequen" lay-verify="required" class="layui-input" placeholder="Z轴震动主频率阀值" />
+                                <input type="text" name="zFrequen" id="zFrequen" lay-verify="required" class="layui-input" placeholder="Z轴震动主频率阀值" />
                             </div>
                         </div>
                     </div>
@@ -789,13 +789,13 @@
                             , "xAccelerat": Devicedata.xAccelerat
                             , "radarProport": Devicedata.radarProport
                             , "radarCount": Devicedata.radarCount
-                            , "xAccelerat": Devicedata.xAccelerat
+                            , "xFrequen": Devicedata.xFrequen
                             , "currentSpeed": Devicedata.currentSpeed
                             , "temperature": Devicedata.temperature
                             , "yAccelerat": Devicedata.yAccelerat
                             , "flow": Devicedata.flow
                             , "zAccelerat": Devicedata.zAccelerat
-                            , "xFrequen": Devicedata.xFrequen
+                            , "zFrequen": Devicedata.zFrequen
                             , "yFrequen": Devicedata.yFrequen
                         });
                         vm.shopId = Devicedata.shopId;

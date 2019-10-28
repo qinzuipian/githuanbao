@@ -24,6 +24,11 @@
         .el-table th {
             padding: 10px;
         }
+        .pline {
+            padding: 10px;
+            margin-left: 20px;
+            font-weight: 700;
+        }
     </style>
 </head>
 
@@ -33,7 +38,7 @@
             <!-- <label for="bitian" class="layui-form-label">
                
             </label> -->
-            <p> 产污监测点</p>
+            <p class="pline"> 产污监测点</p>
             <!--  <div class="layui-input-inline">
                 <el-select v-model="product" @change="productSelect" placeholder="请选择">
                     <el-option v-for="item in productOptions" :key="item.value" :label="item.productName" :value="item.productId">
@@ -44,7 +49,7 @@
                 <i class="layui-icon layui-icon-add-1"></i>
             </button> -->
         </div>
-        <div style="padding: 10px;">
+        <div style="padding: 0 10px 10px 10px;">
             <el-table :data="productData" stripe style="width: 100%;">
                 <el-table-column prop="shopName" label="生产单元" width="180">
                 </el-table-column>
@@ -84,7 +89,7 @@
                 <i class="layui-icon layui-icon-add-1"></i>
             </button>
         </div>
-        <div style="padding: 10px;">
+        <div style="padding: 0 10px 10px 10px;">
             <el-table :data="treatData" stripe style="width: 100%">
                 <el-table-column prop="shopName" label="生产单元" width="180">
                 </el-table-column>

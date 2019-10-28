@@ -398,7 +398,7 @@
                                 <span class="red">*</span>
                             </label>
                             <div class="layui-input-inline">
-                                <input type="text" name="zFrequen" id="zFrequen" lay-verify="required" class="layui-input" placeholder="Y轴震动主频率阀值" />
+                                <input type="text" name="yFrequen" id="yFrequen" lay-verify="required" class="layui-input" placeholder="Y轴震动主频率阀值" />
                             </div>
                         </div>
 
@@ -425,7 +425,7 @@
                                 <span class="red">*</span>
                             </label>
                             <div class="layui-input-inline">
-                                <input type="text" name="yFrequen" id="yFrequen" lay-verify="required" class="layui-input" placeholder="Z轴震动主频率阀值" />
+                                <input type="text" name="zFrequen" id="zFrequen" lay-verify="required" class="layui-input" placeholder="Z轴震动主频率阀值" />
                             </div>
                         </div>
 
@@ -767,7 +767,7 @@
                 data.field.meterId = vm.meterCode;
                 data.field.mn = vm.tnCode;
                 console.log(data.field);
-                console.log(vm.selectShow)
+                // console.log(vm.selectShow)
                 /*    data.field.ecPolluteType = $("#ecPolluteType option:selected").text();
                    data.field.ecType = $("#ecType option:selected").text();
                    data.field.route = $("#route option:selected").text(); */
@@ -781,12 +781,12 @@
                 }).then(function (res) {
                     if (res.data.code == 0) {
                         console.log(res)
-                        layer.msg('保存成功！', {
-                            time: 500
-                        }, function () {
-                            window.parent.location.reload();
-                            parent.layer.close('iframe');
-                        });
+                        // layer.msg('保存成功！', {
+                        //     time: 500
+                        // }, function () {
+                        //     window.parent.location.reload();
+                        //     parent.layer.close('iframe');
+                        // });
                     } else {
                         vm.$notify.error({
                             title: '错误',
