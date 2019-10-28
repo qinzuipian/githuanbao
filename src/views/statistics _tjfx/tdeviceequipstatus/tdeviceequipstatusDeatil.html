@@ -68,22 +68,22 @@
 		<div class="layui-fluid" id="app">
 			<div class="layui-card">
 				<div class="layui-form layui-card-header layuiadmin-card-header-auto">
-					<div>
+					<div style="display: flex;justify-content: space-between;">
 						<div class="flex">
 							<p>企业 :</p>
-							<p>陕西西安卫康</p>
+							<p v-text="enterpriseName"></p>
 						</div>
 						<div class="flex">
 							<p>监测点 :</p>
-							<p>陕西西安卫康</p>
+							<p v-text="monitorName"></p>
 						</div>
 						<div class="flex">
 							<p>当前状态 :</p>
-							<p>陕西西安卫康</p>
+							<p v-text="status"></p>
 						</div>
 						<div class="flex">
 							<p>时间 :</p>
-							<p>陕西西安卫康</p>
+							<p v-text="modifyDate"></p>
 						</div>
 					</div>
 					<div class="data">实时数据</div>
@@ -239,23 +239,33 @@
 					})
 					.then(res => {
 						if (res.data.code == 0) {
-							console.log(res.data.tDeviceEquipStatus.ia);
-							app.ia = res.data.tDeviceEquipStatus.ia; 
-							app.ib = res.data.tDeviceEquipStatus.ib;
-							app.ic = res.data.tDeviceEquipStatus.ic;
-							app.ua = res.data.tDeviceEquipStatus.ua;
-							app.ub = res.data.tDeviceEquipStatus.ub;
-							app.uc = res.data.tDeviceEquipStatus.uc;
-							app.pv = res.data.tDeviceEquipStatus.pv;
-							app.w = res.data.tDeviceEquipStatus.w;
-							app.q = res.data.tDeviceEquipStatus.q;
-							app.the = res.data.tDeviceEquipStatus.the;
-							app.pa = res.data.tDeviceEquipStatus.pa;
-							app.pb = res.data.tDeviceEquipStatus.pb;
-							app.pc = res.data.tDeviceEquipStatus.pc;
-							app.uab = res.data.tDeviceEquipStatus.uab;
-							app.ubc = res.data.tDeviceEquipStatus.ubc;
-							app.uca = res.data.tDeviceEquipStatus.uca;
+							app.monitorName = res.data.tDeviceRealtime.monitorName;
+							if(res.data.tDeviceRealtime.status == "1"){
+								app.status = "运行"
+							}else{
+								app.status = "失联"
+							}
+							app.modifyDate = res.data.tDeviceRealtime.modifyDate;
+							app.enterpriseName = res.data.tDeviceRealtime.enterpriseName;
+							
+							res.data.tDeviceRealtime.ia  ==  undefined ? 0:app.ia = res.data.tDeviceRealtime.ia
+							res.data.tDeviceRealtime.ib  ==  undefined ? 0:app.ib = res.data.tDeviceRealtime.ib
+							res.data.tDeviceRealtime.ic  ==  undefined ? 0:app.ib = res.data.tDeviceRealtime.ic
+							res.data.tDeviceRealtime.ua  ==  undefined ? 0:app.ua = res.data.tDeviceRealtime.ua
+							res.data.tDeviceRealtime.ub  ==  undefined ? 0:app.ub = res.data.tDeviceRealtime.ub
+							res.data.tDeviceRealtime.uc  ==  undefined ?0:app.uc = res.data.tDeviceRealtime.uc
+							res.data.tDeviceRealtime.pv  ==  undefined ?0:app.pv = res.data.tDeviceRealtime.pv
+							res.data.tDeviceRealtime.w  ==  undefined ?0:app.w = res.data.tDeviceRealtime.w
+							res.data.tDeviceRealtime.q  ==  undefined ?0:app.q = res.data.tDeviceRealtime.q
+							res.data.tDeviceRealtime.the  ==  undefined ?0:app.the = res.data.tDeviceRealtime.the
+							res.data.tDeviceRealtime.pa  ==  undefined ?0:app.pa = res.data.tDeviceRealtime.pa
+							res.data.tDeviceRealtime.pb  ==  undefined ?0:app.pb = res.data.tDeviceRealtime.pb
+							res.data.tDeviceRealtime.pc  ==  undefined ?0:app.pc = res.data.tDeviceRealtime.pc
+							res.data.tDeviceRealtime.uab  ==  undefined ?0:app.uab = res.data.tDeviceRealtime.uab
+							res.data.tDeviceRealtime.ubc  ==  undefined ?0:app.ubc = res.data.tDeviceRealtime.ubc
+							res.data.tDeviceRealtime.uca  ==  undefined ?0:app.uca = res.data.tDeviceRealtime.uca
+							
+							
 							form.val('editIndustry', {
 								"id": list.id,
 								"name": list.name,
@@ -273,22 +283,26 @@
 			var app = new Vue({
 				el: "#app",
 				data: {
-					ia:"",
-					ib:"",
-					ic:"",
-					ua:"",
-					ub:"",
-					uc:"",
-					pv:"",
-					w:"",
-					q:"",
-					the:"",
-					pa:"",
-					pb:"",
-					pc:"",
-					uab:"",
-					ubc:"",
-					uca:""
+					ia:0,
+					ib:0,
+					ic:0,
+					ua:0,
+					ub:0,
+					uc:0,
+					pv:0,
+					w:0,
+					q:0,
+					the:0,
+					pa:0,
+					pb:0,
+					pc:0,
+					uab:0,
+					ubc:0,
+					uca:0,
+					modifyDate:'',
+					enterpriseName:"",
+					monitorName:'',
+					status:""
 				}
 			})
 		</script>
