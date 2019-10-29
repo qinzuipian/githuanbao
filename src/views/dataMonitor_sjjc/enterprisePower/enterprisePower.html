@@ -99,7 +99,10 @@
 										data: vm.enterpriseTreeList,
 										id: 'enterpriseList',
 										click: function(obj) {
-											// console.log(obj.data); //得到当前点击的节点数据
+											console.log(obj.data); //得到当前点击的节点数据
+											if(obj.data.type == "t_device_monitor"){
+												vm.testNameTxt = obj.data.title
+											}
 											if (obj.data.type == "t_device_monitor") { // 如果当前点击的是监测点
 												vm.monitorId = obj.data.id;
 												layui.table.reload('testData', {

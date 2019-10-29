@@ -77,12 +77,12 @@
 }
 
 .test-time{
-	width: 30%;
+	width: 60%;
 	display: flex;
 }
 
 .export-box{
-	width: 30%;
+	width: 10%;
 	text-align: right;
 }
 .export-box button{

@@ -23,3 +23,25 @@ vm.$notify.error({
 	title: '错误',
 	message: res.data.msg
 })
+
+#### axios使用body传值
+
+axios({
+	method: "post",
+	url: BASEURL,
+	data: {
+	    
+	},
+	headers: {
+	    "Content-Type": "application/json;charset=UTF-8"
+	}
+}).then(function (res) {
+	if (res.data.code == 0) {
+	    
+	} else {
+	    vm.$notify.error({
+	        title: '错误',
+	        message: res.data.msg
+	    });
+	}
+})
