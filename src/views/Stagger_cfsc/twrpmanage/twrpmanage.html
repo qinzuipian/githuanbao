@@ -117,6 +117,7 @@
                 </div>
             </div>
         </div>
+        <script src="./../../../layuiadmin/plugin/polyfill.min.js"></script>
         <script src="./../../../layuiadmin/js/baseUrlConfig.js"></script>
         <script src="./../../../layuiadmin/layui/layui.js"></script>
         <script src="./../../../layuiadmin/plugin/vue.min.js"></script>
@@ -154,7 +155,7 @@
                 },
                 methods: {
                     // 获取单选框列表
-                    levelInit() {
+                    levelInit:function() {
                         axios({
                             method: "post",
                             url: BASEURL + 'environmental_intelligent_monitoring/tbizreduce/queryReduceList',
@@ -170,7 +171,7 @@
 
                     },
                     // 单选框选择事件改变
-                    levelChange(val) {
+                    levelChange:function(val) {
                         console.log(val);
                         vm.levelId = val;
                         vm.levelLength = val;
@@ -201,7 +202,7 @@
 
                     },
                     // 左右列表对应保存
-                    treeSave() {
+                    treeSave:function() {
                         if (vm.levelLength == "") {
                             vm.$notify.warning({
                                 title: '提示',
@@ -250,7 +251,7 @@
 
                     },
                     // 左右列表对应删除
-                    treeClear() {
+                    treeClear:function() {
                         if (vm.levelLength == "") {
                             vm.$notify.warning({
                                 title: '提示',
@@ -288,7 +289,7 @@
 
                     },
                     // 企业列表树状图
-                    enterPriseInit() {
+                    enterPriseInit:function() {
                         axios({
                             method: "post",
                             url: BASEURL + 'environmental_intelligent_monitoring/tdevicemonitor/list?limit=10000',
@@ -339,11 +340,11 @@
                         });
 
                     },
-                    atraClick() {
+                    atraClick:function() {
                         vm.atraShow = !vm.atraShow;
                     },
                     // 树状图组件
-                    treeDataInit() {
+                    treeDataInit:function() {
                         axios({
                             method: "post",
                             url: BASEURL + 'environmental_intelligent_monitoring/tbasorganize/dendrogramList',
@@ -376,7 +377,7 @@
                         });
 
                     },
-                    handleNodeClick(data, node) {
+                    handleNodeClick:function(data, node) {
                         console.log(data);
                         vm.atraName = data.title;
                         vm.treeHign = true;
@@ -426,7 +427,7 @@
                         // });
                     },
                     // 复选框选中
-                    manageCheck(data, node) {
+                    manageCheck:function(data, node) {
                         vm.monitoridList = [];
                         var data = this.$refs.tree.getCheckedNodes(true);
                         console.log(data)
@@ -525,7 +526,7 @@
                         // console.log(this.$refs.tree.getNode())
                     },
 
-                    mmmm(node, key, istrue) {
+                    mmmm:function(node, key, istrue) {
                         // console.log(node,key,istrue);
                         // console.log(this.$refs.tree.getCheckedNodes(true));
                         // var data = this.$refs.tree.getCheckedNodes(true);
@@ -612,7 +613,7 @@
                     },
 
                     // 搜索
-                    laySearch() {
+                    laySearch:function() {
                         axios({
                             method: "post",
                             url: BASEURL + 'environmental_intelligent_monitoring/tdevicemonitor/list?limit=10000',
@@ -667,7 +668,7 @@
                         });
                     }
                 },
-                created() {
+                created:function() {
                     this.levelInit();
                     this.enterPriseInit();
                     // 树状图调用

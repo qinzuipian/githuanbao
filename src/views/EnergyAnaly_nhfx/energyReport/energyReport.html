@@ -107,7 +107,8 @@
             </div>
         </div>
     </div>
-
+    <!-- <script src="./../../../layuiadmin/plugin/browser.min.js"></script> -->
+    <script src="./../../../layuiadmin/plugin/polyfill.min.js"></script>
     <script src="./../../../layuiadmin/layui/layui.js"></script>
     <script src="./../../../layuiadmin/plugin/vue.js"></script>
     <script src="./../../../layuiadmin/plugin/element.js"></script>
@@ -242,34 +243,56 @@
                 flag: ""
             },
             watch: {
-                timeDate(val) {
+                timeDate: function (val) {
                     this.enpriseDay(this.enpriseId)
                 },
-                yearDate(val) {
+                yearDate: function (val) {
                     this.enpriseYear(this.enpriseId)
                 },
-                monthDate(val) {
+                monthDate: function (val) {
                     this.enpriseMonth(this.enpriseId)
                 }
             },
             methods: {
+                // 为时间添加默认时间
+                timePicker: function () {
+                    console.log(this.timeShow)
+                    var now = new Date();
+                    var year = now.getFullYear(); //得到年份
+                    var month = now.getMonth() + 1; //得到月份
+                    var date = now.getDate(); //得到日期
+                    if (this.timeShow == 1) {
+                        // var defaultDate = `${year}-${month}-${date}`;
+                        var defaultDate = year + '-' + month + '-' + date;
+                        this.timeDate = defaultDate;
+                    } else if (this.timeShow == 2) {
+                        var defaultDate = year + "";
+                        this.yearDate = defaultDate;
+                    } else if (this.timeShow == 3) {
+                        var defaultDate = year + "" + month;
+                        this.monthDate = defaultDate;
+                    }
+                },
                 // select选择
-                timeSelect() {
+                timeSelect: function () {
                     if (this.timeType == 'year') {
                         vm.timeShow = 2;
+                        this.enpriseYear(this.enpriseId)
 
                     } else if (this.timeType == 'month') {
                         vm.timeShow = 3;
+                        this.enpriseMonth(this.enpriseId)
 
                     } else if (this.timeType == 'date') {
                         vm.timeShow = 1;
+                        this.enpriseDay(this.enpriseId)
                     } else {
                         vm.timeShow = 0;
                         this.enprisePlus(this.enpriseId)
                     }
-
+                    this.timePicker();
                 },
-                energyTreeInit() {
+                energyTreeInit: function () {
                     this.loading = true;
                     axios({
                         method: "post",
@@ -295,7 +318,7 @@
                         console.log(err);
                     });
                 },
-                handleNodeClick(data, node) {
+                handleNodeClick: function (data, node) {
                     if (data.type == "t_bas_enterprise") {
                         console.log(data)
                         this.enpriseName = data.title;
@@ -331,218 +354,246 @@
 
                 },
                 // 获取月份的时间
-                getMonthDays(year, month) {
+                getMonthDays: function (year, month) {
                     var thisDate = new Date(year, month, 0); //当天数为0 js自动处理为上一月的最后一天
                     return thisDate.getDate();
                 },
                 // 企业能耗统计报表按天统计
-                enpriseDay(enterpriseId) {
-                    axios({
-                        method: "post",
-                        url: BASEURL + 'environmental_intelligent_monitoring/tkwhhour/query',
-                        params: {
-                            dailyTime: this.timeDate,
-                            // enterpriseId: 89
-                            enterpriseId: enterpriseId
-                        }
-                    }).then(function (res) {
-                        if (res.data.code == 0) {
-                            console.log(res.data.data)
-                            var allData = res.data.data;
+                enpriseDay: function (enterpriseId) {
+                    if (enterpriseId != "") {
+                        axios({
+                            method: "post",
+                            url: BASEURL + 'environmental_intelligent_monitoring/tkwhhour/query',
+                            params: {
+                                dailyTime: this.timeDate,
+                                // enterpriseId: 89
+                                enterpriseId: enterpriseId
+                            }
+                        }).then(function (res) {
+                            if (res.data.code == 0) {
+                                console.log(res.data.data)
+                                var allData = res.data.data;
 
-                            allData.forEach(function (data) {
-                                console.log(data);
-                                var hourData = [];
-                                for (let key in data) {
-                                    if (key == 'monitorName') {
-                                        key = '监测点名称';
+                                allData.forEach(function (data) {
+                                    console.log(data);
+                                    var hourData = [];
+                                    for (let key in data) {
+                                        if (key == 'monitorName') {
+                                            key = '监测点名称';
+                                        }
+                                        hourData.push(key);
                                     }
-                                    hourData.push(key);
-                                }
-                                vm.dataTime = hourData;
-                                /*  var json = JSON.parse(JSON.stringify(data).replace(/monitorName/g,"监测点名称"));
-                                 hourData.push(json); */
+                                    vm.dataTime = hourData;
+                                    /*  var json = JSON.parse(JSON.stringify(data).replace(/monitorName/g,"监测点名称"));
+                                     hourData.push(json); */
+                                });
+
+                                vm.reportDataDay = allData;
+                                // vm.reportDataDay = [];
+                                // var allData = res.data.data;
+                                // var timeData = [];
+                                // for (var i = 0; i < 24; i++) {
+                                //     if (i < 10) {
+                                //         i = '0' + i;
+                                //     }
+                                //     timeData.push(i);
+                                // }
+                                // vm.dataTime = timeData;
+                                // function compare(property) {
+                                //     return function (a, b) {
+                                //         var value1 = a[property];
+                                //         var value2 = b[property];
+                                //         return value1 - value2;
+                                //     }
+                                // }
+                                // // console.log(timeData);
+                                // var dataItem = [];
+
+                                // allData.forEach(function (data) {
+                                //     console.log(data);
+                                //     var obj = {};
+                                //     var sortData = [];
+                                //     timeData.forEach(t1 => {
+
+                                //         let exist = data.tKwhlist.some(t2 => t1 == t2.time);
+                                //         console.log(exist);
+                                //         if (!exist) {
+                                //             sortData.push({
+                                //                 time: t1,
+                                //                 kwh: 0
+                                //             });
+                                //         }
+
+                                //     });
+                                //     // console.log(sortData)       
+                                //     data.tKwhlist.forEach(function (item) {
+                                //         sortData.push(item)
+                                //     })
+                                //     console.log(sortData)
+                                //     dataItem = sortData.sort(compare('time'));
+                                //     obj.monitorName = data.monitorName;
+                                //     obj.list = dataItem;
+                                //     vm.reportDataDay.push(obj);
+                                // })
+                                // console.log(vm.reportDataDay)
+                                vm.flag = '';
+                            } else if (res.data.code == 203) {
+                                vm.$notify({
+                                    title: '提示',
+                                    message: res.data.msg,
+                                    type: 'warning'
+                                });
+                                vm.flag = 'noData';
+                            } else {
+                                vm.$notify.error({
+                                    title: '错误',
+                                    message: res.data.msg
+                                });
+
+                            }
+                        })
+                            .catch(function (err) {
+                                console.log(err);
                             });
-
-                            vm.reportDataDay = allData;
-                            // vm.reportDataDay = [];
-                            // var allData = res.data.data;
-                            // var timeData = [];
-                            // for (var i = 0; i < 24; i++) {
-                            //     if (i < 10) {
-                            //         i = '0' + i;
-                            //     }
-                            //     timeData.push(i);
-                            // }
-                            // vm.dataTime = timeData;
-                            // function compare(property) {
-                            //     return function (a, b) {
-                            //         var value1 = a[property];
-                            //         var value2 = b[property];
-                            //         return value1 - value2;
-                            //     }
-                            // }
-                            // // console.log(timeData);
-                            // var dataItem = [];
-
-                            // allData.forEach(function (data) {
-                            //     console.log(data);
-                            //     var obj = {};
-                            //     var sortData = [];
-                            //     timeData.forEach(t1 => {
-
-                            //         let exist = data.tKwhlist.some(t2 => t1 == t2.time);
-                            //         console.log(exist);
-                            //         if (!exist) {
-                            //             sortData.push({
-                            //                 time: t1,
-                            //                 kwh: 0
-                            //             });
-                            //         }
-
-                            //     });
-                            //     // console.log(sortData)       
-                            //     data.tKwhlist.forEach(function (item) {
-                            //         sortData.push(item)
-                            //     })
-                            //     console.log(sortData)
-                            //     dataItem = sortData.sort(compare('time'));
-                            //     obj.monitorName = data.monitorName;
-                            //     obj.list = dataItem;
-                            //     vm.reportDataDay.push(obj);
-                            // })
-                            // console.log(vm.reportDataDay)
-                            vm.flag = '';
-                        } else if (res.data.code == 203) {
-                            vm.$notify({
-                                title: '提示',
-                                message: res.data.msg,
-                                type: 'warning'
-                            });
-                            vm.flag = 'noData';
-                        } else {
-                            vm.$notify.error({
-                                title: '错误',
-                                message: res.data.msg
-                            });
-
-                        }
-                    })
-                        .catch(function (err) {
-                            console.log(err);
+                    } else {
+                        vm.$notify({
+                            title: '提示',
+                            message: '请选择企业',
+                            type: 'warning'
                         });
+
+
+                    }
 
                 },
-
                 // 企业能耗统计报表按月统计
-                enpriseMonth(enterpriseId) {
+                enpriseMonth: function (enterpriseId) {
                     console.log(this.monthDate);
-                    var year = this.monthDate.substring(0, 4);
-                    var month = this.monthDate.substring(4, 6);
-                    var num = this.getMonthDays(year, month);
-                    console.log(num)
+                    if (enterpriseId != "") {
+                        var year = this.monthDate.substring(0, 4);
+                        var month = this.monthDate.substring(4, 6);
+                        var num = this.getMonthDays(year, month);
+                        console.log(num)
+                        axios({
+                            method: "post",
+                            url: BASEURL + 'environmental_intelligent_monitoring/tkwhdaily/query',
+                            params: {
+                                monthTime: this.monthDate,
+                                enterpriseId: enterpriseId,
+                                num: num
+                            }
+                        }).then(function (res) {
+                            if (res.data.code == 0) {
+                                var allData = res.data.data;
 
-                    axios({
-                        method: "post",
-                        url: BASEURL + 'environmental_intelligent_monitoring/tkwhdaily/query',
-                        params: {
-                            monthTime: this.monthDate,
-                            enterpriseId: enterpriseId,
-                            num: num
-                        }
-                    }).then(function (res) {
-                        if (res.data.code == 0) {
-                            var allData = res.data.data;
-
-                            allData.forEach(function (data) {
-                                var hourData = [];
-                                console.log(data);
-                                for (let key in data) {
-                                    console.log(key + '---' + data[key]);
-                                    if (key == 'monitorName') {
-                                        key = '监测点名称';
+                                allData.forEach(function (data) {
+                                    var hourData = [];
+                                    // console.log(data);
+                                    for (let key in data) {
+                                        // console.log(key + '---' + data[key]);
+                                        if (key == 'monitorName') {
+                                            key = '监测点名称';
+                                        }
+                                        hourData.push(key);
                                     }
-                                    hourData.push(key);
-                                }
-                                vm.dataTime = hourData;
-                                /*  var json = JSON.parse(JSON.stringify(data).replace(/monitorName/g,"监测点名称"));
-                                 hourData.push(json); */
-                            });
-                            vm.reportDataDay = allData;
-                            vm.flag = '';
-                        } else if (res.data.code == 203) {
-                            vm.$notify({
-                                title: '提示',
-                                message: res.data.msg,
-                                type: 'warning'
-                            });
-                            vm.flag = 'noData';
-                        } else {
-                            vm.$notify.error({
-                                title: '错误',
-                                message: res.data.msg
-                            });
+                                    vm.dataTime = hourData;
+                                    /*  var json = JSON.parse(JSON.stringify(data).replace(/monitorName/g,"监测点名称"));
+                                     hourData.push(json); */
+                                });
+                                vm.reportDataDay = allData;
+                                vm.flag = '';
+                            } else if (res.data.code == 203) {
+                                vm.$notify({
+                                    title: '提示',
+                                    message: res.data.msg,
+                                    type: 'warning'
+                                });
+                                vm.flag = 'noData';
+                            } else {
+                                vm.$notify.error({
+                                    title: '错误',
+                                    message: res.data.msg
+                                });
 
-                        }
-                    })
-                        .catch(function (err) {
-                            console.log(err);
+                            }
+                        })
+                            .catch(function (err) {
+                                console.log(err);
+                            });
+                    } else {
+                        vm.$notify({
+                            title: '提示',
+                            message: '请选择企业',
+                            type: 'warning'
                         });
+
+
+                    }
 
                 },
                 // 企业能耗统计报表按年统计
-                enpriseYear(enterpriseId) {
-                    axios({
-                        method: "post",
-                        url: BASEURL + 'environmental_intelligent_monitoring/tkwhmonthly/query',
-                        params: {
-                            yearTime: this.yearDate,
-                            enterpriseId: enterpriseId
-                        }
-                    }).then(function (res) {
-                        if (res.data.code == 0) {
-                            var allData = res.data.data;
+                enpriseYear: function (enterpriseId) {
+                    if (enterpriseId != "") {
+                        axios({
+                            method: "post",
+                            url: BASEURL + 'environmental_intelligent_monitoring/tkwhmonthly/query',
+                            params: {
+                                yearTime: this.yearDate,
+                                enterpriseId: enterpriseId
+                            }
+                        }).then(function (res) {
+                            if (res.data.code == 0) {
+                                var allData = res.data.data;
 
-                            allData.forEach(function (data) {
-                                var hourData = [];
-                                console.log(data);
-                                for (let key in data) {
-                                    console.log(key + '---' + data[key]);
-                                    if (key == 'monitorName') {
-                                        key = '监测点名称';
+                                allData.forEach(function (data) {
+                                    var hourData = [];
+                                    console.log(data);
+                                    for (let key in data) {
+                                        console.log(key + '---' + data[key]);
+                                        if (key == 'monitorName') {
+                                            key = '监测点名称';
+                                        }
+                                        hourData.push(key);
                                     }
-                                    hourData.push(key);
-                                }
-                                vm.dataTime = hourData;
-                                /*  var json = JSON.parse(JSON.stringify(data).replace(/monitorName/g,"监测点名称"));
-                                 hourData.push(json); */
-                            });
+                                    vm.dataTime = hourData;
+                                    /*  var json = JSON.parse(JSON.stringify(data).replace(/monitorName/g,"监测点名称"));
+                                     hourData.push(json); */
+                                });
 
-                            vm.reportDataDay = allData;
-                            vm.flag = '';
-                        } else if (res.data.code == 203) {
-                            vm.$notify({
-                                title: '提示',
-                                message: res.data.msg,
-                                type: 'warning'
-                            });
-                            vm.flag = 'noData';
-                        } else {
-                            vm.$notify.error({
-                                title: '错误',
-                                message: res.data.msg
-                            });
+                                vm.reportDataDay = allData;
+                                vm.flag = '';
+                            } else if (res.data.code == 203) {
+                                vm.$notify({
+                                    title: '提示',
+                                    message: res.data.msg,
+                                    type: 'warning'
+                                });
+                                vm.flag = 'noData';
+                            } else {
+                                vm.$notify.error({
+                                    title: '错误',
+                                    message: res.data.msg
+                                });
 
-                        }
+                            }
 
-                    })
-                        .catch(function (err) {
-                            console.log(err);
+                        })
+                            .catch(function (err) {
+                                console.log(err);
+                            });
+                    }
+                    else {
+                        vm.$notify({
+                            title: '提示',
+                            message: '请选择企业',
+                            type: 'warning'
                         });
+
+                    }
 
                 },
                 // 企业能耗统计报表累计统计
-                enprisePlus(enterpriseId) {
+                enprisePlus: function (enterpriseId) {
                     if (enterpriseId != "") {
                         axios({
                             method: "post",
@@ -659,7 +710,7 @@
 
 
                 },
-                downExport() {
+                downExport: function () {
                     // 数据处理
                     if (vm.flag == 'noData') {
                         vm.$message.warning('无数据导出');
@@ -716,8 +767,10 @@
 
                 }
             },
-            created() {
+            created: function () {
                 this.energyTreeInit();
+                // 默认时间
+                this.timePicker();
             }
         })
     </script>

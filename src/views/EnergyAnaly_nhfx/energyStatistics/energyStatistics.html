@@ -14,7 +14,6 @@
         .AdminArea {
             position: relative;
         }
-
         .AdminArea .Areashow {
             position: absolute;
             width: 100%;
@@ -25,7 +24,6 @@
             background-color: #fff;
 
         }
-
         .AdminArea .layui-icon {
             position: absolute;
             top: -5px;
@@ -33,7 +31,6 @@
             cursor: pointer;
             color: #c2c2c2;
         }
-
         .layuiadmin-big-font span {
             font-weight: normal;
             font-size: 18px;
@@ -153,7 +150,6 @@
                                             </div>
                                         </div>
                                     </div>
-
                                     <div class="layui-col-md12">
                                         <h3>用电量峰值</h3>
                                         <div class="grid-demo grid-demo-bg2">
@@ -166,9 +162,7 @@
                                                     <p class="layuiadmin-big-font">{{Nelectricity.nowkWh}}
                                                         <span>kW·h</span>
                                                     </p>
-
                                                     <!-- <p> -->
-
                                                     <span class="layuiadmin-span-color">
                                                         <i class="layui-inline layui-icon layui-icon-date"></i>{{Nelectricity.nowday}}:00
                                                     </span>
@@ -189,7 +183,6 @@
                                                         <span>kW·h</span>
                                                     </p>
                                                     <!-- <p> -->
-
                                                     <span class="layuiadmin-span-color">
                                                         <i class="layui-inline layui-icon layui-icon-date"></i>{{Yelectricity.nowday}}:00
                                                     </span>
@@ -259,13 +252,10 @@
                                                     <p class="layuiadmin-big-font">9
                                                         <span>kwh</span>
                                                     </p>
-
                                                 </div>
                                             </div>
                                         </div>
                                     </div> -->
-
-
                                     <div class="layui-col-md4" v-for="(item,index) in EleRadius[1]" :key="'info2-'+index">
                                         <div class="grid-demo grid-demo-bg2">
                                             <div class="layui-card">
@@ -285,14 +275,11 @@
                                                     <p class="layuiadmin-big-font">{{item.kwh}}
                                                         <span>KWh</span>
                                                     </p>
-
-
                                                 </div>
                                                 <div class="layui-card-body layuiadmin-card-list" v-else-if="item.flag == 'y'">
                                                     <p class="layuiadmin-big-font">{{item.kwh}}
                                                         <span>KWh</span>
                                                     </p>
-
                                                 </div>
                                                 <div class="layui-card-body layuiadmin-card-list" v-else>
                                                     <p>
@@ -305,7 +292,6 @@
                                             </div>
                                         </div>
                                     </div>
-
                                     <!-- <div class="layui-col-md4">
                                         <div class="grid-demo grid-demo-bg2">
                                             <div class="layui-card">
@@ -322,7 +308,6 @@
                                             </div>
                                         </div>
                                     </div> -->
-
                                     <div class="layui-col-md4" v-for="(item,index) in EleRadius[2]" :key="'info3-'+index">
                                         <div class="grid-demo grid-demo-bg2">
                                             <div class="layui-card">
@@ -342,14 +327,11 @@
                                                     <p class="layuiadmin-big-font">{{item.kwh}}
                                                         <span>KWh</span>
                                                     </p>
-
-
                                                 </div>
                                                 <div class="layui-card-body layuiadmin-card-list" v-else-if="item.flag == 'y'">
                                                     <p class="layuiadmin-big-font">{{item.kwh}}
                                                         <span>KWh</span>
                                                     </p>
-
                                                 </div>
                                                 <div class="layui-card-body layuiadmin-card-list" v-else>
                                                     <p>
@@ -362,9 +344,6 @@
                                             </div>
                                         </div>
                                     </div>
-
-
-
                                 </div>
                             </div>
                             <div class="layui-col-md7">
@@ -409,14 +388,15 @@
             </div>
         </div>
     </div>
-
+    <script src="./../../../layuiadmin/plugin/browser.min.js"></script>
+    <script src="./../../../layuiadmin/plugin/polyfill.min.js"></script>
     <script src="./../../../layuiadmin/layui/layui.js"></script>
     <script src="./../../../layuiadmin/plugin/vue.js"></script>
     <script src="./../../../layuiadmin/plugin/element.js"></script>
     <script src="./../../../layuiadmin/plugin/axios.js"></script>
     <script src="./../../../layuiadmin/plugin/echarts.min.js"></script>
     <script src="./../../../layuiadmin/js/baseUrlConfig.js"></script>
-    <script>
+    <script type="text/babel">
         layui.config({
             base: '../../../layuiadmin/' //静态资源所在路径
         }).extend({
@@ -510,7 +490,6 @@
                         pt: 0,
                         pb: 0
                     }]
-
                 ],
                 industryId: "",
                 atraId: "",
@@ -519,11 +498,11 @@
 
             },
             methods: {
-                AdminFocus() {
+                AdminFocus:function() {
                     vm.Areashow = !vm.Areashow;
                 },
                 // 行政区域列表数据的获取
-                treeDataInit() {
+                treeDataInit:function() {
                     axios({
                         method: "post",
                         url: BASEURL + 'environmental_intelligent_monitoring/tbasorganize/dendrogramList',
@@ -543,9 +522,8 @@
                     }).catch(function (err) {
                         console.log(err);
                     });
-
                 },
-                handleNodeClick(data, node) {
+                handleNodeClick:function(data, node) {
                     console.log(data, node)
                     vm.atraName = data.title;
                     vm.atraId = data.id;
@@ -570,7 +548,7 @@
 
                 },
                 // 大页面的按钮切换
-                energyShowClick(val) {
+                energyShowClick:function(val) {
                     if (val == 1) {
                         this.energyShow = 1;
 
@@ -653,7 +631,7 @@
                     }
                     vm.EleRadius = [];
                 },
-                electriClick(value) {
+                electriClick:function(value) {
                     console.log(value);
                     if (value == 1) {
                         this.electricShow = 1;
@@ -669,13 +647,12 @@
                     }
 
                 },
-                radiusClick(value) {
+                radiusClick:function(value) {
                     if (value == 1) {
                         this.radiusShow = 1;
                     } else {
                         this.radiusShow = 2;
                     }
-
                     if (this.energyShow == 1) {
                         if (this.electricShow == 1) {
                             // 电能趋势按日统计
@@ -710,7 +687,7 @@
 
 
                 },
-                shopClick(value) {
+                shopClick:function(value) {
                     if (value == 1) {
                         this.shopShow = 1;
                     } else {
@@ -750,7 +727,7 @@
 
                 },
                 // 用电排名
-                threeClick(val) {
+                threeClick:function(val) {
                     if (val == 1) {
                         this.threeShow = 1;
                         this.electricitySortDay(vm.enterpriseId)
@@ -760,12 +737,10 @@
                     } else {
                         this.threeShow = 3;
                         this.electricitySortYear(vm.enterpriseId)
-
                     }
-
                 },
                 // 企业列表填充
-                enterpriseInit() {
+                enterpriseInit:function() {
                     axios({
                         method: "post",
                         url: BASEURL + 'environmental_intelligent_monitoring/tbasenterprise/list?limit=10000',
@@ -783,7 +758,7 @@
                     });
 
                 }
-                , enterSelect(val) {
+                , enterSelect:function(val) {
                     console.log(val)
                     vm.enterpriseId = val;
                     this.electricityTop(vm.enterpriseId, vm.monitorId)
@@ -805,12 +780,9 @@
                         this.electricityYear(vm.enterpriseId, vm.monitorId);
                         this.electricitySortYear(vm.enterpriseId, vm.monitorId);
                     }
-
-
-
                 }
                 // 监测点列表展示
-                , monitorNameInit() {
+                , monitorNameInit:function() {
                     axios({
                         method: "post",
                         url: BASEURL + 'environmental_intelligent_monitoring/tdevicemonitor/list?limit=10000',
@@ -818,7 +790,6 @@
                     }).then(function (res) {
                         if (res.data.code == 0) {
                             vm.monitorNameOptions = res.data.page.list
-
                         } else {
 
                         }
@@ -826,7 +797,7 @@
                         console.log(err);
                     });
                 }
-                , monitorSelect(val) {
+                , monitorSelect:function(val) {
                     console.log(val);
                     vm.monitorId = val;
                     this.electricityTop(vm.enterpriseId, vm.monitorId)
@@ -839,13 +810,12 @@
                     } else if (this.electricShow == 2) {
                         // 电能趋势按月统计
                         this.electricityMonth(vm.enterpriseId, vm.monitorId);
-
                     } else {
                         this.electricityYear(vm.enterpriseId, vm.monitorId)
                     }
                 }
                 // 用电量峰值展示
-                , electricityTop(enterpriseId, monitorId) {
+                , electricityTop:function(enterpriseId, monitorId) {
                     // console.log(enterpriseId, monitorId)
                     axios({
                         method: "post",
@@ -866,7 +836,6 @@
                                     } else {
                                         vm.Nelectricity = data;
                                     }
-
                                 })
                             } else {
                                 vm.Yelectricity = {
@@ -879,16 +848,14 @@
                                 };
                             }
                             console.log(vm.electricity)
-
                         } else {
-
                         }
                     }).catch(function (err) {
                         console.log(err);
                     });
                 }
                 // 功率峰值展示
-                , powerInit(enterpriseId, monitorId) {
+                , powerInit:function(enterpriseId, monitorId) {
                     axios({
                         method: "post",
                         url: BASEURL + 'environmental_intelligent_monitoring/tdevicehistory/queryPowerPeak',
@@ -908,9 +875,7 @@
                                     } else {
                                         vm.NpowerData = data;
                                     }
-
                                 })
-
                             } else {
                                 vm.YpowerData = {
                                     nowday: "00:00",
@@ -922,17 +887,14 @@
                                 };
                             }
                             console.log(vm.powerData)
-
                         } else {
-
                         }
                     }).catch(function (err) {
                         console.log(err);
                     });
-
                 }
                 // 功率曲线展示
-                , powerEcharts(enterpriseId, monitorId) {
+                , powerEcharts:function(enterpriseId, monitorId) {
                     var myCharts = echarts.init(document.getElementById('energyId'));
                     myCharts.showLoading({
                         text: "加载中"
@@ -981,11 +943,9 @@
                                     yesdata.push({
                                         ysp: 0,
                                         ysday: t1
-
                                     });
                                 }
                             });
-
                             nowList.forEach(function (item) {
                                 console.log(item)
                                 nowdata.push(item)
@@ -1009,9 +969,7 @@
                             }
                             for (var i = 0; i < b.length; i++) {
                                 Byes.push(b[i].ysp);
-
                             }
-
                             var option = {
                                 title: {
                                     text: '功率曲线'
@@ -1056,23 +1014,17 @@
                                     }
                                 ]
                             };
-
                             myCharts.hideLoading();
                             myCharts.setOption(option, true)
-
-
-                            //   myCharts.resize();
-
-
+                            //myCharts.resize();
                         } else {
-
                         }
                     }).catch(function (err) {
                         console.log(err);
                     });
                 }
                 // 电能环比展示
-                , electricyRadius(enterpriseId, monitorId, industryId, atraId) {
+                , electricyRadius:function(enterpriseId, monitorId, industryId, atraId) {
                     var data = {};
                     if (enterpriseId == 0 && monitorId == 0) {
                         data.tradeId = industryId;
@@ -1195,7 +1147,7 @@
 
                 }
                 // 电能趋势按日统计
-                , electricityDay(enterpriseId, monitorId, industryId, atraId) {
+                , electricityDay:function(enterpriseId, monitorId, industryId, atraId) {
                     var type;
                     if (this.radiusShow == 1) {
                         type = 'same';
@@ -1333,7 +1285,7 @@
 
                 }
                 // 电能趋势按月统计
-                , electricityMonth(enterpriseId, monitorId, industryId, atraId) {
+                , electricityMonth:function(enterpriseId, monitorId, industryId, atraId) {
                     var type;
                     if (this.radiusShow == 1) {
                         type = 'same';
@@ -1471,7 +1423,7 @@
 
                 }
                 // 电能趋势按年统计
-                , electricityYear(enterpriseId, monitorId, industryId, atraId) {
+                , electricityYear:function(enterpriseId, monitorId, industryId, atraId) {
                     var type;
                     if (this.radiusShow == 1) {
                         type = 'same';
@@ -1608,7 +1560,7 @@
                         });
                 }
                 // 用电排名按日统计
-                , electricitySortDay(enterpriseId, industryId, atraId) {
+                , electricitySortDay:function(enterpriseId, industryId, atraId) {
                     var type;
                     if (this.shopShow == 1) {
                         type = "shop";
@@ -1719,7 +1671,7 @@
 
                 }
                 // 用电排名按月统计
-                , electricitySortMonth(enterpriseId, industryId, atraId) {
+                , electricitySortMonth:function(enterpriseId, industryId, atraId) {
                     var type;
                     if (this.shopShow == 1) {
                         type = "shop";
@@ -1827,7 +1779,7 @@
 
                 }
                 // 用电排名按年统计
-                , electricitySortYear(enterpriseId, industryId, atraId) {
+                , electricitySortYear:function(enterpriseId, industryId, atraId) {
                     var type;
                     if (this.shopShow == 1) {
                         type = "shop";
@@ -1935,7 +1887,7 @@
 
                 }
                 // 行业列表选择框填充
-                , industryInit() {
+                , industryInit:function() {
                     axios({
                         method: "post",
                         url: BASEURL + 'environmental_intelligent_monitoring/tbastrade/list?limit=10000',
@@ -1952,7 +1904,7 @@
                         console.log(err);
                     });
                 },
-                industrySelect(val) {
+                industrySelect:function(val) {
                     vm.industryId = val;
                     this.electricyRadius(0, 0, vm.industryId);
                     if (this.electricShow == 1) {
@@ -1974,14 +1926,14 @@
 
                 }
             },
-            mounted() {
+            mounted:function() {
                 this.powerEcharts(-1, 0);
                 // 电能趋势按日统计
                 this.electricityDay(-1, 0);
                 // 用电排名按日统计
                 // this.electricitySortDay(-2)
             }
-            , created() {
+            , created:function() {
                 this.treeDataInit();
                 this.enterpriseInit();
                 this.monitorNameInit();

@@ -104,7 +104,7 @@
             </div>
         </div>
     </div>
-
+    <script src="./../../../layuiadmin/plugin/polyfill.min.js"></script>
     <script src="./../../../layuiadmin/layui/layui.js"></script>
     <script src="./../../../layuiadmin/plugin/vue.js"></script>
     <script src="./../../../layuiadmin/plugin/element.js"></script>
@@ -254,7 +254,7 @@
                 flag: ""
             },
             watch: {
-                endDate(val) {
+                endDate:function(val) {
                     console.log(val);
                     if (this.enterpriseId == "") {
                         this.$notify({
@@ -266,7 +266,7 @@
                         this.enterpriseInit();
                     }
                 },
-                endYearDate(val) {
+                endYearDate:function(val) {
                     if (this.enterpriseId == "") {
                         this.$notify({
                             title: '提示',
@@ -277,7 +277,7 @@
                         this.enterpriseInit();
                     }
                 },
-                endMonthDate(val) {
+                endMonthDate:function(val) {
                     if (this.enterpriseId == "") {
                         this.$notify({
                             title: '提示',
@@ -293,7 +293,7 @@
             },
             methods: {
 
-                timeSelect(val) {
+                timeSelect:function(val) {
                     // console.log(val)
                     if (val == 'year') {
                         vm.timeShow = 2;
@@ -304,7 +304,7 @@
                     }
 
                 },
-                energyTreeInit() {
+                energyTreeInit:function() {
                     this.loading = true;
                     axios({
                         method: "post",
@@ -333,7 +333,7 @@
                         console.log(err);
                     });
                 },
-                handleNodeClick(data, node) {
+                handleNodeClick:function(data, node) {
                     this.enterpriseName = data.title;
                     console.log(data)
                     if (data.type == "t_bas_enterprise") {
@@ -367,7 +367,7 @@
 
                 },
                 // 企业用电量汇总表
-                enterpriseInit() {
+                enterpriseInit:function() {
                     var type, startTime, endTime;
                     if (this.timeType == 'year') {
                         type = 'year';
@@ -433,7 +433,7 @@
                         });
                 },
                 // excel表导出
-                enterpriseDownload() {
+                enterpriseDownload:function() {
                     if (vm.flag == 'noData') {
                         vm.$message.warning('无数据导出');
                     } else {
@@ -471,7 +471,7 @@
                     }
                 }
             },
-            created() {
+            created:function() {
                 this.energyTreeInit();
             }
         })

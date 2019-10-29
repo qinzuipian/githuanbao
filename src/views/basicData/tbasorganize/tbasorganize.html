@@ -89,15 +89,15 @@
 		</div>
 	</div>
 
-
-	<script src="../../../layuiadmin/layui/layui.js"></script>
+	<script src="./../../../layuiadmin/plugin/polyfill.min.js"></script>
+	<script src="../../../layuiadmin/layui/layui.js"></script>	
 	<script src="../../../layuiadmin/plugin/vue.js"></script>
 	<script src="../../../layuiadmin/plugin/axios.js"></script>
 	<script src="../../../layuiadmin/js/baseUrlConfig.js"></script>
 	<script src="../../../layuiadmin/plugin/element.js"></script>
 	<script>
 		layui.config({
-			base: '../../../layuiadmin/' //静态资源所在路径
+			base: './../../../layuiadmin/' //静态资源所在路径
 		}).extend({
 			index: 'lib/index' //主入口模块
 		}).use(['index', 'table', 'form', 'tree', 'layer', 'jquery'], function () {
@@ -234,7 +234,7 @@
 				loading: true
 			},
 			methods: {
-				handleNodeClick(data, node) {
+				handleNodeClick:function(data, node) {
 					console.log(data, node);
 					vm.treeHign = true;
 					// console.log(node.parent.childNodes[0].parent.data.label)
@@ -285,7 +285,7 @@
 					// });
 				},
 				// 获取树状组件的data值
-				organizeTree() {
+				organizeTree:function() {
 					this.loading = true;
 					axios({
 						method: "post",
@@ -325,11 +325,10 @@
 					}).catch(function (err) {
 						console.log(err);
 					});
-				},
-
+				}
 			},
 
-			created() {
+			created:function() {
 				this.organizeTree();
 			}
 		})

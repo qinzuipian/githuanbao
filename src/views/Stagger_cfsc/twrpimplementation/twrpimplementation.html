@@ -98,7 +98,7 @@
             </div>
         </div>
     </div>
-
+    <script src="./../../../layuiadmin/plugin/polyfill.min.js"></script>
     <script src="../../../layuiadmin/layui/layui.js"></script>
     <script src="../../../layuiadmin/plugin/vue.js"></script>
     <script src="../../../layuiadmin/plugin/axios.js"></script>
@@ -268,10 +268,10 @@
 
             },
             methods: {
-                AdminFocus() {
+                AdminFocus:function() {
                     vm.Areashow = !vm.Areashow;
                 },
-                treeDataInit() {
+                treeDataInit:function() {
                     axios({
                         method: "post",
                         url: BASEURL + 'environmental_intelligent_monitoring/tbasorganize/dendrogramList',
@@ -304,7 +304,7 @@
                     });
 
                 },
-                handleNodeClick(data, node) {
+                handleNodeClick:function(data, node) {
                     console.log(data);
                     vm.atraName = data.title;
                     vm.treeHign = true;
@@ -355,7 +355,7 @@
                 },
 
                 // 导出
-                downloadClick() {
+                downloadClick:function() {
                     console.log(vm.startDate, vm.endDate, vm.atraName, vm.trade, vm.enterpriseName)
                     location =
                         BASEURL +
@@ -376,7 +376,7 @@
                     // });
                 }
             },
-            created() {
+            created:function() {
                 this.treeDataInit();
             }
         });
