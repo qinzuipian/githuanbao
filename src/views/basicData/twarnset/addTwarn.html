@@ -45,7 +45,7 @@
             border: 1px solid #e6e6e6;
             border-radius: 4px;
             height: 160px;
-            overflow-y: scroll;
+            overflow-y: auto;
         }
 
         .red {
@@ -276,14 +276,34 @@
                     console.log(data);
                     vm.treeLabel = data.label;
                     vm.monitorId = data.id;
-
                 },
+                // twarnInit() {
+                //     // 监测点树状组件
+                //     axios({
+                //         method: "post",
+                //         url: BASEURL + 'environmental_intelligent_monitoring/tbasorganize/dendrogramList',
+                //         params: { type: "5" }
+                //     }).then(function (res) {
+                //         if (res.data.code == 0) {
+                //             var data = res.data.data;
+                //             vm.WarntreeData = data;
 
+                //         } else {
+                //             vm.$notify.error({
+                //                 title: '错误',
+                //                 message: res.data.msg
+                //             });
+
+                //         }
+                //     }).catch(function (err) {
+                //         console.log(err);
+                //     });
+                // },
                 twarnInit() {
                     // 监测点树状组件
                     axios({
                         method: "post",
-                        url: BASEURL + 'environmental_intelligent_monitoring/tdevicemonitor/list',
+                        url: BASEURL + 'environmental_intelligent_monitoring/tdevicemonitor/list?limit=10000',
                         params: {}
                     }).then(function (res) {
                         if (res.data.code == 0) {
@@ -293,12 +313,29 @@
                                 // console.log(data)
                                 for (var i = 0; i < newList.length; i++) {
                                     if (newList[i].id === data.enterpriseId) {
-                                        newList[i].children.push({
-                                            label: data.shopName,
-                                            children: [{ label: data.monitorName, id: data.id }]
-                                        });
+                                        for (var j = 0; j < newList[i].children.length; j++) {
+                                            if (newList[i].children[j].label === data.shopName) {
+                                                newList[i].children[j].children.push({
+                                                    label: data.monitorName, id: data.id
+                                                });
+                                                console.log(data.shopName)
+
+                                            } else {
+                                                newList[i].children.push({
+                                                    label: data.shopName,
+                                                    children: [{ label: data.monitorName, id: data.id }]
+                                                });
+
+                                            }
+                                            return;
+                                        }
+
+                                        // newList[i].children.push({
+                                        //     label: data.shopName,
+                                        //     children: [{ label: data.monitorName, id: data.id }]
+                                        // });
                                         newList[i].num++;
-                                        return;
+                                        // return;
                                     }
                                 }
                                 newList.push({
@@ -306,6 +343,7 @@
                                     id: data.enterpriseId,
                                     num: 1,
                                     children: [{
+                                        // shopName: data.shopName,
                                         label: data.shopName,
                                         children: [{ label: data.monitorName, id: data.id }]
                                     }]

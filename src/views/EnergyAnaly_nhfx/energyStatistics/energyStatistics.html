@@ -14,6 +14,7 @@
         .AdminArea {
             position: relative;
         }
+
         .AdminArea .Areashow {
             position: absolute;
             width: 100%;
@@ -24,6 +25,7 @@
             background-color: #fff;
 
         }
+
         .AdminArea .layui-icon {
             position: absolute;
             top: -5px;
@@ -31,6 +33,7 @@
             cursor: pointer;
             color: #c2c2c2;
         }
+
         .layuiadmin-big-font span {
             font-weight: normal;
             font-size: 18px;
@@ -355,7 +358,7 @@
                                         <button type="button" :class="{'active': electricShow == 3}" @click="electriClick(3)" class="layui-btn layui-btn-sm layui-btn-warm">年</button>
                                     </div>
                                     <div class="btn-radius">
-                                        <button type="button" :class="{'active': radiusShow == 1}" @click="radiusClick(1)" class="layui-btn layui-btn-sm layui-btn-warm">同比</button>
+                                        <button type="button" :class="{'active': radiusShow == 1}" v-show="tongbiShow" @click="radiusClick(1)" class="layui-btn layui-btn-sm layui-btn-warm">同比</button>
                                         <button type="button" :class="{'active': radiusShow == 2}" @click="radiusClick(2)" class="layui-btn layui-btn-sm layui-btn-warm">环比</button>
                                     </div>
                                     <div style="width:100%; height: 350px;" id="electricityId">
@@ -409,8 +412,6 @@
                 laydate = layui.laydate;
 
         });
-
-
         var vm = new Vue({
             el: "#vm",
             data: {
@@ -494,7 +495,8 @@
                 industryId: "",
                 atraId: "",
                 // 用电排名
-                threeShow: 1
+                threeShow: 1,
+                tongbiShow:true
 
             },
             methods: {
@@ -524,7 +526,7 @@
                     });
                 },
                 handleNodeClick:function(data, node) {
-                    console.log(data, node)
+                    // console.log(data, node)
                     vm.atraName = data.title;
                     vm.atraId = data.id;
                     vm.treeHign = true;
@@ -632,7 +634,7 @@
                     vm.EleRadius = [];
                 },
                 electriClick:function(value) {
-                    console.log(value);
+                    // console.log(value);
                     if (value == 1) {
                         this.electricShow = 1;
                         // 电能趋势按日统计
@@ -759,7 +761,7 @@
 
                 }
                 , enterSelect:function(val) {
-                    console.log(val)
+                    // console.log(val)
                     vm.enterpriseId = val;
                     this.electricityTop(vm.enterpriseId, vm.monitorId)
                     this.powerInit(vm.enterpriseId, vm.monitorId)
@@ -798,7 +800,7 @@
                     });
                 }
                 , monitorSelect:function(val) {
-                    console.log(val);
+                    // console.log(val);
                     vm.monitorId = val;
                     this.electricityTop(vm.enterpriseId, vm.monitorId)
                     this.powerInit(vm.enterpriseId, vm.monitorId)
@@ -830,7 +832,7 @@
                             var data = res.data.data;
                             if (data.length != 0) {
                                 data.forEach(function (data) {
-                                    console.log(data);
+                                    // console.log(data);
                                     if (data.flag == "y") {
                                         vm.Yelectricity = data;
                                     } else {
@@ -847,7 +849,7 @@
                                     nowday: "00",
                                 };
                             }
-                            console.log(vm.electricity)
+                            // console.log(vm.electricity)
                         } else {
                         }
                     }).catch(function (err) {
@@ -869,7 +871,7 @@
                             var data = res.data.data;
                             if (data.length != 0) {
                                 data.forEach(function (data) {
-                                    console.log(data);
+                                    // console.log(data);
                                     if (data.flag == "y") {
                                         vm.YpowerData = data;
                                     } else {
@@ -886,7 +888,7 @@
                                     nowp: 0
                                 };
                             }
-                            console.log(vm.powerData)
+                            // console.log(vm.powerData)
                         } else {
                         }
                     }).catch(function (err) {
@@ -913,63 +915,64 @@
                             // 数据处理
                             var nowList = res.data.data.nowlist;
                             var yesList = res.data.data.yslist;
-                            var now = [];
-                            var yes = [];
-                            var nowdata = [];
-                            var yesdata = [];
-                            for (var i = 0; i < nowList.length; i++) {
-                                now.push(nowList[i].nowday);
-                            }
-                            for (var i = 0; i < yesList.length; i++) {
-                                yes.push(yesList[i].ysday);
-                            }
-                            console.log(now, yes);
-                            let RemoveSame = [...new Set([...now, ...yes])]
-                            RemoveSame.sort(function (a, b) {
-                                return a > b ? 1 : -1
-                            });
-                            console.log(RemoveSame);
-                            RemoveSame.forEach(t1 => {
-                                let exist = nowList.some(t2 => t1 == t2.nowday);
-                                let Ysexist = yesList.some(t2 => t1 == t2.ysday);
-                                console.log(exist);
-                                if (!exist) {
-                                    nowdata.push({
-                                        nowp: 0,
-                                        nowday: t1
-                                    });
-                                }
-                                if (!Ysexist) {
-                                    yesdata.push({
-                                        ysp: 0,
-                                        ysday: t1
-                                    });
-                                }
-                            });
-                            nowList.forEach(function (item) {
-                                console.log(item)
-                                nowdata.push(item)
-                            })
-                            yesList.forEach(function (item) {
-                                console.log(item)
-                                yesdata.push(item)
-                            })
-                            console.log(nowdata, yesdata);
-                            var a = nowdata.sort(function (a, b) {
-                                return a.nowday > b.nowday ? 1 : -1
-                            });
-                            var b = yesdata.sort(function (a, b) {
-                                return a.ysday > b.ysday ? 1 : -1
-                            });
-                            // console.log(a, b);
-                            var Anow = [];
-                            var Byes = [];
-                            for (var i = 0; i < a.length; i++) {
-                                Anow.push(a[i].nowp)
-                            }
-                            for (var i = 0; i < b.length; i++) {
-                                Byes.push(b[i].ysp);
-                            }
+                            var timeList = res.data.data.timelist;
+                            // var now = [];
+                            // var yes = [];
+                            // var nowdata = [];
+                            // var yesdata = [];
+                            // for (var i = 0; i < nowList.length; i++) {
+                            //     now.push(nowList[i].nowday);
+                            // }
+                            // for (var i = 0; i < yesList.length; i++) {
+                            //     yes.push(yesList[i].ysday);
+                            // }
+                            // // console.log(now, yes);
+                            // let RemoveSame = [...new Set([...now, ...yes])]
+                            // RemoveSame.sort(function (a, b) {
+                            //     return a > b ? 1 : -1
+                            // });
+                            // // console.log(RemoveSame);
+                            // RemoveSame.forEach(t1 => {
+                            //     let exist = nowList.some(t2 => t1 == t2.nowday);
+                            //     let Ysexist = yesList.some(t2 => t1 == t2.ysday);
+                            //     // console.log(exist);
+                            //     if (!exist) {
+                            //         nowdata.push({
+                            //             nowp: 0,
+                            //             nowday: t1
+                            //         });
+                            //     }
+                            //     if (!Ysexist) {
+                            //         yesdata.push({
+                            //             ysp: 0,
+                            //             ysday: t1
+                            //         });
+                            //     }
+                            // });
+                            // nowList.forEach(function (item) {
+                            //     // console.log(item)
+                            //     nowdata.push(item)
+                            // })
+                            // yesList.forEach(function (item) {
+                            //     // console.log(item)
+                            //     yesdata.push(item)
+                            // })
+                            // // console.log(nowdata, yesdata);
+                            // var a = nowdata.sort(function (a, b) {
+                            //     return a.nowday > b.nowday ? 1 : -1
+                            // });
+                            // var b = yesdata.sort(function (a, b) {
+                            //     return a.ysday > b.ysday ? 1 : -1
+                            // });
+                            // // console.log(a, b);
+                            // var Anow = [];
+                            // var Byes = [];
+                            // for (var i = 0; i < a.length; i++) {
+                            //     Anow.push(a[i].nowp)
+                            // }
+                            // for (var i = 0; i < b.length; i++) {
+                            //     Byes.push(b[i].ysp);
+                            // }
                             var option = {
                                 title: {
                                     text: '功率曲线'
@@ -994,23 +997,32 @@
                                 xAxis: {
                                     type: 'category',
                                     boundaryGap: false,
-                                    data: RemoveSame
+                                    // data: RemoveSame
+                                    data: timeList
                                 },
                                 yAxis: {
                                     type: 'value'
                                 },
+                                // dataZoom:{
+                                //     realtime:true, //拖动滚动条时是否动态的更新图表数据
+                                //     height:25,//滚动条高度
+                                //     start:20,//滚动条开始位置（共100等份）
+                                //     end:100//结束位置（共100等份）
+                                // }, 
                                 series: [
                                     {
                                         name: '今日',
                                         type: 'line',
                                         stack: '总量',
-                                        data: Anow
+                                        // data: Anow
+                                        data: nowList
                                     },
                                     {
                                         name: '昨日',
                                         type: 'line',
                                         stack: '总量',
-                                        data: Byes
+                                        // data: Byes
+                                        data: yesList
                                     }
                                 ]
                             };
@@ -1062,7 +1074,7 @@
                                 }
                                 powerbot = today - yestoday < 0 ? '-' + (today - yestoday) : '+' + (today - yestoday);
                                 powertop = isNaN(powerbot / today) === true ? 0 : ((powerbot / today).toFixed(2)) * 100;
-                                console.log(powerbot, powertop, today, yestoday)
+                                // console.log(powerbot, powertop, today, yestoday)
 
                             }
                             daily.push({
@@ -1135,7 +1147,7 @@
                                     pb: powerbot
                                 })
                             vm.EleRadius.push(daily, month, year)
-                            console.log(vm.EleRadius)
+                            // console.log(vm.EleRadius)
 
 
                         } else {
@@ -1181,59 +1193,60 @@
                         if (res.data.code == 0) {
                             var nowdata = res.data.now;
                             var ysNowdata = res.data.ys;
-                            var timeData = [];
-                            var nowData = [];
-                            var yesTodayData = [];
-                            for (var i = 0; i < 24; i++) {
-                                if (i < 10) {
-                                    i = '0' + i
-                                }
-                                timeData.push(i);
-                            }
+                            var timeData = res.data.timelist;
+                            // var timeData = [];
+                            // var nowData = [];
+                            // var yesTodayData = [];
+                            // for (var i = 0; i < 24; i++) {
+                            //     if (i < 10) {
+                            //         i = '0' + i
+                            //     }
+                            //     timeData.push(i);
+                            // }
 
-                            let c = [];
-                            let yes = [];
-                            timeData.forEach(t1 => {
-                                let exist = nowdata.some(t2 => t1 == t2.hour);
-                                let Ysexist = ysNowdata.some(t2 => t1 == t2.hour);
-                                console.log(exist);
-                                if (!exist) {
-                                    c.push({
-                                        hour: t1,
-                                        kwh: 0
-                                    });
-                                }
-                                if (!Ysexist) {
-                                    yes.push({
-                                        hour: t1,
-                                        kwh: 0
-                                    });
-                                }
-                            });
-                            nowdata.forEach(function (item) {
-                                console.log(item)
-                                c.push(item)
-                            })
-                            ysNowdata.forEach(function (item) {
-                                console.log(item)
-                                yes.push(item)
-                            })
-                            // console.log(c)
-                            function compare(property) {
-                                return function (a, b) {
-                                    var value1 = a[property];
-                                    var value2 = b[property];
-                                    return value1 - value2;
-                                }
-                            }
-                            var nowdata = c.sort(compare('hour'));
-                            var yesdata = yes.sort(compare('hour'));
-                            for (var i = 0; i < nowdata.length; i++) {
-                                nowData.push(nowdata[i].kwh);
-                            }
-                            for (var i = 0; i < yesdata.length; i++) {
-                                yesTodayData.push(yesdata[i].kwh);
-                            }
+                            // let c = [];
+                            // let yes = [];
+                            // timeData.forEach(t1 => {
+                            //     let exist = nowdata.some(t2 => t1 == t2.hour);
+                            //     let Ysexist = ysNowdata.some(t2 => t1 == t2.hour);
+                            //     // console.log(exist);
+                            //     if (!exist) {
+                            //         c.push({
+                            //             hour: t1,
+                            //             kwh: 0
+                            //         });
+                            //     }
+                            //     if (!Ysexist) {
+                            //         yes.push({
+                            //             hour: t1,
+                            //             kwh: 0
+                            //         });
+                            //     }
+                            // });
+                            // nowdata.forEach(function (item) {
+                            //     // console.log(item)
+                            //     c.push(item)
+                            // })
+                            // ysNowdata.forEach(function (item) {
+                            //     // console.log(item)
+                            //     yes.push(item)
+                            // })
+                            // // console.log(c)
+                            // function compare(property) {
+                            //     return function (a, b) {
+                            //         var value1 = a[property];
+                            //         var value2 = b[property];
+                            //         return value1 - value2;
+                            //     }
+                            // }
+                            // var nowdata = c.sort(compare('hour'));
+                            // var yesdata = yes.sort(compare('hour'));
+                            // for (var i = 0; i < nowdata.length; i++) {
+                            //     nowData.push(nowdata[i].kwh);
+                            // }
+                            // for (var i = 0; i < yesdata.length; i++) {
+                            //     yesTodayData.push(yesdata[i].kwh);
+                            // }
                             // console.log(yesTodayData)
                             // console.log(nowdata)
 
@@ -1264,12 +1277,14 @@
                                 },
                                 series: [{
                                     name: '今日',
-                                    data: nowData,
+                                    // data: nowData,
+                                    data: nowdata,
                                     barWidth: 10,
                                     type: 'bar'
                                 }, {
                                     name: '昨日',
-                                    data: yesTodayData,
+                                    // data: yesTodayData,
+                                    data: ysNowdata,
                                     barWidth: 10,
                                     type: 'bar'
                                 }]
@@ -1318,61 +1333,61 @@
                         if (res.data.code == 0) {
                             var nowdata = res.data.now;
                             var ysNowdata = res.data.ys;
-                            var timeData = [];
-                            var nowData = [];
-                            var yesTodayData = [];
-                            for (var i = 1; i < 32; i++) {
-                                if (i < 10) {
-                                    i = '0' + i
-                                }
-                                timeData.push(i);
-                            }
+                            var timeData = res.data.timelist;
+                            // var nowData = [];
+                            // var yesTodayData = [];
+                            // for (var i = 1; i < 32; i++) {
+                            //     if (i < 10) {
+                            //         i = '0' + i
+                            //     }
+                            //     timeData.push(i);
+                            // }
 
-                            let c = [];
-                            let yes = [];
-                            timeData.forEach(t1 => {
-                                let exist = nowdata.some(t2 => t1 == t2.day);
-                                let Ysexist = ysNowdata.some(t2 => t1 == t2.day);
-                                console.log(exist);
-                                if (!exist) {
-                                    c.push({
-                                        day: t1,
-                                        kwh: 0
-                                    });
-                                }
-                                if (!Ysexist) {
-                                    yes.push({
-                                        day: t1,
-                                        kwh: 0
-                                    });
-                                }
-                            });
-                            nowdata.forEach(function (item) {
-                                console.log(item)
-                                c.push(item)
-                            })
-                            ysNowdata.forEach(function (item) {
-                                console.log(item)
-                                yes.push(item)
-                            })
-                            // console.log(c)
-                            function compare(property) {
-                                return function (a, b) {
-                                    var value1 = a[property];
-                                    var value2 = b[property];
-                                    return value1 - value2;
-                                }
-                            }
-                            var nowdata = c.sort(compare('day'));
-                            var yesdata = yes.sort(compare('day'));
-                            for (var i = 0; i < nowdata.length; i++) {
-                                nowData.push(nowdata[i].kwh);
-                            }
-                            for (var i = 0; i < yesdata.length; i++) {
-                                yesTodayData.push(yesdata[i].kwh);
-                            }
-                            // console.log(yesTodayData)
-                            // console.log(nowdata)
+                            // let c = [];
+                            // let yes = [];
+                            // timeData.forEach(t1 => {
+                            //     let exist = nowdata.some(t2 => t1 == t2.day);
+                            //     let Ysexist = ysNowdata.some(t2 => t1 == t2.day);
+                            //     // console.log(exist);
+                            //     if (!exist) {
+                            //         c.push({
+                            //             day: t1,
+                            //             kwh: 0
+                            //         });
+                            //     }
+                            //     if (!Ysexist) {
+                            //         yes.push({
+                            //             day: t1,
+                            //             kwh: 0
+                            //         });
+                            //     }
+                            // });
+                            // nowdata.forEach(function (item) {
+                            //     // console.log(item)
+                            //     c.push(item)
+                            // })
+                            // ysNowdata.forEach(function (item) {
+                            //     // console.log(item)
+                            //     yes.push(item)
+                            // })
+                            // // console.log(c)
+                            // function compare(property) {
+                            //     return function (a, b) {
+                            //         var value1 = a[property];
+                            //         var value2 = b[property];
+                            //         return value1 - value2;
+                            //     }
+                            // }
+                            // var nowdata = c.sort(compare('day'));
+                            // var yesdata = yes.sort(compare('day'));
+                            // for (var i = 0; i < nowdata.length; i++) {
+                            //     nowData.push(nowdata[i].kwh);
+                            // }
+                            // for (var i = 0; i < yesdata.length; i++) {
+                            //     yesTodayData.push(yesdata[i].kwh);
+                            // }
+                            // // console.log(yesTodayData)
+                            // // console.log(nowdata)
 
                             var electricity = echarts.init(document.getElementById("electricityId"));
                             var option = {
@@ -1401,12 +1416,13 @@
                                 },
                                 series: [{
                                     name: '当月',
-                                    data: nowData,
+                                    data: nowdata,
                                     barWidth: 10,
                                     type: 'bar'
                                 }, {
                                     name: '上月',
-                                    data: yesTodayData,
+                                    // data: yesTodayData,
+                                    data: ysNowdata,
                                     barWidth: 10,
                                     type: 'bar'
                                 }]
@@ -1423,13 +1439,15 @@
 
                 }
                 // 电能趋势按年统计
-                , electricityYear:function(enterpriseId, monitorId, industryId, atraId) {
-                    var type;
-                    if (this.radiusShow == 1) {
-                        type = 'same';
-                    } else {
-                        type = 'ring';
-                    }
+                , electricityYear:function(enterpriseId, monitorId, industryId, atraId) {             
+                    this.tongbiShow = false;
+                    this.radiusShow = 2;
+                    var type = 'ring' ;
+                    // if (this.radiusShow == 1) {
+                    //     type = 'same';
+                    // } else {
+                    //     type = 'ring';
+                    // }
                     var data = {};
                     if (enterpriseId == 0 && monitorId == 0) {
                         data.tradeId = industryId;
@@ -1456,59 +1474,59 @@
                         if (res.data.code == 0) {
                             var nowdata = res.data.now;
                             var ysNowdata = res.data.ys;
-                            var timeData = [];
-                            var nowData = [];
-                            var yesTodayData = [];
-                            for (var i = 1; i < 13; i++) {
-                                if (i < 10) {
-                                    i = '0' + i
-                                }
-                                timeData.push(i);
-                            }
+                            var timeData = res.data.timelist;
+                            // var nowData = [];
+                            // var yesTodayData = [];
+                            // for (var i = 1; i < 13; i++) {
+                            //     if (i < 10) {
+                            //         i = '0' + i
+                            //     }
+                            //     timeData.push(i);
+                            // }
 
-                            let c = [];
-                            let yes = [];
-                            timeData.forEach(t1 => {
-                                let exist = nowdata.some(t2 => t1 == t2.month);
-                                let Ysexist = ysNowdata.some(t2 => t1 == t2.month);
-                                console.log(exist);
-                                if (!exist) {
-                                    c.push({
-                                        month: t1,
-                                        kwh: 0
-                                    });
-                                }
-                                if (!Ysexist) {
-                                    yes.push({
-                                        month: t1,
-                                        kwh: 0
-                                    });
-                                }
-                            });
-                            nowdata.forEach(function (item) {
-                                console.log(item)
-                                c.push(item)
-                            })
-                            ysNowdata.forEach(function (item) {
-                                console.log(item)
-                                yes.push(item)
-                            })
-                            // console.log(c)
-                            function compare(property) {
-                                return function (a, b) {
-                                    var value1 = a[property];
-                                    var value2 = b[property];
-                                    return value1 - value2;
-                                }
-                            }
-                            var nowdata = c.sort(compare('month'));
-                            var yesdata = yes.sort(compare('month'));
-                            for (var i = 0; i < nowdata.length; i++) {
-                                nowData.push(nowdata[i].kwh);
-                            }
-                            for (var i = 0; i < yesdata.length; i++) {
-                                yesTodayData.push(yesdata[i].kwh);
-                            }
+                            // let c = [];
+                            // let yes = [];
+                            // timeData.forEach(t1 => {
+                            //     let exist = nowdata.some(t2 => t1 == t2.month);
+                            //     let Ysexist = ysNowdata.some(t2 => t1 == t2.month);
+                            //     // console.log(exist);
+                            //     if (!exist) {
+                            //         c.push({
+                            //             month: t1,
+                            //             kwh: 0
+                            //         });
+                            //     }
+                            //     if (!Ysexist) {
+                            //         yes.push({
+                            //             month: t1,
+                            //             kwh: 0
+                            //         });
+                            //     }
+                            // });
+                            // nowdata.forEach(function (item) {
+                            //     // console.log(item)
+                            //     c.push(item)
+                            // })
+                            // ysNowdata.forEach(function (item) {
+                            //     // console.log(item)
+                            //     yes.push(item)
+                            // })
+                            // // console.log(c)
+                            // function compare(property) {
+                            //     return function (a, b) {
+                            //         var value1 = a[property];
+                            //         var value2 = b[property];
+                            //         return value1 - value2;
+                            //     }
+                            // }
+                            // var nowdata = c.sort(compare('month'));
+                            // var yesdata = yes.sort(compare('month'));
+                            // for (var i = 0; i < nowdata.length; i++) {
+                            //     nowData.push(nowdata[i].kwh);
+                            // }
+                            // for (var i = 0; i < yesdata.length; i++) {
+                            //     yesTodayData.push(yesdata[i].kwh);
+                            // }
                             // console.log(yesTodayData)
                             // console.log(nowdata)
 
@@ -1539,12 +1557,13 @@
                                 },
                                 series: [{
                                     name: '当年',
-                                    data: nowData,
+                                    data: nowdata,
                                     barWidth: 40,
                                     type: 'bar'
                                 }, {
                                     name: '上年',
-                                    data: yesTodayData,
+                                    // data: yesTodayData,
+                                    data: ysNowdata,
                                     barWidth: 40,
                                     type: 'bar'
                                 }]

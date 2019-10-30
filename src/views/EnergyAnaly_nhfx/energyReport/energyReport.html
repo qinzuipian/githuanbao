@@ -256,7 +256,7 @@
             methods: {
                 // 为时间添加默认时间
                 timePicker: function () {
-                    console.log(this.timeShow)
+                    // console.log(this.timeShow)
                     var now = new Date();
                     var year = now.getFullYear(); //得到年份
                     var month = now.getMonth() + 1; //得到月份
@@ -320,26 +320,23 @@
                 },
                 handleNodeClick: function (data, node) {
                     if (data.type == "t_bas_enterprise") {
-                        console.log(data)
+                        // console.log(data)
                         this.enpriseName = data.title;
                         this.enpriseId = data.id;
 
                         if (this.timeType == 'year') {
-                            console.log(1)
                             if (this.yearDate == "") {
                                 vm.$message.warning('请输入日期')
                             } else {
                                 this.enpriseYear(this.enpriseId);
                             }
                         } else if (this.timeType == 'month') {
-                            console.log(2)
                             if (this.monthDate == "") {
                                 vm.$message.warning('请输入日期')
                             } else {
                                 this.enpriseMonth(this.enpriseId);
                             }
                         } else if (this.timeType == 'date') {
-                            console.log(3)
                             if (this.timeDate == "") {
                                 vm.$message.warning('请输入日期')
                             } else {
@@ -371,11 +368,11 @@
                             }
                         }).then(function (res) {
                             if (res.data.code == 0) {
-                                console.log(res.data.data)
+                                // console.log(res.data.data)
                                 var allData = res.data.data;
 
                                 allData.forEach(function (data) {
-                                    console.log(data);
+                                    // console.log(data);
                                     var hourData = [];
                                     for (let key in data) {
                                         if (key == 'monitorName') {
@@ -473,7 +470,7 @@
                         var year = this.monthDate.substring(0, 4);
                         var month = this.monthDate.substring(4, 6);
                         var num = this.getMonthDays(year, month);
-                        console.log(num)
+                        // console.log(num)
                         axios({
                             method: "post",
                             url: BASEURL + 'environmental_intelligent_monitoring/tkwhdaily/query',
@@ -607,12 +604,9 @@
 
                                 allData.forEach(function (data) {
                                     var hourData = [];
-                                    console.log(data);
-                                    for (let key in data) {
-                                        console.log(key + '---' + data[key]);
-                                        // if (key == 'monitorName') {
-                                        //     key = '监测点名称';
-                                        // }
+                                    // console.log(data);
+                                    for (var key in data) {
+                                        // console.log(key + '---' + data[key]);
                                         hourData.push(key);
                                     }
                                     vm.dataTime = hourData;

@@ -384,7 +384,9 @@
 
                         <div class="layui-inline" v-show="selectShow == 1">
                             <label for="bitian" class="layui-form-label">
-                                电量阀值(kW·h)</label>
+                                电量阀值(kW·h)
+                                <span class="red">*</span>
+                            </label>
                             <div class="layui-input-inline">
                                 <input type="text" name="powerLimit" id="powerLimit" class="layui-input" placeholder="电量阀值(kW·h)" />
                             </div>
@@ -412,7 +414,9 @@
                         </div>
                         <div class="layui-inline" v-show="selectShow == 1">
                             <label for="bitian" class="layui-form-label">
-                                电量门限时间(m)</label>
+                                电量门限时间(m)
+                                <span class="red">*</span>
+                            </label>
                             <div class="layui-input-inline">
                                 <input type="text" name="powerTime" id="powerTime" class="layui-input" placeholder="电量门限时间(分钟)" />
                             </div>
@@ -439,7 +443,9 @@
                         </div>
                         <div class="layui-inline" v-show="selectShow == 1">
                             <label for="bitian" class="layui-form-label">
-                                额定电压(V)</label>
+                                额定电压(V)
+                                <span class="red">*</span>
+                            </label>
                             <div class="layui-input-inline">
                                 <input type="text" name="ratedU" id="ratedU" class="layui-input" placeholder="额定电压(V)" />
                             </div>
