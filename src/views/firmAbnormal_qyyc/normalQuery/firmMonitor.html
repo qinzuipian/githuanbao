@@ -47,6 +47,18 @@
 			width: 33.3%;
 			text-align: center;
 		}
+
+		.more {
+			width: 100%;
+			height: 30px;
+			background: greenyellow;
+			line-height: 30px;
+			margin-top: 10px;
+		}
+
+		.nodata {
+			text-align: center;
+		}
 	</style>
 
 	<body>
@@ -64,7 +76,6 @@
 							<button type="button" v-show="threeRun==2||threeRun==1" @click="firmShow = 1">实时数据</button>
 							<!-- <button type="button" :class="{'active': firmShow == 2}" v-show="threeRun==1" @click="firmShow = 2">运行工况</button> -->
 							<!-- <button type="button" :class="{'active': firmShow == 3}" v-show="threeRun==1" @click="firmShow = 3">污处异常</button> -->
-
 						</div>
 						<div class="rightContent">
 							<div v-show="firmShow==1">
@@ -155,9 +166,9 @@
 
 									</div>
 									<div id="indexchart" style="width: 100%;height: 300px;"></div>
+									<!-- <p class="nodata"v-show="nodata == 0">暂无数据</p> -->
 									<div id="indexcharts" style="width: 100%;height: 300px;"></div>
-
-
+									<!-- <p class="nodata"v-show="nodata == 0">暂无数据</p> -->
 									<div class="flex">
 										<p>名称</p>
 										<p>负荷启停阈值(KW)</p>
@@ -168,6 +179,30 @@
 										<p v-text="electricLimit"></p>
 										<p v-text="powerLimit"></p>
 									</div>
+									<div class="more">
+										<div style="display: flex;justify-content: space-around;">
+											<p>如需查看更多参数图表,请点击右侧更多参数按钮</p>
+											<div class="layui-inline">
+												<div class="layui-form-item">
+													<div class="layui-input-block">
+														<select>
+															<option value="">等多参数</option>
+															<option value="">有功电能</option>
+															<option value="">功率因数</option>
+															<option value="">无功功率</option>
+															<option value="">线缆温度</option>
+															<option value="">电压</option>
+															<option value="">电流</option>
+															<option value="">有功功率</option>
+														</select>
+													</div>
+												</div>
+											</div>
+										</div>
+										<div id="jcmorechart" style="width: 100%;height: 300px;">暂无数据</div>
+									</div>
+
+
 
 
 
@@ -197,8 +232,11 @@
 									</div>
 								</div>
 							</div>
+
 						</div>
+
 					</div>
+
 					<div v-show="threeRun==3">
 						<div class="rightContent">
 							<div class="firmTable">
@@ -247,9 +285,12 @@
 								</div>
 							</div>
 
+
 							<div v-show="firmEchartShow == 1">
 								<div id="dataEcharts" style="width: 100%;height: 300px;"></div>
+								<!-- <p class="nodata" v-show="nodata == 0">暂无数据</p> -->
 								<div id="dataBottom" style="width: 100%;height: 300px;"></div>
+								<!-- <p class="nodata" v-show="nodata == 0">暂无数据</p> -->
 							</div>
 							<div v-show="firmEchartShow == 2">
 								<table id="LAY-app-echarted-list" lay-filter="LAY-app-echarted-list"></table>
@@ -262,6 +303,28 @@
 							</div>
 
 						</div>
+						<div class="more">
+							<div style="display: flex;justify-content: space-around;">
+								<p>如需查看更多参数图表,请点击右侧更多参数按钮</p>
+								<div class="layui-inline">
+									<div class="layui-form-item">
+										<div class="layui-input-block">
+											<select>
+												<option value="">等多参数</option>
+												<option value="">企业工业用电总有功电能</option>
+												<option value="">企业工业用电总功率因数</option>
+												<option value="">企业工业用电总无功功率</option>
+												<option value="">电压</option>
+												<option value="">电流</option>
+												<option value="">企业工业用电总有功功率</option>
+											</select>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div id="qymorechart" style="width: 100%;height: 300px;">暂数据</div>
+
 					</div>
 
 				</div>
@@ -274,6 +337,7 @@
 		<script src="./../../../layuiadmin/plugin/vue.js"></script>
 		<script src="./../../../layuiadmin/plugin/axios.js"></script>
 		<script src="./../../../layuiadmin/js/baseUrlConfig.js"></script>
+		<script src="../../../layuiadmin/plugin/element.js" type="text/javascript" charset="utf-8"></script>
 		<script>
 			layui.config({
 				base: '../../../layuiadmin/' //静态资源所在路径
@@ -287,6 +351,14 @@
 					laydate = layui.laydate;
 				tree = layui.tree;
 				data = vm.enterpriseTreeList
+				//一进页面获取到企业总表的id
+				for (var i = 0; i < vm.enterpriseTreeList.length; i++) {
+					for (var j = 0; j < vm.enterpriseTreeList[i].children.length; j++) {
+						if (vm.enterpriseTreeList[i].children[j].type == "t_device_monitor_all") {
+							vm.all_monitorId = vm.enterpriseTreeList[i].children[j].id;
+						}
+					}
+				}
 
 				//左边的树形结构
 				tree.render({
@@ -300,69 +372,51 @@
 						if (obj.data.type == "t_bas_enterprise") {
 							vm.threeRun = 3
 						} else if (obj.data.type == "t_device_monitor") {
-							vm.monitorId = obj.data.id
-							vm.list_zmotime = []//将所有的统计图都全部置空
-							vm.list_zmovalue = []
-							vm.list_zzmovalue = []
-							vm.list_zzmovalue = []
+							if (obj.data.codeType == "0") {
+								//产污监测点
+								// vm.monitorId = obj.data.id
+								vm.flag = "0"
+								vm.threeRun = 1
+								getdetail(obj.data.id); //获取电流功率电压的数据
+								monitorchart(obj.data.id); //获取监测点的的图表
+								getmonitordetail(obj.data.id); // 获取监测点信息的小表格
+							} else if (obj.data.codeType == "1") {
+								//治污监测点
+								// vm.monitorId = obj.data.id;
+								vm.flag = "1"
+								vm.threeRun = 1
+								getdetail(obj.data.id); //获取电流功率电压的数据
+								monitorchart(obj.data.id); //获取监测点的的图表
+								getmonitordetail(obj.data.id); // 获取监测点信息的小表格
+							}
+						} else if (obj.data.type == "t_device_monitor_all") {
+							vm.all_monitorId = obj.data.id
 							vm.threeRun = 1
-							getdetail();//获取电流功率电压的数据
-							monitorchart(); //获取监测点的的图表
-							getmonitordetail(); // 获取监测点信息的小表格
+							vm.flag = "2"
+							getdetail(obj.data.id); //获取电流功率电压的数据
+							monitorchart(obj.data.id); //获取监测点的的图表
+							getmonitordetail(obj.data.id); // 获取监测点信息的小表格
 						}
 					}
 				});
 
 
 				//监测点的折线图
-				inchart = echarts.init(document.getElementById('indexchart'), {
-					noDataLoadingOption: {
-						text: '暂无数据',
-						effect: 'bubble',
-						effectOption: {
-							effect: {
-								n: 0 //气泡个数为0 
-							}
-						}
-					}
-				});
-				//监测点的柱状图
-				incharts = echarts.init(document.getElementById('indexcharts'), {
-					noDataLoadingOption: {
-						text: '暂无数据',
-						effect: 'bubble',
-						effectOption: {
-							effect: {
-								n: 0 //气泡个数为0 
-							}
-						}
-					}
-				});
-				//企业界面的折线图
-				myCharts = echarts.init(document.getElementById('dataEcharts'), {
-					noDataLoadingOption: {
-						text: '暂无数据',
-						effect: 'bubble',
-						effectOption: {
-							effect: {
-								n: 0 //气泡个数为0 
-							}
-						}
-					}
-				});
-				//企业界面的柱状图
-				dataBottom = echarts.init(document.getElementById('dataBottom'), {
-					noDataLoadingOption: {
-						text: '暂无数据',
-						effect: 'bubble',
-						effectOption: {
-							effect: {
-								n: 0 //气泡个数为0 
-							}
-						}
-					}
-				});
+				inchart = echarts.init(document.getElementById('indexchart'));
 
+				//监测点的柱状图
+				incharts = echarts.init(document.getElementById('indexcharts'));
+				//企业界面的折线图
+				myCharts = echarts.init(document.getElementById('dataEcharts'));
+
+				//企业界面的柱状图
+				dataBottom = echarts.init(document.getElementById('dataBottom'));
+
+				//企业下面更多的折线图
+				qymorechart = echarts.init(document.getElementById('qymorechart'));
+
+				//检测点下面的更多折线图
+				jcmorechart = echarts.init(document.getElementById('qymorechart'));
 
 
 				//企业界面的时间日期
@@ -702,52 +756,58 @@
 
 				// 实时数据      企业的   功率曲线
 				setTimeout(function() {
+					console.log(vm.all_monitorId);
 					var data = new Date();
 					var date = data.getFullYear() + "-" + (data.getMonth() + 1) + "-" + data.getDate();
 					vm.timeDate = date
 					axios({
 						method: "post",
-						url: BASEURL + 'environmental_intelligent_monitoring/tdevicehistory/queryPowerCurve',
+						url: BASEURL + 'environmental_intelligent_monitoring/tdevicehistory/queryMonitoringPowerCurve',
 						params: {
-							enterpriseId: vm.companyId,
-							actTime:  vm.timeDate
+							flag: "2",
+							actTime: vm.timeDate,
+							monitorId: vm.all_monitorId
 						}
 					}).then(function(res) {
-						myCharts.hideLoading();
+						myCharts.clear();
+						vm.list_zentime = [];
+						vm.list_zenvalue = [];
 						if (res.data.code == 0) {
-							for (var i = 0; i < res.data.data.length; i++) {
-								value = res.data.data[i].ysp;
-								time = res.data.data[i].ysday;
-								vm.list_zentime.push(time);
-								vm.list_zenvalue.push(value)
-							}
-							myCharts.setOption({
-								title: {
-									left: 'center',
-									text: '功率曲线',
-								},
-								tooltip: {
-									trigger: 'axis'
-								},
-								xAxis: {
-									type: 'category',
-									boundaryGap: false,
-									data: vm.list_zentime
-								},
-								yAxis: {
-									type: 'value'
-								},
-								series: [{
-									name: "今日",
-									data: vm.list_zenvalue,
-									type: 'line',
-									areaStyle: {
-										normal: {
-											color: '#091e3b' //改变区域颜色
+							if (res.data.data.length == 0) {
+								vm.list_zentime = []
+								vm.list_zenvalue = []
+							} else {
+								vm.list_zentime = res.data.data.mapx.x;
+								vm.list_zenvalue = res.data.data.mapy.y;
+								myCharts.setOption({
+									title: {
+										left: 'center',
+										text: '功率曲线',
+									},
+									tooltip: {
+										trigger: 'axis'
+									},
+									xAxis: {
+										type: 'category',
+										boundaryGap: false,
+										data: vm.list_zentime
+									},
+									yAxis: {
+										type: 'value'
+									},
+									series: [{
+										name: vm.timeDate,
+										data: vm.list_zenvalue,
+										type: 'line',
+										areaStyle: {
+											normal: {
+												color: '#091e3b' //改变区域颜色
+											}
 										}
-									}
-								}]
-							}, true)
+									}]
+								}, true)
+							}
+
 
 						} else {
 
@@ -761,41 +821,48 @@
 						method: "post",
 						url: BASEURL + 'environmental_intelligent_monitoring/tkwhhour/queryCycleEle',
 						params: {
-							enterpriseId: "89",
-							// vm.companyId,
-							actTime: "2019-10-21"
-							// vm.timeDate
+							flag: "2",
+							actTime: vm.timeDate,
+							monitorId: vm.all_monitorId
 						}
 					}).then(function(res) {
-						dataBottom.hideLoading();
+						dataBottom.clear();
 						if (res.data.code == 0) {
-							console.log(res.data.data);
-							for (var i = 0; i < res.data.data.length; i++) {
-								value = res.data.data[i].kwh;
-								time = res.data.data[i].hour + ":00";
-								vm.list_zzentime.push(time);
-								vm.list_zzenvalue.push(value)
+							if (res.data.data.length == 0) {
+								vm.nodata = 0
+								vm.list_zzentime = [];
+								vm.list_zzenvalue = [];
+							} else {
+								vm.nodata = 1
+								vm.list_zzentime = res.data.data.mapx.x;
+								vm.list_zzenvalue = res.data.data.mapy.y;
+								dataBottom.setOption({
+										tooltip: {
+											trigger: 'axis',
+											axisPointer: { // 坐标轴指示器，坐标轴触发有效
+												type: 'shadow' // 默认为直线，可选为：'line' | 'shadow'
+											}
+										},
+										title: {
+											left: 'center',
+											text: '周期用电详情',
+										},
+										xAxis: {
+											type: 'category',
+											data: vm.list_zzentime
+										},
+										yAxis: {
+											type: 'value'
+										},
+										series: [{
+											name: vm.timeDate,
+											data: vm.list_zzenvalue,
+											type: 'bar',
+											barWidth: 10
+										}]
+									},
+									true)
 							}
-							dataBottom.setOption({
-									title: {
-										left: 'center',
-										text: '周期用电详情',
-									},
-									xAxis: {
-										type: 'category',
-										data: vm.list_zzentime
-									},
-									yAxis: {
-										type: 'value'
-									},
-									series: [{
-										data: vm.list_zzenvalue,
-										type: 'bar',
-										barWidth: 40
-									}]
-								},
-								true)
-
 						} else {
 
 						}
@@ -847,7 +914,10 @@
 					the: 0,
 					monitorName: "",
 					electricLimit: "",
-					powerLimit: ""
+					powerLimit: "",
+					all_monitorId: "",
+					flag: "",
+					nodata: 0
 
 
 
@@ -904,7 +974,8 @@
 								method: "POST",
 								url: BASEURL + 'environmental_intelligent_monitoring/tbasenterprise/enterpriseDendrogramList',
 								params: {
-									enterpriseId: localStorage.getItem("enterpriseId")
+									enterpriseId: "90"
+									// localStorage.getItem("enterpriseId")
 								}
 							})
 							.then(function(res) {
@@ -941,50 +1012,52 @@
 				setTimeout(function() {
 					axios({
 						method: "post",
-						url: BASEURL + 'environmental_intelligent_monitoring/tdevicehistory/queryPowerCurve',
+						url: BASEURL + 'environmental_intelligent_monitoring/tdevicehistory/queryMonitoringPowerCurve',
 						params: {
-							enterpriseId: vm.companyId,
-							actTime: vm.timeDate
+							flag: "2",
+							actTime: vm.timeDate,
+							monitorId: vm.all_monitorId
 						}
 					}).then(function(res) {
-						vm.list_zentime = []
-						vm.list_zenvalue = []
-						myCharts.hideLoading();
+						myCharts.clear();
+						vm.list_zentime = [];
+						vm.list_zenvalue = [];
 						if (res.data.code == 0) {
-							console.log(res.data.data);
-							for (var i = 0; i < res.data.data.length; i++) {
-								value = res.data.data[i].ysp;
-								time = res.data.data[i].ysday;
-								vm.list_zentime.push(time);
-								vm.list_zenvalue.push(value)
-							}
-							myCharts.setOption({
-								title: {
-									left: 'center',
-									text: '功率曲线',
-								},
-								tooltip: {
-									trigger: 'axis'
-								},
-								xAxis: {
-									type: 'category',
-									boundaryGap: false,
-									data: vm.list_zentime
-								},
-								yAxis: {
-									type: 'value'
-								},
-								series: [{
-									name: "今日",
-									data: vm.list_zenvalue,
-									type: 'line',
-									areaStyle: {
-										normal: {
-											color: '#091e3b' //改变区域颜色
+							if (res.data.data.length == 0) {
+								vm.list_zentime = [];
+								vm.list_zenvalue = [];
+							} else {
+								vm.list_zentime = res.data.data.mapx.x;
+								vm.list_zenvalue = res.data.data.mapy.y;
+								myCharts.setOption({
+									title: {
+										left: 'center',
+										text: '功率曲线',
+									},
+									tooltip: {
+										trigger: 'axis'
+									},
+									xAxis: {
+										type: 'category',
+										boundaryGap: false,
+										data: vm.list_zentime
+									},
+									yAxis: {
+										type: 'value'
+									},
+									series: [{
+										name: vm.timeDate,
+										data: vm.list_zenvalue,
+										type: 'line',
+										areaStyle: {
+											normal: {
+												color: '#091e3b' //改变区域颜色
+											}
 										}
-									}
-								}]
-							}, true)
+									}]
+								}, true)
+							}
+
 
 						} else {
 
@@ -997,38 +1070,49 @@
 						method: "post",
 						url: BASEURL + 'environmental_intelligent_monitoring/tkwhhour/queryCycleEle',
 						params: {
-							enterpriseId: vm.companyId,
-							actTime: vm.timeDate
+							flag: "2",
+							actTime: vm.timeDate,
+							monitorId: vm.all_monitorId
 						}
 					}).then(function(res) {
-						vm.list_zzentime = []
-						vm.list_zzenvalue = []
-						dataBottom.hideLoading();
+						dataBottom.clear()
 						if (res.data.code == 0) {
-							for (var i = 0; i < res.data.data.length; i++) {
-								value = res.data.data[i].kwh;
-								time = res.data.data[i].hour + ":00";
-								vm.list_zzentime.push(time);
-								vm.list_zzenvalue.push(value)
+							if (res.data.data.length == 0) {
+								vm.nodata = 0
+								vm.list_zzentime = []
+								vm.list_zzenvalue = []
+							} else {
+								vm.nodata = 1
+								vm.list_zzentime = res.data.data.mapx.x;
+								vm.list_zzenvalue = res.data.data.mapy.y;
+								dataBottom.setOption({
+									tooltip: {
+										trigger: 'axis',
+										axisPointer: { // 坐标轴指示器，坐标轴触发有效
+											type: 'shadow' // 默认为直线，可选为：'line' | 'shadow'
+										}
+									},
+									title: {
+										left: 'center',
+										text: '周期用电详情',
+									},
+									xAxis: {
+										type: 'category',
+										data: vm.list_zzentime
+									},
+									yAxis: {
+										type: 'value'
+									},
+									series: [{
+										data: vm.list_zzenvalue,
+										type: 'bar',
+										barWidth: 10
+									}]
+								}, true)
+
 							}
-							dataBottom.setOption({
-								title: {
-									left: 'center',
-									text: '周期用电详情',
-								},
-								xAxis: {
-									type: 'category',
-									data: vm.list_zzentime
-								},
-								yAxis: {
-									type: 'value'
-								},
-								series: [{
-									data: vm.list_zzenvalue,
-									type: 'bar',
-									barWidth: 40
-								}]
-							}, true)
+
+
 
 						} else {
 
@@ -1042,56 +1126,58 @@
 			}
 
 			//检测点     的柱状图和折线图
-			function monitorchart() {
-				console.log(vm.monitorId);
+			function monitorchart(ids) {
+				vm.monitorId = ids;
 				var data = new Date();
 				var date = data.getFullYear() + "-" + (data.getMonth() + 1) + "-" + data.getDate();
 				vm.indextime = date
 				setTimeout(function() {
 					axios({
 						method: "post",
-						url: BASEURL + 'environmental_intelligent_monitoring/tdevicehistory/queryPowerCurve',
+						url: BASEURL + 'environmental_intelligent_monitoring/tdevicehistory/queryMonitoringPowerCurve',
 						params: {
-							monitorId: vm.monitorId,
-							actTime: vm.indextime
+							flag: vm.flag,
+							actTime: vm.indextime,
+							monitorId: ids
 						}
 					}).then(function(res) {
-						inchart.hideLoading();
+						inchart.clear();
+						vm.list_zmovalue = [];
+						vm.list_zmotime = [];
 						if (res.data.code == 0) {
-							console.log(res.data.data);
-							for (var i = 0; i < res.data.data.length; i++) {
-								value = res.data.data[i].ysp;
-								time = res.data.data[i].ysday;
-								vm.list_zmotime.push(time);
-								vm.list_zmovalue.push(value)
+							if (res.data.data.length == 0) {
+								vm.list_zmovalue = [];
+								vm.list_zmotime = [];
+							} else {
+								for (let key in res.data.data.mapy) {
+									var obj = {}
+									var list = []
+									obj.name = key
+									list = res.data.data.mapy[key];
+									obj.data = list;
+									obj.type = "line"
+									vm.list_zmovalue.push(obj);
+								}
+								vm.list_zmotime = res.data.data.mapx.x;
+								inchart.setOption({
+									title: {
+										left: 'center'
+									},
+									tooltip: {
+										trigger: 'axis'
+									},
+									xAxis: {
+										type: 'category',
+										boundaryGap: false,
+										data: vm.list_zmotime
+									},
+									yAxis: {
+										type: 'value'
+									},
+									series: vm.list_zmovalue
+								}, true)
 							}
-							inchart.setOption({
-								title: {
-									left: 'center',
-									text: '功率曲线',
-								},
-								tooltip: {
-									trigger: 'axis'
-								},
-								xAxis: {
-									type: 'category',
-									boundaryGap: false,
-									data: vm.list_zmotime
-								},
-								yAxis: {
-									type: 'value'
-								},
-								series: [{
-									name: "今日",
-									data: vm.list_zmovalue,
-									type: 'line',
-									areaStyle: {
-										normal: {
-											color: '#091e3b' //改变区域颜色
-										}
-									}
-								}]
-							}, true)
+
 						} else {
 
 						}
@@ -1103,37 +1189,52 @@
 						method: "post",
 						url: BASEURL + 'environmental_intelligent_monitoring/tkwhhour/queryCycleEle',
 						params: {
-							monitorId: vm.monitorId,
-							actTime: vm.indextime
+							flag: vm.flag,
+							actTime: vm.timeDate,
+							monitorId: vm.monitorId
 						}
 					}).then(function(res) {
-						incharts.hideLoading();
+						incharts.clear();
+						vm.list_zzmovalue = [];
+						vm.list_zzmotime = [];
 						if (res.data.code == 0) {
-							console.log(res.data.data);
-							for (var i = 0; i < res.data.data.length; i++) {
-								value = res.data.data[i].kwh;
-								time = res.data.data[i].hour + ":00";
-								vm.list_zzmotime.push(time);
-								vm.list_zzmovalue.push(value)
+							if (res.data.data.length == 0) {
+								vm.list_zzmovalue = [];
+								vm.list_zzmotime = [];
+							} else {
+								for (let key in res.data.data.mapy) {
+									var obj = {}
+									var list = []
+									obj.name = key
+									list = res.data.data.mapy[key];
+									obj.data = list;
+									obj.type = "bar"
+									obj.barWidth = "10"
+									vm.list_zzmovalue.push(obj);
+								}
+								vm.list_zzmotime = res.data.data.mapx.x;
+								incharts.setOption({
+									tooltip: {
+										trigger: 'axis',
+										axisPointer: { // 坐标轴指示器，坐标轴触发有效
+											type: 'shadow' // 默认为直线，可选为：'line' | 'shadow'
+										}
+									},
+									title: {
+										left: 'center'
+									},
+									xAxis: {
+										type: 'category',
+										data: vm.list_zzmotime
+									},
+									yAxis: {
+										type: 'value'
+									},
+									series: vm.list_zzmovalue,
+
+								}, true)
 							}
-							incharts.setOption({
-								title: {
-									left: 'center',
-									text: '周期用电详情',
-								},
-								xAxis: {
-									type: 'category',
-									data: vm.list_zzmotime
-								},
-								yAxis: {
-									type: 'value'
-								},
-								series: [{
-									data: vm.list_zzmovalue,
-									type: 'bar',
-									barWidth: 40
-								}]
-							}, true)
+
 
 						} else {
 
@@ -1149,50 +1250,50 @@
 				setTimeout(function() {
 					axios({
 						method: "post",
-						url: BASEURL + 'environmental_intelligent_monitoring/tdevicehistory/queryPowerCurve',
+						url: BASEURL + 'environmental_intelligent_monitoring/tdevicehistory/queryMonitoringPowerCurve',
 						params: {
-							monitorId: vm.monitorId,
-							actTime: vm.indextime
+							flag: vm.flag,
+							actTime: vm.indextime,
+							monitorId: vm.monitorId
 						}
 					}).then(function(res) {
-						inchart.hideLoading();
+						inchart.clear();
 						vm.list_zmotime = []
 						vm.list_zmovalue = []
 						if (res.data.code == 0) {
-							console.log(res.data.data);
-							for (var i = 0; i < res.data.data.length; i++) {
-								value = res.data.data[i].ysp;
-								time = res.data.data[i].ysday;
-								vm.list_zmotime.push(time);
-								vm.list_zmovalue.push(value)
+							if (res.data.data.length == 0) {
+								vm.list_zmotime = []
+								vm.list_zmovalue = []
+							} else {
+								for (let key in res.data.data.mapy) {
+									var obj = {}
+									var list = []
+									obj.name = key
+									list = res.data.data.mapy[key];
+									obj.data = list;
+									obj.type = "line"
+									vm.list_zmovalue.push(obj);
+								}
+								vm.list_zmotime = res.data.data.mapx.x;
+								inchart.setOption({
+									title: {
+										left: 'center'
+									},
+									tooltip: {
+										trigger: 'axis'
+									},
+									xAxis: {
+										type: 'category',
+										boundaryGap: false,
+										data: vm.list_zmotime
+									},
+									yAxis: {
+										type: 'value'
+									},
+									series: vm.list_zmovalue
+								}, true)
 							}
-							inchart.setOption({
-								title: {
-									left: 'center',
-									text: '功率曲线',
-								},
-								tooltip: {
-									trigger: 'axis'
-								},
-								xAxis: {
-									type: 'category',
-									boundaryGap: false,
-									data: vm.list_zmotime
-								},
-								yAxis: {
-									type: 'value'
-								},
-								series: [{
-									name: "今日",
-									data: vm.list_zmovalue,
-									type: 'line',
-									areaStyle: {
-										normal: {
-											color: '#091e3b' //改变区域颜色
-										}
-									}
-								}]
-							}, true)
+
 
 						} else {
 
@@ -1205,40 +1306,50 @@
 						method: "post",
 						url: BASEURL + 'environmental_intelligent_monitoring/tkwhhour/queryCycleEle',
 						params: {
-							monitorId: vm.monitorId,
-							actTime: vm.indextime
+							flag: vm.flag,
+							actTime: vm.indextime,
+							monitorId: vm.monitorId
 						}
 					}).then(function(res) {
-						incharts.hideLoading();
+						incharts.clear();
 						vm.list_zzmotime = []
 						vm.list_zzmovalue = []
 						if (res.data.code == 0) {
-							console.log(res.data.data);
-							for (var i = 0; i < res.data.data.length; i++) {
-								value = res.data.data[i].kwh;
-								time = res.data.data[i].hour + ":00";
-								vm.list_zzmotime.push(time);
-								vm.list_zzmovalue.push(value)
+							if (res.data.data.length == 0) {
+								vm.list_zzmotime = []
+								vm.list_zzmovalue = []
+							} else {
+								for (let key in res.data.data.mapy) {
+									var obj = {}
+									var list = []
+									obj.name = key
+									list = res.data.data.mapy[key];
+									obj.data = list;
+									obj.type = "bar"
+									obj.barWidth = "10"
+									vm.list_zzmovalue.push(obj);
+								}
+								vm.list_zzmotime = res.data.data.mapx.x;
+								incharts.setOption({
+									tooltip: {
+										trigger: 'axis',
+										axisPointer: { // 坐标轴指示器，坐标轴触发有效
+											type: 'shadow' // 默认为直线，可选为：'line' | 'shadow'
+										}
+									},
+									title: {
+										left: 'center'
+									},
+									xAxis: {
+										type: 'category',
+										data: vm.list_zzmotime
+									},
+									yAxis: {
+										type: 'value'
+									},
+									series: vm.list_zzmovalue
+								}, true)
 							}
-							incharts.setOption({
-								title: {
-									left: 'center',
-									text: '周期用电详情',
-								},
-								xAxis: {
-									type: 'category',
-									data: vm.list_zzmotime
-								},
-								yAxis: {
-									type: 'value'
-								},
-								series: [{
-									data: vm.list_zzmovalue,
-									type: 'bar',
-									barWidth: 40
-								}]
-							}, true)
-
 						} else {
 
 						}
@@ -1249,12 +1360,13 @@
 			}
 
 			//获取电压功率电流
-			function getdetail() {
+			function getdetail(ids) {
+				console.log(ids);
 				axios({
 						method: "post",
 						url: BASEURL + '/environmental_intelligent_monitoring/tdevicehistory/queryEnterMonitoringActTime',
 						params: {
-							monitorId: vm.monitorId
+							monitorId: ids
 						}
 					}).then(function(res) {
 						console.log(res.data.data);
@@ -1267,16 +1379,7 @@
 							vm.ic = res.data.data.ic;
 							vm.p = res.data.data.p;
 							vm.q = res.data.data.q;
-							vm.the = res.data.data.the;
-
-							// vm.address = res.data.page.list[0].province + res.data.page.list[0].city + res.data.page.list[0].area + res.data
-							// 	.page.list[0].address // 企业地址
-							// vm.tradeName = res.data.page.list[0].tradeName; //行业
-							// vm.productMonitorNum = res.data.page.list[0].productMonitorNum //产污监测点
-							// vm.treatMonitorNum = res.data.page.list[0].treatMonitorNum // 治污检测点
-							// vm.total = res.data.page.list[0].productMonitorNum + res.data.page.list[0].treatMonitorNum //检测点数
-							// vm.chargePerson = res.data.page.list[0].chargePerson //企业负责人
-							// vm.company = res.data.page.list[0].enterpriseName // 企业的名称
+							vm.the = res.data.data.The;
 						} else {
 
 						}
@@ -1286,12 +1389,12 @@
 					})
 			}
 			//获取单个监测点的信息
-			function getmonitordetail() {
+			function getmonitordetail(id) {
+				console.log(id);
 				axios({
 						method: "get",
-						url: BASEURL + 'environmental_intelligent_monitoring/tdevicemonitor/info/' + vm.monitorId
+						url: BASEURL + 'environmental_intelligent_monitoring/tdevicemonitor/info/' + id
 					}).then(function(res) {
-						console.log(res.data.tDeviceMonitor);
 						if (res.data.code == 0) {
 							vm.monitorName = res.data.tDeviceMonitor.monitorName; //A相电压
 							vm.electricLimit = res.data.tDeviceMonitor.electricLimit;
@@ -1305,6 +1408,126 @@
 					})
 			}
 
+
+			//更多里面的折线图
+			function search() {
+				setTimeout(function() {
+					axios({
+						method: "post",
+						url: BASEURL + 'environmental_intelligent_monitoring/tdevicehistory/queryMonitoringPowerCurve',
+						params: {
+							flag: "2",
+							actTime: vm.timeDate,
+							monitorId: vm.all_monitorId
+						}
+					}).then(function(res) {
+						myCharts.clear();
+						vm.list_zentime = [];
+						vm.list_zenvalue = [];
+						if (res.data.code == 0) {
+							if (res.data.data.length == 0) {
+								vm.list_zentime = [];
+								vm.list_zenvalue = [];
+							} else {
+								vm.list_zentime = res.data.data.mapx.x;
+								vm.list_zenvalue = res.data.data.mapy.y;
+								myCharts.setOption({
+									title: {
+										left: 'center',
+										text: '功率曲线',
+									},
+									tooltip: {
+										trigger: 'axis'
+									},
+									xAxis: {
+										type: 'category',
+										boundaryGap: false,
+										data: vm.list_zentime
+									},
+									yAxis: {
+										type: 'value'
+									},
+									series: [{
+										name: vm.timeDate,
+										data: vm.list_zenvalue,
+										type: 'line',
+										areaStyle: {
+											normal: {
+												color: '#091e3b' //改变区域颜色
+											}
+										}
+									}]
+								}, true)
+							}
+			
+			
+						} else {
+			
+						}
+					}).catch(function(err) {
+						console.log(err);
+					});
+					//柱状图的搜索
+					axios({
+						method: "post",
+						url: BASEURL + 'environmental_intelligent_monitoring/tkwhhour/queryCycleEle',
+						params: {
+							flag: "2",
+							actTime: vm.timeDate,
+							monitorId: vm.all_monitorId
+						}
+					}).then(function(res) {
+						dataBottom.clear()
+						if (res.data.code == 0) {
+							if (res.data.data.length == 0) {
+								vm.nodata = 0
+								vm.list_zzentime = []
+								vm.list_zzenvalue = []
+							} else {
+								vm.nodata = 1
+								vm.list_zzentime = res.data.data.mapx.x;
+								vm.list_zzenvalue = res.data.data.mapy.y;
+								dataBottom.setOption({
+									tooltip: {
+										trigger: 'axis',
+										axisPointer: { // 坐标轴指示器，坐标轴触发有效
+											type: 'shadow' // 默认为直线，可选为：'line' | 'shadow'
+										}
+									},
+									title: {
+										left: 'center',
+										text: '周期用电详情',
+									},
+									xAxis: {
+										type: 'category',
+										data: vm.list_zzentime
+									},
+									yAxis: {
+										type: 'value'
+									},
+									series: [{
+										data: vm.list_zzenvalue,
+										type: 'bar',
+										barWidth: 10
+									}]
+								}, true)
+			
+							}
+			
+			
+			
+						} else {
+			
+						}
+					}).catch(function(err) {
+						console.log(err);
+					});
+				}, 1000)
+			
+			
+			}
+		
+		
 			window.onclick = function() {
 				inchart.resize();
 				incharts.resize();

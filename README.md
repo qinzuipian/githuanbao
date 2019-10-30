@@ -45,3 +45,19 @@ axios({
 	    });
 	}
 })
+
+#### 刷新指定的页面
+
+如果要刷新指定的页面，需要调用index.js中的refreshTab函数，该函数接受一个参数index，是当前tab的下标
+例如：'总体监控'中点击地图上的点然后点击弹窗会跳转到'企业监控';
+			var tabsheaderDomList = window.parent.document.getElementById("LAY_app_tabsheader").getElementsByTagName("li")
+			for(var i = 0; i < tabsheaderDomList.length; i++){
+				if(tabsheaderDomList[i].attributes[0].value == "firmAbnormal_qyyc/normalQuery/firmMonitor.html"){
+					// 该页面已经打开了，只需要刷新就好
+					console.log("已经打开该页面了");
+					parent.layui.index.refreshTab(i);
+				}else{
+					// 没有打开的情况下直接新增tab
+					 window.parent.document.getElementById("yincang").click(); 
+				}
+			}
