@@ -38,7 +38,7 @@
 							</div>
 						</div>
 						<div class="export-box">
-							<button type="button" class="layui-btn layui-btn-primary">导出</button>
+							<button type="button" class="layui-btn layui-btn-primary" @click="expordExcel">导出</button>
 						</div>
 					</div>
 
@@ -99,7 +99,7 @@
 										data: vm.enterpriseTreeList,
 										id: 'enterpriseList',
 										click: function(obj) {
-											console.log(obj.data); //得到当前点击的节点数据
+											//得到当前点击的节点数据
 											if(obj.data.type == "t_device_monitor"){
 												vm.testNameTxt = obj.data.title
 											}
@@ -121,6 +121,14 @@
 									})
 								}
 							})
+					},
+					
+					expordExcel: function(){
+						if(vm.monitorId == "" || vm.testTime == ""){
+							vm.$message.error('监测点或者时间不能为空');
+						}else{
+							parent.window.location.href = BASEURL + '/environmental_intelligent_monitoring/tdevicehistory/exportEnterpriseExcel' + "?" + "actTime=" + vm.testTime + "&" + "monitorId=" + vm.monitorId;
+						}
 					},
 
 				},
