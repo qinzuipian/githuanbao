@@ -2,6 +2,7 @@
 	display: flex;
 	background: #009999;
 	color: white;
+	border-radius: 3px;
 }
 
 .message-box p:nth-child(1) {
@@ -26,6 +27,7 @@
 	background: #fff;
 	padding-bottom: 50px;
 	width: 100%;
+	padding-top: 10px;
 }
 
 .left,
