@@ -89,7 +89,7 @@
     line-height: 36px;
 }
 
-.layuiadmin-card-list p.layuiadmin-big-font {
+.layuiadmin-card-list span.layuiadmin-big-font {
     font-size: 28px;
     padding: 0;
 }
