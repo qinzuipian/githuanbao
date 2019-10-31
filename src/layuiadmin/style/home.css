@@ -3,6 +3,7 @@
 	background: #009999;
 	color: white;
 	border-radius: 3px;
+	height: 50px;
 }
 
 .message-box p:nth-child(1) {
@@ -14,13 +15,22 @@
 	height: 50px;
 	line-height: 50px;
 }
-
+/* 
 .message-box p:nth-child(2) {
 	text-align: left;
 	padding-left: 20px;
 	font-size: 14px;
 	height: 50px;
 	line-height: 50px;
+} */
+.carousel-item{
+	color: white;
+	text-align: left;
+	padding-left: 20px;
+	font-size: 14px;
+	height: 50px;
+	line-height: 50px;
+	background-color: #009999!important;
 }
 
 .content {
