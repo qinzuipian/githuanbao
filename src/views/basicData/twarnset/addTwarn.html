@@ -75,7 +75,7 @@
                             <span class="red">*</span>
                         </label>
                         <div class="layui-input-inline elTree">
-                            <el-tree :highlight-current="true" :data="WarntreeData" :props="defaultProps" @node-click="handleNodeClick"></el-tree>
+                            <el-tree :highlight-current="true" v-loading="Treeloading" :data="WarntreeData" :props="defaultProps" @node-click="handleNodeClick"></el-tree>
                             <!-- <input type="text" v-model="monitorName" name="monitorName" class="layui-input" placeholder="监测点名称" /> -->
 
                         </div>
@@ -266,27 +266,115 @@
                 WarntreeData: [],
                 defaultProps: {
                     children: 'children',
-                    label: 'label'
+                    label: 'title'
                 },
                 treeLabel: "",
-                monitorId: ""
+                monitorId: "",
+                dataPush: [],
+                Treeloading: false
             },
             methods: {
                 handleNodeClick(data) {
                     console.log(data);
-                    vm.treeLabel = data.label;
-                    vm.monitorId = data.id;
+                    if (data.type == "t_device_monitor") {
+                        vm.treeLabel = data.title
+                        vm.monitorId = data.id;
+                    }
+                    // console.log(vm.treeLabel, vm.monitorId);
+
+                },
+                getArray(data, name) {
+                    for (var i in data) {
+                        // console.log('i', i);
+                        // console.log('datai', data[i].children);
+                        // var dataPush = [];
+                        if (data[i].type == name) {
+                            console.log(data[i]);
+                            vm.dataPush.push(data[i])
+                            break;
+                        } else {
+                            vm.getArray(data[i].children, name);
+                        }
+                    }
+                },
+
+                twarnInit() {
+                    // 监测点树状组件
+                    this.Treeloading = true;
+                    axios({
+                        method: "post",
+                        url: BASEURL + 'environmental_intelligent_monitoring/tbasorganize/dendrogramList',
+                        params: { type: "5" }
+                    }).then(function (res) {
+                        if (res.data.code == 0) {
+                            var data = res.data.data;
+                            vm.Treeloading = false;
+                            vm.getArray(data, 't_bas_enterprise')
+                            vm.WarntreeData = vm.dataPush;
+                        } else {
+                            vm.$notify.error({
+                                title: '错误',
+                                message: res.data.msg
+                            });
+
+                        }
+                    }).catch(function (err) {
+                        console.log(err);
+                    });
                 },
                 // twarnInit() {
                 //     // 监测点树状组件
                 //     axios({
                 //         method: "post",
-                //         url: BASEURL + 'environmental_intelligent_monitoring/tbasorganize/dendrogramList',
-                //         params: { type: "5" }
+                //         url: BASEURL + 'environmental_intelligent_monitoring/tdevicemonitor/list?limit=10000',
+                //         params: {}
                 //     }).then(function (res) {
                 //         if (res.data.code == 0) {
-                //             var data = res.data.data;
-                //             vm.WarntreeData = data;
+                //             var treedata = res.data.page.list;
+                //             var newList = [];
+                //             treedata.forEach(function (data) {
+                //                 // console.log(data)
+                //                 for (var i = 0; i < newList.length; i++) {
+                //                     if (newList[i].id === data.enterpriseId) {
+                //                         for (var j = 0; j < newList[i].children.length; j++) {
+                //                             if (newList[i].children[j].label === data.shopName) {
+                //                                 newList[i].children[j].children.push({
+                //                                     label: data.monitorName, id: data.id
+                //                                 });
+                //                                 console.log(data.shopName)
+
+                //                             } else {
+                //                                 newList[i].children.push({
+                //                                     label: data.shopName,
+                //                                     children: [{ label: data.monitorName, id: data.id }]
+                //                                 });
+
+                //                             }
+                //                             return;
+                //                         }
+
+                //                         // newList[i].children.push({
+                //                         //     label: data.shopName,
+                //                         //     children: [{ label: data.monitorName, id: data.id }]
+                //                         // });
+                //                         newList[i].num++;
+                //                         // return;
+                //                     }
+                //                 }
+                //                 newList.push({
+                //                     label: data.enterpriseName,
+                //                     id: data.enterpriseId,
+                //                     num: 1,
+                //                     children: [{
+                //                         // shopName: data.shopName,
+                //                         label: data.shopName,
+                //                         children: [{ label: data.monitorName, id: data.id }]
+                //                     }]
+                //                 });
+                //             });
+                //             console.log(newList);
+                //             vm.WarntreeData = newList;
+
 
                 //         } else {
                 //             vm.$notify.error({
@@ -299,71 +387,6 @@
                 //         console.log(err);
                 //     });
                 // },
-                twarnInit() {
-                    // 监测点树状组件
-                    axios({
-                        method: "post",
-                        url: BASEURL + 'environmental_intelligent_monitoring/tdevicemonitor/list?limit=10000',
-                        params: {}
-                    }).then(function (res) {
-                        if (res.data.code == 0) {
-                            var treedata = res.data.page.list;
-                            var newList = [];
-                            treedata.forEach(function (data) {
-                                // console.log(data)
-                                for (var i = 0; i < newList.length; i++) {
-                                    if (newList[i].id === data.enterpriseId) {
-                                        for (var j = 0; j < newList[i].children.length; j++) {
-                                            if (newList[i].children[j].label === data.shopName) {
-                                                newList[i].children[j].children.push({
-                                                    label: data.monitorName, id: data.id
-                                                });
-                                                console.log(data.shopName)
-
-                                            } else {
-                                                newList[i].children.push({
-                                                    label: data.shopName,
-                                                    children: [{ label: data.monitorName, id: data.id }]
-                                                });
-
-                                            }
-                                            return;
-                                        }
-
-                                        // newList[i].children.push({
-                                        //     label: data.shopName,
-                                        //     children: [{ label: data.monitorName, id: data.id }]
-                                        // });
-                                        newList[i].num++;
-                                        // return;
-                                    }
-                                }
-                                newList.push({
-                                    label: data.enterpriseName,
-                                    id: data.enterpriseId,
-                                    num: 1,
-                                    children: [{
-                                        // shopName: data.shopName,
-                                        label: data.shopName,
-                                        children: [{ label: data.monitorName, id: data.id }]
-                                    }]
-                                });
-                            });
-                            console.log(newList);
-                            vm.WarntreeData = newList;
-
-
-                        } else {
-                            vm.$notify.error({
-                                title: '错误',
-                                message: res.data.msg
-                            });
-
-                        }
-                    }).catch(function (err) {
-                        console.log(err);
-                    });
-                },
                 cancel() {
                     parent.layer.closeAll('iframe');//关闭弹窗
                 }
