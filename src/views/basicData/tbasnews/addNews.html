@@ -42,7 +42,7 @@
 </head>
 
 <body>
-	<div id="vm">
+	<div id="vm" style="padding-top: 20px;">
 		<div class="layui-fluid">
 			<div class="layui-row">
 				<form class="layui-form">
@@ -136,12 +136,12 @@
 				}).then(function (res) {
 					// console.log(res)
 					if (res.data.code == 0) {
-						// layer.msg('保存成功！', {
-						// 	time: 500
-						// }, function () {
-						// 	window.parent.location.reload();
-						// 	parent.layer.close('iframe');
-						// });
+						layer.msg('保存成功！', {
+							time: 500
+						}, function () {
+							window.parent.location.reload();
+							parent.layer.close('iframe');
+						});
 					} else {
 						layer.msg(res.data.msg);
 					}
