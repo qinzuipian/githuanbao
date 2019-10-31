@@ -975,11 +975,17 @@
 					change(){
 						morechart();
 						document.getElementById("chaa").style.display = "block"
+						setTimeout(function() {
+							qymorechart.resize();
+						}, 1000);
 					},
 					jcchange(){
 						jcmorecharts();
-						
 						document.getElementById("cha").style.display = "block"
+						setTimeout(function() {
+							jcmorechart.resize();
+						}, 1000);
+						
 					},
 					// 顶部企业表的按钮切换
 					firmEchartClick(val) {
