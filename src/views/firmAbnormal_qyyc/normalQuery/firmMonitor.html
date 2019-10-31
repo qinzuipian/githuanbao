@@ -273,10 +273,12 @@
 									<button type="button" :class="{'active': firmEchartShow == 3}" @click="firmEchartClick(3)">停限产异常</button>
 									<button type="button" :class="{'active': firmEchartShow == 4}" @click="firmEchartClick(4)">其他异常</button>
 									<div class="layui-input-inline">
-										<input type="text" v-model="timeDate" class="layui-input time-select-item" onblur="search()" id="timeDate"
+										<input type="text" v-model="timeDate" class="layui-input" onblur="search()" id="timeDate"
 										 placeholder="请输入日期">
 									</div>
 								</div>
+								
+								
 							</div>
 
 
