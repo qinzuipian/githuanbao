@@ -34,7 +34,7 @@
             color: #c2c2c2;
         }
 
-        .layuiadmin-big-font span {
+        .layuiDanwei {
             font-weight: normal;
             font-size: 18px;
             color: orange;
@@ -114,13 +114,13 @@
                                                     <span class="layui-badge layui-bg-green layuiadmin-badge">日</span>
                                                 </div>
                                                 <div class="layui-card-body layuiadmin-card-list">
-                                                    <p class="layuiadmin-big-font">{{NpowerData.nowp}}
-                                                        <span>kW</span>
-                                                    </p>
+                                                    <span class="layuiadmin-big-font" v-text="NpowerData.nowp"></span>
+                                                    <span class="layuiDanwei">kW</span>
                                                     <!-- <p> -->
 
                                                     <span class="layuiadmin-span-color">
-                                                        <i class="layui-inline layui-icon layui-icon-date"></i>{{NpowerData.nowday}}
+                                                        <i class="layui-inline layui-icon layui-icon-date"></i>
+                                                        <span v-text="NpowerData.nowday"></span>
                                                     </span>
                                                     <!-- </p> -->
                                                 </div>
@@ -138,13 +138,13 @@
                                                             <span class="layui-badge layui-bg-green layuiadmin-badge">日</span>
                                                         </div>
                                                         <div class="layui-card-body layuiadmin-card-list">
-                                                            <p class="layuiadmin-big-font">{{YpowerData.nowp}}
-                                                                <span>kW</span>
-                                                            </p>
+                                                            <span class="layuiadmin-big-font" v-text="YpowerData.nowp"></span>
+                                                            <span class="layuiDanwei">kW</span>
                                                             <!-- <p> -->
 
                                                             <span class="layuiadmin-span-color">
-                                                                <i class="layui-inline layui-icon layui-icon-date"></i>{{YpowerData.nowday}}
+                                                                <i class="layui-inline layui-icon layui-icon-date"></i>
+                                                                <span v-text="YpowerData.nowday"></span>
                                                             </span>
                                                             <!-- </p> -->
                                                         </div>
@@ -162,12 +162,12 @@
                                                     <span class="layui-badge layui-bg-blue layuiadmin-badge">日</span>
                                                 </div>
                                                 <div class="layui-card-body layuiadmin-card-list">
-                                                    <p class="layuiadmin-big-font">{{Nelectricity.nowkWh}}
-                                                        <span>kW·h</span>
-                                                    </p>
+                                                    <span class="layuiadmin-big-font" v-text="Nelectricity.nowkWh"></span>
+                                                    <span class="layuiDanwei">kW·h</span>
                                                     <!-- <p> -->
                                                     <span class="layuiadmin-span-color">
-                                                        <i class="layui-inline layui-icon layui-icon-date"></i>{{Nelectricity.nowday}}:00
+                                                        <i class="layui-inline layui-icon layui-icon-date"></i>
+                                                        <span v-text="Nelectricity.nowday+':00'"></span>
                                                     </span>
                                                     <!-- </p> -->
                                                 </div>
@@ -182,12 +182,12 @@
                                                     <span class="layui-badge layui-bg-blue layuiadmin-badge">日</span>
                                                 </div>
                                                 <div class="layui-card-body layuiadmin-card-list">
-                                                    <p class="layuiadmin-big-font">{{Yelectricity.nowkWh}}
-                                                        <span>kW·h</span>
-                                                    </p>
+                                                    <span class="layuiadmin-big-font" v-text="Yelectricity.nowkWh"></span>
+                                                    <span class="layuiDanwei">kW·h</span>
                                                     <!-- <p> -->
                                                     <span class="layuiadmin-span-color">
-                                                        <i class="layui-inline layui-icon layui-icon-date"></i>{{Yelectricity.nowday}}:00
+                                                        <i class="layui-inline layui-icon layui-icon-date"></i>
+                                                        <span v-text="Yelectricity.nowday+':00'"></span>
                                                     </span>
                                                     <!-- </p> -->
                                                 </div>
@@ -224,20 +224,21 @@
                                                     <span class="layui-badge layui-bg-green layuiadmin-badge">势</span>
                                                 </div>
                                                 <div class="layui-card-body layuiadmin-card-list" v-if="item.flag == 'n'">
-                                                    <p class="layuiadmin-big-font">{{item.kwh}}
-                                                        <span>KWh</span>
-                                                    </p>
+                                                    <span class="layuiadmin-big-font" v-text="item.kwh"></span>
+                                                    <span class="layuiDanwei">KWh</span>
                                                 </div>
                                                 <div class="layui-card-body layuiadmin-card-list" v-else-if="item.flag == 'y'">
-                                                    <p class="layuiadmin-big-font">{{item.kwh}}
-                                                        <span>KWh</span>
-                                                    </p>
+                                                    <span class="layuiadmin-big-font" v-text="item.kwh">
+                                                       
+                                                    </span>
+                                                    <span class="layuiDanwei">KWh</span>
                                                 </div>
                                                 <div class="layui-card-body layuiadmin-card-list" v-else>
                                                     <p>
-                                                        {{item.pt}}%
+                                                        <!-- {{item.pt}}% -->
+                                                        <span v-text="item.pt+'%'"></span>
                                                         <p style="width:100%;height: 1px; background-color: #000;"></p>
-                                                        <span>{{item.pb}}</span>
+                                                        <span v-text="item.pb"></span>
                                                         <span>KWh</span>
                                                     </p>
                                                 </div>
@@ -275,20 +276,21 @@
                                                     <span class="layui-badge layui-bg-green layuiadmin-badge">势</span>
                                                 </div>
                                                 <div class="layui-card-body layuiadmin-card-list" v-if="item.flag == 'n'">
-                                                    <p class="layuiadmin-big-font">{{item.kwh}}
-                                                        <span>KWh</span>
-                                                    </p>
+                                                    <span class="layuiadmin-big-font" v-text="item.kwh">
+                                                    </span>
+                                                    <span class="layuiDanwei">KWh</span>
                                                 </div>
                                                 <div class="layui-card-body layuiadmin-card-list" v-else-if="item.flag == 'y'">
-                                                    <p class="layuiadmin-big-font">{{item.kwh}}
-                                                        <span>KWh</span>
-                                                    </p>
+                                                    <span class="layuiadmin-big-font" v-text="item.kwh">
+                                                    </span>
+                                                    <span class="layuiDanwei">KWh</span>
                                                 </div>
                                                 <div class="layui-card-body layuiadmin-card-list" v-else>
                                                     <p>
-                                                        {{item.pt}}%
+                                                        <!-- {{item.pt}}% -->
+                                                        <span v-text="item.pt+'%'"></span>
                                                         <p style="width:100%;height: 1px; background-color: #000;"></p>
-                                                        <span>{{item.pb}}</span>
+                                                        <span v-text="item.pb"></span>
                                                         <span>KWh</span>
                                                     </p>
                                                 </div>
@@ -327,20 +329,23 @@
                                                     <span class="layui-badge layui-bg-green layuiadmin-badge">势</span>
                                                 </div>
                                                 <div class="layui-card-body layuiadmin-card-list" v-if="item.flag == 'n'">
-                                                    <p class="layuiadmin-big-font">{{item.kwh}}
-                                                        <span>KWh</span>
-                                                    </p>
+                                                    <span class="layuiadmin-big-font" v-text="item.kwh">
+                                                       
+                                                    </span>
+                                                    <span class="layuiDanwei">KWh</span>
                                                 </div>
                                                 <div class="layui-card-body layuiadmin-card-list" v-else-if="item.flag == 'y'">
-                                                    <p class="layuiadmin-big-font">{{item.kwh}}
+                                                    <span class="layuiadmin-big-font" v-text="item.kwh">
                                                         <span>KWh</span>
-                                                    </p>
+                                                    </span>
+                                                    <span class="layuiDanwei">KWh</span>
                                                 </div>
                                                 <div class="layui-card-body layuiadmin-card-list" v-else>
                                                     <p>
-                                                        {{item.pt}}%
+                                                        <!-- {{item.pt}}% -->
+                                                        <span v-text="item.pt+'%'"></span>
                                                         <p style="width:100%;height: 1px; background-color: #000;"></p>
-                                                        <span>{{item.pb}}</span>
+                                                        <span v-text="item.pb"></span>
                                                         <span>KWh</span>
                                                     </p>
                                                 </div>
@@ -1583,7 +1588,6 @@
                     var type;
                     if (this.shopShow == 1) {
                         type = "shop";
-
                     } else {
                         type = "";
                     }
@@ -1608,11 +1612,6 @@
                     axios({
                         method: "post",
                         url: BASEURL + 'environmental_intelligent_monitoring/tkwhdaily/queryEleRankingByDay',
-                        // params: {
-                        //     enterpriseId: enterpriseId,
-                        //     flag: 'shop',
-                        //     type: 'company'
-                        // }
                         params: data
                     }).then(function (res) {
                         if (res.data.code == 0) {
@@ -1623,8 +1622,6 @@
                                 shopData.push(sortData[i].name);
                                 kwhData.push(sortData[i].kwh);
                             }
-
-
                             var labelRight = {
                                 normal: {
                                     position: 'right'
@@ -1842,8 +1839,6 @@
                                 shopData.push(sortData[i].name);
                                 kwhData.push(sortData[i].kwh);
                             }
-
-
                             var labelRight = {
                                 normal: {
                                     position: 'right'
@@ -1940,9 +1935,6 @@
                         this.electricityYear(0, 0, vm.industryId);
                         this.electricitySortYear(0, vm.industryId);
                     }
-
-
-
                 }
             },
             mounted:function() {
@@ -1957,10 +1949,8 @@
                 this.enterpriseInit();
                 this.monitorNameInit();
                 this.industryInit();
-
             }
         })
     </script>
 </body>
-
 </html>
