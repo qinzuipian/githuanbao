@@ -18,7 +18,7 @@
 
 		.firmRight {
 			overflow: scroll;
-			height: 800px;
+			height: 700px;
 			background: white;
 		}
 
@@ -185,7 +185,7 @@
 										<div style="display: flex;justify-content: space-around;">
 											<p>如需查看更多参数图表,请点击右侧更多参数按钮</p>
 											<div class="layui-form">
-												<el-select v-model="jcvalue" placeholder="请选择" @change = "jcchange()">
+												<el-select v-model="jcvalue" placeholder="请选择" @change="jcchange()">
 													<el-option v-for="item in option" :key="item.value" :label="item.label" :value="item.value">
 													</el-option>
 												</el-select>
@@ -266,23 +266,22 @@
 								<p>监测点信息</p>
 								<table id="LAY-app-content-list" lay-filter="LAY-app-content-list"></table>
 							</div>
-							<div class="echartTable" style="margin-top: 60px">
+							<div class="echartTable" style="margin-top: 60px" id="eee">
 								<div class="title">
 									<button type="button" :class="{'active': firmEchartShow == 1}" @click="firmEchartClick(1)">实时数据</button>
 									<button type="button" :class="{'active': firmEchartShow == 2}" @click="firmEchartClick(2)">治污设施异常</button>
 									<button type="button" :class="{'active': firmEchartShow == 3}" @click="firmEchartClick(3)">停限产异常</button>
 									<button type="button" :class="{'active': firmEchartShow == 4}" @click="firmEchartClick(4)">其他异常</button>
 									<div class="layui-input-inline">
-										<input type="text" v-model="timeDate" class="layui-input" onblur="search()" id="timeDate"
-										 placeholder="请输入日期">
+										<input type="text" v-model="timeDate" class="layui-input" onblur="search()" id="timeDate" placeholder="请输入日期">
 									</div>
 								</div>
-								
-								
+
+
 							</div>
 
 
-							<div v-show="firmEchartShow == 1">
+							<div v-show="firmEchartShow == 1" id="ee">
 								<div id="dataEcharts" style="width: 100%;height: 300px;"></div>
 								<!-- <p class="nodata" v-show="nodata == 0">暂无数据</p> -->
 								<div id="dataBottom" style="width: 100%;height: 300px;"></div>
@@ -299,12 +298,12 @@
 							</div>
 
 						</div>
-						<div class="more">
+						<div class="more" id="e">
 							<div style="display: flex;justify-content: space-around;">
 								<p>如需查看更多参数图表,请点击右侧更多参数按钮</p>
 								<div class="layui-form">
-									<el-select v-model="qyvalue" placeholder="请选择" @change = "change()">
-										<el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value" >
+									<el-select v-model="qyvalue" placeholder="请选择" @change="change()">
+										<el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
 										</el-option>
 									</el-select>
 								</div>
@@ -320,7 +319,7 @@
 		</div>
 		</div>
 		</div>
-		
+
 
 
 		<script src="../../../layuiadmin/layui/layui.all.js" type="text/javascript" charset="utf-8"></script>
@@ -342,13 +341,32 @@
 				tree = layui.tree;
 				data = vm.enterpriseTreeList
 				//一进页面获取到企业总表的id
+
+
+				// console.log(vm.enterpriseTreeList);
+				var x =false;
 				for (var i = 0; i < vm.enterpriseTreeList.length; i++) {
 					for (var j = 0; j < vm.enterpriseTreeList[i].children.length; j++) {
 						if (vm.enterpriseTreeList[i].children[j].type == "t_device_monitor_all") {
+							x = true;
 							vm.all_monitorId = vm.enterpriseTreeList[i].children[j].id;
+							console.log(vm.all_monitorId);
+							document.getElementById("eee").style.display = "block"
+							document.getElementById("e").style.display = "block"
+							document.getElementById("ee").style.display = "block"
 						}
 					}
+					if (x == false) {
+						// console.log(vm.enterpriseTreeList[i].children[j].type);
+						document.getElementById("eee").style.display = "none"
+						document.getElementById("e").style.display = "none"
+						document.getElementById("ee").style.display = "none"
+					}
 				}
+
+
+
+
 
 
 				//左边的树形结构
@@ -368,7 +386,7 @@
 								//产污监测点
 								vm.threeRun = 1
 								getdetail(obj.data.id); //获取电流功率电压的数据
-								monitorchart(obj.data.id,"0"); //获取监测点的的图表
+								monitorchart(obj.data.id, "0"); //获取监测点的的图表
 								getmonitordetail(obj.data.id); // 获取监测点信息的小表格
 								vm.jcvalue = ""
 								vm.qyvalue = ""
@@ -379,7 +397,7 @@
 								//治污监测点
 								vm.threeRun = 1
 								getdetail(obj.data.id); //获取电流功率电压的数据
-								monitorchart(obj.data.id,"1"); //获取监测点的的图表
+								monitorchart(obj.data.id, "1"); //获取监测点的的图表
 								getmonitordetail(obj.data.id); // 获取监测点信息的小表格
 								vm.jcvalue = ""
 								vm.qyvalue = ""
@@ -392,7 +410,7 @@
 							vm.all_monitorId = obj.data.id
 							vm.threeRun = 1
 							getdetail(obj.data.id); //获取电流功率电压的数据
-							monitorchart(obj.data.id,"2"); //获取监测点的的图表
+							monitorchart(obj.data.id, "2"); //获取监测点的的图表
 							getmonitordetail(obj.data.id); // 获取监测点信息的小表格
 							vm.jcvalue = ""
 							vm.qyvalue = ""
@@ -442,7 +460,6 @@
 				// 从上一个页面获取到的企业id
 				vm.companyId = window.localStorage.getItem("enterpriseId");
 				window.localStorage.removeItem("enterpriseId") //获取上个页面传来的企业id
-				console.log(vm.companyId);
 
 
 
@@ -459,7 +476,6 @@
 					}).then(function(res) {
 						console.log(res.data.page.list);
 						if (res.data.code == 0) {
-							console.log(1);
 							vm.address = res.data.page.list[0].province + res.data.page.list[0].city + res.data.page.list[0].area + res.data
 								.page.list[0].address // 企业地址
 							vm.tradeName = res.data.page.list[0].tradeName; //行业
@@ -871,7 +887,7 @@
 						console.log(err);
 					});
 
-					
+
 				}, 1000);
 			})
 
@@ -939,15 +955,15 @@
 					}, {
 						value: 'u',
 						label: '电压'
-					},{
+					}, {
 						value: 'i',
 						label: '电流'
-					},{
+					}, {
 						value: 'p',
 						label: '企业工业用电总有功功率'
 					}],
 					qyvalue: '',
-					
+
 					option: [{
 						value: 'pi',
 						label: '有功电能'
@@ -960,34 +976,34 @@
 					}, {
 						value: 'u',
 						label: '电压'
-					},{
+					}, {
 						value: 'i',
 						label: '电流'
-					},{
+					}, {
 						value: 'p',
 						label: '有功功率'
 					}],
 					jcvalue: '',
 
-												
+
 
 
 				},
 				methods: {
-					change(){
+					change() {
 						morechart();
 						document.getElementById("chaa").style.display = "block"
 						setTimeout(function() {
 							qymorechart.resize();
 						}, 1000);
 					},
-					jcchange(){
+					jcchange() {
 						jcmorecharts();
 						document.getElementById("cha").style.display = "block"
 						setTimeout(function() {
 							jcmorechart.resize();
 						}, 1000);
-						
+
 					},
 					// 顶部企业表的按钮切换
 					firmEchartClick(val) {
@@ -1181,9 +1197,9 @@
 					}).catch(function(err) {
 						console.log(err);
 					});
-					
+
 					//更多   企业的搜索
-					if(vm.qyvalue != ""){
+					if (vm.qyvalue != "") {
 						axios({
 							method: "post",
 							url: BASEURL + '/environmental_intelligent_monitoring/tdevicehistory/queryEnterpriseMoreParam',
@@ -1230,23 +1246,23 @@
 										series: vm.qymore_value
 									}, true)
 								}
-						
-						
+
+
 							} else {
-						
+
 							}
 						}).catch(function(err) {
 							console.log(err);
-						});	
+						});
 					}
-					
+
 				}, 1000)
 
 
 			}
 
 			//检测点     的柱状图和折线图
-			function monitorchart(ids,flag) {
+			function monitorchart(ids, flag) {
 				vm.monitorId = ids;
 				vm.flag = flag;
 				var data = new Date();
@@ -1364,10 +1380,10 @@
 					}).catch(function(err) {
 						console.log(err);
 					});
-					
-					
 
-					
+
+
+
 
 
 				}, 1000)
@@ -1486,7 +1502,7 @@
 					});
 
 					//更多         页面的搜索时间折现图
-					if(vm.jcvalue != ""){
+					if (vm.jcvalue != "") {
 						axios({
 							method: "post",
 							url: BASEURL + '/environmental_intelligent_monitoring/tdevicehistory/queryEnterpriseMoreParam',
@@ -1534,7 +1550,7 @@
 									}, true)
 								}
 							} else {
-						
+
 							}
 						}).catch(function(err) {
 							console.log(err);
@@ -1593,122 +1609,122 @@
 			}
 
 
-            // 企业总表  更多页面的   折线图
-			function morechart(){
+			// 企业总表  更多页面的   折线图
+			function morechart() {
 				setTimeout(function() {
-				axios({
-					method: "post",
-					url: BASEURL + '/environmental_intelligent_monitoring/tdevicehistory/queryEnterpriseMoreParam',
-					params: {
-						flag: "2",
-						actTime: vm.timeDate,
-						monitorId: vm.all_monitorId,
-						type: vm.qyvalue
-					}
-				}).then(function(res) {
-					qymorechart.clear();
-					vm.qymore_time = [];
-					vm.qymore_value = [];
-					if (res.data.code == 0) {
-						if (res.data.data.length == 0) {
-							vm.qymore_time = [];
-							vm.qymore_value = [];
-						} else {
-							for (let key in res.data.data.mapy) {
-								var obj = {}
-								var list = []
-								obj.name = key
-								list = res.data.data.mapy[key];
-								obj.data = list;
-								obj.type = "line"
-								vm.qymore_value.push(obj);
-							}
-							vm.qymore_time = res.data.data.mapx.x;
-							qymorechart.setOption({
-								title: {
-									left: 'center'
-								},
-								tooltip: {
-									trigger: 'axis'
-								},
-								xAxis: {
-									type: 'category',
-									boundaryGap: false,
-									data: vm.qymore_time
-								},
-								yAxis: {
-									type: 'value'
-								},
-								series: vm.qymore_value
-							}, true)
+					axios({
+						method: "post",
+						url: BASEURL + '/environmental_intelligent_monitoring/tdevicehistory/queryEnterpriseMoreParam',
+						params: {
+							flag: "2",
+							actTime: vm.timeDate,
+							monitorId: vm.all_monitorId,
+							type: vm.qyvalue
 						}
-				
-				
-					} else {
-				
-					}
-				}).catch(function(err) {
-					console.log(err);
-				});
-				},1000)
+					}).then(function(res) {
+						qymorechart.clear();
+						vm.qymore_time = [];
+						vm.qymore_value = [];
+						if (res.data.code == 0) {
+							if (res.data.data.length == 0) {
+								vm.qymore_time = [];
+								vm.qymore_value = [];
+							} else {
+								for (let key in res.data.data.mapy) {
+									var obj = {}
+									var list = []
+									obj.name = key
+									list = res.data.data.mapy[key];
+									obj.data = list;
+									obj.type = "line"
+									vm.qymore_value.push(obj);
+								}
+								vm.qymore_time = res.data.data.mapx.x;
+								qymorechart.setOption({
+									title: {
+										left: 'center'
+									},
+									tooltip: {
+										trigger: 'axis'
+									},
+									xAxis: {
+										type: 'category',
+										boundaryGap: false,
+										data: vm.qymore_time
+									},
+									yAxis: {
+										type: 'value'
+									},
+									series: vm.qymore_value
+								}, true)
+							}
+
+
+						} else {
+
+						}
+					}).catch(function(err) {
+						console.log(err);
+					});
+				}, 1000)
 			}
-			
+
 			//监测点   更多的 折线图
-			function jcmorecharts(){
+			function jcmorecharts() {
 				setTimeout(function() {
-				axios({
-					method: "post",
-					url: BASEURL + '/environmental_intelligent_monitoring/tdevicehistory/queryEnterpriseMoreParam',
-					params: {
-						flag: vm.flag,
-						actTime: vm.indextime,
-						monitorId: vm.monitorId,
-						type: vm.jcvalue
-					}
-				}).then(function(res) {
-					jcmorechart.clear();
-					vm.more_time = [];
-					vm.more_value = [];
-					if (res.data.code == 0) {
-						if (res.data.data.length == 0) {
-							vm.more_time = [];
-							vm.more_value = [];
-						} else {
-							for (let key in res.data.data.mapy) {
-								var obj = {}
-								var list = []
-								obj.name = key
-								list = res.data.data.mapy[key];
-								obj.data = list;
-								obj.type = "line"
-								vm.more_value.push(obj);
-							}
-							vm.more_time = res.data.data.mapx.x;
-							jcmorechart.setOption({
-								title: {
-									left: 'center'
-								},
-								tooltip: {
-									trigger: 'axis'
-								},
-								xAxis: {
-									type: 'category',
-									boundaryGap: false,
-									data: vm.more_time
-								},
-								yAxis: {
-									type: 'value'
-								},
-								series: vm.more_value
-							}, true)
+					axios({
+						method: "post",
+						url: BASEURL + '/environmental_intelligent_monitoring/tdevicehistory/queryEnterpriseMoreParam',
+						params: {
+							flag: vm.flag,
+							actTime: vm.indextime,
+							monitorId: vm.monitorId,
+							type: vm.jcvalue
 						}
-					} else {
-				
-					}
-				}).catch(function(err) {
-					console.log(err);
-				});
-				},1000)
+					}).then(function(res) {
+						jcmorechart.clear();
+						vm.more_time = [];
+						vm.more_value = [];
+						if (res.data.code == 0) {
+							if (res.data.data.length == 0) {
+								vm.more_time = [];
+								vm.more_value = [];
+							} else {
+								for (let key in res.data.data.mapy) {
+									var obj = {}
+									var list = []
+									obj.name = key
+									list = res.data.data.mapy[key];
+									obj.data = list;
+									obj.type = "line"
+									vm.more_value.push(obj);
+								}
+								vm.more_time = res.data.data.mapx.x;
+								jcmorechart.setOption({
+									title: {
+										left: 'center'
+									},
+									tooltip: {
+										trigger: 'axis'
+									},
+									xAxis: {
+										type: 'category',
+										boundaryGap: false,
+										data: vm.more_time
+									},
+									yAxis: {
+										type: 'value'
+									},
+									series: vm.more_value
+								}, true)
+							}
+						} else {
+
+						}
+					}).catch(function(err) {
+						console.log(err);
+					});
+				}, 1000)
 			}
 
 

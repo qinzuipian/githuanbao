@@ -9,26 +9,26 @@
 		<link rel="stylesheet" href="../../layuiadmin/layui/css/layui.css" media="all">
 		<link rel="stylesheet" href="../../layuiadmin/style/admin.css" media="all">
 		<link rel="stylesheet" href="../../layuiadmin/style/login.css" media="all">
-		<link rel="stylesheet" type="text/css" href="../../layuiadmin/plugin/element.css"/>
+		<link rel="stylesheet" type="text/css" href="../../layuiadmin/plugin/element.css" />
 	</head>
 	<body>
 
-		<div class="layadmin-user-login layadmin-user-display-show" id="vm" style="display: none;">
+		<div id="vm" class="layadmin-user-login layadmin-user-display-show" style="display: none;">
 			<div class="layadmin-user-login-box layadmin-user-login-header">
-				<h2>环保用电监管平台管理系统</h2>
+				<h2>环保用电在线监管云平台</h2>
 			</div>
 			<div class="layadmin-user-login-main">
 				<div class="layadmin-user-login-box layadmin-user-login-body layui-form">
 					<div class="layui-form-item">
 						<label class="layadmin-user-login-icon layui-icon layui-icon-username" for="LAY-user-login-username"></label>
-						<input type="text" placeholder="用户名" class="layui-input" v-model="username" />
+						<input type="text" id="username" placeholder="用户名" class="layui-input" v-model="username" />
 					</div>
 					<div class="layui-form-item">
 						<label class="layadmin-user-login-icon layui-icon layui-icon-password" for="LAY-user-login-password"></label>
-						<input type="password" placeholder="密码" class="layui-input" v-model="password" />
+						<input type="password" id="password" placeholder="密码" class="layui-input" v-model="password" />
 					</div>
 					<div class="layui-form-item">
-						<button class="layui-btn layui-btn-fluid" @click="login">登 入</button>
+						<button class="layui-btn layui-btn-fluid" id="loginBtn" @click="login">登 录</button>
 					</div>
 				</div>
 			</div>
@@ -39,7 +39,7 @@
 		<script src="../../layuiadmin/plugin/vue.min.js"></script>
 		<script src="../../layuiadmin/plugin/axios.js"></script>
 		<script src="../../layuiadmin/plugin/element.js"></script>
-		
+
 		<script>
 			var vm = new Vue({
 				el: "#vm",
@@ -48,31 +48,42 @@
 					password: ''
 				},
 				methods: {
-					login: function(){
+					login: function() {
 						var data = JSON.stringify({
 							username: vm.username,
 							password: vm.password
 						})
 						axios({
-						    method: "post",
-						    url: BASEURL + '/sys-mgr/sys/login',
-						    data: data,
-						    headers: {
-						        "Content-Type": "application/json;charset=UTF-8"
-						    }
-						}).then(function (res) {
+							method: "post",
+							url: BASEURL + '/sys-mgr/sys/login',
+							data: data,
+							headers: {
+								"Content-Type": "application/json;charset=UTF-8"
+							}
+						}).then(function(res) {
 							console.log(res);
-						    if (res.data.code == 0) {
-						        window.localStorage.setItem("userId", res.data.userId);
-						        window.localStorage.setItem("token", res.data.token);
+							if (res.data.code == 0) {
+								window.localStorage.setItem("userId", res.data.userId);
+								window.localStorage.setItem("token", res.data.token);
 								window.location.href = "../index.html"
-						    } else {
+							} else {
 								vm.$message.error(res.data.msg);
-						    }
+								vm.username = "";
+								vm.password = "";
+								document.getElementById("username").blur();
+								document.getElementById("password").blur();
+							}
 						})
 					}
 				}
-			})
+			});
+
+			document.onkeydown = function(event) {
+				var e = event || window.event;
+				if (e && e.keyCode == 13) { //回车键的键值为13
+					document.getElementById("loginBtn").click(); //调用登录按钮的登录事件
+				}
+			};
 		</script>
 	</body>
 </html>
