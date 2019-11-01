@@ -122,7 +122,7 @@
                         <label for="bitian" class="layui-form-label">
                             发生时间</label>
                         <div class="layui-input-inline">
-                            <input type="text" name="lastTime" class="layui-input layui-disabled" disabled placeholder="" />
+                            <input type="text" name="acttime" class="layui-input layui-disabled" disabled placeholder="" />
                         </div>
                     </div>
 
@@ -208,17 +208,13 @@
                 .then(res => {
                     if (res.data.code == 0) {
                         var detailData = res.data.tFirmAbnormal;
-                        vm.filelocation = detailData.attachmentList;
-                        var str = detailData.attachmentList;
-                        var index = str.lastIndexOf("\/");
-                        str = str.substring(index + 1, str.length);
-                        vm.fileDown = str;
+                        console.log(detailData)
                         form.val('detailFirm', {
                             'eventType': detailData.eventType,
                             'enterpriseName': detailData.enterpriseName,
                             'shopName': detailData.shopName,
                             'monitorName': detailData.monitorName,
-                            'lastTime': detailData.lastTime,
+                            'acttime': detailData.acttime,
                             'meterId': detailData.meterId,
                             'reason': detailData.reason,
                             'description': detailData.description,
@@ -231,6 +227,11 @@
                             'attachmentDto': detailData.attachmentDto,
                             'id': detailData.id,
                         })
+                        vm.filelocation = detailData.attachmentList;
+                        var str = detailData.attachmentList;
+                        var index = str.lastIndexOf("\/");
+                        str = str.substring(index + 1, str.length);
+                        vm.fileDown = str;
                     } else {
                         vm.$notify.error({
                             title: '错误',

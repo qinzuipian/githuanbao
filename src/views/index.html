@@ -38,7 +38,7 @@
 									<!-- 如果有新消息，则显示小圆点 -->
 									<!-- <span class="layui-badge-dot"></span> -->
 								</a>
-							</li>
+							</li> -->
 							<li class="layui-nav-item layui-hide-xs" lay-unselect>
 								<a href="javascript:;" layadmin-event="theme">
 									<i class="layui-icon layui-icon-theme"></i>
@@ -275,7 +275,6 @@
 							}
 						})
 						.then(function(res){
-							console.log(res);
 							if (res.data.code == 0) {
 							    window.localStorage.removeItem("userId");
 							    window.localStorage.removeItem("token");

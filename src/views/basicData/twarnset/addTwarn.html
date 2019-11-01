@@ -291,10 +291,11 @@
                         if (data[i].type == name) {
                             console.log(data[i]);
                             vm.dataPush.push(data[i])
-                            break;
+                            // break;
                         } else {
                             vm.getArray(data[i].children, name);
                         }
+                        console.log(vm.dataPush)
                     }
                 },
 
