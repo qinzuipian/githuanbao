@@ -344,81 +344,17 @@
 
 
 				// console.log(vm.enterpriseTreeList);
-				var x =false;
-				for (var i = 0; i < vm.enterpriseTreeList.length; i++) {
-					for (var j = 0; j < vm.enterpriseTreeList[i].children.length; j++) {
-						if (vm.enterpriseTreeList[i].children[j].type == "t_device_monitor_all") {
-							x = true;
-							vm.all_monitorId = vm.enterpriseTreeList[i].children[j].id;
-							console.log(vm.all_monitorId);
-							document.getElementById("eee").style.display = "block"
-							document.getElementById("e").style.display = "block"
-							document.getElementById("ee").style.display = "block"
-						}
-					}
-					if (x == false) {
-						// console.log(vm.enterpriseTreeList[i].children[j].type);
-						document.getElementById("eee").style.display = "none"
-						document.getElementById("e").style.display = "none"
-						document.getElementById("ee").style.display = "none"
-					}
-				}
+				
 
 
 
 
 
-
-				//左边的树形结构
-				tree.render({
-					elem: '#enterpriseList', //默认是点击节点可进行收缩
-					onlyIconControl: true,
-					showLine: true,
-					data: data,
-					click: function(obj) {
-						//根据数据返回类型判断
-						//企业总表是 vm.threeRun =  2
-						if (obj.data.type == "t_bas_enterprise") {
-							vm.threeRun = 3
-							document.getElementById("chaa").style.display = "none"
-						} else if (obj.data.type == "t_device_monitor") {
-							if (obj.data.codeType == "0") {
-								//产污监测点
-								vm.threeRun = 1
-								getdetail(obj.data.id); //获取电流功率电压的数据
-								monitorchart(obj.data.id, "0"); //获取监测点的的图表
-								getmonitordetail(obj.data.id); // 获取监测点信息的小表格
-								vm.jcvalue = ""
-								vm.qyvalue = ""
-								jcmorechart.resize();
-								document.getElementById("cha").style.display = "none"
-
-							} else if (obj.data.codeType == "1") {
-								//治污监测点
-								vm.threeRun = 1
-								getdetail(obj.data.id); //获取电流功率电压的数据
-								monitorchart(obj.data.id, "1"); //获取监测点的的图表
-								getmonitordetail(obj.data.id); // 获取监测点信息的小表格
-								vm.jcvalue = ""
-								vm.qyvalue = ""
-								jcmorechart.resize();
-								document.getElementById("cha").style.display = "none"
-
-							}
-						} else if (obj.data.type == "t_device_monitor_all") {
-							//企业总表
-							vm.all_monitorId = obj.data.id
-							vm.threeRun = 1
-							getdetail(obj.data.id); //获取电流功率电压的数据
-							monitorchart(obj.data.id, "2"); //获取监测点的的图表
-							getmonitordetail(obj.data.id); // 获取监测点信息的小表格
-							vm.jcvalue = ""
-							vm.qyvalue = ""
-							jcmorechart.resize();
-							document.getElementById("cha").style.display = "none"
-						}
-					}
-				});
+				// function treeinits(){
+				// 	console.log(111);
+				// //左边的树形结构
+				
+				// }
 
 
 				//监测点的折线图
@@ -1069,6 +1005,76 @@
 											vm.enterpriseTreeList[i].children[j].spread = true;
 										}
 									}
+									layui.tree.render({
+										elem: '#enterpriseList', //默认是点击节点可进行收缩
+										onlyIconControl: true,
+										showLine: true,
+										data: vm.enterpriseTreeList,
+										click: function(obj) {
+											//根据数据返回类型判断
+											//企业总表是 vm.threeRun =  2
+											if (obj.data.type == "t_bas_enterprise") {
+												vm.threeRun = 3
+												document.getElementById("chaa").style.display = "none"
+											} else if (obj.data.type == "t_device_monitor") {
+												if (obj.data.codeType == "0") {
+													//产污监测点
+													vm.threeRun = 1
+													getdetail(obj.data.id); //获取电流功率电压的数据
+													monitorchart(obj.data.id, "0"); //获取监测点的的图表
+													getmonitordetail(obj.data.id); // 获取监测点信息的小表格
+													vm.jcvalue = ""
+													vm.qyvalue = ""
+													jcmorechart.resize();
+													document.getElementById("cha").style.display = "none"
+									
+												} else if (obj.data.codeType == "1") {
+													//治污监测点
+													vm.threeRun = 1
+													getdetail(obj.data.id); //获取电流功率电压的数据
+													monitorchart(obj.data.id, "1"); //获取监测点的的图表
+													getmonitordetail(obj.data.id); // 获取监测点信息的小表格
+													vm.jcvalue = ""
+													vm.qyvalue = ""
+													jcmorechart.resize();
+													document.getElementById("cha").style.display = "none"
+									
+												}
+											} else if (obj.data.type == "t_device_monitor_all") {
+												//企业总表
+												vm.all_monitorId = obj.data.id
+												vm.threeRun = 1
+												getdetail(obj.data.id); //获取电流功率电压的数据
+												monitorchart(obj.data.id, "2"); //获取监测点的的图表
+												getmonitordetail(obj.data.id); // 获取监测点信息的小表格
+												vm.jcvalue = ""
+												vm.qyvalue = ""
+												jcmorechart.resize();
+												document.getElementById("cha").style.display = "none"
+											}
+										}
+									});
+									var x =false;
+									for (var i = 0; i < vm.enterpriseTreeList.length; i++) {
+										for (var j = 0; j < vm.enterpriseTreeList[i].children.length; j++) {
+											if (vm.enterpriseTreeList[i].children[j].type == "t_device_monitor_all") {
+												x = true;
+												vm.all_monitorId = vm.enterpriseTreeList[i].children[j].id;
+												console.log(vm.all_monitorId);
+												document.getElementById("eee").style.display = "block"
+												document.getElementById("e").style.display = "block"
+												document.getElementById("ee").style.display = "block"
+											}
+										}
+										if (x == false) {
+											// console.log(vm.enterpriseTreeList[i].children[j].type);
+											document.getElementById("eee").style.display = "none"
+											document.getElementById("e").style.display = "none"
+											document.getElementById("ee").style.display = "none"
+										}
+									}
+									
+									
 								} else {
 									vm.$notify.error({
 										title: '错误',
