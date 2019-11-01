@@ -411,7 +411,7 @@
                         data.flag = type;
 
                     }
-                    console.log(data)
+                    // console.log(data)
                     axios({
                         method: "post",
                         url: BASEURL + 'environmental_intelligent_monitoring/tdevicehistory/queryEnergyStatistics',
@@ -436,11 +436,11 @@
                             vm.flag = "";
 
                         } else if (res.data.code == 203) {
-                            vm.$notify({
-                                title: '提示',
-                                message: res.data.msg,
-                                type: 'warning'
-                            });
+                            // vm.$notify({
+                            //     title: '提示',
+                            //     message: res.data.msg,
+                            //     type: 'warning'
+                            // });
                             vm.flag = 'noData';
                         }
                     })
