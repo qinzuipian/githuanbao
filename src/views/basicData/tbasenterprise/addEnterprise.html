@@ -8,7 +8,7 @@
 		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 		<meta name="viewport" content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi" />
 		<link rel="stylesheet" type="text/css" href="../../../layuiadmin/layui/css/layui.css" />
-		<link rel="stylesheet" type="text/css" href="../../../layuiadmin/plugin/element.css"/>
+		<link rel="stylesheet" type="text/css" href="../../../layuiadmin/plugin/element.css" />
 		<script src="../../../layuiadmin/layui/layui.js" type="text/javascript" charset="utf-8"></script>
 		<!-- 引入vue -->
 		<script type="text/javascript" src="../../../layuiadmin/plugin/vue.js"></script>
@@ -116,7 +116,7 @@
     </style>
 	</head>
 	<body>
-		<div id="vm">
+		<div id="vm" style="padding-top: 20px;">
 			<div class="layui-fluid">
 				<div class="layui-row">
 					<form class="layui-form" action="" lay-filter="editEnterprise">
@@ -125,14 +125,14 @@
 							<div class=" treeCss">
 								<div class="layui-form-item">
 									<label for="bitian" class="layui-form-label">企业名称
-									<span class="red">*</span></label>
+										<span class="red">*</span></label>
 									<div class="layui-input-inline">
 										<input type="text" name="name" lay-verify="required" class="layui-input" placeholder="企业名称" />
 									</div>
 								</div>
 								<div class="layui-form-item">
 									<label for="bitian" class="layui-form-label">社会信用代码
-									<span class="red">*</span></label>
+										<span class="red">*</span></label>
 									<div class="layui-input-inline">
 										<input type="text" name="trustcode" lay-verify="required" class="layui-input" placeholder="社会信用代码" />
 									</div>
@@ -140,7 +140,7 @@
 
 								<div class="layui-form-item">
 									<label for="bitian" class="layui-form-label">所属省市区
-									<span class="red">*</span></label>
+										<span class="red">*</span></label>
 									<div class="layui-input-inline">
 										<select name="province" id="province" lay-verify="required" lay-search lay-filter="province">
 											<option value="">请选择省</option>
@@ -155,7 +155,7 @@
 								</div>
 								<div class="layui-form-item">
 									<label for="bitian" class="layui-form-label">企业详细地址
-									<span class="red">*</span></label>
+										<span class="red">*</span></label>
 									<div class="layui-input-inline">
 										<input type="text" name="address" lay-verify="required" class="layui-input" placeholder="企业详细地址" />
 									</div>
@@ -164,12 +164,12 @@
 								<div class="layui-form-item">
 									<div class="layui-inline">
 										<label class="layui-form-label">行政区域
-										<span class="red">*</span></label>
-										<div class="layui-input-inline" >
-											<input readonly="readonly" placeholder="请选择" id="div_" v-model="treeValue"  class="layui-input" @click="appear"/>
+											<span class="red">*</span></label>
+										<div class="layui-input-inline">
+											<input readonly="readonly" placeholder="请选择" id="div_" v-model="treeValue" class="layui-input" @click="appear" />
 											<!-- <span class="layui-icon-triangle-d layui-icon" v-bind:class="[{ actived: isActive },{ actived_after: !isActive }]"
 											 style="color: gray;"></span></input> -->
-											
+
 											<div style="position: absolute;display: none;" class="layui-input-inline" id="tree">
 												<div class="tree layui-anim layui-anim-upbit">
 													<el-tree :highlight-current="treeHign" :data="treeData" :props="defaultProps" @node-click="handleNodeClick"></el-tree>
@@ -181,10 +181,23 @@
 								</div>
 								<div class="layui-form-item">
 									<label class="layui-form-label">所属行业
-									<span class="red">*</span></label>
+										<span class="red">*</span></label>
 									<div class="layui-input-inline">
 										<select name="tradeId" id="tradeName" lay-verify="required" lay-filter="tradeName">
 											<option value="">请选择</option>
+										</select>
+									</div>
+								</div>
+								<div class="layui-form-item">
+									<label class="layui-form-label">关注程度
+										<span class="red">*</span></label>
+									<div class="layui-input-inline">
+										<select name="concern" lay-verify="required" id="concern" lay-filter="concern">
+											<option value="">请选择</option>
+											<option value="国控">国控</option>
+											<option value="省控">省控</option>
+											<option value="市控">市控</option>
+											<option value="非重点污染源">非重点污染源</option>
 										</select>
 									</div>
 								</div>
@@ -195,7 +208,7 @@
 										<input type="text" lay-verify="required" name="swicthId" class="layui-input" placeholder="网关编号" />
 									</div>
 								</div> -->
-								<div class="layui-form-item">
+								<!-- <div class="layui-form-item">
 									<label for="bitian" class="layui-form-label">仪表地址</label>
 									<div class="layui-input-inline">
 										<input type="number" name="meterId" class="layui-input" placeholder="仪表地址" />
@@ -210,7 +223,7 @@
 											<option value="1">ADW100</option>
 										</select>
 									</div>
-								</div>
+								</div> -->
 								<!-- <div class="layui-form-item">
 									<label for="bitian" class="layui-form-label">监管机构代码</label>
 									<div class="layui-input-inline">
@@ -223,20 +236,20 @@
 										<input type="text" name="organizeName" class="layui-input" placeholder="监管机构名称" />
 									</div>
 								</div> -->
-								<div class="layui-form-item">
+								<!-- <div class="layui-form-item">
 									<label for="bitian" class="layui-form-label">电流变比</label>
 									<div class="layui-input-inline">
 										<input type="text" name="ct" class="layui-input" />
 									</div>
-								</div>
+								</div> -->
 							</div>
 							<div class="treeCss">
-								<div class="layui-form-item">
+								<!-- <div class="layui-form-item">
 									<label for="bitian" class="layui-form-label">电压变比</label>
 									<div class="layui-input-inline">
 										<input type="text" name="pt" class="layui-input" />
 									</div>
-								</div>
+								</div> -->
 								<div class="layui-form-item">
 									<label for="bitian" class="layui-form-label">负责人</label>
 									<div class="layui-input-inline">
@@ -455,11 +468,19 @@
 					form.render();
 
 				});
+
+				// 监听select框获取选中的text值
+				form.on('select(concern)', function(data) {
+					vm.concern = data.elem[data.elem.selectedIndex].text
+					form.render();
+				});
+
 				// 提交表单
 				form.on('submit(save)', function(data) {
 					data.field.picUrl = vm.pic;
 					data.field.tBasShopList = vm.list;
 					data.field.tradeName = vm.tradeName;
+					data.field.concern = vm.concern;
 					data.field.organizeName = vm.treeValue;
 					data.field.organizeId = vm.treeId;
 					console.log(data.field);
@@ -471,7 +492,7 @@
 							"Content-Type": "application/json;charset=UTF-8"
 						}
 					}).then(function(res) {
-						console.log(res)
+						// console.log(res)
 						if (res.data.code == 0) {
 							layer.msg('保存成功！', {
 								time: 500
@@ -551,6 +572,7 @@
 					hasedit: 0,
 					list: [],
 					tradeName: "",
+					concern: '',
 					treeData: [],
 					defaultProps: {
 						children: 'children',
@@ -565,8 +587,8 @@
 					name: '',
 					tree: 0,
 					isActive: 0,
-					treeValue:"",
-					treeId:""
+					treeValue: "",
+					treeId: ""
 				},
 				methods: {
 					cancel: function() {
@@ -602,7 +624,7 @@
 					delet: function(it, index) {
 						for (var i = 0; i < this.list.length; i++) {
 							if (index == i) {
-								console.log(this.list[i]);
+								// console.log(this.list[i]);
 								this.list.splice(i, 1);
 							}
 						}
@@ -613,8 +635,8 @@
 					handleNodeClick(data, node) {
 						vm.treeValue = data.label;
 						vm.treeId = data.id
-						console.log(data.label);
-						console.log(data.id);
+						// console.log(data.label);
+						// console.log(data.id);
 						// console.log(this.tree);
 						vm.treeHign = true;
 						// console.log(node.parent.childNodes[0].parent.data.label)
@@ -658,7 +680,7 @@
 						});
 					},
 					organizeTree() {
-						console.log(this.tree);
+						// console.log(this.tree);
 						axios({
 							method: "post",
 							url: BASEURL + 'environmental_intelligent_monitoring/tbasorganize/list?limit=10000',

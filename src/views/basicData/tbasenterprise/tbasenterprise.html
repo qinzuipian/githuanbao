@@ -3,7 +3,7 @@
 
 <head>
 	<meta charset="utf-8">
-	<title>企业表</title>
+	<title>企业管理</title>
 	<meta name="renderer" content="webkit">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
@@ -336,7 +336,7 @@
 							title: '添加企业',
 							content: 'addEnterprise.html',
 							maxmin: true,
-							area: ['880px', '550px']
+							area: ['990px', '550px']
 
 						});
 					},
@@ -356,7 +356,7 @@
 							title: '编辑企业',
 							content: 'editEnterprise.html',
 							maxmin: true,
-							area: ['880px', '550px']
+							area: ['990px', '550px']
 						});
 
 					},
@@ -468,7 +468,7 @@
 					});
 				},
 				organizeTree() {
-					console.log(this.tree);
+					// console.log(this.tree);
 					axios({
 						method: "post",
 						url: BASEURL + 'environmental_intelligent_monitoring/tbasorganize/list?limit=10000',
