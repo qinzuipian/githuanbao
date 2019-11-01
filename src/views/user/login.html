@@ -66,6 +66,9 @@
 								window.localStorage.setItem("userId", res.data.user.userId);
 								window.localStorage.setItem("token", res.data.token);
 								window.localStorage.setItem("username", res.data.user.username);
+								window.localStorage.setItem("email", res.data.user.email);
+								window.localStorage.setItem("mobile", res.data.user.mobile);
+								window.localStorage.setItem("nickName", res.data.user.nickName);
 								window.location.href = "../index.html"
 							} else {
 								vm.$message.error(res.data.msg);
