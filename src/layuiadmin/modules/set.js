@@ -36,8 +36,8 @@ layui.define(['form', 'upload'], function(exports){
     //我们既支持上述函数式的方式，也支持下述数组的形式
     //数组的两个值分别代表：[正则匹配、匹配不符时的提示文字]
     ,pass: [
-      /^[\S]{6,12}$/
-      ,'密码必须6到12位，且不能出现空格'
+      /^[\S]{5,12}$/
+      ,'密码必须5到12位，且不能出现空格'
     ]
     
     //确认密码
@@ -133,19 +133,7 @@ layui.define(['form', 'upload'], function(exports){
   
   //设置密码
   form.on('submit(setmypass)', function(obj){
-    layer.msg(JSON.stringify(obj.field));
-    
-    //提交修改
-    /*
-    admin.req({
-      url: ''
-      ,data: obj.field
-      ,success: function(){
-        
-      }
-    });
-    */
-    return false;
+	window.vm.changePsw();
   });
   
   //对外暴露的接口
