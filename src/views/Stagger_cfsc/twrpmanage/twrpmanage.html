@@ -359,7 +359,6 @@
                                 // vm.treeData = res.data.page.list;
                                 var data = res.data.data;
                                 vm.treeData = data;
-
                                 // for (var i = 0; i < data.length; i++) {
                                 //     var obj = {};
                                 //     obj.label = data[i].name;
@@ -368,8 +367,6 @@
                                 //     obj.children = [];
                                 //     vm.treeData.push(obj);
                                 // }
-
-
                             } else {
 
                             }
@@ -444,14 +441,9 @@
                                     it.children.forEach(function (itthird, index) {
                                         itthird.children.forEach(function (itfourth, index) {
                                             // console.log(itfourth);
-
-
-
                                             if (itfourth.monitorId === data[i].monitorId && itfourth.label === data[i].label) {
-
                                                 // console.log(dataItem);
                                                 // console.log(item)
-
                                                 data[i].monitorId = itfourth.monitorId;
                                                 data[i].monitorName = itfourth.label;
                                                 data[i].enterpriseId = item.enterpriseId;
@@ -459,17 +451,10 @@
                                                 // vm.monitorIdData.push(obj);
                                                 // delete data[i].label;
                                             }
-
-
-
                                         })
                                     })
                                 })
-
                             })
-
-
-
                         }
                         vm.monitorIdData = data;
                         vm.monitorIdData.forEach(function (item, index) {
@@ -487,11 +472,7 @@
 
                         // vm.treeObj = {}
                         // nodeData.forEach(function (item, index) {
-
                         //     console.log(item, index);
-
-
-
                         //     if (item.enterpriseId != undefined) {
                         //         vm.treeObj.enterpriseId = item.enterpriseId;
                         //         vm.treeObj.enterpriseName = item.label;

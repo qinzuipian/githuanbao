@@ -254,9 +254,10 @@
                 flag: ""
             },
             watch: {
-                endDate:function(val) {
+                endDate: function (val) {
                     console.log(val);
-                    if (this.enterpriseId == "") {
+                    console.log(this.enterpriseId)
+                    if (this.enterpriseId === "") {
                         this.$notify({
                             title: '提示',
                             message: '请选择企业',
@@ -266,8 +267,8 @@
                         this.enterpriseInit();
                     }
                 },
-                endYearDate:function(val) {
-                    if (this.enterpriseId == "") {
+                endYearDate: function (val) {
+                    if (this.enterpriseId === "") {
                         this.$notify({
                             title: '提示',
                             message: '请选择企业',
@@ -277,8 +278,8 @@
                         this.enterpriseInit();
                     }
                 },
-                endMonthDate:function(val) {
-                    if (this.enterpriseId == "") {
+                endMonthDate: function (val) {
+                    if (this.enterpriseId === "") {
                         this.$notify({
                             title: '提示',
                             message: '请选择企业',
@@ -293,7 +294,7 @@
             },
             methods: {
 
-                timeSelect:function(val) {
+                timeSelect: function (val) {
                     // console.log(val)
                     if (val == 'year') {
                         vm.timeShow = 2;
@@ -304,7 +305,7 @@
                     }
 
                 },
-                energyTreeInit:function() {
+                energyTreeInit: function () {
                     this.loading = true;
                     axios({
                         method: "post",
@@ -333,7 +334,7 @@
                         console.log(err);
                     });
                 },
-                handleNodeClick:function(data, node) {
+                handleNodeClick: function (data, node) {
                     this.enterpriseName = data.title;
                     console.log(data)
                     if (data.type == "t_bas_enterprise") {
@@ -346,20 +347,35 @@
                     console.log(vm.timeShow)
                     if (vm.timeShow == 1) {
                         if (this.startDate == "" || this.endDate == "") {
-                            vm.$message.warning('请输入开始日期与结束日期');
+                            vm.$notify({
+                                title: '提示',
+                                message: '请输入开始日期与结束日期',
+                                type: 'warning'
+                            });
+                            // vm.$message.warning('请输入开始日期与结束日期');
                         } else {
                             this.enterpriseInit();
                         }
 
                     } else if (vm.timeShow == 2) {
                         if (this.startYearDate == "" || this.endYearDate == "") {
-                            vm.$message.warning('请输入开始日期与结束日期');
+                            // vm.$message.warning('请输入开始日期与结束日期');
+                            vm.$notify({
+                                title: '提示',
+                                message: '请输入开始日期与结束日期',
+                                type: 'warning'
+                            });
                         } else {
                             this.enterpriseInit();
                         }
                     } else {
                         if (this.startMonthDate == "" || this.endMonthDate == "") {
-                            vm.$message.warning('请输入开始日期与结束日期');
+                            vm.$notify({
+                                title: '提示',
+                                message: '请输入开始日期与结束日期',
+                                type: 'warning'
+                            });
+                            // vm.$message.warning('请输入开始日期与结束日期');
                         } else {
                             this.enterpriseInit();
                         }
@@ -367,7 +383,7 @@
 
                 },
                 // 企业用电量汇总表
-                enterpriseInit:function() {
+                enterpriseInit: function () {
                     var type, startTime, endTime;
                     if (this.timeType == 'year') {
                         type = 'year';
@@ -433,7 +449,7 @@
                         });
                 },
                 // excel表导出
-                enterpriseDownload:function() {
+                enterpriseDownload: function () {
                     if (vm.flag == 'noData') {
                         vm.$message.warning('无数据导出');
                     } else {
@@ -471,7 +487,7 @@
                     }
                 }
             },
-            created:function() {
+            created: function () {
                 this.energyTreeInit();
             }
         })
