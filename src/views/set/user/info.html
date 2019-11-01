@@ -96,9 +96,9 @@
 								});
 							}else{
 								layer.msg(res.data.msg);
-								vm.nickName: window.localStorage.getItem("nickName"),
-								vm.mobile: window.localStorage.getItem("mobile"),
-								vm.email: window.localStorage.getItem("email"),
+								vm.nickName = window.localStorage.getItem("nickName");
+								vm.mobile = window.localStorage.getItem("mobile");
+								vm.email = window.localStorage.getItem("email");
 							}
 						})
 					}
