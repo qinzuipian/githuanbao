@@ -514,8 +514,8 @@
 							layer.msg('保存成功！', {
 								time: 500
 							}, function() {
-								// window.parent.location.reload();
-								// parent.layer.close('iframe');
+								window.parent.location.reload();
+								parent.layer.close('iframe');
 							});
 						} else {
 							parent.layer.tips('保存异常!');
@@ -674,6 +674,7 @@
 					handleNodeClick:function(data, node) {
 					    console.log(data);
 					    vm.atraName = data.title;
+						vm.treeId = data.id
 					    vm.treeHign = true;
 					    vm.Areashow = false;
 					    

@@ -91,7 +91,7 @@
 						<div class="layui-inline">
 							<label class="layui-form-label">日期</label>
 							<div class="layui-input-inline">
-								<input type="text" name="createDate" class="layui-input" id="startDate" placeholder="请输入开始日期">
+								<input type="text" name="createDate" v-model="today" class="layui-input" id="startDate" placeholder="请输入开始日期">
 							</div>
 						</div>
 						<div class="layui-inline">
@@ -251,12 +251,11 @@
 
 				// 获取当前的时间
 				var data = new Date();
-				var max_data = data.getDate();
 				laydate.render({
 					elem: '#startDate',
-					btns: ['confirm'],
-					max: "max_data"
+					btns: ['confirm']
 				});
+				vm.today =  data.getFullYear()+"-" + (data.getMonth()+1) + "-" + data.getDate();
 
 
 				//下拉菜单里面的选项
@@ -359,7 +358,8 @@
 					isActive: 0,
 					treeValue: "",
 					treeId: '',
-					tradeName: ''
+					tradeName: '',
+					today:""
 
 
 				},
