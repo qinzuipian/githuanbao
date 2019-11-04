@@ -188,7 +188,7 @@
 								    <label class="layui-form-label">行政区域
 									<span class="red">*</span></label></label>
 								    <div class="layui-input-inline AdminArea">
-								        <input type="text" name="organizeName" v-model="atraName" placeholder="请选择行政区域" autocomplete="off" class="layui-input">
+								        <input type="text" name="organizeName" v-model="atraName" placeholder="请选择行政区域" autocomplete="off" class="layui-input" lay-verify="required">
 										<i class="layui-icon layui-icon-triangle-d" @click="AdminFocus"></i>
 								        <div class="Areashow layui-anim layui-anim-upbit" v-show="Areashow">
 								            <el-tree :highlight-current="treeHign" default-expand-all :expand-on-click-node="false" :data="treeData" :props="defaultProps" @node-click="handleNodeClick"></el-tree>
@@ -497,9 +497,10 @@
 					data.field.tBasShopList = vm.list;
 					data.field.tradeName = vm.tradeName;
 					data.field.concern = vm.concern;
-					data.field.organizeName = vm.treeValue;
+					data.field.organizeName = vm.atraName;
 					data.field.organizeId = vm.treeId;
-					console.log(data.field);
+					console.log(vm.atraName);
+					console.log(vm.pic);
 					axios({
 						method: "post",
 						url: layui.setter.BASEURL + 'environmental_intelligent_monitoring/tbasenterprise/save',
@@ -513,8 +514,8 @@
 							layer.msg('保存成功！', {
 								time: 500
 							}, function() {
-								window.parent.location.reload();
-								parent.layer.close('iframe');
+								// window.parent.location.reload();
+								// parent.layer.close('iframe');
 							});
 						} else {
 							parent.layer.tips('保存异常!');

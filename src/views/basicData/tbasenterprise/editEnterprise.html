@@ -185,7 +185,7 @@
 								<div class="layui-form-item">
 								    <label class="layui-form-label">行政区域</label>
 								    <div class="layui-input-inline AdminArea">
-								        <input type="text" name="organizeName" v-model="atraName" placeholder="请选择行政区域" autocomplete="off" class="layui-input">
+								        <input type="text" name="organizeName" v-model="atraName" placeholder="请选择行政区域" autocomplete="off" class="layui-input" lay-verify="required">
 								        <i class="layui-icon layui-icon-triangle-d" @click="AdminFocus"></i>
 								        <div class="Areashow layui-anim layui-anim-upbit" v-show="Areashow">
 								            <el-tree :highlight-current="treeHign" default-expand-all :expand-on-click-node="false" :data="treeData" :props="defaultProps" @node-click="handleNodeClick"></el-tree>
@@ -483,6 +483,7 @@
 							$('#demo1').attr('src', result); //图片链接（base64）
 							vm.haspic = 1
 							vm.pic = result;
+							
 						});
 					},
 					done: function(res) {
@@ -521,6 +522,7 @@
 							.then(res => {
 								if (res.data.code == 0) {
 									vm.pic = res.data.tBasEnterprise.picUrl;
+									console.log(res.data.tBasEnterprise.picUrl);
 									console.log(res.data);
 									if (vm.pic == "" || vm.pic == undefined) {} else {
 										vm.haspic = 1
@@ -530,7 +532,7 @@
 									}
 									var list = res.data.tBasEnterprise;
 									vm.list = res.data.tBasEnterprise.tBasShopList;
-									vm.treeValue = res.data.tBasEnterprise.organizeName
+									vm.atraName = res.data.tBasEnterprise.organizeName
 									vm.tradeName = res.data.tBasEnterprise.tradeName
 									vm.concern = res.data.tBasEnterprise.concern
 									form.val('editEnterprise', {
@@ -558,8 +560,7 @@
 										// "tradeName": list.tradeName,
 										"concern": list.concern,
 										"trustCode": list.trustCode,
-										"tBasShopList": list.tBasShopList,
-										"organizeName":list.organizeName
+										"tBasShopList": list.tBasShopList
 									});
 									// $('#eventType').val(list.tradeId);
 									form.render("select");
@@ -634,13 +635,12 @@
 
 
 				form.on('submit(editFormDemo)', function(data) {
-					console.log(data);
+					data.field.picUrl = vm.pic;
 					data.field.tBasShopList = vm.list;
 					data.field.tradeName = vm.tradeName;
 					data.field.concern = vm.concern;
-					data.field.organizeName = vm.treeValue;
+					data.field.organizeName = vm.atraName;
 					data.field.organizeId = vm.treeId;
-					
 					axios({
 						method: "post",
 						url: BASEURL + 'environmental_intelligent_monitoring/tbasenterprise/update',
