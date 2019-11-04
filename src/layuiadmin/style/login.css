@@ -54,7 +54,7 @@ html,body,#LAY_app{height:100%;}
 #vm{
 	background-image:url(../img/huanbao6.jpg);
 	background-repeat: no-repeat;
-	background-size: 100%;
+	background-size: cover;
 }
 
 
