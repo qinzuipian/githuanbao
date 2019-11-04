@@ -28,7 +28,6 @@
 		#organizeTree .ulOrganize li ul li {
 			margin-left: 50px;
 		}
-
 	</style>
 </head>
 
@@ -38,7 +37,7 @@
 		<div class="layui-fluid">
 			<!-- <div id="organizeTree" class="demo-tree-more"></div> -->
 			<div style="padding-bottom: 10px;">
-				<button class="layui-btn layuiadmin-btn-list layui-bg-green" data-type="add">
+				<button class="layui-btn layuiadmin-btn-list layui-bg-green" :disabled="btnDisable" id="addOrgan" data-type="add">
 					<i class="layui-icon">&#xe654;</i>添加</button>
 				<button class="layui-btn layuiadmin-btn-list layui-bg-blue" data-type="edit">
 					<i class="layui-icon">&#xe642;</i>编辑</button>
@@ -90,7 +89,7 @@
 	</div>
 
 	<script src="./../../../layuiadmin/plugin/polyfill.min.js"></script>
-	<script src="../../../layuiadmin/layui/layui.js"></script>	
+	<script src="../../../layuiadmin/layui/layui.js"></script>
 	<script src="../../../layuiadmin/plugin/vue.js"></script>
 	<script src="../../../layuiadmin/plugin/axios.js"></script>
 	<script src="../../../layuiadmin/js/baseUrlConfig.js"></script>
@@ -231,16 +230,24 @@
 				},
 				nodedata: [],
 				treeHign: true,
-				loading: true
+				loading: true,
+				btnDisable: false
 			},
 			methods: {
-				handleNodeClick:function(data, node) {
+				handleNodeClick: function (data, node) {
 					console.log(data, node);
 					vm.treeHign = true;
 					// console.log(node.parent.childNodes[0].parent.data.label)
 					var localname = node.parent.childNodes[0].parent.data.title === undefined ? '无上级目录' : node.parent.childNodes[0].parent.data.title;
 					localStorage.setItem("nodeParentName", localname)
 					vm.nodedata = data;
+					if (node.level === 3) {
+						document.getElementById("addOrgan").classList.add("layui-btn-disabled");
+						vm.btnDisable = true;
+					} else {
+						document.getElementById("addOrgan").classList.remove("layui-btn-disabled");
+						vm.btnDisable = false;
+					}
 					// axios({
 					// 	method: "post",
 					// 	url: BASEURL + 'environmental_intelligent_monitoring/tbasorganize/list?limit=10000',
@@ -285,7 +292,7 @@
 					// });
 				},
 				// 获取树状组件的data值
-				organizeTree:function() {
+				organizeTree: function () {
 					this.loading = true;
 					axios({
 						method: "post",
@@ -317,9 +324,9 @@
 						} else {
 							vm.loading = false;
 							vm.$notify.error({
-                                title: '错误',
-                                message: res.data.msg
-                            });
+								title: '错误',
+								message: res.data.msg
+							});
 
 						}
 					}).catch(function (err) {
@@ -328,7 +335,7 @@
 				}
 			},
 
-			created:function() {
+			created: function () {
 				this.organizeTree();
 			}
 		})

@@ -9,12 +9,14 @@
     <meta name="viewport" content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi"
     />
     <link rel="stylesheet" href="../../../layuiadmin/layui/css/layui.css">
+    <link rel="stylesheet" href="../../../layuiadmin/plugin/element.css">
     <script type="text/javascript" src="../../../layuiadmin/layui/layui.js" charset="utf-8"></script>
 
     <!-- 引入vue -->
     <script type="text/javascript" src="../../../layuiadmin/plugin/vue.js"></script>
     <script src="../../../layuiadmin/plugin/axios.js"></script>
     <script src="../../../layuiadmin/js/baseUrlConfig.js"></script>
+    <script src="../../../layuiadmin/plugin/element.js"></script>
     <!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
     <!--[if lt IE 9]>
     <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
@@ -37,6 +39,7 @@
         .layui-form-item .layui-input-inline {
             width: 300px;
         }
+
         .red {
             color: #f00;
             font-size: 22px;
@@ -48,17 +51,10 @@
     <div id="vm">
         <div class="layui-fluid">
             <div class="layui-row">
-                <form class="layui-form" action="" lay-filter="editTwarn">
+                <form class="layui-form" lay-filter="editTwarn">
                     <input type="hidden" name="monitorId" class="layui-input" />
                     <input type="hidden" name="eventTypeId" class="layui-input" />
                     <input type="hidden" name="id" class="layui-input" />
-                    <!--  <div class="layui-form-item">
-                        <label for="bitian" class="layui-form-label">
-                            监测点编码</label>
-                        <div class="layui-input-inline">
-                            <input type="text" v-model="tWarnSet.monitorId" class="layui-input" placeholder="监测点编码" />
-                        </div>
-                    </div> -->
                     <div class="layui-form-item">
                         <label for="bitian" class="layui-form-label">
                             监测点名称</label>
@@ -73,16 +69,11 @@
                             <input type="text" name="eventType" disabled class="layui-input layui-disabled" placeholder="事件类型名称" />
                         </div>
                     </div>
-                    <!--  <div class="layui-form-item">
-                        <label for="bitian" class="layui-form-label">
-                            事件类型编码</label>
-                        <div class="layui-input-inline">
-                            <input type="text" v-model="tWarnSet.eventTypeId" class="layui-input" placeholder="事件类型编码" />
-                        </div>
-                    </div> -->
                     <div class="layui-form-item">
                         <label for="bitian" class="layui-form-label">
-                            参数<span class="red">*</span></label>
+                            参数
+                            <span class="red">*</span>
+                        </label>
                         <div class="layui-input-inline">
                             <!-- <input type="text" v-model="tWarnSet.parameterCode" class="layui-input" placeholder="参数：" /> -->
                             <select name="parameterCode" id="parameterCode" lay-verify="required">
@@ -96,32 +87,39 @@
                                 <option value="VOC（气体浓度mg/m3）">VOC（气体浓度mg/m3）</option>
                             </select>
                         </div>
-                       
+
                     </div>
                     <div class="layui-form-item">
                         <label for="bitian" class="layui-form-label">
-                            条件<span class="red">*</span></label>
+                            条件
+                            <span class="red">*</span>
+                        </label>
                         <div class="layui-input-inline">
                             <!-- <input type="text" v-model="tWarnSet.condition" class="layui-input" placeholder="条件" /> -->
                             <select name="condition" id="condition" lay-verify="required">
                                 <option value="">请选择条件类型</option>
                                 <option value=">=">>=</option>
-                                <option value="<="><=</option>
+                                <option value="<=">
+                                    <=</option>
                             </select>
                         </div>
-                        
+
                     </div>
                     <div class="layui-form-item">
                         <label for="bitian" class="layui-form-label">
-                            阀值<span class="red">*</span></label>
+                            阀值
+                            <span class="red">*</span>
+                        </label>
                         <div class="layui-input-inline">
                             <input type="text" name="limitValue" class="layui-input" lay-verify="required" placeholder="阀值" />
                         </div>
-                        
+
                     </div>
                     <div class="layui-form-item">
                         <label for="bitian" class="layui-form-label">
-                            是否启用</label>
+                            是否启用
+                            <span class="red">*</span>
+                        </label>
                         <div class="layui-input-inline">
                             <!-- <input type="text" v-model="tWarnSet.active" class="layui-input" placeholder="是否启用：1、启用 2、禁用" /> -->
                             <input type="radio" name="active" value="1" title="启用">
@@ -131,14 +129,6 @@
                         </div>
                     </div>
 
-                    <!-- <div class="layui-form-item">
-                        <label for="bitian" class="layui-form-label">
-                            状态</label>
-                        <div class="layui-input-inline">
-                            <input type="radio" name="status" value="1" title="有效">
-                            <input type="radio" name="status" value="2" title="无效">
-                        </div> -->
-                    </div>
                     <div class="layui-form-item">
                         <label for="bitian" class="layui-form-label">
                             备注</label>
@@ -202,33 +192,37 @@
                 });
             // form表单的提交
             form.on('submit(editFormDemo)', function (data) {
-                console.log(data)
-                axios({
-                    method: "post",
-                    url: BASEURL + 'environmental_intelligent_monitoring/twarnset/update',
-                    data: data.field,
-                    headers: {
-                        "Content-Type": "application/json;charset=UTF-8"
-                    }
-                }).then(function (res) {
-                    if (res.data.code == 0) {
-                        console.log(res)
-                        layer.msg('编辑成功！', {
-                            time: 500
-                        }, function () {
-                            window.parent.location.reload();
-                            parent.layer.close('iframe');
+                console.log(data.field)
+                if (!data.field.active) {
+                    vm.$message.warning('请选择是否启用');
+                } else {
+                    axios({
+                        method: "post",
+                        url: BASEURL + 'environmental_intelligent_monitoring/twarnset/update',
+                        data: data.field,
+                        headers: {
+                            "Content-Type": "application/json;charset=UTF-8"
                         }
-                        );
-                    } else {
-                        vm.$notify.error({
-                            title: '错误',
-                            message: '编辑异常'
-                        });
-                    }
-                }).catch(function (err) {
-                    console.log(err);
-                });
+                    }).then(function (res) {
+                        if (res.data.code == 0) {
+                            console.log(res)
+                            layer.msg('编辑成功！', {
+                                time: 500
+                            }, function () {
+                                window.parent.location.reload();
+                                parent.layer.close('iframe');
+                            }
+                            );
+                        } else {
+                            vm.$notify.error({
+                                title: '错误',
+                                message: '编辑异常'
+                            });
+                        }
+                    }).catch(function (err) {
+                        console.log(err);
+                    });
+                }
                 return false;
             })
 

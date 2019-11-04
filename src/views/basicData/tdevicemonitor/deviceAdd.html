@@ -995,7 +995,7 @@
                 }
                 // 网管编码远程搜索
                 , querySwicthId(qs, callback) {
-                    var list = [{}];
+                    var list = [];
                     axios({
                         method: "post",
                         url: BASEURL + 'environmental_intelligent_monitoring/tdevicemonitor/querySwicthIdList',
@@ -1022,10 +1022,13 @@
                                 }
                             }
                             for (let i of datalist) {
-                                i.value = i.swicthId; //将想要展示的数据作为value
-                                // console.log(i.value)
+                                var obj = {};
+                                // i.value = i.swicthId; //将想要展示的数据作为value
+                                obj.value = i; //将想要展示的数据作为value
+                                list.push(obj)
                             }
-                            list = datalist;
+                            console.log(list)
+                            // list = datalist;
                             callback(list);
 
                         } else {

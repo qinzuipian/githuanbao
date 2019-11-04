@@ -115,24 +115,6 @@
                             <!-- <input type="text" v-model="tBizReduce.active" class="layui-input" placeholder="是否启用：1、启用；2、禁用" /> -->
                         </div>
                     </div>
-                    <!--  <div class="layui-form-item">
-                        <label for="bitian" class="layui-form-label">
-                            对象类型：1、企业 2、部门</label>
-                        <div class="layui-input-inline">
-                            <input type="text" v-model="tBizReduce.setobject" class="layui-input" placeholder="对象类型：1、企业 2、部门" />
-                        </div>
-                    </div> -->
-
-
-<!-- 
-                    <div class="layui-form-item">
-                        <label for="bitian" class="layui-form-label">
-                            状态</label>
-                        <div class="layui-input-inline">
-                            <input type="radio" name="status" value="1" title="有效">
-                            <input type="radio" name="status" value="2" title="无效">
-                        </div> -->
-                    </div>
                     <div class="layui-form-item">
                         <label for="bitian" class="layui-form-label">
                             备注</label>
@@ -201,6 +183,7 @@
 
             // form表单的提交
             form.on('submit(editForm)', function (data) {
+                // console.log(data.field)
                 axios({
                     method: "post",
                     url: BASEURL + 'environmental_intelligent_monitoring/tbizreduce/update',

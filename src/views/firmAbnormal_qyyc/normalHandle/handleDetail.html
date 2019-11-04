@@ -87,7 +87,7 @@
                         <label for="bitian" class="layui-form-label">
                             设备名称</label>
                         <div class="layui-input-inline">
-                            <input type="text" name="equipName" class="layui-input layui-disabled" disabled placeholder="" />
+                            <input type="text" name="codeType" class="layui-input layui-disabled" disabled placeholder="" />
                         </div>
                     </div>
                     <div class="layui-form-item">
@@ -111,13 +111,13 @@
                             <input type="text" name="meterId" class="layui-input layui-disabled" disabled placeholder="" />
                         </div>
                     </div>
-                    <div class="layui-form-item">
+                    <!-- <div class="layui-form-item">
                         <label for="bitian" class="layui-form-label">
                             型号</label>
                         <div class="layui-input-inline">
                             <input type="text" name="model" class="layui-input layui-disabled" disabled placeholder="" />
                         </div>
-                    </div>
+                    </div> -->
                     <div class="layui-form-item">
                         <label for="bitian" class="layui-form-label">
                             发生时间</label>
@@ -241,7 +241,7 @@
                             'reason': detailData.reason,
                             'description': detailData.description,
                             'remark': detailData.remark,
-                            'equipName': detailData.equipName,
+                            'codeType': detailData.codeType == 0?'生产设备':detailData.codeType == 1?'治污设备':'总进线',
                             'swicthId': detailData.swicthId,
                             'model': detailData.model,
                             'pt': detailData.pt,

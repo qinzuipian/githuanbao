@@ -53,6 +53,7 @@
             background-color: #fff;
             color: #000;
         }
+
         .layui-col-space30 {
             margin: 0;
         }
@@ -93,7 +94,8 @@
                             <input type="text" name="atraCode" v-model="atraName" placeholder="请选择行政区域" autocomplete="off" class="layui-input">
                             <i class="layui-icon layui-icon-triangle-d" @click="atraClick"></i>
                             <div class="atraShow layui-anim layui-anim-upbit" v-show="atraShow">
-                                <el-tree :highlight-current="treeHign" default-expand-all :expand-on-click-node="false" :data="treeData" :props="organProps" @node-click="handleNodeClick"></el-tree>
+                                <el-tree :highlight-current="treeHign" default-expand-all :expand-on-click-node="false" :data="treeData" :props="organProps"
+                                    @node-click="handleNodeClick"></el-tree>
                             </div>
                         </div>
                     </div>
@@ -156,7 +158,7 @@
                 },
                 methods: {
                     // 获取单选框列表
-                    levelInit:function() {
+                    levelInit: function () {
                         axios({
                             method: "post",
                             url: BASEURL + 'environmental_intelligent_monitoring/tbizreduce/queryReduceList',
@@ -172,7 +174,7 @@
 
                     },
                     // 单选框选择事件改变
-                    levelChange:function(val) {
+                    levelChange: function (val) {
                         console.log(val);
                         vm.levelId = val;
                         vm.levelLength = val;
@@ -203,7 +205,7 @@
 
                     },
                     // 左右列表对应保存
-                    treeSave:function() {
+                    treeSave: function () {
                         if (vm.levelLength == "") {
                             vm.$notify.warning({
                                 title: '提示',
@@ -252,7 +254,7 @@
 
                     },
                     // 左右列表对应删除
-                    treeClear:function() {
+                    treeClear: function () {
                         if (vm.levelLength == "") {
                             vm.$notify.warning({
                                 title: '提示',
@@ -290,7 +292,7 @@
 
                     },
                     // 企业列表树状图
-                    enterPriseInit:function() {
+                    enterPriseInit: function () {
                         axios({
                             method: "post",
                             url: BASEURL + 'environmental_intelligent_monitoring/tdevicemonitor/list?limit=10000',
@@ -306,7 +308,7 @@
                                             dataList[i].children.push({
                                                 label: data.shopName,
                                                 children: [{
-                                                    label: data.type === "1" ? '生产设备' : '治污设备',
+                                                    label: data.codeType === "0" ? '生产设备' : data.codeType === "1" ? '治污设备' : '总进线',
                                                     // id: data.type,
                                                     children: [{ label: data.monitorName, monitorId: data.id }]
                                                 }]
@@ -324,8 +326,8 @@
                                         children: [{
                                             label: data.shopName,
                                             children: [{
-                                                label: data.type === "1" ? '生产设备' : '治污设备',
-                                                id: data.type,
+                                                label: data.codeType === "0" ? '生产设备' : data.codeType === "1" ? '治污设备' : '总进线',
+                                                id: data.codeType,
                                                 children: [{ label: data.monitorName, monitorId: data.id }]
                                             }]
                                         }]
@@ -341,16 +343,16 @@
                         });
 
                     },
-                    atraClick:function() {
+                    atraClick: function () {
                         vm.atraShow = !vm.atraShow;
                     },
                     // 树状图组件
-                    treeDataInit:function() {
+                    treeDataInit: function () {
                         axios({
                             method: "post",
                             url: BASEURL + 'environmental_intelligent_monitoring/tbasorganize/dendrogramList',
                             params: {
-                               type:"2"
+                                type: "2"
                             }
                         }).then(function (res) {
                             if (res.data.code == 0) {
@@ -375,7 +377,7 @@
                         });
 
                     },
-                    handleNodeClick:function(data, node) {
+                    handleNodeClick: function (data, node) {
                         console.log(data);
                         vm.atraName = data.title;
                         vm.treeHign = true;
@@ -425,7 +427,7 @@
                         // });
                     },
                     // 复选框选中
-                    manageCheck:function(data, node) {
+                    manageCheck: function (data, node) {
                         vm.monitoridList = [];
                         var data = this.$refs.tree.getCheckedNodes(true);
                         console.log(data)
@@ -508,7 +510,7 @@
                         // console.log(this.$refs.tree.getNode())
                     },
 
-                    mmmm:function(node, key, istrue) {
+                    mmmm: function (node, key, istrue) {
                         // console.log(node,key,istrue);
                         // console.log(this.$refs.tree.getCheckedNodes(true));
                         // var data = this.$refs.tree.getCheckedNodes(true);
@@ -595,7 +597,7 @@
                     },
 
                     // 搜索
-                    laySearch:function() {
+                    laySearch: function () {
                         axios({
                             method: "post",
                             url: BASEURL + 'environmental_intelligent_monitoring/tdevicemonitor/list?limit=10000',
@@ -650,7 +652,7 @@
                         });
                     }
                 },
-                created:function() {
+                created: function () {
                     this.levelInit();
                     this.enterPriseInit();
                     // 树状图调用

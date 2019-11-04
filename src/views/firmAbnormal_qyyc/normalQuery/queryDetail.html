@@ -86,7 +86,7 @@
                         <label for="bitian" class="layui-form-label">
                             设备名称</label>
                         <div class="layui-input-inline">
-                            <input type="text" name="equipName" class="layui-input" placeholder="" />
+                            <input type="text" name="codeType" class="layui-input" placeholder="" />
                         </div>
                     </div>
                     <div class="layui-form-item">
@@ -134,6 +134,14 @@
                     </div>
                     <div class="layui-form-item">
                         <label for="bitian" class="layui-form-label">
+                            审核意见</label>
+                        <div class="layui-input-inline">
+                            <textarea placeholder="" class="layui-textarea" name="auditOpinion"></textarea>
+                            <!-- <input type="text" name="remark" class="layui-input" placeholder="备注" /> -->
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label for="bitian" class="layui-form-label">
                             备注</label>
                         <div class="layui-input-inline">
                             <textarea placeholder="" class="layui-textarea" name="remark"></textarea>
@@ -171,7 +179,9 @@
                             'reason': detailData.reason,
                             'description': detailData.description,
                             'remark': detailData.remark,
-                            'equipName': detailData.equipName,
+                            'codeType': detailData.codeType == 0?'生产设备':detailData.codeType == 1?'治污设备':'总进线',
+                            'auditOpinion': detailData.auditOpinion,
+                            // 'equipName': detailData.equipName,
                             'swicthId': detailData.swicthId
                         })
                     } else {

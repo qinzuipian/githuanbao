@@ -39,6 +39,10 @@
             font-size: 18px;
             color: orange;
         }
+
+        [v-cloak] {
+            display: none
+        }
     </style>
 </head>
 
@@ -51,348 +55,348 @@
                 <button type="button" :class="{'active': energyShow == 3}" @click="energyShowClick(3)">行政区域</button>
             </div>
             <div class="mainContent">
-                <div>
-                    <div class="title" v-show="energyShow==1">
-                        <span class="layui-icon layui-icon-note"></span>
-                        <div class="layui-inline layui-form">
-                            <div class="layui-input-inline">
-                                <el-select v-model="enterprise" @change="enterSelect" placeholder="请选择">
-                                    <el-option v-for="item in enterpriseOptions" :key="item.value" :label="item.name" :value="item.id">
-                                    </el-option>
-                                </el-select>
-                            </div>
-                            <div class="layui-input-inline">
-                                <el-select v-model="monitorName" @change="monitorSelect" placeholder="请选择">
-                                    <el-option value="" label="全部">
-                                    </el-option>
-                                    <el-option v-for="item in monitorNameOptions" :key="item.value" :label="item.monitorName" :value="item.id">
-                                    </el-option>
-                                </el-select>
-                            </div>
+                <!-- <div> -->
+                <div class="title" v-show="energyShow==1">
+                    <span class="layui-icon layui-icon-note"></span>
+                    <div class="layui-inline layui-form">
+                        <div class="layui-input-inline">
+                            <el-select v-model="enterprise" @change="enterSelect" placeholder="请选择">
+                                <el-option v-for="item in enterpriseOptions" :key="item.value" :label="item.name" :value="item.id">
+                                </el-option>
+                            </el-select>
+                        </div>
+                        <div class="layui-input-inline">
+                            <el-select v-model="monitorName" @change="monitorSelect" placeholder="请选择">
+                                <el-option value="" label="全部">
+                                </el-option>
+                                <el-option v-for="item in monitorNameOptions" :key="item.value" :label="item.monitorName" :value="item.id">
+                                </el-option>
+                            </el-select>
                         </div>
                     </div>
-                    <div class="title" v-show="energyShow==2">
-                        <span class="layui-icon layui-icon-component"></span>
-                        <div class="layui-inline layui-form">
-                            <div class="layui-input-inline">
-                                <!--   <select name="industry" id="industry">
+                </div>
+                <div class="title" v-show="energyShow==2" v-cloak>
+                    <span class="layui-icon layui-icon-component"></span>
+                    <div class="layui-inline layui-form">
+                        <div class="layui-input-inline">
+                            <!--   <select name="industry" id="industry">
                                     <option value="">请选择行业</option>
                                     <option value=""></option>
                                 </select> -->
-                                <el-select v-model="industry" @change="industrySelect" placeholder="请选择">
-                                    <el-option v-for="item in industryOptions" :key="item.value" :label="item.name" :value="item.id">
-                                    </el-option>
-                                </el-select>
-                            </div>
+                            <el-select v-model="industry" @change="industrySelect" placeholder="请选择">
+                                <el-option v-for="item in industryOptions" :key="item.value" :label="item.name" :value="item.id">
+                                </el-option>
+                            </el-select>
+                        </div>
 
+                    </div>
+                </div>
+                <div class="title" v-show="energyShow==3" v-cloak>
+                    <span class="layui-icon layui-icon-location"></span>
+                    <div class="layui-inline layui-form">
+                        <div class="layui-input-inline AdminArea">
+                            <input type="text" name="organizeName" v-model="atraName" placeholder="请选择行政区域" autocomplete="off" class="layui-input">
+                            <i class="layui-icon layui-icon-triangle-d" @click="AdminFocus"></i>
+                            <div class="Areashow layui-anim layui-anim-upbit" v-show="Areashow">
+                                <el-tree :highlight-current="treeHign" default-expand-all :expand-on-click-node="false" :data="treeData" :props="defaultProps"
+                                    @node-click="handleNodeClick"></el-tree>
+                            </div>
                         </div>
                     </div>
-                    <div class="title" v-show="energyShow==3">
-                        <span class="layui-icon layui-icon-location"></span>
-                        <div class="layui-inline layui-form">
-                            <div class="layui-input-inline AdminArea">
-                                <input type="text" name="organizeName" v-model="atraName" placeholder="请选择行政区域" autocomplete="off" class="layui-input">
-                                <i class="layui-icon layui-icon-triangle-d" @click="AdminFocus"></i>
-                                <div class="Areashow layui-anim layui-anim-upbit" v-show="Areashow">
-                                    <el-tree :highlight-current="treeHign" default-expand-all :expand-on-click-node="false" :data="treeData" :props="defaultProps"
-                                        @node-click="handleNodeClick"></el-tree>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="bottomContent">
-                        <!-- 功率 -->
-                        <div class="layui-row" v-show="energyShow==1">
-                            <div class="layui-col-md3">
-                                <div class="layui-row grid-demo">
-                                    <h3>功率峰值</h3>
-                                    <div class="layui-col-md12">
-                                        <div class="grid-demo grid-demo-bg2">
-                                            <div class="layui-card">
-                                                <div class="layui-card-header">
-                                                    今日
-                                                    <span class="layui-badge layui-bg-green layuiadmin-badge">日</span>
-                                                </div>
-                                                <div class="layui-card-body layuiadmin-card-list">
-                                                    <span class="layuiadmin-big-font" v-text="NpowerData.nowp"></span>
-                                                    <span class="layuiDanwei">kW</span>
-                                                    <!-- <p> -->
+                </div>
+                <div class="bottomContent">
+                    <!-- 功率 -->
+                    <div class="layui-row" v-show="energyShow==1">
+                        <div class="layui-col-md3">
+                            <div class="layui-row grid-demo">
+                                <h3>功率峰值</h3>
+                                <div class="layui-col-md12">
+                                    <div class="grid-demo grid-demo-bg2">
+                                        <div class="layui-card">
+                                            <div class="layui-card-header">
+                                                今日
+                                                <span class="layui-badge layui-bg-green layuiadmin-badge">日</span>
+                                            </div>
+                                            <div class="layui-card-body layuiadmin-card-list">
+                                                <span class="layuiadmin-big-font" v-text="NpowerData.nowp"></span>
+                                                <span class="layuiDanwei">kW</span>
+                                                <!-- <p> -->
 
-                                                    <span class="layuiadmin-span-color">
-                                                        <i class="layui-inline layui-icon layui-icon-date"></i>
-                                                        <span v-text="NpowerData.nowday"></span>
-                                                    </span>
-                                                    <!-- </p> -->
-                                                </div>
+                                                <span class="layuiadmin-span-color">
+                                                    <i class="layui-inline layui-icon layui-icon-date"></i>
+                                                    <span v-text="NpowerData.nowday"></span>
+                                                </span>
+                                                <!-- </p> -->
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="layui-col-md12">
-                                        <div class="grid-demo grid-demo-bg3">
-                                            <!-- <span>功率峰值</span> -->
-                                            <div class="layui-col-md12">
-                                                <div class="grid-demo grid-demo-bg2">
-                                                    <div class="layui-card">
-                                                        <div class="layui-card-header">
-                                                            昨日
-                                                            <span class="layui-badge layui-bg-green layuiadmin-badge">日</span>
-                                                        </div>
-                                                        <div class="layui-card-body layuiadmin-card-list">
-                                                            <span class="layuiadmin-big-font" v-text="YpowerData.nowp"></span>
-                                                            <span class="layuiDanwei">kW</span>
-                                                            <!-- <p> -->
+                                </div>
+                                <div class="layui-col-md12">
+                                    <div class="grid-demo grid-demo-bg3">
+                                        <!-- <span>功率峰值</span> -->
+                                        <div class="layui-col-md12">
+                                            <div class="grid-demo grid-demo-bg2">
+                                                <div class="layui-card">
+                                                    <div class="layui-card-header">
+                                                        昨日
+                                                        <span class="layui-badge layui-bg-green layuiadmin-badge">日</span>
+                                                    </div>
+                                                    <div class="layui-card-body layuiadmin-card-list">
+                                                        <span class="layuiadmin-big-font" v-text="YpowerData.nowp"></span>
+                                                        <span class="layuiDanwei">kW</span>
+                                                        <!-- <p> -->
 
-                                                            <span class="layuiadmin-span-color">
-                                                                <i class="layui-inline layui-icon layui-icon-date"></i>
-                                                                <span v-text="YpowerData.nowday"></span>
-                                                            </span>
-                                                            <!-- </p> -->
-                                                        </div>
+                                                        <span class="layuiadmin-span-color">
+                                                            <i class="layui-inline layui-icon layui-icon-date"></i>
+                                                            <span v-text="YpowerData.nowday"></span>
+                                                        </span>
+                                                        <!-- </p> -->
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="layui-col-md12">
-                                        <h3>用电量峰值</h3>
-                                        <div class="grid-demo grid-demo-bg2">
-                                            <div class="layui-card">
-                                                <div class="layui-card-header">
-                                                    今日
-                                                    <span class="layui-badge layui-bg-blue layuiadmin-badge">日</span>
-                                                </div>
-                                                <div class="layui-card-body layuiadmin-card-list">
-                                                    <span class="layuiadmin-big-font" v-text="Nelectricity.nowkWh"></span>
-                                                    <span class="layuiDanwei">kW·h</span>
-                                                    <!-- <p> -->
-                                                    <span class="layuiadmin-span-color">
-                                                        <i class="layui-inline layui-icon layui-icon-date"></i>
-                                                        <span v-text="Nelectricity.nowday+':00'"></span>
-                                                    </span>
-                                                    <!-- </p> -->
-                                                </div>
+                                </div>
+                                <div class="layui-col-md12">
+                                    <h3>用电量峰值</h3>
+                                    <div class="grid-demo grid-demo-bg2">
+                                        <div class="layui-card">
+                                            <div class="layui-card-header">
+                                                今日
+                                                <span class="layui-badge layui-bg-blue layuiadmin-badge">日</span>
                                             </div>
-                                        </div>
-                                    </div>
-                                    <div class="layui-col-md12">
-                                        <div class="grid-demo grid-demo-bg3">
-                                            <div class="layui-card">
-                                                <div class="layui-card-header">
-                                                    昨日
-                                                    <span class="layui-badge layui-bg-blue layuiadmin-badge">日</span>
-                                                </div>
-                                                <div class="layui-card-body layuiadmin-card-list">
-                                                    <span class="layuiadmin-big-font" v-text="Yelectricity.nowkWh"></span>
-                                                    <span class="layuiDanwei">kW·h</span>
-                                                    <!-- <p> -->
-                                                    <span class="layuiadmin-span-color">
-                                                        <i class="layui-inline layui-icon layui-icon-date"></i>
-                                                        <span v-text="Yelectricity.nowday+':00'"></span>
-                                                    </span>
-                                                    <!-- </p> -->
-                                                </div>
+                                            <div class="layui-card-body layuiadmin-card-list">
+                                                <span class="layuiadmin-big-font" v-text="Nelectricity.nowkWh"></span>
+                                                <span class="layuiDanwei">kW·h</span>
+                                                <!-- <p> -->
+                                                <span class="layuiadmin-span-color">
+                                                    <i class="layui-inline layui-icon layui-icon-date"></i>
+                                                    <span v-text="Nelectricity.nowday+':00'"></span>
+                                                </span>
+                                                <!-- </p> -->
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="layui-col-md9">
-                                <div class="layui-row grid-demo grid-demo-bg1">
-                                    <!-- <span>功率曲线</span> -->
-                                    <div style="width:100%; height: 460px;" id="energyId"></div>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- 电能环比 -->
-                        <div class="layui-row rowline">
-                            <div class="layui-col-md5">
-                                <h3>电能环比</h3>
-                                <div class="layui-row grid-demo">
-                                    <div class="layui-col-md4" v-for="(item,index) in EleRadius[0]" :key="'info1-'+index">
-                                        <div class="grid-demo grid-demo-bg2">
-                                            <div class="layui-card">
-                                                <div class="layui-card-header" v-if="item.flag == 'n'">
-                                                    今日用电
-                                                    <span class="layui-badge layui-bg-green layuiadmin-badge">日</span>
-                                                </div>
-                                                <div class="layui-card-header" v-else-if="item.flag == 'y'">
-                                                    昨日用电
-                                                    <span class="layui-badge layui-bg-green layuiadmin-badge">日</span>
-                                                </div>
-                                                <div class="layui-card-header" v-else-if="item.flag == 'p'">
-                                                    趋势
-                                                    <span class="layui-badge layui-bg-green layuiadmin-badge">势</span>
-                                                </div>
-                                                <div class="layui-card-body layuiadmin-card-list" v-if="item.flag == 'n'">
-                                                    <span class="layuiadmin-big-font" v-text="item.kwh"></span>
-                                                    <span class="layuiDanwei">KWh</span>
-                                                </div>
-                                                <div class="layui-card-body layuiadmin-card-list" v-else-if="item.flag == 'y'">
-                                                    <span class="layuiadmin-big-font" v-text="item.kwh">
-                                                       
-                                                    </span>
-                                                    <span class="layuiDanwei">KWh</span>
-                                                </div>
-                                                <div class="layui-card-body layuiadmin-card-list" v-else>
-                                                    <p>
-                                                        <!-- {{item.pt}}% -->
-                                                        <span v-text="item.pt+'%'"></span>
-                                                        <p style="width:100%;height: 1px; background-color: #000;"></p>
-                                                        <span v-text="item.pb"></span>
-                                                        <span>KWh</span>
-                                                    </p>
-                                                </div>
+                                <div class="layui-col-md12">
+                                    <div class="grid-demo grid-demo-bg3">
+                                        <div class="layui-card">
+                                            <div class="layui-card-header">
+                                                昨日
+                                                <span class="layui-badge layui-bg-blue layuiadmin-badge">日</span>
+                                            </div>
+                                            <div class="layui-card-body layuiadmin-card-list">
+                                                <span class="layuiadmin-big-font" v-text="Yelectricity.nowkWh"></span>
+                                                <span class="layuiDanwei">kW·h</span>
+                                                <!-- <p> -->
+                                                <span class="layuiadmin-span-color">
+                                                    <i class="layui-inline layui-icon layui-icon-date"></i>
+                                                    <span v-text="Yelectricity.nowday+':00'"></span>
+                                                </span>
+                                                <!-- </p> -->
                                             </div>
                                         </div>
-                                    </div>
-                                    <!-- <div class="layui-col-md4">
-                                        <div class="grid-demo grid-demo-bg2">
-                                            <div class="layui-card">
-                                                <div class="layui-card-header">
-                                                    趋势
-                                                    <span class="layui-badge layui-bg-green layuiadmin-badge">势</span>
-                                                </div>
-                                                <div class="layui-card-body layuiadmin-card-list">
-                                                    <p class="layuiadmin-big-font">9
-                                                        <span>kwh</span>
-                                                    </p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div> -->
-                                    <div class="layui-col-md4" v-for="(item,index) in EleRadius[1]" :key="'info2-'+index">
-                                        <div class="grid-demo grid-demo-bg2">
-                                            <div class="layui-card">
-                                                <div class="layui-card-header" v-if="item.flag == 'n'">
-                                                    当月用电
-                                                    <span class="layui-badge layui-bg-green layuiadmin-badge">月</span>
-                                                </div>
-                                                <div class="layui-card-header" v-else-if="item.flag == 'y'">
-                                                    上月用电
-                                                    <span class="layui-badge layui-bg-green layuiadmin-badge">月</span>
-                                                </div>
-                                                <div class="layui-card-header" v-else-if="item.flag == 'p'">
-                                                    趋势
-                                                    <span class="layui-badge layui-bg-green layuiadmin-badge">势</span>
-                                                </div>
-                                                <div class="layui-card-body layuiadmin-card-list" v-if="item.flag == 'n'">
-                                                    <span class="layuiadmin-big-font" v-text="item.kwh">
-                                                    </span>
-                                                    <span class="layuiDanwei">KWh</span>
-                                                </div>
-                                                <div class="layui-card-body layuiadmin-card-list" v-else-if="item.flag == 'y'">
-                                                    <span class="layuiadmin-big-font" v-text="item.kwh">
-                                                    </span>
-                                                    <span class="layuiDanwei">KWh</span>
-                                                </div>
-                                                <div class="layui-card-body layuiadmin-card-list" v-else>
-                                                    <p>
-                                                        <!-- {{item.pt}}% -->
-                                                        <span v-text="item.pt+'%'"></span>
-                                                        <p style="width:100%;height: 1px; background-color: #000;"></p>
-                                                        <span v-text="item.pb"></span>
-                                                        <span>KWh</span>
-                                                    </p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <!-- <div class="layui-col-md4">
-                                        <div class="grid-demo grid-demo-bg2">
-                                            <div class="layui-card">
-                                                <div class="layui-card-header">
-                                                    趋势
-                                                    <span class="layui-badge layui-bg-green layuiadmin-badge">势</span>
-                                                </div>
-                                                <div class="layui-card-body layuiadmin-card-list">
-                                                    <p class="layuiadmin-big-font">9
-                                                        <span>kwh</span>
-                                                    </p>
-
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div> -->
-                                    <div class="layui-col-md4" v-for="(item,index) in EleRadius[2]" :key="'info3-'+index">
-                                        <div class="grid-demo grid-demo-bg2">
-                                            <div class="layui-card">
-                                                <div class="layui-card-header" v-if="item.flag == 'n'">
-                                                    当年用电
-                                                    <span class="layui-badge layui-bg-green layuiadmin-badge">年</span>
-                                                </div>
-                                                <div class="layui-card-header" v-else-if="item.flag == 'y'">
-                                                    上年同期
-                                                    <span class="layui-badge layui-bg-green layuiadmin-badge">年</span>
-                                                </div>
-                                                <div class="layui-card-header" v-else-if="item.flag == 'p'">
-                                                    趋势
-                                                    <span class="layui-badge layui-bg-green layuiadmin-badge">势</span>
-                                                </div>
-                                                <div class="layui-card-body layuiadmin-card-list" v-if="item.flag == 'n'">
-                                                    <span class="layuiadmin-big-font" v-text="item.kwh">
-                                                       
-                                                    </span>
-                                                    <span class="layuiDanwei">KWh</span>
-                                                </div>
-                                                <div class="layui-card-body layuiadmin-card-list" v-else-if="item.flag == 'y'">
-                                                    <span class="layuiadmin-big-font" v-text="item.kwh">
-                                                        <span>KWh</span>
-                                                    </span>
-                                                    <span class="layuiDanwei">KWh</span>
-                                                </div>
-                                                <div class="layui-card-body layuiadmin-card-list" v-else>
-                                                    <p>
-                                                        <!-- {{item.pt}}% -->
-                                                        <span v-text="item.pt+'%'"></span>
-                                                        <p style="width:100%;height: 1px; background-color: #000;"></p>
-                                                        <span v-text="item.pb"></span>
-                                                        <span>KWh</span>
-                                                    </p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="layui-col-md7">
-                                <div class="layui-row grid-demo grid-demo-bg1">
-                                    <!-- <span>电能趋势</span> -->
-                                    <div class="warm-btn">
-                                        <button type="button" :class="{'active': electricShow == 1}" @click="electriClick(1)" class="layui-btn layui-btn-sm layui-btn-warm">日</button>
-                                        <button type="button" :class="{'active': electricShow == 2}" @click="electriClick(2)" class="layui-btn layui-btn-sm layui-btn-warm">月</button>
-                                        <button type="button" :class="{'active': electricShow == 3}" @click="electriClick(3)" class="layui-btn layui-btn-sm layui-btn-warm">年</button>
-                                    </div>
-                                    <div class="btn-radius">
-                                        <button type="button" :class="{'active': radiusShow == 1}" v-show="tongbiShow" @click="radiusClick(1)" class="layui-btn layui-btn-sm layui-btn-warm">同比</button>
-                                        <button type="button" :class="{'active': radiusShow == 2}" @click="radiusClick(2)" class="layui-btn layui-btn-sm layui-btn-warm">环比</button>
-                                    </div>
-                                    <div style="width:100%; height: 350px;" id="electricityId">
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <!-- 用电排比 -->
-                        <div class="layui-row rowline">
-                            <div class="layui-col-md12">
-                                <!-- <span>用电排名</span> -->
-                                <div class="layui-row grid-demo">
-                                    <div class="shopLine">
-                                        <button type="button" :class="{'active': shopShow == 1}" @click="shopClick(1)" class="layui-btn layui-btn-warm">车间</button>
-                                        <button type="button" :class="{'active': shopShow == 2}" @click="shopClick(2)" class="layui-btn layui-btn-warm">回路</button>
-                                    </div>
-                                    <div class="shopThree">
-                                        <button type="button" :class="{'active': threeShow == 1}" @click="threeClick(1)" class="layui-btn layui-btn-sm layui-btn-warm">日</button>
-                                        <button type="button" :class="{'active': threeShow == 2}" @click="threeClick(2)" class="layui-btn layui-btn-sm layui-btn-warm">月</button>
-                                        <button type="button" :class="{'active': threeShow == 3}" @click="threeClick(3)" class="layui-btn layui-btn-sm layui-btn-warm">年</button>
-                                    </div>
-                                    <div style="width: 100%; height: 400px;" id="electricNum"></div>
-
-                                </div>
+                        <div class="layui-col-md9">
+                            <div class="layui-row grid-demo grid-demo-bg1">
+                                <!-- <span>功率曲线</span> -->
+                                <div style="width:100%; height: 460px;" id="energyId"></div>
                             </div>
-
                         </div>
                     </div>
+                    <!-- 电能环比 -->
+                    <div class="layui-row rowline">
+                        <div class="layui-col-md5">
+                            <h3>电能环比</h3>
+                            <div class="layui-row grid-demo">
+                                <div class="layui-col-md4" v-for="(item,index) in EleRadius[0]" :key="'info1-'+index">
+                                    <div class="grid-demo grid-demo-bg2">
+                                        <div class="layui-card">
+                                            <div class="layui-card-header" v-if="item.flag == 'n'">
+                                                今日用电
+                                                <span class="layui-badge layui-bg-green layuiadmin-badge">日</span>
+                                            </div>
+                                            <div class="layui-card-header" v-else-if="item.flag == 'y'">
+                                                昨日用电
+                                                <span class="layui-badge layui-bg-green layuiadmin-badge">日</span>
+                                            </div>
+                                            <div class="layui-card-header" v-else-if="item.flag == 'p'">
+                                                趋势
+                                                <span class="layui-badge layui-bg-green layuiadmin-badge">势</span>
+                                            </div>
+                                            <div class="layui-card-body layuiadmin-card-list" v-if="item.flag == 'n'">
+                                                <span class="layuiadmin-big-font" v-text="item.kwh"></span>
+                                                <span class="layuiDanwei">KWh</span>
+                                            </div>
+                                            <div class="layui-card-body layuiadmin-card-list" v-else-if="item.flag == 'y'">
+                                                <span class="layuiadmin-big-font" v-text="item.kwh">
+
+                                                </span>
+                                                <span class="layuiDanwei">KWh</span>
+                                            </div>
+                                            <div class="layui-card-body layuiadmin-card-list" v-else>
+                                                <p>
+                                                    <!-- {{item.pt}}% -->
+                                                    <span v-text="item.pt+'%'"></span>
+                                                    <p style="width:100%;height: 1px; background-color: #000;"></p>
+                                                    <span v-text="item.pb"></span>
+                                                    <span>KWh</span>
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- <div class="layui-col-md4">
+                                        <div class="grid-demo grid-demo-bg2">
+                                            <div class="layui-card">
+                                                <div class="layui-card-header">
+                                                    趋势
+                                                    <span class="layui-badge layui-bg-green layuiadmin-badge">势</span>
+                                                </div>
+                                                <div class="layui-card-body layuiadmin-card-list">
+                                                    <p class="layuiadmin-big-font">9
+                                                        <span>kwh</span>
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div> -->
+                                <div class="layui-col-md4" v-for="(item,index) in EleRadius[1]" :key="'info2-'+index">
+                                    <div class="grid-demo grid-demo-bg2">
+                                        <div class="layui-card">
+                                            <div class="layui-card-header" v-if="item.flag == 'n'">
+                                                当月用电
+                                                <span class="layui-badge layui-bg-green layuiadmin-badge">月</span>
+                                            </div>
+                                            <div class="layui-card-header" v-else-if="item.flag == 'y'">
+                                                上月用电
+                                                <span class="layui-badge layui-bg-green layuiadmin-badge">月</span>
+                                            </div>
+                                            <div class="layui-card-header" v-else-if="item.flag == 'p'">
+                                                趋势
+                                                <span class="layui-badge layui-bg-green layuiadmin-badge">势</span>
+                                            </div>
+                                            <div class="layui-card-body layuiadmin-card-list" v-if="item.flag == 'n'">
+                                                <span class="layuiadmin-big-font" v-text="item.kwh">
+                                                </span>
+                                                <span class="layuiDanwei">KWh</span>
+                                            </div>
+                                            <div class="layui-card-body layuiadmin-card-list" v-else-if="item.flag == 'y'">
+                                                <span class="layuiadmin-big-font" v-text="item.kwh">
+                                                </span>
+                                                <span class="layuiDanwei">KWh</span>
+                                            </div>
+                                            <div class="layui-card-body layuiadmin-card-list" v-else>
+                                                <p>
+                                                    <!-- {{item.pt}}% -->
+                                                    <span v-text="item.pt+'%'"></span>
+                                                    <p style="width:100%;height: 1px; background-color: #000;"></p>
+                                                    <span v-text="item.pb"></span>
+                                                    <span>KWh</span>
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- <div class="layui-col-md4">
+                                        <div class="grid-demo grid-demo-bg2">
+                                            <div class="layui-card">
+                                                <div class="layui-card-header">
+                                                    趋势
+                                                    <span class="layui-badge layui-bg-green layuiadmin-badge">势</span>
+                                                </div>
+                                                <div class="layui-card-body layuiadmin-card-list">
+                                                    <p class="layuiadmin-big-font">9
+                                                        <span>kwh</span>
+                                                    </p>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div> -->
+                                <div class="layui-col-md4" v-for="(item,index) in EleRadius[2]" :key="'info3-'+index">
+                                    <div class="grid-demo grid-demo-bg2">
+                                        <div class="layui-card">
+                                            <div class="layui-card-header" v-if="item.flag == 'n'">
+                                                当年用电
+                                                <span class="layui-badge layui-bg-green layuiadmin-badge">年</span>
+                                            </div>
+                                            <div class="layui-card-header" v-else-if="item.flag == 'y'">
+                                                上年同期
+                                                <span class="layui-badge layui-bg-green layuiadmin-badge">年</span>
+                                            </div>
+                                            <div class="layui-card-header" v-else-if="item.flag == 'p'">
+                                                趋势
+                                                <span class="layui-badge layui-bg-green layuiadmin-badge">势</span>
+                                            </div>
+                                            <div class="layui-card-body layuiadmin-card-list" v-if="item.flag == 'n'">
+                                                <span class="layuiadmin-big-font" v-text="item.kwh">
+
+                                                </span>
+                                                <span class="layuiDanwei">KWh</span>
+                                            </div>
+                                            <div class="layui-card-body layuiadmin-card-list" v-else-if="item.flag == 'y'">
+                                                <span class="layuiadmin-big-font" v-text="item.kwh">
+                                                    <span>KWh</span>
+                                                </span>
+                                                <span class="layuiDanwei">KWh</span>
+                                            </div>
+                                            <div class="layui-card-body layuiadmin-card-list" v-else>
+                                                <p>
+                                                    <!-- {{item.pt}}% -->
+                                                    <span v-text="item.pt+'%'"></span>
+                                                    <p style="width:100%;height: 1px; background-color: #000;"></p>
+                                                    <span v-text="item.pb"></span>
+                                                    <span>KWh</span>
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="layui-col-md7">
+                            <div class="layui-row grid-demo grid-demo-bg1">
+                                <!-- <span>电能趋势</span> -->
+                                <div class="warm-btn">
+                                    <button type="button" :class="{'active': electricShow == 1}" @click="electriClick(1)" class="layui-btn layui-btn-sm layui-btn-warm">日</button>
+                                    <button type="button" :class="{'active': electricShow == 2}" @click="electriClick(2)" class="layui-btn layui-btn-sm layui-btn-warm">月</button>
+                                    <button type="button" :class="{'active': electricShow == 3}" @click="electriClick(3)" class="layui-btn layui-btn-sm layui-btn-warm">年</button>
+                                </div>
+                                <div class="btn-radius">
+                                    <button type="button" :class="{'active': radiusShow == 1}" v-show="tongbiShow" @click="radiusClick(1)" class="layui-btn layui-btn-sm layui-btn-warm">同比</button>
+                                    <button type="button" :class="{'active': radiusShow == 2}" @click="radiusClick(2)" class="layui-btn layui-btn-sm layui-btn-warm">环比</button>
+                                </div>
+                                <div style="width:100%; height: 350px;" id="electricityId">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- 用电排比 -->
+                    <div class="layui-row rowline">
+                        <div class="layui-col-md12">
+                            <!-- <span>用电排名</span> -->
+                            <div class="layui-row grid-demo">
+                                <div class="shopLine">
+                                    <button type="button" :class="{'active': shopShow == 1}" @click="shopClick(1)" class="layui-btn layui-btn-warm">车间</button>
+                                    <button type="button" :class="{'active': shopShow == 2}" @click="shopClick(2)" class="layui-btn layui-btn-warm">回路</button>
+                                </div>
+                                <div class="shopThree">
+                                    <button type="button" :class="{'active': threeShow == 1}" @click="threeClick(1)" class="layui-btn layui-btn-sm layui-btn-warm">日</button>
+                                    <button type="button" :class="{'active': threeShow == 2}" @click="threeClick(2)" class="layui-btn layui-btn-sm layui-btn-warm">月</button>
+                                    <button type="button" :class="{'active': threeShow == 3}" @click="threeClick(3)" class="layui-btn layui-btn-sm layui-btn-warm">年</button>
+                                </div>
+                                <div style="width: 100%; height: 400px;" id="electricNum"></div>
+
+                            </div>
+                        </div>
+
+                    </div>
                 </div>
+                <!-- </div> -->
             </div>
         </div>
     </div>
@@ -1944,13 +1948,14 @@
                 // 用电排名按日统计
                 // this.electricitySortDay(-2)
             }
-            , created:function() {
-                this.treeDataInit();
+            , created:function() {      
                 this.enterpriseInit();
                 this.monitorNameInit();
                 this.industryInit();
+                this.treeDataInit();        
             }
         })
     </script>
 </body>
+
 </html>

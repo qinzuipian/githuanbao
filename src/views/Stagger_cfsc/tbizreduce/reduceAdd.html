@@ -52,20 +52,6 @@
         <div class="layui-fluid">
             <div class="layui-row">
                 <form class="layui-form">
-                    <!-- <input type="hidden" name="enterpriseId" class="layui-input" /> -->
-                    <!-- <div class="layui-form-item">
-                        <label for="bitian" class="layui-form-label">
-                            企业名称
-                            <span class="red">（必填）</span>
-                        </label>
-                        <div class="layui-input-inline">
-                        
-                            <select name="enterpriseId" id="enterpriseName" lay-verify="required" lay-filter="enterpriseName">
-                                <option value=""></option>
-                            </select>
-                        </div>
-
-                    </div> -->
                     <div class="layui-form-item">
                         <label for="bitian" class="layui-form-label">
                             设置类型
@@ -98,9 +84,11 @@
                     </div>
                     <div class="layui-form-item">
                         <label for="bitian" class="layui-form-label">
-                            限产百分比%</label>
+                            限产百分比%
+                            <span class="red">*</span>
+                        </label>
                         <div class="layui-input-inline">
-                            <input type="text" name="lessProduce" class="layui-input" placeholder="限产百分比%" />
+                            <input type="text" name="lessProduce" lay-verify="required" class="layui-input" placeholder="限产百分比%" />
                         </div>
                     </div>
 
@@ -136,28 +124,6 @@
                             <input type="radio" name="active" value="2" title="禁用">
                         </div>
                     </div>
-                    <!-- <div class="layui-form-item">
-                        <label for="bitian" class="layui-form-label">
-                            状态</label>
-                        <div class="layui-input-inline">
-                            <input type="radio" name="status" value="1" title="有效">
-                            <input type="radio" name="status" value="2" title="无效">
-                        </div>
-                    </div> -->
-                    <!--  <div class="layui-form-item">
-                        <label for="bitian" class="layui-form-label">
-                            创建者名称</label>
-                        <div class="layui-input-inline">
-                            <input type="text" v-model="tBizReduce.createName" class="layui-input" placeholder="创建者名称" />
-                        </div>
-                    </div>
-                    <div class="layui-form-item">
-                        <label for="bitian" class="layui-form-label">
-                            更新者名称</label>
-                        <div class="layui-input-inline">
-                            <input type="text" v-model="tBizReduce.modifyName" class="layui-input" placeholder="更新者名称" />
-                        </div>
-                    </div> -->
                     <div class="btn-box">
                         <button class="layui-btn" lay-submit lay-filter="reduceForm">添加</button>
                         <button class="layui-btn layui-btn-danger" @click="cancel">取消</button>

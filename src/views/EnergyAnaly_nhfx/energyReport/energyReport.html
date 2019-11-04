@@ -44,6 +44,14 @@
             text-align: center;
             padding: 6px;
         }
+
+        .layui-block {
+            margin: 10px 0 10px 0;
+        }
+
+        [v-cloak] {
+            display: none
+        }
     </style>
 </head>
 
@@ -59,20 +67,13 @@
             <div class="firmRight">
                 <span>企业名称：</span>
                 <span v-text="enpriseName"></span>
-                <div class="layui-inline layui-form">
 
+                <div class="layui-block layui-form">
                     <div class="layui-input-inline" style="width: 120px;">
                         <el-select v-model="timeType" @change="timeSelect" placeholder="请选择">
                             <el-option v-for="item in timeOptions" :key="item.value" :label="item.label" :value="item.value">
                             </el-option>
                         </el-select>
-                        <!-- <select name="timeType" lay-filter="timeType" lay-verify="required">
-                            <option value="">选择类型</option>
-                            <option value="year">年</option>
-                            <option value="month">月</option>
-                            <option value="date">日</option>
-                            <option value="plus">累计</option>
-                        </select> -->
                     </div>
                     <div class="layui-input-inline" v-show="timeShow == 1">
                         <el-date-picker v-model="timeDate" value-format="yyyy-MM-dd" type="date" placeholder="选择日期">
@@ -96,9 +97,12 @@
                         <tr>
                             <th v-for="(item,index) in dataTime" v-text="item"></th>
                         </tr>
-                        <tr v-for="(it,index) in reportDataDay">
-                            <td v-for="(item,index) in it">{{item}}</td>
+                        <tr v-for="(it,index) in reportDataDay" v-show="reportDataDay.length!=0">
+                            <td v-for="(item,index) in it" v-cloak>{{item}}</td>
                         </tr>
+                        <!-- <tr v-show="reportDataDay.length==0">
+                            <td :colspan="dataTime.length">暂无数据</td>
+                        </tr> -->
                     </table>
                     <div v-show="reportDataDay.length==0">
                         暂无数据
@@ -355,6 +359,15 @@
                     var thisDate = new Date(year, month, 0); //当天数为0 js自动处理为上一月的最后一天
                     return thisDate.getDate();
                 },
+                // 企业能耗统计报表表头
+                headerInit() {
+                    var hourData = ['监测点名称'];
+                    for (var i = 0; i < 24; i++) {
+                        hourData.push(i + '时');
+                    }
+                    this.dataTime = hourData;
+                    console.log(this.dataTime)
+                },
                 // 企业能耗统计报表按天统计
                 enpriseDay: function (enterpriseId) {
                     if (enterpriseId != "") {
@@ -384,7 +397,6 @@
                                     /*  var json = JSON.parse(JSON.stringify(data).replace(/monitorName/g,"监测点名称"));
                                      hourData.push(json); */
                                 });
-
                                 vm.reportDataDay = allData;
                                 // vm.reportDataDay = [];
                                 // var allData = res.data.data;
@@ -453,11 +465,16 @@
                                 console.log(err);
                             });
                     } else {
-                        vm.$notify({
-                            title: '提示',
-                            message: '请选择企业',
-                            type: 'warning'
-                        });
+                        var h = this.$createElement;
+                        vm.$message.warning({
+                            offset: 4,
+                            message: '请选择企业'
+                        })
+                        // vm.$notify({
+                        //     title: '提示',
+                        //     message: '请选择企业',
+                        //     type: 'warning'
+                        // });
 
 
                     }
@@ -470,7 +487,6 @@
                         var year = this.monthDate.substring(0, 4);
                         var month = this.monthDate.substring(4, 6);
                         var num = this.getMonthDays(year, month);
-                        // console.log(num)
                         axios({
                             method: "post",
                             url: BASEURL + 'environmental_intelligent_monitoring/tkwhdaily/query',
@@ -518,13 +534,15 @@
                                 console.log(err);
                             });
                     } else {
-                        vm.$notify({
-                            title: '提示',
-                            message: '请选择企业',
-                            type: 'warning'
-                        });
-
-
+                        // vm.$notify({
+                        //     title: '提示',
+                        //     message: '请选择企业',
+                        //     type: 'warning'
+                        // });
+                        vm.$message.warning({
+                            offset: 4,
+                            message: '请选择企业'
+                        })
                     }
 
                 },
@@ -580,11 +598,16 @@
                             });
                     }
                     else {
-                        vm.$notify({
-                            title: '提示',
-                            message: '请选择企业',
-                            type: 'warning'
-                        });
+                        // vm.$notify({
+                        //     title: '提示',
+                        //     message: '请选择企业',
+                        //     type: 'warning'
+                        // });
+                        vm.$message.warning({
+                            offset: 4,
+                            message: '请选择企业'
+
+                        })
 
                     }
 
@@ -695,11 +718,16 @@
                             });
 
                     } else {
-                        vm.$notify({
-                            title: '提示',
-                            message: '请选择企业',
-                            type: 'warning'
-                        });
+                        // vm.$notify({
+                        //     title: '提示',
+                        //     message: '请选择企业',
+                        //     type: 'warning'
+                        // });
+                        vm.$message.warning({
+                            offset: 4,
+                            message: '请选择企业'
+
+                        })
                     }
 
 
@@ -765,6 +793,8 @@
                 this.energyTreeInit();
                 // 默认时间
                 this.timePicker();
+                // 表格标题展示
+                // this.headerInit();
             }
         })
     </script>

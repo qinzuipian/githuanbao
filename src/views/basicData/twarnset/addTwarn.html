@@ -148,8 +148,10 @@
                     </div>
                     <div class="layui-form-item">
                         <label for="bitian" class="layui-form-label">
-                            是否启用</label>
-                        <div class="layui-input-inline" id="active">
+                            是否启用
+                            <span class="red">*</span>
+                        </label>
+                        <div class="layui-input-inline">
                             <input type="radio" name="active" value="1" title="启用">
                             <input type="radio" name="active" value="2" title="禁用">
                         </div>
@@ -222,32 +224,36 @@
                 data.field.eventType = vm.eventType;
                 data.field.monitorName = vm.treeLabel;
                 data.field.monitorId = vm.monitorId;
-                axios({
-                    method: "post",
-                    url: layui.setter.BASEURL + 'environmental_intelligent_monitoring/twarnset/save',
-                    data: data.field,
-                    headers: {
-                        "Content-Type": "application/json;charset=UTF-8"
-                    }
-                }).then(function (res) {
-                    if (res.data.code == 0) {
-                        console.log(res)
-                        layer.msg('保存成功！', {
-                            time: 500
-                        }, function () {
-                            window.parent.location.reload();
-                            parent.layer.close('iframe');
+                if (!data.field.active) {
+                    vm.$message.warning('请选择是否启用');
+                } else {
+                    axios({
+                        method: "post",
+                        url: layui.setter.BASEURL + 'environmental_intelligent_monitoring/twarnset/save',
+                        data: data.field,
+                        headers: {
+                            "Content-Type": "application/json;charset=UTF-8"
                         }
-                        );
-                    } else {
-                        vm.$notify.error({
-                            title: '错误',
-                            message: '保存异常'
-                        });
-                    }
-                }).catch(function (err) {
-                    console.log(err);
-                });
+                    }).then(function (res) {
+                        if (res.data.code == 0) {
+                            console.log(res)
+                            layer.msg('保存成功！', {
+                                time: 500
+                            }, function () {
+                                window.parent.location.reload();
+                                parent.layer.close('iframe');
+                            }
+                            );
+                        } else {
+                            vm.$notify.error({
+                                title: '错误',
+                                message: '保存异常'
+                            });
+                        }
+                    }).catch(function (err) {
+                        console.log(err);
+                    });
+                }
                 return false;
             })
 

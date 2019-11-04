@@ -11,8 +11,8 @@
     <link rel="stylesheet" href="./../../../layuiadmin/style/firmMonitor.css">
     <link rel="stylesheet" href="./../../../layuiadmin/plugin/element.css">
     <style>
-        .layui-inline {
-            margin: 0 0 10px 20px;
+        .layui-block {
+            margin: 10px 0 10px 0;
         }
     </style>
 </head>
@@ -30,8 +30,7 @@
             <div class="firmRight">
                 <span>名称：</span>
                 <span v-text="enterpriseName"></span>
-                <div class="layui-inline layui-form">
-
+                <div class="layui-block layui-form">
                     <div class="layui-input-inline" style="width: 100px;">
                         <el-select v-model="timeType" @change="timeSelect" placeholder="请选择">
                             <el-option v-for="item in timeOptions" :key="item.value" :label="item.label" :value="item.value">
@@ -347,35 +346,44 @@
                     console.log(vm.timeShow)
                     if (vm.timeShow == 1) {
                         if (this.startDate == "" || this.endDate == "") {
-                            vm.$notify({
-                                title: '提示',
-                                message: '请输入开始日期与结束日期',
-                                type: 'warning'
-                            });
-                            // vm.$message.warning('请输入开始日期与结束日期');
+                            vm.$message.warning({
+                                offset: 4,
+                                message: '请输入开始日期与结束日期'
+                            })
+                            // vm.$notify({
+                            //     title: '提示',
+                            //     message: '请输入开始日期与结束日期',
+                            //     type: 'warning'
+                            // });
                         } else {
                             this.enterpriseInit();
                         }
 
                     } else if (vm.timeShow == 2) {
                         if (this.startYearDate == "" || this.endYearDate == "") {
-                            // vm.$message.warning('请输入开始日期与结束日期');
-                            vm.$notify({
-                                title: '提示',
-                                message: '请输入开始日期与结束日期',
-                                type: 'warning'
-                            });
+                            vm.$message.warning({
+                                offset: 4,
+                                message: '请输入开始日期与结束日期'
+                            })
+                            // vm.$notify({
+                            //     title: '提示',
+                            //     message: '请输入开始日期与结束日期',
+                            //     type: 'warning'
+                            // });
                         } else {
                             this.enterpriseInit();
                         }
                     } else {
                         if (this.startMonthDate == "" || this.endMonthDate == "") {
-                            vm.$notify({
-                                title: '提示',
-                                message: '请输入开始日期与结束日期',
-                                type: 'warning'
-                            });
-                            // vm.$message.warning('请输入开始日期与结束日期');
+                            // vm.$notify({
+                            //     title: '提示',
+                            //     message: '请输入开始日期与结束日期',
+                            //     type: 'warning'
+                            // });
+                            vm.$message.warning({
+                                offset: 4,
+                                message: '请输入开始日期与结束日期'
+                            })
                         } else {
                             this.enterpriseInit();
                         }

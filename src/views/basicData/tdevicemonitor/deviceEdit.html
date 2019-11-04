@@ -234,8 +234,7 @@
                                 <span class="red">*</span>
                             </label>
                             <div class="layui-input-inline">
-                                <input type="text" name="electricLimit" id="electricLimit" lay-verify="required" class="layui-input" placeholder=""
-                                />
+                                <input type="text" name="electricLimit" id="electricLimit" lay-verify="required" class="layui-input" placeholder="" />
                             </div>
 
                         </div>
@@ -292,8 +291,7 @@
                                 <span class="red">*</span>
                             </label>
                             <div class="layui-input-inline">
-                                <input type="text" name="electricTime" id="electricTime" lay-verify="required" class="layui-input" placeholder=""
-                                />
+                                <input type="text" name="electricTime" id="electricTime" lay-verify="required" class="layui-input" placeholder="" />
                             </div>
                         </div>
                         <div class="layui-inline" v-show="selectShow == 2">
@@ -396,7 +394,7 @@
                                 <span class="red">*</span>
                             </label>
                             <div class="layui-input-inline">
-                                <input type="text" name="powerLimit" class="layui-input" placeholder="" />
+                                <input type="text" name="powerLimit" id="powerLimit" class="layui-input" placeholder="" />
                             </div>
                         </div>
                         <div class="layui-inline" v-show="selectShow == 2">
@@ -423,7 +421,7 @@
                                 <span class="red">*</span>
                             </label>
                             <div class="layui-input-inline">
-                                <input type="text" name="powerTime" class="layui-input" placeholder="" />
+                                <input type="text" name="powerTime" id="powerTime" class="layui-input" placeholder="" />
                             </div>
                         </div>
                     </div>
@@ -441,7 +439,7 @@
                                 <span class="red">*</span>
                             </label>
                             <div class="layui-input-inline">
-                                <input type="text" name="ratedU" class="layui-input" placeholder="" />
+                                <input type="text" name="ratedU" id="ratedU" class="layui-input" placeholder="" />
                             </div>
                         </div>
                     </div>
@@ -1261,10 +1259,14 @@
                                 }
                             }
                             for (let i of datalist) {
-                                i.value = i.swicthId; //将想要展示的数据作为value
+                                // i.value = i.swicthId; //将想要展示的数据作为value
                                 // console.log(i.value)
+                                var obj = {};
+                                // i.value = i.swicthId; //将想要展示的数据作为value
+                                obj.value = i; //将想要展示的数据作为value
+                                list.push(obj)
                             }
-                            list = datalist;
+                            // list = datalist;
                             callback(list);
 
                         } else {
