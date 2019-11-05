@@ -15,7 +15,7 @@
 	<body>
 
 		<div id="vm">
-			<div style="padding-bottom: 10px;padding-left: 20px;" class="layui-row">
+			<div style="padding: 20px 0 10px 20px;" class="layui-row">
 				<button class="layui-btn layuiadmin-btn-role" @click="addRole">添加</button>
 				<button class="layui-btn layuiadmin-btn-role" @click="editRole">编辑</button>
 				<button class="layui-btn layuiadmin-btn-role">删除</button>
@@ -74,13 +74,19 @@
 					height: 450,
 					url: layui.setter.BASEURL + 'sys-mgr/sys/role/list', //数据接口
 					page: true, //开启分页
-					cols: [],
+					cols: [[
+						{type: 'checkbox', fixed: 'left'},
+						{field: 'roleId', title: 'ID', width:80, sort: true, fixed: 'left'},
+						{field: 'roleName', title: '角色名'},
+						{field: 'createTime', title: '创建时间'},
+						{field: 'remark', title: '备注'}
+					]],
 					parseData: function (res) { // 数据重新处理为layUI的数据格式
 					    var msg = {
 					        "code": res.code, //解析接口状态
 					        "msg": res.msg, //解析提示文本
-					        "count": res.data.totalCount, //解析数据长度
-					        "data": res.data.list //解析数据列表
+					        "count": res.page.totalCount, //解析数据长度
+					        "data": res.page.list //解析数据列表
 					    };
 					    return msg;
 					}

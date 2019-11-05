@@ -42,7 +42,26 @@
                     "title": "企业限产停产管理"
                 },
                 {
-                    "children": [],
+                    "children": [
+                        {
+                            "children": [],
+                            "id": "65",
+                            "parentId": "9",
+                            "title": "增加"
+                        },
+                        {
+                            "children": [],
+                            "id": "66",
+                            "parentId": "9",
+                            "title": "修改"
+                        },
+                        {
+                            "children": [],
+                            "id": "67",
+                            "parentId": "9",
+                            "title": "删除"
+                        }
+                    ],
                     "id": "9",
                     "parentId": "6",
                     "title": "减排方案管理"
@@ -161,31 +180,126 @@
         {
             "children": [
                 {
-                    "children": [],
+                    "children": [
+                        {
+                            "children": [],
+                            "id": "59",
+                            "parentId": "28",
+                            "title": "增加"
+                        },
+                        {
+                            "children": [],
+                            "id": "60",
+                            "parentId": "28",
+                            "title": "修改"
+                        },
+                        {
+                            "children": [],
+                            "id": "61",
+                            "parentId": "28",
+                            "title": "删除"
+                        }
+                    ],
                     "id": "28",
                     "parentId": "27",
                     "title": "监管机构管理"
                 },
                 {
-                    "children": [],
+                    "children": [
+                        {
+                            "children": [],
+                            "id": "62",
+                            "parentId": "29",
+                            "title": "增加"
+                        },
+                        {
+                            "children": [],
+                            "id": "63",
+                            "parentId": "29",
+                            "title": "修改"
+                        },
+                        {
+                            "children": [],
+                            "id": "64",
+                            "parentId": "29",
+                            "title": "删除"
+                        }
+                    ],
                     "id": "29",
                     "parentId": "27",
                     "title": "企业管理"
                 },
                 {
-                    "children": [],
+                    "children": [
+                        {
+                            "children": [],
+                            "id": "41",
+                            "parentId": "30",
+                            "title": "增加"
+                        },
+                        {
+                            "children": [],
+                            "id": "42",
+                            "parentId": "30",
+                            "title": "修改"
+                        },
+                        {
+                            "children": [],
+                            "id": "43",
+                            "parentId": "30",
+                            "title": "删除"
+                        }
+                    ],
                     "id": "30",
                     "parentId": "27",
                     "title": "企业行业管理"
                 },
                 {
-                    "children": [],
+                    "children": [
+                        {
+                            "children": [],
+                            "id": "44",
+                            "parentId": "31",
+                            "title": "增加"
+                        },
+                        {
+                            "children": [],
+                            "id": "45",
+                            "parentId": "31",
+                            "title": "修改"
+                        },
+                        {
+                            "children": [],
+                            "id": "46",
+                            "parentId": "31",
+                            "title": "删除"
+                        }
+                    ],
                     "id": "31",
                     "parentId": "27",
                     "title": "监测点管理"
                 },
                 {
-                    "children": [],
+                    "children": [
+                        {
+                            "children": [],
+                            "id": "47",
+                            "parentId": "32",
+                            "title": "增加"
+                        },
+                        {
+                            "children": [],
+                            "id": "48",
+                            "parentId": "32",
+                            "title": "修改"
+                        },
+                        {
+                            "children": [],
+                            "id": "49",
+                            "parentId": "32",
+                            "title": "删除"
+                        }
+                    ],
                     "id": "32",
                     "parentId": "27",
                     "title": "信息工艺管理"
@@ -203,19 +317,76 @@
                     "title": "企业监管分配"
                 },
                 {
-                    "children": [],
+                    "children": [
+                        {
+                            "children": [],
+                            "id": "50",
+                            "parentId": "35",
+                            "title": "增加"
+                        },
+                        {
+                            "children": [],
+                            "id": "51",
+                            "parentId": "35",
+                            "title": "修改"
+                        },
+                        {
+                            "children": [],
+                            "id": "52",
+                            "parentId": "35",
+                            "title": "删除"
+                        }
+                    ],
                     "id": "35",
                     "parentId": "27",
                     "title": "设备异常设置"
                 },
                 {
-                    "children": [],
+                    "children": [
+                        {
+                            "children": [],
+                            "id": "53",
+                            "parentId": "36",
+                            "title": "增加"
+                        },
+                        {
+                            "children": [],
+                            "id": "54",
+                            "parentId": "36",
+                            "title": "修改"
+                        },
+                        {
+                            "children": [],
+                            "id": "55",
+                            "parentId": "36",
+                            "title": "删除"
+                        }
+                    ],
                     "id": "36",
                     "parentId": "27",
                     "title": "机构异常订阅"
                 },
                 {
-                    "children": [],
+                    "children": [
+                        {
+                            "children": [],
+                            "id": "56",
+                            "parentId": "37",
+                            "title": "增加"
+                        },
+                        {
+                            "children": [],
+                            "id": "57",
+                            "parentId": "37",
+                            "title": "修改"
+                        },
+                        {
+                            "children": [],
+                            "id": "58",
+                            "parentId": "37",
+                            "title": "删除"
+                        }
+                    ],
                     "id": "37",
                     "parentId": "27",
                     "title": "系统公告管理"
@@ -228,13 +399,51 @@
         {
             "children": [
                 {
-                    "children": [],
+                    "children": [
+                        {
+                            "children": [],
+                            "id": "68",
+                            "parentId": "39",
+                            "title": "增加"
+                        },
+                        {
+                            "children": [],
+                            "id": "69",
+                            "parentId": "39",
+                            "title": "修改"
+                        },
+                        {
+                            "children": [],
+                            "id": "70",
+                            "parentId": "39",
+                            "title": "删除"
+                        }
+                    ],
                     "id": "39",
                     "parentId": "38",
                     "title": "用户管理"
                 },
                 {
-                    "children": [],
+                    "children": [
+                        {
+                            "children": [],
+                            "id": "71",
+                            "parentId": "40",
+                            "title": "增加"
+                        },
+                        {
+                            "children": [],
+                            "id": "72",
+                            "parentId": "40",
+                            "title": "修改"
+                        },
+                        {
+                            "children": [],
+                            "id": "73",
+                            "parentId": "40",
+                            "title": "删除"
+                        }
+                    ],
                     "id": "40",
                     "parentId": "38",
                     "title": "角色管理"
