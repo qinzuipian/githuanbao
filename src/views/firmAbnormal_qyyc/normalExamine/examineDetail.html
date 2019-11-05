@@ -238,7 +238,7 @@
                             'reason': detailData.reason,
                             'description': detailData.description,
                             'remark': detailData.remark,
-                            'codeType': detailData.codeType == 0 ? '生产设备' : detailData.codeType == 1 ? '治污设备' : '总进线',
+                            'codeType': detailData.codeType == 0?'生产设备':detailData.codeType == 1?'治污设备':detailData.codeType == 2?'总进线':'无',
                             'swicthId': detailData.swicthId,
                             'model': detailData.model,
                             'pt': detailData.pt,
