@@ -54,7 +54,8 @@
                                 <input type="text" name="organizeName" v-model="atraName" placeholder="请选择行政区域" autocomplete="off" class="layui-input">
                                 <i class="layui-icon layui-icon-triangle-d" @click="AdminFocus"></i>
                                 <div class="Areashow layui-anim layui-anim-upbit" v-show="Areashow">
-                                    <el-tree :highlight-current="treeHign" default-expand-all :expand-on-click-node="false" :data="treeData" :props="defaultProps" @node-click="handleNodeClick"></el-tree>
+                                    <el-tree :highlight-current="treeHign" default-expand-all :expand-on-click-node="false" :data="treeData" :props="defaultProps"
+                                        @node-click="handleNodeClick"></el-tree>
                                 </div>
                             </div>
 
@@ -165,13 +166,10 @@
                         "data": res.page.list //解析数据列表
                     };
                     return msg;
-                }
-                , cols: [[
-                    // { checkbox: true },
-                    // { title: '', field: 'id', minWidth: 100 },
-                    // { title: '行政区划', field: 'atracode', minWidth: 100 },
-                    // { title: '行业', field: 'trade', minWidth: 100 },
-                    // { title: '企业ID', field: 'enterpriseid', minWidth: 100 },
+                },
+                where: {
+                    isReduce: 1
+                }, cols: [[
                     { title: '企业名称', field: 'enterpriseName', minWidth: 100 },
                     { title: '时间', field: 'tDateTime', minWidth: 100 },
                     { title: '目标负荷', field: 'targetLoad', minWidth: 100 },
@@ -268,10 +266,10 @@
 
             },
             methods: {
-                AdminFocus:function() {
+                AdminFocus: function () {
                     vm.Areashow = !vm.Areashow;
                 },
-                treeDataInit:function() {
+                treeDataInit: function () {
                     axios({
                         method: "post",
                         url: BASEURL + 'environmental_intelligent_monitoring/tbasorganize/dendrogramList',
@@ -304,7 +302,7 @@
                     });
 
                 },
-                handleNodeClick:function(data, node) {
+                handleNodeClick: function (data, node) {
                     console.log(data);
                     vm.atraName = data.title;
                     vm.treeHign = true;
@@ -355,7 +353,7 @@
                 },
 
                 // 导出
-                downloadClick:function() {
+                downloadClick: function () {
                     console.log(vm.startDate, vm.endDate, vm.atraName, vm.trade, vm.enterpriseName)
                     location =
                         BASEURL +
@@ -376,7 +374,7 @@
                     // });
                 }
             },
-            created:function() {
+            created: function () {
                 this.treeDataInit();
             }
         });

@@ -78,6 +78,9 @@
             color: #f00;
             font-size: 22px;
         }
+        .layui-form {
+            padding-top: 20px;
+        }
     </style>
 </head>
 
@@ -391,10 +394,11 @@
                         <div class="layui-inline" v-show="selectShow == 1">
                             <label for="bitian" class="layui-form-label">
                                 电量阀值(kW·h)
-                                <span class="red">*</span>
+                                <!-- <span class="red">*</span> -->
                             </label>
+                            <!-- id="powerLimit" -->
                             <div class="layui-input-inline">
-                                <input type="text" name="powerLimit" id="powerLimit" class="layui-input" placeholder="" />
+                                <input type="text" name="powerLimit"  class="layui-input" placeholder="" />
                             </div>
                         </div>
                         <div class="layui-inline" v-show="selectShow == 2">
@@ -418,10 +422,11 @@
                         <div class="layui-inline" v-show="selectShow == 1">
                             <label for="bitian" class="layui-form-label">
                                 电量门限时间(m)
-                                <span class="red">*</span>
+                                <!-- <span class="red">*</span> -->
                             </label>
+                            <!-- id="powerTime" -->
                             <div class="layui-input-inline">
-                                <input type="text" name="powerTime" id="powerTime" class="layui-input" placeholder="" />
+                                <input type="text" name="powerTime"  class="layui-input" placeholder="" />
                             </div>
                         </div>
                     </div>

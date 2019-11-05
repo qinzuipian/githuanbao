@@ -79,6 +79,9 @@
             color: #f00;
             font-size: 22px;
         }
+        .layui-form {
+            padding-top: 20px;
+        }
     </style>
 </head>
 
@@ -245,8 +248,6 @@
                                 </el-option>
                             </el-select>
                         </div>
-
-
                         <div class="layui-inline" v-show="selectShow == 1">
                             <label for="bitian" class="layui-form-label">
                                 电流变比
@@ -385,10 +386,11 @@
                         <div class="layui-inline" v-show="selectShow == 1">
                             <label for="bitian" class="layui-form-label">
                                 电量阀值(kW·h)
-                                <span class="red">*</span>
+                                <!-- <span class="red">*</span> -->
                             </label>
+                            <!-- id="powerLimit" -->
                             <div class="layui-input-inline">
-                                <input type="text" name="powerLimit" id="powerLimit" class="layui-input" placeholder="" />
+                                <input type="text" name="powerLimit"  class="layui-input" placeholder="" />
                             </div>
                         </div>
 
@@ -409,16 +411,17 @@
                         <label for="bitian" class="layui-form-label">
                             是否正式上线</label>
                         <div class="layui-input-inline">
-                            <input type="radio" name="isShow" value="true" title="是">
+                            <input type="radio" name="isShow" value="true" checked="" title="是">
                             <input type="radio" name="isShow" value="false" title="否">
                         </div>
                         <div class="layui-inline" v-show="selectShow == 1">
                             <label for="bitian" class="layui-form-label">
                                 电量门限时间(m)
-                                <span class="red">*</span>
+                                <!-- <span class="red">*</span> -->
                             </label>
+                            <!-- id="powerTime" -->
                             <div class="layui-input-inline">
-                                <input type="text" name="powerTime" id="powerTime" class="layui-input" placeholder="" />
+                                <input type="text" name="powerTime"  class="layui-input" placeholder="" />
                             </div>
                         </div>
                         <div class="layui-inline" v-show="selectShow == 2">

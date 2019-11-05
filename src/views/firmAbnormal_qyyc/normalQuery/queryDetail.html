@@ -45,6 +45,9 @@
             font-size: 12px;
 
         }
+        .showStyle {
+            padding: 10px 0 20px 0;
+        }
     </style>
 </head>
 
@@ -159,8 +162,6 @@
         layui.use(['form', 'jquery'], function () {
             var form = layui.form,
                 $ = layui.jquery;
-
-
             // 单个信息数据展示
             axios({
                 method: "get",
@@ -215,7 +216,6 @@
                             this.nomalActive = 3;
                         }
                     }
-
                 },
                 cancel() {
                     parent.layer.closeAll('iframe');//关闭弹窗

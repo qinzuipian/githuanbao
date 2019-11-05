@@ -169,11 +169,17 @@
 									vm.organizeTree();
 									layer.msg('已删除');
 
+								} else if(res.data.code == 203){
+									vm.$notify.error({
+										title: '错误',
+										message: res.data.msg
+									});
 								} else {
 									vm.$notify.error({
 										title: '错误',
 										message: '删除失败'
 									});
+
 								}
 							}).catch(function (err) {
 								console.log(err);

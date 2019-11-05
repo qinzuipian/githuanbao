@@ -36,8 +36,7 @@
 <body>
     <div id="vm">
         <div class="layui-inline layui-form">
-            <!-- <label for="bitian" class="layui-form-label">
-               
+            <!-- <label for="bitian" class="layui-form-label">               
             </label> -->
             <p class="pline"> 产污监测点</p>
             <!--  <div class="layui-input-inline">
@@ -105,7 +104,6 @@
                         <el-button @click="deleteClick(scope.$index, scope.row)" type="text" icon="el-icon-close"></el-button>
                     </template>
                 </el-table-column>
-
             </el-table>
         </div>
         <div class="btn-box">
@@ -113,10 +111,6 @@
             <button class="layui-btn layui-btn-danger" @click="cancel">取消</button>
         </div>
     </div>
-
-
-
-
     <script src="../../../layuiadmin/layui/layui.js" type="text/javascript" charset="utf-8"></script>
 
     <!-- 引入vue -->
@@ -140,7 +134,7 @@
                 treatOptions: [],
                 productName: "",
                 pName: "",
-                backup: "",
+                backup: "备用",
                 backupOptions: [
                     {
                         value: 0,
@@ -283,23 +277,18 @@
                         vm.treatData.push(obj)
                         console.log(obj)
                         vm.vmObj = obj;
-
                     }
-
-
                 },
                 deleteClick(index, row) {
                     // console.log(index, row);
-
                     // vm.treatData.splice(index);
-
                     this.$confirm('确认删除', '确认信息', {
                         distinguishCancelAndClose: true,
                         confirmButtonText: '确认',
                         cancelButtonText: '取消'
                     })
                         .then(() => {
-                            vm.treatData.splice(index);
+                            vm.treatData.splice(index,1);
                             vm.$message.success('请确认删除');
                             // axios({
                             //     method: "post",
@@ -326,12 +315,7 @@
 
                         })
                         .catch(action => {
-
                         });
-
-
-
-
                 },
                 // 数据添加
                 addData() {
@@ -367,8 +351,9 @@
                             layer.msg('关联成功！', {
                                 time: 500
                             }, function () {
-                                window.parent.location.reload();
+                                // window.parent.location.reload();
                                 parent.layer.close('iframe');
+                                this.productInit();
                             });
 
                         } else {

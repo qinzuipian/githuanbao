@@ -52,6 +52,9 @@
             color: #f00;
             font-size: 22px;
         }
+        .layui-form {
+            padding-top: 20px;
+        }
     </style>
 </head>
 
@@ -133,17 +136,18 @@
                             <select name="condition" id="condition" lay-verify="required">
                                 <option value="">请选择条件类型</option>
                                 <option value=">=">>=</option>
-                                <option value="<=">
-                                    <=</option>
+                                <option value="<="><=</option>
                             </select>
                         </div>
 
                     </div>
                     <div class="layui-form-item">
                         <label for="bitian" class="layui-form-label">
-                            阀值</label>
+                            阀值
+                            <span class="red">*</span>
+                        </label>
                         <div class="layui-input-inline">
-                            <input type="text" v-model="limitValue" name="limitValue" class="layui-input" placeholder="阀值" />
+                            <input type="text" v-model="limitValue" lay-verify="required" name="limitValue" class="layui-input" placeholder="阀值" />
                         </div>
                     </div>
                     <div class="layui-form-item">
@@ -152,7 +156,7 @@
                             <span class="red">*</span>
                         </label>
                         <div class="layui-input-inline">
-                            <input type="radio" name="active" value="1" title="启用">
+                            <input type="radio" name="active" value="1" checked title="启用">
                             <input type="radio" name="active" value="2" title="禁用">
                         </div>
                     </div>
