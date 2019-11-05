@@ -9,12 +9,14 @@
     <meta name="viewport" content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi"
     />
     <link rel="stylesheet" href="./../../../layuiadmin/layui/css/layui.css">
+    <link rel="stylesheet" href="../../../layuiadmin/plugin/element.css">
     <!-- <link rel="stylesheet" href="./../../layuiadmin/style/admin.css"> -->
     <script type="text/javascript" src="./../../../layuiadmin/layui/layui.js" charset="utf-8"></script>
     <!-- 引入vue -->
     <script type="text/javascript" src="./../../../layuiadmin/plugin/vue.js"></script>
     <script src="./../../../layuiadmin/plugin/axios.js"></script>
     <script src="./../../../layuiadmin/js/baseUrlConfig.js"></script>
+    <script src="../../../layuiadmin/plugin/element.js"></script>
     <!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
     <!--[if lt IE 9]>
     <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
@@ -117,7 +119,9 @@
                     </div>
                     <div class="layui-form-item">
                         <label for="bitian" class="layui-form-label">
-                            是否启用</label>
+                            是否启用
+                            <span class="red">*</span>
+                        </label>
                         <div class="layui-input-inline">
                             <!-- <input type="text" v-model="tBizReduce.active" class="layui-input" placeholder="是否启用：1、启用；2、禁用" /> -->
                             <input type="radio" name="active" value="1" title="启用">
@@ -189,32 +193,36 @@
             form.on('submit(reduceForm)', function (data) {
                 console.log(data);
                 // data.field.enterpriseName = vm.enterpriseName;
-                axios({
-                    method: "post",
-                    url: layui.setter.BASEURL + 'environmental_intelligent_monitoring/tbizreduce/save',
-                    data: data.field,
-                    headers: {
-                        "Content-Type": "application/json;charset=UTF-8"
-                    }
-                }).then(function (res) {
-                    if (res.data.code == 0) {
-                        console.log(res)
-                        layer.msg('保存成功！', {
-                            time: 500
-                        }, function () {
-                            window.parent.location.reload();
-                            parent.layer.close('iframe');
+                if (!data.field.active) { 
+                    vm.$message.warning('请选择是否启用');
+                }else {
+                    axios({
+                        method: "post",
+                        url: layui.setter.BASEURL + 'environmental_intelligent_monitoring/tbizreduce/save',
+                        data: data.field,
+                        headers: {
+                            "Content-Type": "application/json;charset=UTF-8"
                         }
-                        );
-                    } else {
-                        vm.$notify.error({
-                            title: '错误',
-                            message: '保存异常'
-                        });
-                    }
-                }).catch(function (err) {
-                    console.log(err);
-                });
+                    }).then(function (res) {
+                        if (res.data.code == 0) {
+                            console.log(res)
+                            layer.msg('保存成功！', {
+                                time: 500
+                            }, function () {
+                                window.parent.location.reload();
+                                parent.layer.close('iframe');
+                            }
+                            );
+                        } else {
+                            vm.$notify.error({
+                                title: '错误',
+                                message: '保存异常'
+                            });
+                        }
+                    }).catch(function (err) {
+                        console.log(err);
+                    });
+                }
                 return false;
             })
         })

@@ -63,9 +63,10 @@
 <body>
     <div id="vm">
         <div class="layui-fluid layui-col-space30">
-            <div class="layui-card layui-col-md5 layui-col-lg5" style="min-height: 500px;">
+                <!-- style="min-height: 500px;" -->
+            <div class="layui-card layui-col-md5 layui-col-lg5">
                 <div class="layui-card-header card-title">停限产列表</div>
-                <div class="l-card-border">
+                <div class="l-card-border" style="min-height: 400px;">
                     <el-radio-group text-color="#000000" class="user-list-box" v-model="levelRadio" @change="levelChange">
                         <div v-for="(it,index) in levelList" :key="index">
                             <el-radio class="user-list-radio" :label="it.id">
@@ -76,6 +77,7 @@
                             </el-radio>
                         </div>
                     </el-radio-group>
+                    <div style="text-align: center;" v-show="levelList.length==0">暂无数据</div>
                 </div>
                 <el-button size="small" type="primary" class="submit-btn" @click="treeSave">保存</el-button>
                 <el-button size="small" type="danger" class="submit-btn" @click="treeClear">清空</el-button>
