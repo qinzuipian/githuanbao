@@ -35,7 +35,7 @@
 		}
 
 		.layui-form-item .layui-input-inline {
-			width: 360px;
+			width: 650px;
 		}
 	</style>
 	</style>
@@ -57,10 +57,6 @@
 						<div class="layui-input-inline ckeditor">
 							<textarea id="mas" name="content" style="display: none"></textarea>
 						</div>
-						<!-- <textarea class="layui-textarea" id="LAY_demo1"></textarea> -->
-						<!-- <div class="layui-input-inline">
-								<input type="text" name="content" class="layui-input" placeholder="请输入新闻内容" />
-							</div> -->
 					</div>
 					<div class="btn-box">
 						<button class="layui-btn layui-bg-green" lay-submit lay-filter="save">保存</button>
@@ -85,7 +81,7 @@
 			//todo  富文本编辑框
 			//构建一个默认的编辑器
 			var index = layedit.build('mas', {
-				width: "100",
+				width: "300",
 				tool: [
 					'strong' //加粗
 					, 'italic' //斜体
@@ -95,8 +91,8 @@
 					, 'left' //左对齐
 					, 'center' //居中对齐
 					, 'right' //右对齐
-					, 'link' //超链接
-					, 'unlink' //清除链接
+					// , 'link' //超链接
+					// , 'unlink' //清除链接
 					// , 'face' //表情
 				]
 			});

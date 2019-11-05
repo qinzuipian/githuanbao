@@ -22,7 +22,7 @@
 					<p>系统公告:</p>
 					<div class="layui-carousel" id="notice">
 						<div carousel-item>
-							<div class="carousel-item" v-for="it in newsList" v-text="it.content"></div>
+							<div class="carousel-item" style="cursor: pointer;" v-for="it in newsList" v-html="it.title" @click="newDetail(it)"></div>
 						</div>
 					</div>
 				</div>
@@ -168,8 +168,7 @@
 		<script src="../../layuiadmin/plugin/element.js"></script>
 		<script src="../../layuiadmin/plugin/axios.js"></script>
 		<script>
-			
-			var vm = new Vue({		
+			var vm = new Vue({
 				el: "#vm",
 				data: {
 					declareAbnormalNum: '',
@@ -179,7 +178,7 @@
 					limitProduct: '',
 					stopProduct: '',
 					unexecut: '',
-					
+
 					monitorNum: '',
 					enterpriseNum: '',
 					productMonitorNum: '',
@@ -191,8 +190,8 @@
 					startMonitorNum: {},
 
 					reduceList: [],
-					
-					
+
+
 					newsList: [], //新闻通知数组
 				},
 				methods: {
@@ -261,7 +260,7 @@
 											type: 'line'
 										}]
 									};
-									
+
 
 
 									// 开始整理 各区域异常企业占比
@@ -325,7 +324,7 @@
 										]
 									};
 
-									window.layuiInit(vm.abnormalTradeNum, vm.abnormalOrganizeNum, vm.startMonitorNum,vm.effortsNum);
+									window.layuiInit(vm.abnormalTradeNum, vm.abnormalOrganizeNum, vm.startMonitorNum, vm.effortsNum);
 								} else {
 									vm.$notify.error({
 										title: '错误',
@@ -333,30 +332,48 @@
 									})
 								}
 							})
-							
+
 						axios({
-							methods: "POST",
-							url: BASEURL + "/environmental_intelligent_monitoring/tbasnews/list",
-						})
-						.then(function(res){
-							if(res.data.code == 0){
-								vm.newsList = res.data.page.list;
-							}else{
-								vm.$notify.error({
-									title: '错误',
-									message: res.data.msg
-								})
-							}
-						})
+								methods: "POST",
+								url: BASEURL + "/environmental_intelligent_monitoring/tbasnews/list",
+							})
+							.then(function(res) {
+								if (res.data.code == 0) {
+									vm.newsList = res.data.page.list;
+								} else {
+									vm.$notify.error({
+										title: '错误',
+										message: res.data.msg
+									})
+								}
+							})
 					},
-					
+
 					// 跳转到总体监控
-					goSSJC: function(){
+					goSSJC: function() {
 						window.parent.document.getElementById("totalCtrl").click();
 					},
 					// 跳转到企业故障查询
-					goQueryErr: function(){
+					goQueryErr: function() {
 						window.parent.document.getElementById("enterpriseErrQuery").click();
+					},
+
+					// 弹出新闻详情
+					newDetail: function(it) {
+						window.localStorage.setItem("newTitle", it.title);
+						window.localStorage.setItem("newContent", it.content);
+						layui.layer.open({
+							type: 2,
+							title: '公告详情',
+							maxmin: true,
+							shadeClose: true, //点击遮罩关闭层
+							area: ['650px', '350px'],
+							content: './newDetail.html',
+							end: function() {
+								window.localStorage.removeItem("newTitle");
+								window.localStorage.removeItem("newContent");
+							}
+						})
 					}
 				},
 				mounted: function() {
@@ -369,9 +386,10 @@
 					base: '../../layuiadmin/' //静态资源所在路径
 				}).extend({
 					index: 'lib/index' //主入口模块
-				}).use(['index', 'table', "jquery", "echarts", "carousel"], function() {
+				}).use(['index', 'table', "jquery", "echarts", "carousel", "layer"], function() {
 					var table = layui.table;
 					var echart = layui.echarts;
+					var layer = layui.layer;
 
 					var tradeAbnormal = echart.init(document.getElementById("tradeAbnormal"));
 					var organizeAbnormal = echart.init(document.getElementById("organizeAbnormal"));
@@ -385,8 +403,8 @@
 						width: '100%', //设置容器宽度
 						height: '100%',
 						arrow: 'none', //始终显示箭头
-						anim: 'updown' ,//切换动画方式
-						indicator: 'none', 
+						anim: 'updown', //切换动画方式
+						indicator: 'none',
 						interval: '5000' // 切换间隔时间
 					});
 
