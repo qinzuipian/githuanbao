@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>新增角色</title>
+		<meta name="renderer" content="webkit">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+		<link rel="stylesheet" href="../../../layuiadmin/layui/css/layui.css" media="all">
+		<link rel="stylesheet" href="../../../layuiadmin/style/admin.css" media="all">
+		<link rel="stylesheet" href="../../../layuiadmin/style/login.css" media="all">
+		<link rel="stylesheet" type="text/css" href="../../layuiadmin/plugin/element.css" />
+		<style type="text/css">
+			#vm {
+				background: white;
+				padding: 20px;
+			}
+		</style>
+	</head>
+	<body>
+
+		<div id="vm">
+			<form class="layui-form">
+				<div class="layui-form-item">
+					<label class="layui-form-label">角色名称</label>
+					<div class="layui-input-block">
+						<input type="text" name="title" required lay-verify="required" placeholder="请输入角色名称" autocomplete="off" class="layui-input">
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label">分配权限</label>
+					<div class="layui-input-block" id="templateList"></div>
+				</div>
+			</form>
+		</div>
+
+		<script src="../../../layuiadmin/layui/layui.all.js"></script>
+		<script src="../../../layuiadmin/js/baseUrlConfig.js"></script>
+		<script src="../../../layuiadmin/plugin/vue.min.js"></script>
+		<script src="../../../layuiadmin/plugin/axios.js"></script>
+		<script src="../../../layuiadmin/plugin/element.js"></script>
+
+		<script>
+			var vm = new Vue({
+				el: "#vm",
+				data: {
+					// templateList: []
+				},
+				methods: {
+					pageInit: function() {
+						axios({
+								url: '../../../layuiadmin/data/template.json',
+								method: 'get'
+							})
+							.then(function(res) {
+								if (res.data.code == 0) {
+									for (var i = 0; i < res.data.data.length; i++) {
+										res.data.data[i].spread = true;
+									}
+									layuiInit(res.data.data);
+								} else {
+									vm.$message.error("本地template数据丢失,请联系开发人员");
+								}
+							})
+					}
+				},
+				mounted: function() {
+					this.pageInit();
+				}
+			});
+
+			function layuiInit(templateList) {
+				console.log(vm.enterpriseTreeList);
+				layui.config({
+					base: '../../../layuiadmin/' //静态资源所在路径
+				}).extend({
+					index: 'lib/index' //主入口模块
+				}).use(['index', 'tree'], function() {
+					var tree = layui.tree;
+
+					tree.render({
+						elem: '#templateList', //默认是点击节点可进行收缩
+						data: templateList,
+						showCheckbox: true,
+						id: 'templateList',
+						click: function(obj) {
+							//得到当前点击的节点数据
+
+						}
+					});
+				});
+			}
+		</script>
+	</body>
+</html>

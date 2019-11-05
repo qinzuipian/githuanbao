@@ -1,3 +1,12 @@
+@charset "utf-8";
+
+.box-card{
+	cursor: pointer;
+}
+.card-num{
+	font-size: 25px;
+}
+
 .message-box {
 	display: flex;
 	background: #009999;

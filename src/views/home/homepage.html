@@ -17,15 +17,9 @@
 
 	<body>
 		<div id="vm">
-			<!-- <div class="message-box">
-				<p>系统公告:</p>
-				<p>暂无通知公告</p>
-			</div> -->
-
 			<div class="layui-container content">
 				<div class="message-box">
 					<p>系统公告:</p>
-					<!-- <p>暂无通知公告</p> -->
 					<div class="layui-carousel" id="notice">
 						<div carousel-item>
 							<div class="carousel-item" v-for="it in newsList" v-text="it.content"></div>
@@ -33,37 +27,37 @@
 					</div>
 				</div>
 				<div class="layui-row layui-col-space10">
-					<div class="left layui-col-sm4 layui-col-xs12">
+					<div class="left layui-col-sm4 layui-col-xs12" @click="goSSJC">
 						<el-card class="box-card">
 							<div slot="header">
 								<span>概况</span>
 							</div>
-							<div class=" ">
+							<div>
 								<div class="layui-row left-row">
 									<p class="layui-col-sm6">企业数量:</p>
 									<p class="layui-col-sm-6">
-										<span v-text="enterpriseNum"></span> 家
+										<span v-text="enterpriseNum" class="card-num"></span> 家
 									</p>
 								</div>
 								<div class="layui-row left-row">
 									<p class="layui-col-sm6">产污监测点:</p>
 									<span>
-										<span v-text="productMonitorNum"></span> 个</span>
+										<span v-text="productMonitorNum" class="card-num"></span> 个</span>
 								</div>
 								<div class="layui-row left-row">
 									<p class="layui-col-sm6">治污监测点:</p>
 									<span>
-										<span v-text="treatMonitorNum"></span> 个</span>
+										<span v-text="treatMonitorNum" class="card-num"></span> 个</span>
 								</div>
 								<div class="layui-row left-row">
 									<p class="layui-col-sm6">监测点数量:</p>
 									<span>
-										<span v-text="monitorNum"></span> 个</span>
+										<span v-text="monitorNum" class="card-num"></span> 个</span>
 								</div>
 							</div>
 						</el-card>
 					</div>
-					<div class="center layui-col-sm4 layui-col-xs6">
+					<div class="center layui-col-sm4 layui-col-xs6" @click="goQueryErr">
 						<el-card class="box-card" style="height: 256px;">
 							<div slot="header">
 								<span>治污设施情况</span>
@@ -77,16 +71,16 @@
 							<div class="layui-col-sm12 layui-col-xs12 ceter-row" style="margin-top: 20px;">
 								<p class="layui-col-sm7 layui-col-xs7">异常企业:</p>
 								<p class="layui-col-sm5 layui-col-xs5">
-									<span v-text="abnormalNum"></span> 家</p>
+									<span v-text="abnormalNum" class="card-num"></span> 家</p>
 							</div>
 							<div class="layui-col-sm12 layui-col-xs12 ceter-row">
 								<p class="layui-col-sm7 layui-col-xs7">涉及污染设施:</p>
 								<p class="layui-col-sm5 layui-col-xs5">
-									<span v-text="treatAbnormalNum"></span> 处</p>
+									<span v-text="treatAbnormalNum" class="card-num"></span> 处</p>
 							</div>
 						</el-card>
 					</div>
-					<div class="right layui-col-sm4 layui-col-xs6">
+					<div class="right layui-col-sm4 layui-col-xs6" @click="goQueryErr">
 						<el-card class="box-card" style="height: 256px;">
 							<div slot="header">
 								<span>限产/停产执行情况</span>
@@ -94,17 +88,17 @@
 							<div class="layui-col-sm12 layui-col-xs12 ceter-row">
 								<p class="layui-col-sm7 layui-col-xs7">限产企业:</p>
 								<p class="layui-col-sm5 layui-col-xs5">
-									<span v-text="limitProduct"></span> 家</p>
+									<span v-text="limitProduct" class="card-num"></span> 家</p>
 							</div>
 							<div class="layui-col-sm12 layui-col-xs12 ceter-row">
 								<p class="layui-col-sm7 layui-col-xs7">停产企业:</p>
 								<p class="layui-col-sm5 layui-col-xs5">
-									<span v-text="stopProduct"></span> 家</p>
+									<span v-text="stopProduct" class="card-num"></span> 家</p>
 							</div>
 							<div class="layui-col-sm12 layui-col-xs12 ceter-row">
 								<p class="layui-col-sm7 layui-col-xs7">未执行企业:</p>
 								<p class="layui-col-sm5 layui-col-xs5">
-									<span v-text="unexecut"></span> 家</p>
+									<span v-text="unexecut" class="card-num"></span> 家</p>
 							</div>
 						</el-card>
 					</div>
@@ -354,6 +348,15 @@
 								})
 							}
 						})
+					},
+					
+					// 跳转到总体监控
+					goSSJC: function(){
+						window.parent.document.getElementById("totalCtrl").click();
+					},
+					// 跳转到企业故障查询
+					goQueryErr: function(){
+						window.parent.document.getElementById("enterpriseErrQuery").click();
 					}
 				},
 				mounted: function() {
@@ -391,7 +394,6 @@
 					table.render({
 						elem: '#demo',
 						height: 300,
-						// ,url: '/demo/table/user/' //数据接口
 						page: false, //开启分页
 						data: vm.reduceList,
 						cols: [

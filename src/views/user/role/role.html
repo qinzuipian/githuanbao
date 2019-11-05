@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>角色管理</title>
+		<meta name="renderer" content="webkit">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+		<link rel="stylesheet" href="../../../layuiadmin/layui/css/layui.css" media="all">
+		<link rel="stylesheet" href="../../../layuiadmin/style/admin.css" media="all">
+		<link rel="stylesheet" href="../../../layuiadmin/style/login.css" media="all">
+		<link rel="stylesheet" type="text/css" href="../../layuiadmin/plugin/element.css" />
+		<link rel="stylesheet" type="text/css" href="../../../layuiadmin/style/role.css"/>
+	</head>
+	<body>
+
+		<div id="vm">
+			<div style="padding-bottom: 10px;padding-left: 20px;" class="layui-row">
+				<button class="layui-btn layuiadmin-btn-role" @click="addRole">添加</button>
+				<button class="layui-btn layuiadmin-btn-role" @click="editRole">编辑</button>
+				<button class="layui-btn layuiadmin-btn-role">删除</button>
+			</div>
+			<table id="roleTab" lay-filter="roleTab"></table>
+		</div>
+
+		<script src="../../../layuiadmin/layui/layui.js"></script>
+		<script src="../../../layuiadmin/js/baseUrlConfig.js"></script>
+		<script src="../../../layuiadmin/plugin/vue.min.js"></script>
+		<script src="../../../layuiadmin/plugin/axios.js"></script>
+		<script src="../../../layuiadmin/plugin/element.js"></script>
+
+		<script>
+			var vm = new Vue({
+				el: "#vm",
+				data: {
+
+				},
+				methods: {
+					// 新增角色
+					addRole: function(){
+						layui.layer.open({
+							type: 2,
+							title: "新增角色",
+							maxmin: true,
+							shadeClose: true,
+							area : ['800px' , '520px'],
+							content: './addRole.html'
+						})
+					},
+					// 编辑角色
+					editRole: function(){
+						layui.layer.open({
+							type: 2,
+							title: "编辑角色",
+							maxmin: true,
+							shadeClose: true,
+							area : ['800px' , '520px'],
+							content: './editRole.html'
+						})
+					}
+				}
+			});
+
+			layui.config({
+			    base: '../../../layuiadmin/' //静态资源所在路径
+			}).extend({
+			    index: 'lib/index' //主入口模块
+			}).use(['table', 'index', 'layer'], function() {
+				var table = layui.table;
+				var layer = layui.layer;
+				//第一个实例
+				table.render({
+					elem: '#roleTab',
+					height: 450,
+					url: layui.setter.BASEURL + 'sys-mgr/sys/role/list', //数据接口
+					page: true, //开启分页
+					cols: [],
+					parseData: function (res) { // 数据重新处理为layUI的数据格式
+					    var msg = {
+					        "code": res.code, //解析接口状态
+					        "msg": res.msg, //解析提示文本
+					        "count": res.data.totalCount, //解析数据长度
+					        "data": res.data.list //解析数据列表
+					    };
+					    return msg;
+					}
+				});
+			});
+		</script>
+	</body>
+</html>
