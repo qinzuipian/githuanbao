@@ -99,7 +99,8 @@
                             <span class="red">*</span>
                         </label>
                         <div class="layui-input-inline">
-                            <input type="text"  style="width: 260px;" name="monitorName" lay-verify="required" class="layui-input" placeholder="生产线/设施+工艺+监测装置安装部位"/>
+                            <input type="text" style="width: 260px;" name="monitorName" lay-verify="required" class="layui-input" placeholder="生产线/设施+工艺+监测装置安装部位"
+                            />
                         </div>
                         <label for="bitian" class="layui-form-label">
                             信息分类
@@ -174,7 +175,7 @@
                         </label>
 
                         <div class="layui-input-inline">
-                            <el-autocomplete v-model="swicthId" :fetch-suggestions="querySwicthId" placeholder="请输入内容" @select="handleSwicthId"></el-autocomplete>
+                            <el-autocomplete v-model="swicthId" @blur="switchBlur" :fetch-suggestions="querySwicthId" placeholder="请输入内容" @select="handleSwicthId"></el-autocomplete>
                             <!-- <input type="text" name="swicthId" lay-verify="required" class="layui-input" placeholder="网关编号" /> -->
                         </div>
 
@@ -912,6 +913,13 @@
                 //         console.log(err);
                 //     });
                 // },
+                // 网管编码input失去焦点事件
+                switchBlur() {
+                    if (vm.swicthId.length != 24) {
+                        vm.$message.warning('网管编码为24位，请修改');
+                        vm.swicthId = "";
+                    }
+                },
                 cancel() {
                     parent.layer.closeAll('iframe');//关闭弹窗
                 },

@@ -63,7 +63,7 @@
 <body>
     <div id="vm">
         <div class="layui-fluid layui-col-space30">
-                <!-- style="min-height: 500px;" -->
+            <!-- style="min-height: 500px;" -->
             <div class="layui-card layui-col-md5 layui-col-lg5">
                 <div class="layui-card-header card-title">停限产列表</div>
                 <div class="l-card-border" style="min-height: 400px;">
@@ -194,11 +194,17 @@
                                 treeData.forEach(function (item, index) {
                                     keyData.push(item.monitorId)
                                 })
-                                vm.checkKey = keyData
-
-                                console.log(vm.checkKey);
                                 vm.monitoridList = keyData;
-                                // this.$refs.tree.setCheckedKeys(vm.checkKey);
+                                vm.checkKey = keyData
+                                console.log(vm.checkKey);
+                                vm.$refs.tree.setCheckedKeys(vm.checkKey);
+                            } else {
+                                vm.$notify.error({
+                                    title: '错误',
+                                    position: 'top-center',
+                                    message: res.data.msg
+                                });
+
                             }
 
                         }).catch(function (err) {
