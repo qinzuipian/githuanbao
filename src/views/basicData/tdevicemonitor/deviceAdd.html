@@ -765,31 +765,31 @@
                 /*    data.field.ecPolluteType = $("#ecPolluteType option:selected").text();
                    data.field.ecType = $("#ecType option:selected").text();
                    data.field.route = $("#route option:selected").text(); */
-                // axios({
-                //     method: "post",
-                //     url: layui.setter.BASEURL + 'environmental_intelligent_monitoring/tdevicemonitor/save',
-                //     data: data.field,
-                //     headers: {
-                //         "Content-Type": "application/json;charset=UTF-8"
-                //     }
-                // }).then(function (res) {
-                //     if (res.data.code == 0) {
-                //         console.log(res)
-                //         layer.msg('保存成功！', {
-                //             time: 500
-                //         }, function () {
-                //             window.parent.location.reload();
-                //             parent.layer.close('iframe');
-                //         });
-                //     } else {
-                //         vm.$notify.error({
-                //             title: '错误',
-                //             message: res.data.msg
-                //         });
-                //     }
-                // }).catch(function (err) {
-                //     console.log(err);
-                // });
+                axios({
+                    method: "post",
+                    url: layui.setter.BASEURL + 'environmental_intelligent_monitoring/tdevicemonitor/save',
+                    data: data.field,
+                    headers: {
+                        "Content-Type": "application/json;charset=UTF-8"
+                    }
+                }).then(function (res) {
+                    if (res.data.code == 0) {
+                        console.log(res)
+                        layer.msg('保存成功！', {
+                            time: 500
+                        }, function () {
+                            window.parent.location.reload();
+                            parent.layer.close('iframe');
+                        });
+                    } else {
+                        vm.$notify.error({
+                            title: '错误',
+                            message: res.data.msg
+                        });
+                    }
+                }).catch(function (err) {
+                    console.log(err);
+                });
                 return false;
             })
 
