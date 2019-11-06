@@ -275,7 +275,7 @@
 								<div class="layui-form-item">
 									<label for="bitian" class="layui-form-label">负责人电话</label>
 									<div class="layui-input-inline">
-										<input type="number" name="chargePhone" class="layui-input" placeholder="负责人电话" />
+										<input type="tel" name="chargePhone" v-model="chargePhone" id="phone" class="layui-input" placeholder="负责人电话" @blur ="chargePhones" />
 									</div>
 								</div>
 								<div class="layui-form-item">
@@ -287,19 +287,19 @@
 								<div class="layui-form-item">
 									<label for="bitian" class="layui-form-label">检查人电话</label>
 									<div class="layui-input-inline">
-										<input type="number" name="checkPhone" class="layui-input" placeholder="检查人电话" />
+										<input type="tel" name="checkPhone" v-model="checkPhone" class="layui-input" placeholder="检查人电话" id= "phone1" @blur ="checkPhones" />
 									</div>
 								</div>
 								<div class="layui-form-item">
 									<label for="bitian" class="layui-form-label">法人</label>
 									<div class="layui-input-inline">
-										<input type="text" name="lawPerson" class="layui-input" placeholder="法人" />
+										<input type="text" name="lawPerson"  class="layui-input" placeholder="法人" />
 									</div>
 								</div>
 								<div class="layui-form-item">
 									<label for="bitian" class="layui-form-label">法人电话</label>
 									<div class="layui-input-inline">
-										<input type="number" name="lawPhone" class="layui-input" placeholder="法人电话" />
+										<input type="tel" name="lawPhone" v-model="lawPhone" class="layui-input" placeholder="法人电话" id= "phone2" @blur ="lawPhones" />
 									</div>
 								</div>
 								<div class="layui-form-item">
@@ -324,9 +324,10 @@
 									<label for="bitian" class="layui-form-label">车间添加</label>
 									<div class="layui-input-inline">
 										<button id="add" type="button" class="layui-btn layui-btn-primary" data-type="add">添加</button>
+										<p style="text-align: left;margin: 5px;color: red;">注：车间删除时,请确认车间下无检测点存在</p>
 									</div>
 								</div>
-								<div class="layui-form-item" v-show="hasedit == 1">
+								<div class="layui-form-item" v-show="hasedit == 1"> 
 									<label for="bitian" class="layui-form-label">车间</label>
 									<div>
 										<div class="factor" name="tBasShopList">
@@ -369,6 +370,8 @@
 				for (var i = 0; i < provinceList.length; i++) {
 					addEle(province, provinceList[i].name);
 				}
+				
+				
 
 				//赋予完成 重新渲染select
 				form.render('select');
@@ -612,7 +615,12 @@
 					tree: 0,
 					isActive: 0,
 					treeValue: "",
-					treeId: ""
+					treeId: "",
+					chargePhone:"",
+					checkPhone:"",
+					lawPhone:""
+					
+					
 				},
 				methods: {
 					cancel: function() {
@@ -687,12 +695,47 @@
 					    vm.treeHign = true;
 					    vm.Areashow = false;
 					    
+					},
+					chargePhones:function() {
+						var phone = document.getElementById('phone').value;
+						if(!(/^1[3456789]\d{9}$/.test(phone))){ 
+							// vm.chargePhone = ""
+							console.log(vm.chargePhone);
+						    vm.$notify.error({
+						        title: '错误',
+						        message: "手机号码有误，请重填"
+						    }); 
+						    return false; 
+						}
+					},
+					checkPhones:function(){
+						var phone1 = document.getElementById('phone1').value;
+						if(!(/^1[3456789]\d{9}$/.test(phone1))) {
+							// vm.checkPhone = ""
+							vm.$notify.error({
+							    title: '错误',
+							    message: "手机号码有误，请重填"
+							}); 
+							return false; 
+						}
+					},
+					lawPhones:function(){
+						var phone2 = document.getElementById('phone2').value;
+						if(!(/^1[3456789]\d{9}$/.test(phone2))) {
+							// vm.lawPhone = ""
+							vm.$notify.error({
+							    title: '错误',
+							    message: "手机号码有误，请重填"
+							}); 
+							return false; 
+						}
 					}
 				},
 				created() {
 					this.treeDataInit();
 				}
 			});
+			
 		</script>
 	</body>
 </html>
