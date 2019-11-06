@@ -197,12 +197,6 @@
                                 vm.monitoridList = keyData;
                                 vm.checkKey = keyData
                                 console.log(vm.checkKey);
-                                // var _vm = vm;
-                                // setTimeout(function () {
-                                //     _vm.checkKey.forEach((value) => {
-                                //         _vm.$refs.tree.setChecked(value, false, true)
-                                //     });
-                                // }, 500);
                                 vm.$refs.tree.setCheckedKeys(vm.checkKey);
                             } else {
                                 vm.$notify.error({
