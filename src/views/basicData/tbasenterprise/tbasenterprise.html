@@ -341,6 +341,7 @@
 									    title: '错误',
 									    message: res.data.msg
 									});
+									layer.close(layer.index);
 								}
 							}).catch(function (err) {
 								console.log(err);

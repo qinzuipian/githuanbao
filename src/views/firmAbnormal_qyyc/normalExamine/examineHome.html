@@ -251,10 +251,10 @@
 							}).then(function (res) {
 								if (res.data.code == 0) {
 									table.reload('LAY-app-content-list');
-									layer.msg('已申报');
+									layer.msg('已审核');
 
 								} else {
-									layer.msg('申报失败！');
+									layer.msg('审核失败！');
 								}
 							}).catch(function (err) {
 								console.log(err);

@@ -28,7 +28,10 @@
 		#organizeTree .ulOrganize li ul li {
 			margin-left: 50px;
 		}
-		.layui-btn-disabled, .layui-btn-disabled:active, .layui-btn-disabled:hover {
+
+		.layui-btn-disabled,
+		.layui-btn-disabled:active,
+		.layui-btn-disabled:hover {
 			border: 0;
 		}
 	</style>
@@ -44,7 +47,7 @@
 					<i class="layui-icon">&#xe654;</i>添加</button>
 				<button class="layui-btn layuiadmin-btn-list layui-bg-blue" data-type="edit">
 					<i class="layui-icon">&#xe642;</i>编辑</button>
-				<button class="layui-btn layuiadmin-btn-list layui-bg-red" data-type="batchdel">
+				<button class="layui-btn layuiadmin-btn-list layui-bg-red" data-type="batchdel" id="deleteOrgan" :disabled="btnDelete">
 					<i class="layui-icon">&#xe640;</i>删除</button>
 				<button class="layui-btn layuiadmin-btn-list layui-btn-warm" data-type="batCancel">
 					<i class="layui-icon">&#x1006;</i>取消选中状态</button>
@@ -152,7 +155,6 @@
 						console.log(idList)
 
 						layer.confirm('确定删除吗？', function (index) {
-
 							//执行 axios 后重载
 							axios({
 								method: "post",
@@ -169,16 +171,18 @@
 									vm.organizeTree();
 									layer.msg('已删除');
 
-								} else if(res.data.code == 203){
+								} else if (res.data.code == 203) {
 									vm.$notify.error({
 										title: '错误',
 										message: res.data.msg
 									});
+									layer.close(layer.index);
 								} else {
 									vm.$notify.error({
 										title: '错误',
 										message: '删除失败'
 									});
+									layer.close(layer.index);
 
 								}
 							}).catch(function (err) {
@@ -240,7 +244,8 @@
 				nodedata: [],
 				treeHign: true,
 				loading: true,
-				btnDisable: false
+				btnDisable: false,
+				btnDelete: false
 			},
 			methods: {
 				handleNodeClick: function (data, node) {
@@ -253,9 +258,14 @@
 					if (node.level === 3) {
 						document.getElementById("addOrgan").classList.add("layui-btn-disabled");
 						vm.btnDisable = true;
+					} else if (node.level === 1) {
+						document.getElementById("deleteOrgan").classList.add("layui-btn-disabled");
+						vm.btnDelete = true;
 					} else {
 						document.getElementById("addOrgan").classList.remove("layui-btn-disabled");
 						vm.btnDisable = false;
+						document.getElementById("deleteOrgan").classList.remove("layui-btn-disabled");
+						vm.btnDelete = false;
 					}
 					// axios({
 					// 	method: "post",

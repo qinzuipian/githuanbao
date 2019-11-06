@@ -162,13 +162,7 @@
                     </div>
 
                     <div class="layui-form-item">
-                        <!-- <label for="bitian" class="layui-form-label">
-                            仪表地址
-                            <span class="red">*</span>
-                        </label>
-                        <div class="layui-input-inline">
-                            <input type="text" name="meterId" class="layui-input" lay-verify="required" placeholder="" />
-                        </div> -->
+
                         <label for="bitian" class="layui-form-label">
                             网关编号
                             <span class="red">*</span>
@@ -312,11 +306,6 @@
                                 <input type="text" name="zAccelerat" id="zAccelerat" lay-verify="required" class="layui-input" placeholder="" />
                             </div>
                         </div>
-                        <!-- <label for="bitian" class="layui-form-label">
-                            采集器代码</label>
-                        <div class="layui-input-inline">
-                            <input type="text" name="mn" class="layui-input" />
-                        </div> -->
 
                     </div>
 
@@ -357,18 +346,8 @@
                                 <input type="text" name="xFrequen" id="xFrequen" lay-verify="required" class="layui-input" placeholder="" />
                             </div>
                         </div>
-
-
-
                     </div>
                     <div class="layui-form-item">
-                        <!-- <label for="bitian" class="layui-form-label">
-                            仪表型号
-                            <span class="red">*</span>
-                        </label>
-                        <div class="layui-input-inline">
-                            <input type="text" name="model" lay-verify="required" class="layui-input" placeholder="仪表型号" />
-                        </div> -->
                         <label for="bitian" class="layui-form-label">
                             采集器代码</label>
                         <div class="layui-input-inline">
@@ -473,7 +452,6 @@
                         </div>
 
                     </div>
-
                     <div class="btn-box">
                         <button class="layui-btn" lay-submit lay-filter="deviceForm">添加</button>
                         <button class="layui-btn layui-btn-danger" @click="cancel">取消</button>
@@ -482,9 +460,6 @@
                 </form>
             </div>
         </div>
-
-
-
     </div>
     <script>
         layui.config({
@@ -497,34 +472,6 @@
                 tree = layui.tree,
                 util = layui.util,
                 laytpl = layui.laytpl;
-
-            // select框动态填充联动
-            // function selectTree(selectId) {
-            //     axios({
-            //         method: "post",
-            //         url: BASEURL + 'environmental_intelligent_monitoring/tdevicemonitor/queryPolluteType',
-            //         params: {}
-            //     }).then(function (res) {
-            //         if (res.data.code == 0) {
-            //             // console.log(res)
-
-            //             $.each(res.data.data, function (index, item) {
-            //                 // var se = $(selectId).attr('id')
-            //                 // console.log($(selectId).attr('id'))
-            //                 // console.log(index, item)
-            //                 $(selectId).attr('id').append(new Option(item.text, item.id));// 下拉菜单里添加元素
-            //             });
-            //             layui.form.render("select");
-
-            //         } else {
-
-            //         }
-            //     }).catch(function (err) {
-            //         console.log(err);
-            //     });
-
-            // }
-            // selectTree(ecPolluteType)
             // 第一层填充
             axios({
                 method: "post",
@@ -636,10 +583,7 @@
                 }).catch(function (err) {
                     console.log(err);
                 });
-
-
             })
-
             // 监听select选择框
             form.on("select(collectType)", function (data) {
                 if (data.value == '用电') {
@@ -659,10 +603,23 @@
                     $("#xFrequen").attr("lay-verify", '');
                     // $("#powerLimit").attr("lay-verify", 'number');
                     // $("#powerTime").attr("lay-verify", 'number');
-                    $("#zFrequen").removeAttr("lay-verify");
+                    $("#zFrequen").attr("lay-verify", '');
                     $("#yFrequen").attr("lay-verify", '');
                     $("#ratedPower").attr("lay-verify", 'required|number');
                     $("#ratedU").attr("lay-verify", 'required|number');
+                    
+                    // $("#xAccelerat").val("");
+                    // $("#radarProport").val("");
+                    // $("#currentSpeed").val("");
+                    // $("#temperature").val("");
+                    // $("#yAccelerat").val("");
+                    // $("#flow").val("");
+                    // $("#zAccelerat").val("");
+                    // $("#xFrequen").val("");
+                    // $("#zFrequen").val("");
+                    // $("#yFrequen").val("");
+                    // $("#radarCount").val("");
+
                 } else if (data.value == '振动量设备') {
                     vm.selectShow = 2;
                     $("#pt").attr("lay-verify", '');
@@ -684,6 +641,20 @@
                     $("#yFrequen").attr("lay-verify", 'required|number');
                     $("#ratedPower").attr("lay-verify", '');
                     $("#ratedU").attr("lay-verify", '');
+
+                    // $("#ratedU").val("");
+                    // $("#ratedPower").val("");
+                    // $("#powerTime").val("");
+                    // $("#powerLimit").val("");
+                    // $("#electricTime").val("");
+                    // $("#electricLimit").val("");
+                    // $("#flow").val("");
+                    // $("#pt").val("");
+                    // $("#ct").val("");
+                    // $("#radarProport").val("");
+                    // $("#currentSpeed").val("");
+                    // $("#temperature").val("");
+                    // $("#radarCount").val("");
                 } else if (data.value == '雷达设备') {
                     vm.selectShow = 3;
                     $("#pt").attr("lay-verify", '');
@@ -705,6 +676,8 @@
                     $("#yFrequen").attr("lay-verify", '');
                     $("#ratedPower").attr("lay-verify", '');
                     $("#ratedU").attr("lay-verify", '');
+
+                    // $("#radarCount").val("");
 
                 } else if (data.value == '流量计') {
                     vm.selectShow = 4;
