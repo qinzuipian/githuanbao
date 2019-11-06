@@ -79,6 +79,7 @@
             color: #f00;
             font-size: 22px;
         }
+
         .layui-form {
             padding-top: 20px;
         }
@@ -90,26 +91,21 @@
         <div class="layui-fluid">
             <div class="layui-row">
                 <form class="layui-form">
-
+                    <!-- <span>命名规则：</span>
+                    <span>生产线/设施名称+处理工艺名称+监测装置的安装部位</span> -->
                     <div class="layui-form-item">
-
                         <label for="bitian" class="layui-form-label">
                             监测点名称
                             <span class="red">*</span>
                         </label>
                         <div class="layui-input-inline">
-                            <input type="text" name="monitorName" lay-verify="required" class="layui-input" placeholder="" />
-
+                            <input type="text"  style="width: 260px;" name="monitorName" lay-verify="required" class="layui-input" placeholder="生产线/设施+工艺+监测装置安装部位"/>
                         </div>
-
-
-
                         <label for="bitian" class="layui-form-label">
                             信息分类
                             <span class="red">*</span>
                         </label>
                         <div class="layui-input-inline">
-
                             <!-- <input type="text" v-model="tDeviceMonitor.type" class="layui-input" placeholder="设备类型:1、生产设备 2、治污设备" /> -->
                             <select name="ecPolluteType" id="ecPolluteType" lay-filter="ecPolluteType" lay-verify="required">
                                 <option value="">请选择信息分类方式</option>
@@ -117,8 +113,6 @@
                             </select>
 
                         </div>
-
-
 
                     </div>
                     <div class="layui-form-item">
@@ -210,8 +204,7 @@
                                 <span class="red">*</span>
                             </label>
                             <div class="layui-input-inline">
-                                <input type="text" name="radarProport" id="radarProport" lay-verify="required" class="layui-input" placeholder=""
-                                />
+                                <input type="text" name="radarProport" id="radarProport" lay-verify="required" class="layui-input" placeholder="" />
                             </div>
                         </div>
                         <!-- 流量计 -->
@@ -306,8 +299,7 @@
                                 <span class="red">*</span>
                             </label>
                             <div class="layui-input-inline">
-                                <input type="text" name="electricLimit" id="electricLimit" lay-verify="required" class="layui-input" placeholder=""
-                                />
+                                <input type="text" name="electricLimit" id="electricLimit" lay-verify="required" class="layui-input" placeholder="" />
                             </div>
                         </div>
                         <div class="layui-inline" v-show="selectShow == 2">
@@ -351,8 +343,7 @@
                                 <span class="red">*</span>
                             </label>
                             <div class="layui-input-inline">
-                                <input type="text" name="electricTime" id="electricTime" lay-verify="required" class="layui-input" placeholder=""
-                                />
+                                <input type="text" name="electricTime" id="electricTime" lay-verify="required" class="layui-input" placeholder="" />
                             </div>
 
                         </div>
@@ -390,7 +381,7 @@
                             </label>
                             <!-- id="powerLimit" -->
                             <div class="layui-input-inline">
-                                <input type="text" name="powerLimit"  class="layui-input" placeholder="" />
+                                <input type="text" name="powerLimit" class="layui-input" placeholder="" />
                             </div>
                         </div>
 
@@ -421,7 +412,7 @@
                             </label>
                             <!-- id="powerTime" -->
                             <div class="layui-input-inline">
-                                <input type="text" name="powerTime"  class="layui-input" placeholder="" />
+                                <input type="text" name="powerTime" class="layui-input" placeholder="" />
                             </div>
                         </div>
                         <div class="layui-inline" v-show="selectShow == 2">
@@ -993,8 +984,6 @@
                     });
                     // 网关编码选择
                     // this.querySwicthId(callback)
-
-
                 }
                 // 网管编码远程搜索
                 , querySwicthId(qs, callback) {

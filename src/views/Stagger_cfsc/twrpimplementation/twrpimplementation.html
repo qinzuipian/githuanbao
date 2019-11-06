@@ -149,10 +149,6 @@
                 vm.trade = data.value;
 
             })
-
-
-
-
             table.render({
                 elem: '#LAY-app-content-list'
                 , height: 555 //容器高度
@@ -167,9 +163,7 @@
                     };
                     return msg;
                 },
-                where: {
-                    isReduce: 1
-                }, cols: [[
+                cols: [[
                     { title: '企业名称', field: 'enterpriseName', minWidth: 100 },
                     { title: '时间', field: 'tDateTime', minWidth: 100 },
                     { title: '目标负荷', field: 'targetLoad', minWidth: 100 },

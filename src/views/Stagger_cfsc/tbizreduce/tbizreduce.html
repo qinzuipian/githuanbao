@@ -100,7 +100,10 @@
 						"data": res.page.list //解析数据列表
 					};
 					return msg;
-				}
+				},
+				where: {
+                    isReduce: 1
+                }
 				, cols: [[
 					{ type: 'numbers', width: 50, fixed: 'left' },
 					{ checkbox: true },

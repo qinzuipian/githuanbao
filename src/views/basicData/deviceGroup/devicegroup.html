@@ -260,7 +260,6 @@
                     // console.log(data.enterpriseId)
                     if (layEvent === 'deviceDelete') {
                         layer.confirm('确定删除吗？', function (index) {
-
                             axios({
                                 method: "post",
                                 url: BASEURL + 'environmental_intelligent_monitoring/tdevicemonitor/update',
@@ -276,18 +275,13 @@
                                 if (res.data.code == 0) {
                                     table.reload('LAY-app-content-list');
                                     layer.msg('已删除');
-
                                 } else {
                                     layer.msg('删除失败');
                                 }
                             }).catch(function (err) {
                                 console.log(err);
                             });
-
-
                         });
-
-
                     } else if (layEvent === 'deviceEdit') {
                         window.data = data
                         /* window.id = data.productId;
@@ -302,11 +296,6 @@
                         });
                     }
                 });
-
-
-
-
-
             });
         </script>
 </body>

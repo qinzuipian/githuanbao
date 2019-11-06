@@ -288,7 +288,7 @@
                         cancelButtonText: '取消'
                     })
                         .then(() => {
-                            vm.treatData.splice(index,1);
+                            vm.treatData.splice(index, 1);
                             vm.$message.success('请确认删除');
                             // axios({
                             //     method: "post",
@@ -347,15 +347,19 @@
                         }
                     }).then(function (res) {
                         // console.log(res)
+                        //先得到当前iframe层的索引
+                        var index = parent.layer.getFrameIndex(window.name);
                         if (res.data.code == 0) {
                             layer.msg('关联成功！', {
                                 time: 500
                             }, function () {
                                 // window.parent.location.reload();
-                                parent.layer.close('iframe');
-                                this.productInit();
+                                // parent.layer.closeAll('iframe');
+                                //再执行关闭 
+                                parent.layer.close(index);
+                                //关闭父级页面的表格
+                                parent.layui.table.reload('LAY-app-content-list');
                             });
-
                         } else {
                             vm.$notify.error({
                                 title: '错误',
