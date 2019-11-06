@@ -84,24 +84,25 @@
 			padding-left: 26px;
 
 		}
+
 		.AdminArea {
-		    position: relative;
+			position: relative;
 		}
-		
+
 		.AdminArea .Areashow {
-		    position: absolute;
-		    width: 100%;
-		    border: 1px solid #e6e6e6;
-		    /* border-radius: 4px; */
-		    z-index: 999;
-		    /* height: 200px; */
-		    background-color: #fff;
-		
+			position: absolute;
+			width: 100%;
+			border: 1px solid #e6e6e6;
+			/* border-radius: 4px; */
+			z-index: 999;
+			/* height: 200px; */
+			background-color: #fff;
+
 		}
-		
+
 		.AdminArea .layui-icon {
-		    cursor: pointer;
-		    color: #c2c2c2;
+			cursor: pointer;
+			color: #c2c2c2;
 		}
 	</style>
 
@@ -121,14 +122,15 @@
 					<div v-show="show == 1">
 						<div class="layui-form-item">
 							<div class="layui-inline">
-							    <label class="layui-form-label">行政区域</label>
-							    <div class="layui-input-inline AdminArea">
-							        <input type="text" name="organizeName" v-model="atraName" placeholder="请选择行政区域" autocomplete="off" class="layui-input">
-							        <i class="layui-icon layui-icon-triangle-d" @click="AdminFocus"></i>
-							        <div class="Areashow layui-anim layui-anim-upbit" v-show="Areashow">
-							            <el-tree :highlight-current="treeHign" default-expand-all :expand-on-click-node="false" :data="treeData" :props="defaultProps" @node-click="handleNodeClick"></el-tree>
-							        </div>
-							    </div>
+								<label class="layui-form-label">行政区域</label>
+								<div class="layui-input-inline AdminArea">
+									<input type="text" name="organizeName" v-model="atraName" placeholder="请选择行政区域" autocomplete="off" class="layui-input">
+									<i class="layui-icon layui-icon-triangle-d" @click="AdminFocus"></i>
+									<div class="Areashow layui-anim layui-anim-upbit" v-show="Areashow">
+										<el-tree :highlight-current="treeHign" default-expand-all :expand-on-click-node="false" :data="treeData"
+										 :props="defaultProps" @node-click="handleNodeClick"></el-tree>
+									</div>
+								</div>
 							</div>
 							<div class="layui-inline">
 								<label class="layui-form-label">状态</label>
@@ -342,6 +344,10 @@
 						});
 						layui.form.render("select");
 					} else {
+						vm.$notify.error({
+							title: '错误',
+							message: res.data.msg
+						});
 
 					}
 				}).catch(function(err) {
@@ -364,7 +370,10 @@
 					if (res.data.code == 0) {
 						vm.list_Htable = res.data.data;
 					} else {
-
+						vm.$notify.error({
+							title: '错误',
+							message: res.data.msg
+						});
 					}
 				}).catch(function(err) {
 					console.log(err);
@@ -391,6 +400,10 @@
 					if (res.data.code == 0) {
 						vm.list_Xtable = res.data.data;
 					} else {
+						vm.$notify.error({
+							title: '错误',
+							message: res.data.msg
+						});
 
 					}
 				}).catch(function(err) {
@@ -465,6 +478,10 @@
 						});
 
 					} else {
+						vm.$notify.error({
+							title: '错误',
+							message: res.data.msg
+						});
 
 					}
 				}).catch(function(err) {
@@ -481,7 +498,7 @@
 						produceType: vm.state_
 					}
 				}).then(function(res) {
-					
+
 
 					if (res.data.code == 0) {
 						for (var i = 0; i < res.data.data.length; i++) {
@@ -535,6 +552,10 @@
 							}]
 						});
 					} else {
+						vm.$notify.error({
+							title: '错误',
+							message: res.data.msg
+						});
 
 					}
 				}).catch(function(err) {
@@ -606,11 +627,11 @@
 					treeHign: true,
 					treeData: [],
 					defaultProps: {
-					    children: 'children',
-					    label: 'title'
+						children: 'children',
+						label: 'title'
 					},
 					atraName: "",
-					treeId:"",
+					treeId: "",
 					startCreateDate: "",
 					address: "",
 					trustCode: "",
@@ -658,7 +679,10 @@
 							if (res.data.code == 0) {
 								vm.list_Xtable = res.data.data;
 							} else {
-
+								vm.$notify.error({
+									title: '错误',
+									message: res.data.msg
+								});
 							}
 						}).catch(function(err) {
 							console.log(err);
@@ -678,7 +702,7 @@
 							vm.list_box2 = [];
 
 							if (res.data.code == 0) {
-								echarted.hideLoading();//收起来(暂无数据的框框)
+								echarted.hideLoading(); //收起来(暂无数据的框框)
 								for (var i = 0; i < res.data.data.length; i++) {
 									var obj = {}
 									obj.value = res.data.data[i].percent * 100;
@@ -730,6 +754,10 @@
 									}]
 								}, true);
 							} else {
+								vm.$notify.error({
+								    title: '错误',
+								    message: res.data.msg
+								});
 
 							}
 						}).catch(function(err) {
@@ -752,6 +780,10 @@
 							if (res.data.code == 0) {
 								vm.list_Htable = res.data.data;
 							} else {
+								vm.$notify.error({
+								    title: '错误',
+								    message: res.data.msg
+								});
 
 							}
 						}).catch(function(err) {
@@ -825,6 +857,10 @@
 									}]
 								}, true);
 							} else {
+								vm.$notify.error({
+								    title: '错误',
+								    message: res.data.msg
+								});
 
 							}
 						}).catch(function(err) {
@@ -834,40 +870,44 @@
 
 					},
 					// 树状图组件
-						treeDataInit:function() {
-						    axios({
-						        method: "post",
-						        url: BASEURL + 'environmental_intelligent_monitoring/tbasorganize/dendrogramList',
-						        params: {
-						            type: "2"
-						        }
-						    }).then(function (res) {
-						        if (res.data.code == 0) {
-						            var data = res.data.data;
-						            vm.treeData = data;
-						
-						           
-						
-						        } else {
-						
-						        }
-						    }).catch(function (err) {
-						        console.log(err);
-						    });
-						
-						},
-						handleNodeClick:function(data, node) {
-							console.log(data);
-						    vm.atraName = data.title;
-							vm.treeId = data.id;
-						    vm.treeHign = true;
-						    vm.Areashow = false;
-						    
-						},
-						AdminFocus:function() {
-						    vm.Areashow = !vm.Areashow;
-						}
+					treeDataInit: function() {
+						axios({
+							method: "post",
+							url: BASEURL + 'environmental_intelligent_monitoring/tbasorganize/dendrogramList',
+							params: {
+								type: "2"
+							}
+						}).then(function(res) {
+							if (res.data.code == 0) {
+								var data = res.data.data;
+								vm.treeData = data;
+
+
+
+							} else {
+								vm.$notify.error({
+								    title: '错误',
+								    message: res.data.msg
+								});
+
+							}
+						}).catch(function(err) {
+							console.log(err);
+						});
+
 					},
+					handleNodeClick: function(data, node) {
+						console.log(data);
+						vm.atraName = data.title;
+						vm.treeId = data.id;
+						vm.treeHign = true;
+						vm.Areashow = false;
+
+					},
+					AdminFocus: function() {
+						vm.Areashow = !vm.Areashow;
+					}
+				},
 				created() {
 					this.treeDataInit();
 				}

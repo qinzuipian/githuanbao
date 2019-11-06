@@ -160,7 +160,7 @@
 							</div>
 							<p>总功率因数</p>
 						</div>
-						<div class="bar">
+						<!-- <div class="bar">
 							<div id="flex">
 								<div id="flex">
 									<p v-text="pa"></p>
@@ -213,7 +213,7 @@
 								</div>
 							</div>
 							<p>C相线电压</p>
-						</div>
+						</div> -->
 					</div>
 				</div>
 			</div>
@@ -242,7 +242,9 @@
 							app.monitorName = res.data.tDeviceRealtime.monitorName;
 							if(res.data.tDeviceRealtime.status == "1"){
 								app.status = "运行"
-							}else{
+							}else if(res.data.tDeviceRealtime.status == "2"){
+								app.status = "停机"
+							}else if(res.data.tDeviceRealtime.status == "3"){
 								app.status = "失联"
 							}
 							app.modifyDate = res.data.tDeviceRealtime.modifyDate;
@@ -258,12 +260,12 @@
 							res.data.tDeviceRealtime.w  ==  undefined ?0:app.w = res.data.tDeviceRealtime.w
 							res.data.tDeviceRealtime.q  ==  undefined ?0:app.q = res.data.tDeviceRealtime.q
 							res.data.tDeviceRealtime.the  ==  undefined ?0:app.the = res.data.tDeviceRealtime.the
-							res.data.tDeviceRealtime.pa  ==  undefined ?0:app.pa = res.data.tDeviceRealtime.pa
-							res.data.tDeviceRealtime.pb  ==  undefined ?0:app.pb = res.data.tDeviceRealtime.pb
-							res.data.tDeviceRealtime.pc  ==  undefined ?0:app.pc = res.data.tDeviceRealtime.pc
-							res.data.tDeviceRealtime.uab  ==  undefined ?0:app.uab = res.data.tDeviceRealtime.uab
-							res.data.tDeviceRealtime.ubc  ==  undefined ?0:app.ubc = res.data.tDeviceRealtime.ubc
-							res.data.tDeviceRealtime.uca  ==  undefined ?0:app.uca = res.data.tDeviceRealtime.uca
+							// res.data.tDeviceRealtime.pa  ==  undefined ?0:app.pa = res.data.tDeviceRealtime.pa
+							// res.data.tDeviceRealtime.pb  ==  undefined ?0:app.pb = res.data.tDeviceRealtime.pb
+							// res.data.tDeviceRealtime.pc  ==  undefined ?0:app.pc = res.data.tDeviceRealtime.pc
+							// res.data.tDeviceRealtime.uab  ==  undefined ?0:app.uab = res.data.tDeviceRealtime.uab
+							// res.data.tDeviceRealtime.ubc  ==  undefined ?0:app.ubc = res.data.tDeviceRealtime.ubc
+							// res.data.tDeviceRealtime.uca  ==  undefined ?0:app.uca = res.data.tDeviceRealtime.uca
 							
 							
 							form.val('editIndustry', {
@@ -272,6 +274,10 @@
 								"remark": list.remark // "name": "value"
 							});
 						} else {
+							vm.$notify.error({
+							    title: '错误',
+							    message: res.data.msg
+							});
 
 						}
 					})

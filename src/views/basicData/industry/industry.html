@@ -112,13 +112,11 @@
 				var max_data = data.getDate();
 				laydate.render({
 					elem: '#startDate',
-					btns: ['confirm'],
-					max: "max_data"
+					btns: ['confirm']
 				});
 				laydate.render({
 					elem: '#endDate',
-					btns: ['confirm'],
-					max: "max_data"
+					btns: ['confirm']
 				});
 
 
@@ -178,13 +176,7 @@
 								title: '添加行业',
 								content: 'addIndustry.html',
 								maxmin: true,
-								area: ['600px', '550px'],
-								// btn: ['确定', '取消'],
-								// yes: function(index, layero) {
-								// 	//点击确认触发 iframe 内容中的按钮提交
-								// 	var submit = layero.find('iframe').contents().find("#layuiadmin-app-form-submit");
-								// 	submit.click();
-								// }
+								area: ['600px', '550px']
 							});
 						},
 						edit: function() {

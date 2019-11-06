@@ -8,7 +8,7 @@
 		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 		<meta name="viewport" content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi" />
 		<link rel="stylesheet" type="text/css" href="../../../layuiadmin/layui/css/layui.css" />
-<link rel="stylesheet" type="text/css" href="../../../layuiadmin/plugin/element.css"/>
+		<link rel="stylesheet" type="text/css" href="../../../layuiadmin/plugin/element.css" />
 		<script type="text/javascript" src="../../../layuiadmin/layui/layui.js" charset="utf-8"></script>
 
 		<!-- 引入vue -->
@@ -147,14 +147,14 @@
 							<div class=" treeCss">
 								<div class="layui-form-item">
 									<label for="bitian" class="layui-form-label">企业名称
-									<span class="red">*</span></label>
+										<span class="red">*</span></label>
 									<div class="layui-input-inline">
 										<input type="text" name="name" lay-verify="required" class="layui-input" placeholder="企业名称" />
 									</div>
 								</div>
 								<div class="layui-form-item">
 									<label for="bitian" class="layui-form-label">社会信用代码
-									<span class="red">*</span></label>
+										<span class="red">*</span></label>
 									<div class="layui-input-inline">
 										<input type="text" name="trustCode" lay-verify="required" class="layui-input" placeholder="社会信用代码" />
 									</div>
@@ -162,7 +162,7 @@
 
 								<div class="layui-form-item">
 									<label for="bitian" class="layui-form-label">所属省市区
-									<span class="red">*</span></label>
+										<span class="red">*</span></label>
 									<div class="layui-input-inline">
 										<select name="province" id="province" lay-verify="required" lay-search lay-filter="province">
 											<option value="">请选择省</option>
@@ -177,25 +177,27 @@
 								</div>
 								<div class="layui-form-item">
 									<label for="bitian" class="layui-form-label">企业详细地址
-									<span class="red">*</span></label>
+										<span class="red">*</span></label>
 									<div class="layui-input-inline">
 										<input type="text" name="address" lay-verify="required" class="layui-input" placeholder="企业详细地址" />
 									</div>
 								</div>
 								<div class="layui-form-item">
-								    <label class="layui-form-label">行政区域</label>
-								    <div class="layui-input-inline AdminArea">
-								        <input type="text" name="organizeName" v-model="atraName" placeholder="请选择行政区域" autocomplete="off" class="layui-input" lay-verify="required">
-								        <i class="layui-icon layui-icon-triangle-d" @click="AdminFocus"></i>
-								        <div class="Areashow layui-anim layui-anim-upbit" v-show="Areashow">
-								            <el-tree :highlight-current="treeHign" default-expand-all :expand-on-click-node="false" :data="treeData" :props="defaultProps" @node-click="handleNodeClick"></el-tree>
-								        </div>
-								    </div>
-								
+									<label class="layui-form-label">行政区域</label>
+									<div class="layui-input-inline AdminArea">
+										<input type="text" name="organizeName" v-model="atraName" placeholder="请选择行政区域" autocomplete="off" class="layui-input"
+										 lay-verify="required">
+										<i class="layui-icon layui-icon-triangle-d" @click="AdminFocus"></i>
+										<div class="Areashow layui-anim layui-anim-upbit" v-show="Areashow">
+											<el-tree :highlight-current="treeHign" default-expand-all :expand-on-click-node="false" :data="treeData"
+											 :props="defaultProps" @node-click="handleNodeClick"></el-tree>
+										</div>
+									</div>
+
 								</div>
 								<div class="layui-form-item">
 									<label class="layui-form-label">所属行业
-									<span class="red">*</span></label>
+										<span class="red">*</span></label>
 									<div class="layui-input-inline">
 										<select name="tradeId" id="tradeName" lay-verify="required" lay-filter="tradeName">
 											<option value="">请选择</option>
@@ -349,7 +351,6 @@
 			</div>
 		</div>
 		<script type="text/javascript">
-			
 			layui.config({
 				base: '../../../layuiadmin/' //静态资源所在路径
 			}).extend({
@@ -530,7 +531,12 @@
 										vm.hasedit = 1
 									}
 									var list = res.data.tBasEnterprise;
-									vm.list = res.data.tBasEnterprise.tBasShopList;
+									for(var i = 0; i < res.data.tBasEnterprise.tBasShopList.length; i++){
+										vm.beforeshop.push(res.data.tBasEnterprise.tBasShopList[i]);
+									}
+									for(var i = 0; i < res.data.tBasEnterprise.tBasShopList.length; i++){
+										vm.list.push(res.data.tBasEnterprise.tBasShopList[i]);
+									}
 									vm.atraName = res.data.tBasEnterprise.organizeName
 									vm.tradeName = res.data.tBasEnterprise.tradeName
 									vm.concern = res.data.tBasEnterprise.concern
@@ -601,6 +607,10 @@
 
 									// console.log($('#eventType').val());
 								} else {
+									vm.$notify.error({
+										title: '错误',
+										message: res.data.msg
+									});
 
 								}
 							})
@@ -608,6 +618,10 @@
 
 							});
 					} else {
+						vm.$notify.error({
+							title: '错误',
+							message: res.data.msg
+						});
 
 					}
 				}).catch(function(err) {
@@ -628,13 +642,13 @@
 					console.log(data.elem[data.elem.selectedIndex].text);
 					vm.concern = data.elem[data.elem.selectedIndex].text
 					form.render();
-				
+
 				});
 
 
 
 				form.on('submit(editFormDemo)', function(data) {
-					if(vm.changepic == 1){
+					if (vm.changepic == 1) {
 						data.field.picUrl = vm.pic;
 					}
 					data.field.tBasShopList = vm.list;
@@ -642,7 +656,6 @@
 					data.field.concern = vm.concern;
 					data.field.organizeName = vm.atraName;
 					data.field.organizeId = vm.treeId;
-					console.log(vm.pic);
 					axios({
 						method: "post",
 						url: BASEURL + 'environmental_intelligent_monitoring/tbasenterprise/update',
@@ -660,7 +673,14 @@
 								parent.layer.close('iframe');
 							});
 						} else {
-							parent.layer.tips('编辑异常!');
+							vm.list = []
+							for(var i = 0; i < vm.beforeshop.length; i++){
+								vm.list.push(vm.beforeshop[i]);
+							}
+							vm.$notify.error({
+								title: '错误',
+								message: res.data.msg
+							});
 						}
 					}).catch(function(err) {
 						console.log(err);
@@ -705,8 +725,8 @@
 					treeHign: true,
 					treeData: [],
 					defaultProps: {
-					    children: 'children',
-					    label: 'title'
+						children: 'children',
+						label: 'title'
 					},
 					atraName: "",
 					startCreateDate: "",
@@ -717,8 +737,9 @@
 					tree: 0,
 					isActive: 0,
 					treeValue: "",
-					treeId:"",
-					changepic:0
+					treeId: "",
+					changepic: 0,
+					beforeshop: []
 				},
 				methods: {
 					cancel: function() {
@@ -755,51 +776,53 @@
 						});
 					},
 					delet: function(it, index) {
-						for (var i = 0; i < this.list.length; i++) {
+						for (var i = 0; i < vm.list.length; i++) {
 							if (index == i) {
-								console.log(this.list[i]);
-								this.list.splice(i, 1);
+								vm.list.splice(i, 1);
 							}
 						}
-						if (this.list.length == 0) {
+						if (vm.list.length == 0) {
 							vm.hasedit = 0;
 						}
 					},
-					AdminFocus:function() {
-					    vm.Areashow = !vm.Areashow;
+					AdminFocus: function() {
+						vm.Areashow = !vm.Areashow;
 					},
-					treeDataInit:function() {
-					    axios({
-					        method: "post",
-					        url: BASEURL + 'environmental_intelligent_monitoring/tbasorganize/dendrogramList',
-					        params: {
-					            type: "2"
-					        }
-					    }).then(function (res) {
-					        if (res.data.code == 0) {
-					            var data = res.data.data;
-					            vm.treeData = data;
-					        } else {
-					
-					        }
-					    }).catch(function (err) {
-					        console.log(err);
-					    });
-					
+					treeDataInit: function() {
+						axios({
+							method: "post",
+							url: BASEURL + 'environmental_intelligent_monitoring/tbasorganize/dendrogramList',
+							params: {
+								type: "2"
+							}
+						}).then(function(res) {
+							if (res.data.code == 0) {
+								var data = res.data.data;
+								vm.treeData = data;
+							} else {
+								vm.$notify.error({
+									title: '错误',
+									message: res.data.msg
+								});
+							}
+						}).catch(function(err) {
+							console.log(err);
+						});
+
 					},
-					handleNodeClick:function(data, node) {
-					    console.log(data);
-					    vm.atraName = data.title;
+					handleNodeClick: function(data, node) {
+						console.log(data);
+						vm.atraName = data.title;
 						vm.treeId = data.id;
-					    vm.treeHign = true;
-					    vm.Areashow = false;
-					    
+						vm.treeHign = true;
+						vm.Areashow = false;
+
 					}
 				},
 				created() {
 					this.treeDataInit();
 				}
-			
+
 
 			});
 		</script>

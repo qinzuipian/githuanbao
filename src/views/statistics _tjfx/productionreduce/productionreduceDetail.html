@@ -172,6 +172,10 @@
 							]
 						}, true);
 					} else {
+						vm.$notify.error({
+						    title: '错误',
+						    message: res.data.msg
+						});
 
 					}
 				}).catch(function(err) {
@@ -340,6 +344,10 @@
 									]
 								}, true);
 							} else {
+								vm.$notify.error({
+								    title: '错误',
+								    message: res.data.msg
+								});
 
 							}
 						}).catch(function(err) {
@@ -421,6 +429,10 @@
 									]
 								}, true);
 							} else {
+								vm.$notify.error({
+								    title: '错误',
+								    message: res.data.msg
+								});
 
 							}
 						}).catch(function(err) {

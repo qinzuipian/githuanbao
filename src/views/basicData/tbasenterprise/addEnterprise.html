@@ -443,7 +443,10 @@
 						});
 						layui.form.render("select");
 					} else {
-
+						vm.$notify.error({
+						    title: '错误',
+						    message: res.data.msg
+						});
 					}
 				}).catch(function(err) {
 					console.log(err);
@@ -518,7 +521,10 @@
 								parent.layer.close('iframe');
 							});
 						} else {
-							parent.layer.tips('保存异常!');
+							vm.$notify.error({
+							    title: '错误',
+							    message: res.data.msg
+							});
 						}
 					}).catch(function(err) {
 						console.log(err);
@@ -664,7 +670,10 @@
 					            var data = res.data.data;
 					            vm.treeData = data;
 					        } else {
-					
+								vm.$notify.error({
+								    title: '错误',
+								    message: res.data.msg
+								});
 					        }
 					    }).catch(function (err) {
 					        console.log(err);
