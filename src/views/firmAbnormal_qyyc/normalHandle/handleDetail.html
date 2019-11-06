@@ -150,14 +150,7 @@
                             <textarea placeholder="" class="layui-textarea" name="reason"></textarea>
                         </div>
                     </div>
-                    <div class="layui-form-item">
-                        <label for="bitian" class="layui-form-label">
-                            备注</label>
-                        <div class="layui-input-inline">
-                            <textarea placeholder="" class="layui-textarea" name="remark"></textarea>
-                            <!-- <input type="text" name="remark" class="layui-input" placeholder="备注" /> -->
-                        </div>
-                    </div>
+                  
                     <div class="layui-form-item">
                         <label for="bitian" class="layui-form-label">
                             操作</label>
@@ -200,6 +193,22 @@
                             <textarea placeholder="请输入内容" class="layui-textarea" name="attachmentDto"></textarea>
                         </div>
                     </div>
+                    <div class="layui-form-item">
+                        <label for="bitian" class="layui-form-label">
+                            审核意见</label>
+                        <div class="layui-input-inline">
+                            <textarea placeholder="" class="layui-textarea" name="auditOpinion"></textarea>
+                            <!-- <input type="text" name="remark" class="layui-input" placeholder="备注" /> -->
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label for="bitian" class="layui-form-label">
+                            备注</label>
+                        <div class="layui-input-inline">
+                            <textarea placeholder="" class="layui-textarea" name="remark"></textarea>
+                            <!-- <input type="text" name="remark" class="layui-input" placeholder="备注" /> -->
+                        </div>
+                    </div>
 
 
                     <div class="btn-box">
@@ -240,7 +249,8 @@
                             'swicthId': detailData.swicthId,
                             'model': detailData.model,
                             'pt': detailData.pt,
-                            'ct': detailData.ct
+                            'ct': detailData.ct,
+                            'auditOpinion': detailData.auditOpinion
                         })
                     } else {
                         vm.$notify.error({
