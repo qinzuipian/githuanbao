@@ -242,7 +242,9 @@
 							app.monitorName = res.data.tDeviceRealtime.monitorName;
 							if(res.data.tDeviceRealtime.status == "1"){
 								app.status = "运行"
-							}else{
+							}else if(res.data.tDeviceRealtime.status == "2"){
+								app.status = "停机"
+							}else if(res.data.tDeviceRealtime.status == "3"){
 								app.status = "失联"
 							}
 							app.modifyDate = res.data.tDeviceRealtime.modifyDate;
@@ -272,6 +274,10 @@
 								"remark": list.remark // "name": "value"
 							});
 						} else {
+							vm.$notify.error({
+							    title: '错误',
+							    message: res.data.msg
+							});
 
 						}
 					})

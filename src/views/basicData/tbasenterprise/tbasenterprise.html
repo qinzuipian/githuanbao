@@ -194,7 +194,10 @@
 					});
 					layui.form.render("select");
 				} else {
-
+					vm.$notify.error({
+					    title: '错误',
+					    message: res.data.msg
+					});
 				}
 			}).catch(function (err) {
 				console.log(err);
@@ -217,11 +220,10 @@
 							window.parent.location.reload();
 							parent.layer.close('iframe');
 						});
-					} else if (res.code == 500) {
-						layer.msg('导入失败，文件格式错误！', {
-							time: 1500
-						}, function () {
-							window.parent.location.reload();
+					} else {
+						vm.$notify.error({
+						    title: '错误',
+						    message: res.data.msg
 						});
 					}
 				}
@@ -335,7 +337,10 @@
 									layer.msg('已删除');
 
 								} else {
-									layer.msg('删除失败!');
+									vm.$notify.error({
+									    title: '错误',
+									    message: res.data.msg
+									});
 								}
 							}).catch(function (err) {
 								console.log(err);
@@ -355,7 +360,6 @@
 					edit: function () {
 						var checkStatus = table.checkStatus('LAY-app-content-list'),
 							checkData = checkStatus.data; //得到选中的数据
-						// console.log(checkData)
 						if (checkData.length === 0) {
 							return layer.msg('请选择需要修改的数据');
 						} else if (checkData.length > 1) {
@@ -396,10 +400,6 @@
 			//点击外面其他部分,触发的事件
 			$(document).bind("click", function () {
 				vm.isActive = 0;
-				// vm.tree = !vm.tree;
-				// console.log(vm.isActive);
-				// console.log(vm.tree);
-				// console.log("点击了其他部位");
 				$("#tree").css("display", "none");
 
 			})
@@ -456,10 +456,11 @@
 				        if (res.data.code == 0) {
 				            var data = res.data.data;
 				            vm.treeData = data;
-				
-				           
-				
 				        } else {
+							vm.$notify.error({
+							    title: '错误',
+							    message: res.data.msg
+							});
 				
 				        }
 				    }).catch(function (err) {

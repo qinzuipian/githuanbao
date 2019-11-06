@@ -80,6 +80,26 @@
 			width: 200px;
 			height: 30px;
 		}
+
+		.AdminArea {
+			position: relative;
+		}
+
+		.AdminArea .Areashow {
+			position: absolute;
+			width: 100%;
+			border: 1px solid #e6e6e6;
+			/* border-radius: 4px; */
+			z-index: 999;
+			/* height: 200px; */
+			background-color: #fff;
+
+		}
+
+		.AdminArea .layui-icon {
+			cursor: pointer;
+			color: #c2c2c2;
+		}
 	</style>
 
 	<body>
@@ -102,17 +122,12 @@
 						</div>
 						<div class="layui-inline">
 							<label class="layui-form-label">行政区域</label>
-							<div class="layui-input-inline">
-								<input readonly="readonly" placeholder="请选择" id="div_" v-model="treeValue" class="layui-input"
-								 @click="appear">
-								<i class="layui-icon-triangle-d layui-icon" v-bind:class="[{ actived: isActive },{ actived_after: !isActive }]"
-								 style="color: gray;"></i>
-								<div style="position: absolute;display: none;" class="layui-input-inline" id="tree">
-									<div class="tree layui-anim layui-anim-upbit">
-										<p class="empty" @click="emptyTree">请选择</p>
-										<el-tree :highlight-current="treeHign" :data="treeData" :props="defaultProps" @node-click="handleNodeClick"></el-tree>
-										<!-- //TODO 这边要放树形结构 -->
-									</div>
+							<div class="layui-input-inline AdminArea">
+								<input type="text" name="organizeName" v-model="atraName" placeholder="请选择行政区域" autocomplete="off" class="layui-input">
+								<i class="layui-icon layui-icon-triangle-d" @click="AdminFocus"></i>
+								<div class="Areashow layui-anim layui-anim-upbit" v-show="Areashow">
+									<el-tree :highlight-current="treeHign" default-expand-all :expand-on-click-node="false" :data="treeData"
+									 :props="defaultProps" @node-click="handleNodeClick"></el-tree>
 								</div>
 							</div>
 						</div>
@@ -255,7 +270,7 @@
 					elem: '#startDate',
 					btns: ['confirm']
 				});
-				vm.today =  data.getFullYear()+"-" + (data.getMonth()+1) + "-" + data.getDate();
+				vm.today = data.getFullYear() + "-" + (data.getMonth() + 1) + "-" + data.getDate();
 
 
 				//下拉菜单里面的选项
@@ -272,6 +287,10 @@
 						});
 						layui.form.render("select");
 					} else {
+						vm.$notify.error({
+							title: '错误',
+							message: res.data.msg
+						});
 
 					}
 				}).catch(function(err) {
@@ -342,13 +361,15 @@
 			var vm = new Vue({
 				el: "#app",
 				data: {
+					Areashow: false,
+					treeHign: true,
 					treeData: [],
 					defaultProps: {
 						children: 'children',
-						label: 'label'
+						label: 'title'
 					},
-					nodedata: [],
-					treeHign: true,
+					atraName: "",
+					treeId: "",
 					startCreateDate: "",
 					address: "",
 					trustCode: "",
@@ -357,9 +378,8 @@
 					tree: 0,
 					isActive: 0,
 					treeValue: "",
-					treeId: '',
 					tradeName: '',
-					today:""
+					today: ""
 
 
 				},
@@ -374,7 +394,7 @@
 							height: 555 //容器高度
 								,
 							where: {
-								organizeId:vm.treeId
+								organizeId: vm.treeId
 
 							},
 							url: layui.setter.BASEURL + 'environmental_intelligent_monitoring/dataMonitor/queryEnterpriseReduceList' //数据接口
@@ -441,85 +461,47 @@
 						this.tree = !this.tree
 						this.isActive = !this.isActive
 					},
-					handleNodeClick(data, node) {
-						vm.treeValue = data.label;
-						vm.treeId = data.id;
-						// console.log(data.id);
-						// console.log(this.tree);
-						vm.treeHign = true;
-						// console.log(node.parent.childNodes[0].parent.data.label)
-						var localname = node.parent.childNodes[0].parent.data.label === undefined ? '无上级目录' : node.parent.childNodes[
-								0]
-							.parent.data.label;
-						localStorage.setItem("nodeParentName", localname)
-						vm.nodedata = data;
+					// 树状图组件
+					treeDataInit: function() {
 						axios({
 							method: "post",
-							url: BASEURL + 'environmental_intelligent_monitoring/tbasorganize/list?limit=10000',
+							url: BASEURL + 'environmental_intelligent_monitoring/tbasorganize/dendrogramList',
 							params: {
-								parentId: data.id
+								type: "2"
 							}
 						}).then(function(res) {
 							if (res.data.code == 0) {
-								// this.tree = !this,tree;
-								var treedata = res.data.page.list;
-								data.children = [];
-								for (var j = 0; j < treedata.length; j++) {
-									if (data.id == treedata[j].parentId) {
-										// console.log(treedata[j])
-										let obj = {
-											label: treedata[j].name,
-											id: treedata[j].id,
-											parentId: treedata[j].parentId,
-											children: []
-										};
-										data.children.push(obj);
-									}
-									this.tree = false
-								}
-
+								var data = res.data.data;
+								vm.treeData = data;
+					
+					
+					
 							} else {
 								vm.$notify.error({
-									title: '错误',
-									message: res.data.msg
+								    title: '错误',
+								    message: res.data.msg
 								});
+					
 							}
 						}).catch(function(err) {
 							console.log(err);
 						});
+					
 					},
-					organizeTree() {
-						// console.log(this.tree);
-						axios({
-							method: "post",
-							url: BASEURL + 'environmental_intelligent_monitoring/tbasorganize/list?limit=10000',
-							params: {
-								parentId: 0
-							}
-						}).then(function(res) {
-							if (res.data.code == 0) {
-								vm.treeData = [];
-								// vm.treeData = res.data.page.list;
-								var data = res.data.page.list;
-
-								for (var i = 0; i < data.length; i++) {
-									var obj = {};
-									obj.label = data[i].name;
-									obj.id = data[i].id;
-									obj.parentId = data[i].parentId;
-									obj.children = [];
-									vm.treeData.push(obj);
-								}
-							} else {
-
-							}
-						}).catch(function(err) {
-							console.log(err);
-						});
+					handleNodeClick: function(data, node) {
+						console.log(data);
+						vm.atraName = data.title;
+						vm.treeId = data.id;
+						vm.treeHign = true;
+						vm.Areashow = false;
+					
+					},
+					AdminFocus: function() {
+						vm.Areashow = !vm.Areashow;
 					}
 				},
 				created() {
-					this.organizeTree();
+					this.treeDataInit();
 				},
 				mounted() {
 					// 在这里你想初始化的时候展开哪一行都可以了
