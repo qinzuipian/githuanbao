@@ -122,7 +122,7 @@
                         <div class="layui-input-inline" style="width: 315px;">
 
                             <!-- <input type="text" v-model="tDeviceMonitor.type" class="layui-input" placeholder="设备类型:1、生产设备 2、治污设备" /> -->
-                            <input type="radio" name="codeType" value="0" title="生产设备">
+                            <input type="radio" name="codeType" checked value="0" title="生产设备">
                             <input type="radio" name="codeType" value="1" title="治污设备">
                             <input type="radio" name="codeType" value="2" title="总进线">
                         </div>
@@ -380,9 +380,9 @@
                                 电量阀值(kW·h)
                                 <!-- <span class="red">*</span> -->
                             </label>
-                            <!-- id="powerLimit" -->
+                            <!--  -->
                             <div class="layui-input-inline">
-                                <input type="text" name="powerLimit" class="layui-input" placeholder="" />
+                                <input type="text" name="powerLimit" id="powerLimit" class="layui-input" placeholder="" />
                             </div>
                         </div>
 
@@ -411,9 +411,9 @@
                                 电量门限时间(m)
                                 <!-- <span class="red">*</span> -->
                             </label>
-                            <!-- id="powerTime" -->
+                            <!--  -->
                             <div class="layui-input-inline">
-                                <input type="text" name="powerTime" class="layui-input" placeholder="" />
+                                <input type="text" name="powerTime" id="powerTime" class="layui-input" placeholder="" />
                             </div>
                         </div>
                         <div class="layui-inline" v-show="selectShow == 2">
@@ -644,8 +644,8 @@
             form.on("select(collectType)", function (data) {
                 if (data.value == '用电') {
                     vm.selectShow = 1;
-                    $("#pt").attr("lay-verify", 'required');
-                    $("#ct").attr("lay-verify", 'required');
+                    $("#pt").attr("lay-verify", 'required|number');
+                    $("#ct").attr("lay-verify", 'required|number');
                     $("#xAccelerat").attr("lay-verify", '');
                     $("#radarProport").attr("lay-verify", '');
                     $("#currentSpeed").attr("lay-verify", '');
@@ -653,49 +653,47 @@
                     $("#yAccelerat").attr("lay-verify", '');
                     $("#radarCount").attr("lay-verify", '');
                     $("#flow").attr("lay-verify", '');
-                    $("#electricLimit").attr("lay-verify", 'required');
+                    $("#electricLimit").attr("lay-verify", 'required|number');
                     $("#zAccelerat").attr("lay-verify", '');
-                    $("#electricTime").attr("lay-verify", 'required');
+                    $("#electricTime").attr("lay-verify", 'required|number');
                     $("#xFrequen").attr("lay-verify", '');
-                    $("#powerLimit").attr("lay-verify", 'required');
+                    // $("#powerLimit").attr("lay-verify", 'number');
+                    // $("#powerTime").attr("lay-verify", 'number');
                     $("#zFrequen").removeAttr("lay-verify");
-                    $("#powerTime").attr("lay-verify", 'required');
                     $("#yFrequen").attr("lay-verify", '');
-                    $("#ratedPower").attr("lay-verify", 'required');
-                    $("#ratedU").attr("lay-verify", 'required');
-                    $("#ratedPower").attr("lay-verify", 'required');
+                    $("#ratedPower").attr("lay-verify", 'required|number');
+                    $("#ratedU").attr("lay-verify", 'required|number');
                 } else if (data.value == '振动量设备') {
                     vm.selectShow = 2;
                     $("#pt").attr("lay-verify", '');
                     $("#ct").attr("lay-verify", '');
-                    $("#xAccelerat").attr("lay-verify", 'required');
+                    $("#xAccelerat").attr("lay-verify", 'required|number');
                     $("#radarProport").attr("lay-verify", '');
                     $("#currentSpeed").attr("lay-verify", '');
                     $("#temperature").attr("lay-verify", '');
-                    $("#yAccelerat").attr("lay-verify", 'required');
+                    $("#yAccelerat").attr("lay-verify", 'required|number');
                     $("#radarCount").attr("lay-verify", '');
                     $("#flow").attr("lay-verify", '');
                     $("#electricLimit").attr("lay-verify", '');
-                    $("#zAccelerat").attr("lay-verify", 'required');
+                    $("#zAccelerat").attr("lay-verify", 'required|number');
                     $("#electricTime").attr("lay-verify", '');
-                    $("#xFrequen").attr("lay-verify", 'required');
+                    $("#xFrequen").attr("lay-verify", 'required|number');
                     $("#powerLimit").attr("lay-verify", '');
-                    $("#zFrequen").attr("lay-verify", 'required');
+                    $("#zFrequen").attr("lay-verify", 'required|number');
                     $("#powerTime").attr("lay-verify", '');
-                    $("#yFrequen").attr("lay-verify", 'required');
+                    $("#yFrequen").attr("lay-verify", 'required|number');
                     $("#ratedPower").attr("lay-verify", '');
                     $("#ratedU").attr("lay-verify", '');
-                    $("#ratedPower").attr("lay-verify", '');
                 } else if (data.value == '雷达设备') {
                     vm.selectShow = 3;
                     $("#pt").attr("lay-verify", '');
                     $("#ct").attr("lay-verify", '');
                     $("#xAccelerat").attr("lay-verify", '');
-                    $("#radarProport").attr("lay-verify", 'required');
+                    $("#radarProport").attr("lay-verify", 'required|number');
                     $("#currentSpeed").attr("lay-verify", '');
                     $("#temperature").attr("lay-verify", '');
                     $("#yAccelerat").attr("lay-verify", '');
-                    $("#radarCount").attr("lay-verify", 'required');
+                    $("#radarCount").attr("lay-verify", 'required|number');
                     $("#flow").attr("lay-verify", '');
                     $("#electricLimit").attr("lay-verify", '');
                     $("#zAccelerat").attr("lay-verify", '');
@@ -707,7 +705,6 @@
                     $("#yFrequen").attr("lay-verify", '');
                     $("#ratedPower").attr("lay-verify", '');
                     $("#ratedU").attr("lay-verify", '');
-                    $("#ratedPower").attr("lay-verify", '');
 
                 } else if (data.value == '流量计') {
                     vm.selectShow = 4;
@@ -716,10 +713,10 @@
                     $("#xAccelerat").attr("lay-verify", '');
                     $("#radarProport").attr("lay-verify", '');
                     $("#temperature").attr("lay-verify", '');
-                    $("#currentSpeed").attr("lay-verify", 'required');
+                    $("#currentSpeed").attr("lay-verify", 'required|number');
                     $("#yAccelerat").attr("lay-verify", '');
                     $("#radarCount").attr("lay-verify", '');
-                    $("#flow").attr("lay-verify", 'required');
+                    $("#flow").attr("lay-verify", 'required|number');
                     $("#electricLimit").attr("lay-verify", '');
                     $("#zAccelerat").attr("lay-verify", '');
                     $("#electricTime").attr("lay-verify", '');
@@ -730,7 +727,6 @@
                     $("#yFrequen").attr("lay-verify", '');
                     $("#ratedPower").attr("lay-verify", '');
                     $("#ratedU").attr("lay-verify", '');
-                    $("#ratedPower").attr("lay-verify", '');
                 } else if (data.value == '温度') {
                     vm.selectShow = 5;
                     $("#pt").attr("lay-verify", '');
@@ -738,7 +734,7 @@
                     $("#xAccelerat").attr("lay-verify", '');
                     $("#radarProport").attr("lay-verify", '');
                     $("#currentSpeed").attr("lay-verify", '');
-                    $("#temperature").attr("lay-verify", 'required');
+                    $("#temperature").attr("lay-verify", 'required|number');
                     $("#yAccelerat").attr("lay-verify", '');
                     $("#radarCount").attr("lay-verify", '');
                     $("#flow").attr("lay-verify", '');
@@ -752,7 +748,6 @@
                     $("#yFrequen").attr("lay-verify", '');
                     $("#ratedPower").attr("lay-verify", '');
                     $("#ratedU").attr("lay-verify", '');
-                    $("#ratedPower").attr("lay-verify", '');
                 }
             })
 
@@ -770,31 +765,31 @@
                 /*    data.field.ecPolluteType = $("#ecPolluteType option:selected").text();
                    data.field.ecType = $("#ecType option:selected").text();
                    data.field.route = $("#route option:selected").text(); */
-                axios({
-                    method: "post",
-                    url: layui.setter.BASEURL + 'environmental_intelligent_monitoring/tdevicemonitor/save',
-                    data: data.field,
-                    headers: {
-                        "Content-Type": "application/json;charset=UTF-8"
-                    }
-                }).then(function (res) {
-                    if (res.data.code == 0) {
-                        console.log(res)
-                        layer.msg('保存成功！', {
-                            time: 500
-                        }, function () {
-                            window.parent.location.reload();
-                            parent.layer.close('iframe');
-                        });
-                    } else {
-                        vm.$notify.error({
-                            title: '错误',
-                            message: res.data.msg
-                        });
-                    }
-                }).catch(function (err) {
-                    console.log(err);
-                });
+                // axios({
+                //     method: "post",
+                //     url: layui.setter.BASEURL + 'environmental_intelligent_monitoring/tdevicemonitor/save',
+                //     data: data.field,
+                //     headers: {
+                //         "Content-Type": "application/json;charset=UTF-8"
+                //     }
+                // }).then(function (res) {
+                //     if (res.data.code == 0) {
+                //         console.log(res)
+                //         layer.msg('保存成功！', {
+                //             time: 500
+                //         }, function () {
+                //             window.parent.location.reload();
+                //             parent.layer.close('iframe');
+                //         });
+                //     } else {
+                //         vm.$notify.error({
+                //             title: '错误',
+                //             message: res.data.msg
+                //         });
+                //     }
+                // }).catch(function (err) {
+                //     console.log(err);
+                // });
                 return false;
             })
 
@@ -913,13 +908,7 @@
                 //         console.log(err);
                 //     });
                 // },
-                // 网管编码input失去焦点事件
-                switchBlur() {
-                    if (vm.swicthId.length != 24) {
-                        vm.$message.warning('网管编码为24位，请修改');
-                        vm.swicthId = "";
-                    }
-                },
+
                 cancel() {
                     parent.layer.closeAll('iframe');//关闭弹窗
                 },
@@ -1041,9 +1030,20 @@
                 },
                 handleSwicthId() {
 
-                }
-
-                , selectGet(val) {
+                },
+                // 网管编码input失去焦点事件
+                switchBlur() {
+                    console.log(vm.swicthId)
+                    var reg = /^[0-9]*$/
+                    if (vm.swicthId != "" && vm.swicthId.length != 24) {
+                        vm.$message.warning('网管编码为24位数字，请修改');
+                        vm.swicthId = "";
+                    } else if (!reg.test(vm.swicthId)) {
+                        vm.$message.warning('网管编码只能为24位数字，请修改');
+                        vm.swicthId = "";
+                    }
+                },
+                selectGet(val) {
                     console.log(val);
                     obj = this.shopOptions.find((item) => {//这里的userList就是上面遍历的数据源
                         console.log(item)
