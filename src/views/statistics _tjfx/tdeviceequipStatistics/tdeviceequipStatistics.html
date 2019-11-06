@@ -359,6 +359,7 @@
 				//获取下来框的后台数据
 
 				//行业* （行政区域）   获取表格数据
+				
 				axios({
 					method: "post",
 					url: BASEURL + 'environmental_intelligent_monitoring/dataMonitor/queryEnterpriseReportOrderByTrade',
@@ -639,7 +640,6 @@
 					name: '',
 					tree: 0,
 					isActive: 0,
-					treeValue: "",
 					show: 1,
 					list_box1: [],
 					list_box2: [],
@@ -653,7 +653,7 @@
 				},
 				methods: {
 					emptyTree: function() {
-						vm.treeValue = "",
+						vm.atraName = "",
 							vm.treeId = ""
 					},
 					showH: function() {
@@ -767,6 +767,9 @@
 					Hsearch: function() {
 						vm.list_Hpic = [];
 						vm.list_box1 = [];
+						if(vm.atraName == ""){
+							vm.treeId = ""
+						}
 						//搜索表格
 						axios({
 							method: "post",

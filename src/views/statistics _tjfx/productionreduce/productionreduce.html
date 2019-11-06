@@ -377,7 +377,6 @@
 					name: '',
 					tree: 0,
 					isActive: 0,
-					treeValue: "",
 					tradeName: '',
 					today: ""
 
@@ -385,10 +384,13 @@
 				},
 				methods: {
 					emptyTree: function() {
-						vm.treeValue = "",
+						vm.atraName = "",
 							vm.treeId = ""
 					},
 					search: function() {
+						if(vm.atraName == ""){
+							vm.treeId = ""
+						}
 						tables.reload({
 							elem: '#LAY-app-content-list',
 							height: 555 //容器高度
