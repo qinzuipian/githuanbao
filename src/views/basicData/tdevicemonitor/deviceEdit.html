@@ -621,120 +621,120 @@
 
 
             // 监听select选择框
-            form.on("select(collectType)", function (data) {
-                if (data.value == '用电') {
-                    vm.selectShow = 1;
-                    $("#pt").attr("lay-verify", 'required');
-                    $("#ct").attr("lay-verify", 'required');
-                    $("#xAccelerat").attr("lay-verify", '');
-                    $("#radarProport").attr("lay-verify", '');
-                    $("#currentSpeed").attr("lay-verify", '');
-                    $("#temperature").attr("lay-verify", '');
-                    $("#yAccelerat").attr("lay-verify", '');
-                    $("#radarCount").attr("lay-verify", '');
-                    $("#flow").attr("lay-verify", '');
-                    $("#electricLimit").attr("lay-verify", 'required');
-                    $("#zAccelerat").attr("lay-verify", '');
-                    $("#electricTime").attr("lay-verify", 'required');
-                    $("#xFrequen").attr("lay-verify", '');
-                    $("#powerLimit").attr("lay-verify", 'required');
-                    $("#zFrequen").removeAttr("lay-verify");
-                    $("#powerTime").attr("lay-verify", 'required');
-                    $("#yFrequen").attr("lay-verify", '');
-                    $("#ratedPower").attr("lay-verify", 'required');
-                    $("#ratedU").attr("lay-verify", 'required');
-                    $("#ratedPower").attr("lay-verify", 'required');
-                } else if (data.value == '振动量设备') {
-                    vm.selectShow = 2;
-                    $("#pt").attr("lay-verify", '');
-                    $("#ct").attr("lay-verify", '');
-                    $("#xAccelerat").attr("lay-verify", 'required');
-                    $("#radarProport").attr("lay-verify", '');
-                    $("#currentSpeed").attr("lay-verify", '');
-                    $("#temperature").attr("lay-verify", '');
-                    $("#yAccelerat").attr("lay-verify", 'required');
-                    $("#radarCount").attr("lay-verify", '');
-                    $("#flow").attr("lay-verify", '');
-                    $("#electricLimit").attr("lay-verify", '');
-                    $("#zAccelerat").attr("lay-verify", 'required');
-                    $("#electricTime").attr("lay-verify", '');
-                    $("#xFrequen").attr("lay-verify", 'required');
-                    $("#powerLimit").attr("lay-verify", '');
-                    $("#zFrequen").attr("lay-verify", 'required');
-                    $("#powerTime").attr("lay-verify", '');
-                    $("#yFrequen").attr("lay-verify", 'required');
-                    $("#ratedPower").attr("lay-verify", '');
-                    $("#ratedU").attr("lay-verify", '');
-                    $("#ratedPower").attr("lay-verify", '');
-                } else if (data.value == '雷达设备') {
-                    vm.selectShow = 3;
-                    $("#pt").attr("lay-verify", '');
-                    $("#ct").attr("lay-verify", '');
-                    $("#xAccelerat").attr("lay-verify", '');
-                    $("#radarProport").attr("lay-verify", 'required');
-                    $("#currentSpeed").attr("lay-verify", '');
-                    $("#temperature").attr("lay-verify", '');
-                    $("#yAccelerat").attr("lay-verify", '');
-                    $("#radarCount").attr("lay-verify", 'required');
-                    $("#flow").attr("lay-verify", '');
-                    $("#electricLimit").attr("lay-verify", '');
-                    $("#zAccelerat").attr("lay-verify", '');
-                    $("#electricTime").attr("lay-verify", '');
-                    $("#xFrequen").attr("lay-verify", '');
-                    $("#powerLimit").attr("lay-verify", '');
-                    $("#zFrequen").attr("lay-verify", '');
-                    $("#powerTime").attr("lay-verify", '');
-                    $("#yFrequen").attr("lay-verify", '');
-                    $("#ratedPower").attr("lay-verify", '');
-                    $("#ratedU").attr("lay-verify", '');
-                    $("#ratedPower").attr("lay-verify", '');
+            // form.on("select(collectType)", function (data) {
+            //     if (data.value == '用电') {
+            //         vm.selectShow = 1;
+            //         $("#pt").attr("lay-verify", 'required|number');
+            //         $("#ct").attr("lay-verify", 'required|number');
+            //         $("#xAccelerat").attr("lay-verify", '');
+            //         $("#radarProport").attr("lay-verify", '');
+            //         $("#currentSpeed").attr("lay-verify", '');
+            //         $("#temperature").attr("lay-verify", '');
+            //         $("#yAccelerat").attr("lay-verify", '');
+            //         $("#radarCount").attr("lay-verify", '');
+            //         $("#flow").attr("lay-verify", '');
+            //         $("#electricLimit").attr("lay-verify", 'required|number');
+            //         $("#zAccelerat").attr("lay-verify", '');
+            //         $("#electricTime").attr("lay-verify", 'required|number');
+            //         $("#xFrequen").attr("lay-verify", '');
+            //         // $("#powerLimit").attr("lay-verify", 'number');
+            //         // $("#powerTime").attr("lay-verify", 'number');
+            //         $("#zFrequen").removeAttr("lay-verify");
+            //         $("#yFrequen").attr("lay-verify", '');
+            //         $("#ratedPower").attr("lay-verify", 'required|number');
+            //         $("#ratedU").attr("lay-verify", 'required|number');
+            //         $("#ratedPower").attr("lay-verify", 'required|number');
+            //     } else if (data.value == '振动量设备') {
+            //         vm.selectShow = 2;
+            //         $("#pt").attr("lay-verify", '');
+            //         $("#ct").attr("lay-verify", '');
+            //         $("#xAccelerat").attr("lay-verify", 'required|number');
+            //         $("#radarProport").attr("lay-verify", '');
+            //         $("#currentSpeed").attr("lay-verify", '');
+            //         $("#temperature").attr("lay-verify", '');
+            //         $("#yAccelerat").attr("lay-verify", 'required|number');
+            //         $("#radarCount").attr("lay-verify", '');
+            //         $("#flow").attr("lay-verify", '');
+            //         $("#electricLimit").attr("lay-verify", '');
+            //         $("#zAccelerat").attr("lay-verify", 'required|number');
+            //         $("#electricTime").attr("lay-verify", '');
+            //         $("#xFrequen").attr("lay-verify", 'required|number');
+            //         $("#powerLimit").attr("lay-verify", '');
+            //         $("#zFrequen").attr("lay-verify", 'required|number');
+            //         $("#powerTime").attr("lay-verify", '');
+            //         $("#yFrequen").attr("lay-verify", 'required|number');
+            //         $("#ratedPower").attr("lay-verify", '');
+            //         $("#ratedU").attr("lay-verify", '');
+            //         $("#ratedPower").attr("lay-verify", '');
+            //     } else if (data.value == '雷达设备') {
+            //         vm.selectShow = 3;
+            //         $("#pt").attr("lay-verify", '');
+            //         $("#ct").attr("lay-verify", '');
+            //         $("#xAccelerat").attr("lay-verify", '');
+            //         $("#radarProport").attr("lay-verify", 'required|number');
+            //         $("#currentSpeed").attr("lay-verify", '');
+            //         $("#temperature").attr("lay-verify", '');
+            //         $("#yAccelerat").attr("lay-verify", '');
+            //         $("#radarCount").attr("lay-verify", 'required|number');
+            //         $("#flow").attr("lay-verify", '');
+            //         $("#electricLimit").attr("lay-verify", '');
+            //         $("#zAccelerat").attr("lay-verify", '');
+            //         $("#electricTime").attr("lay-verify", '');
+            //         $("#xFrequen").attr("lay-verify", '');
+            //         $("#powerLimit").attr("lay-verify", '');
+            //         $("#zFrequen").attr("lay-verify", '');
+            //         $("#powerTime").attr("lay-verify", '');
+            //         $("#yFrequen").attr("lay-verify", '');
+            //         $("#ratedPower").attr("lay-verify", '');
+            //         $("#ratedU").attr("lay-verify", '');
+            //         $("#ratedPower").attr("lay-verify", '');
 
-                } else if (data.value == '流量计') {
-                    vm.selectShow = 4;
-                    $("#pt").attr("lay-verify", '');
-                    $("#ct").attr("lay-verify", '');
-                    $("#xAccelerat").attr("lay-verify", '');
-                    $("#radarProport").attr("lay-verify", '');
-                    $("#temperature").attr("lay-verify", '');
-                    $("#currentSpeed").attr("lay-verify", 'required');
-                    $("#yAccelerat").attr("lay-verify", '');
-                    $("#radarCount").attr("lay-verify", '');
-                    $("#flow").attr("lay-verify", 'required');
-                    $("#electricLimit").attr("lay-verify", '');
-                    $("#zAccelerat").attr("lay-verify", '');
-                    $("#electricTime").attr("lay-verify", '');
-                    $("#xFrequen").attr("lay-verify", '');
-                    $("#powerLimit").attr("lay-verify", '');
-                    $("#zFrequen").attr("lay-verify", '');
-                    $("#powerTime").attr("lay-verify", '');
-                    $("#yFrequen").attr("lay-verify", '');
-                    $("#ratedPower").attr("lay-verify", '');
-                    $("#ratedU").attr("lay-verify", '');
-                    $("#ratedPower").attr("lay-verify", '');
-                } else if (data.value == '温度') {
-                    vm.selectShow = 5;
-                    $("#pt").attr("lay-verify", '');
-                    $("#ct").attr("lay-verify", '');
-                    $("#xAccelerat").attr("lay-verify", '');
-                    $("#radarProport").attr("lay-verify", '');
-                    $("#currentSpeed").attr("lay-verify", '');
-                    $("#temperature").attr("lay-verify", 'required');
-                    $("#yAccelerat").attr("lay-verify", '');
-                    $("#radarCount").attr("lay-verify", '');
-                    $("#flow").attr("lay-verify", '');
-                    $("#electricLimit").attr("lay-verify", '');
-                    $("#zAccelerat").attr("lay-verify", '');
-                    $("#electricTime").attr("lay-verify", '');
-                    $("#xFrequen").attr("lay-verify", '');
-                    $("#powerLimit").attr("lay-verify", '');
-                    $("#zFrequen").attr("lay-verify", '');
-                    $("#powerTime").attr("lay-verify", '');
-                    $("#yFrequen").attr("lay-verify", '');
-                    $("#ratedPower").attr("lay-verify", '');
-                    $("#ratedU").attr("lay-verify", '');
-                    $("#ratedPower").attr("lay-verify", '');
-                }
-            })
+            //     } else if (data.value == '流量计') {
+            //         vm.selectShow = 4;
+            //         $("#pt").attr("lay-verify", '');
+            //         $("#ct").attr("lay-verify", '');
+            //         $("#xAccelerat").attr("lay-verify", '');
+            //         $("#radarProport").attr("lay-verify", '');
+            //         $("#temperature").attr("lay-verify", '');
+            //         $("#currentSpeed").attr("lay-verify", 'required|number');
+            //         $("#yAccelerat").attr("lay-verify", '');
+            //         $("#radarCount").attr("lay-verify", '');
+            //         $("#flow").attr("lay-verify", 'required|number');
+            //         $("#electricLimit").attr("lay-verify", '');
+            //         $("#zAccelerat").attr("lay-verify", '');
+            //         $("#electricTime").attr("lay-verify", '');
+            //         $("#xFrequen").attr("lay-verify", '');
+            //         $("#powerLimit").attr("lay-verify", '');
+            //         $("#zFrequen").attr("lay-verify", '');
+            //         $("#powerTime").attr("lay-verify", '');
+            //         $("#yFrequen").attr("lay-verify", '');
+            //         $("#ratedPower").attr("lay-verify", '');
+            //         $("#ratedU").attr("lay-verify", '');
+            //         $("#ratedPower").attr("lay-verify", '');
+            //     } else if (data.value == '温度') {
+            //         vm.selectShow = 5;
+            //         $("#pt").attr("lay-verify", '');
+            //         $("#ct").attr("lay-verify", '');
+            //         $("#xAccelerat").attr("lay-verify", '');
+            //         $("#radarProport").attr("lay-verify", '');
+            //         $("#currentSpeed").attr("lay-verify", '');
+            //         $("#temperature").attr("lay-verify", 'required|number');
+            //         $("#yAccelerat").attr("lay-verify", '');
+            //         $("#radarCount").attr("lay-verify", '');
+            //         $("#flow").attr("lay-verify", '');
+            //         $("#electricLimit").attr("lay-verify", '');
+            //         $("#zAccelerat").attr("lay-verify", '');
+            //         $("#electricTime").attr("lay-verify", '');
+            //         $("#xFrequen").attr("lay-verify", '');
+            //         $("#powerLimit").attr("lay-verify", '');
+            //         $("#zFrequen").attr("lay-verify", '');
+            //         $("#powerTime").attr("lay-verify", '');
+            //         $("#yFrequen").attr("lay-verify", '');
+            //         $("#ratedPower").attr("lay-verify", '');
+            //         $("#ratedU").attr("lay-verify", '');
+            //         $("#ratedPower").attr("lay-verify", '');
+            //     }
+            // })
 
 
             axios({
@@ -820,8 +820,8 @@
                          $('#route').val(Devicedata.route); */
                         if (Devicedata.collectType == '用电') {
                             vm.selectShow = 1;
-                            $("#pt").attr("lay-verify", 'required');
-                            $("#ct").attr("lay-verify", 'required');
+                            $("#pt").attr("lay-verify", 'required|number');
+                            $("#ct").attr("lay-verify", 'required|number');
                             $("#xAccelerat").attr("lay-verify", '');
                             $("#radarProport").attr("lay-verify", '');
                             $("#currentSpeed").attr("lay-verify", '');
@@ -829,17 +829,16 @@
                             $("#yAccelerat").attr("lay-verify", '');
                             $("#radarCount").attr("lay-verify", '');
                             $("#flow").attr("lay-verify", '');
-                            $("#electricLimit").attr("lay-verify", 'required');
+                            $("#electricLimit").attr("lay-verify", 'required|number');
                             $("#zAccelerat").attr("lay-verify", '');
-                            $("#electricTime").attr("lay-verify", 'required');
+                            $("#electricTime").attr("lay-verify", 'required|number');
                             $("#xFrequen").attr("lay-verify", '');
-                            $("#powerLimit").attr("lay-verify", 'required');
+                            // $("#powerLimit").attr("lay-verify", 'number');
                             $("#zFrequen").removeAttr("lay-verify");
-                            $("#powerTime").attr("lay-verify", 'required');
+                            // $("#powerTime").attr("lay-verify", 'number');
                             $("#yFrequen").attr("lay-verify", '');
-                            $("#ratedPower").attr("lay-verify", 'required');
-                            $("#ratedU").attr("lay-verify", 'required');
-                            $("#ratedPower").attr("lay-verify", 'required');
+                            $("#ratedPower").attr("lay-verify", 'required|number');
+                            $("#ratedU").attr("lay-verify", 'required|number');
                         } else if (Devicedata.collectType == '流量计') {
                             vm.selectShow = 4;
                             $("#pt").attr("lay-verify", '');
@@ -847,10 +846,10 @@
                             $("#xAccelerat").attr("lay-verify", '');
                             $("#radarProport").attr("lay-verify", '');
                             $("#temperature").attr("lay-verify", '');
-                            $("#currentSpeed").attr("lay-verify", 'required');
+                            $("#currentSpeed").attr("lay-verify", 'required|number');
                             $("#yAccelerat").attr("lay-verify", '');
                             $("#radarCount").attr("lay-verify", '');
-                            $("#flow").attr("lay-verify", 'required');
+                            $("#flow").attr("lay-verify", 'required|number');
                             $("#electricLimit").attr("lay-verify", '');
                             $("#zAccelerat").attr("lay-verify", '');
                             $("#electricTime").attr("lay-verify", '');
@@ -861,7 +860,6 @@
                             $("#yFrequen").attr("lay-verify", '');
                             $("#ratedPower").attr("lay-verify", '');
                             $("#ratedU").attr("lay-verify", '');
-                            $("#ratedPower").attr("lay-verify", '');
                         } else if (Devicedata.collectType == '温度') {
                             vm.selectShow = 5;
                             $("#pt").attr("lay-verify", '');
@@ -869,7 +867,7 @@
                             $("#xAccelerat").attr("lay-verify", '');
                             $("#radarProport").attr("lay-verify", '');
                             $("#currentSpeed").attr("lay-verify", '');
-                            $("#temperature").attr("lay-verify", 'required');
+                            $("#temperature").attr("lay-verify", 'required|number');
                             $("#yAccelerat").attr("lay-verify", '');
                             $("#radarCount").attr("lay-verify", '');
                             $("#flow").attr("lay-verify", '');
@@ -883,17 +881,16 @@
                             $("#yFrequen").attr("lay-verify", '');
                             $("#ratedPower").attr("lay-verify", '');
                             $("#ratedU").attr("lay-verify", '');
-                            $("#ratedPower").attr("lay-verify", '');
                         } else if (Devicedata.collectType == '雷达设备') {
                             vm.selectShow = 3;
                             $("#pt").attr("lay-verify", '');
                             $("#ct").attr("lay-verify", '');
                             $("#xAccelerat").attr("lay-verify", '');
-                            $("#radarProport").attr("lay-verify", 'required');
+                            $("#radarProport").attr("lay-verify", 'required|number');
                             $("#currentSpeed").attr("lay-verify", '');
                             $("#temperature").attr("lay-verify", '');
                             $("#yAccelerat").attr("lay-verify", '');
-                            $("#radarCount").attr("lay-verify", 'required');
+                            $("#radarCount").attr("lay-verify", 'required|number');
                             $("#flow").attr("lay-verify", '');
                             $("#electricLimit").attr("lay-verify", '');
                             $("#zAccelerat").attr("lay-verify", '');
@@ -905,29 +902,27 @@
                             $("#yFrequen").attr("lay-verify", '');
                             $("#ratedPower").attr("lay-verify", '');
                             $("#ratedU").attr("lay-verify", '');
-                            $("#ratedPower").attr("lay-verify", '');
                         } else if (Devicedata.collectType == '振动量设备') {
                             vm.selectShow = 2;
                             $("#pt").attr("lay-verify", '');
                             $("#ct").attr("lay-verify", '');
-                            $("#xAccelerat").attr("lay-verify", 'required');
+                            $("#xAccelerat").attr("lay-verify", 'required|number');
                             $("#radarProport").attr("lay-verify", '');
                             $("#currentSpeed").attr("lay-verify", '');
                             $("#temperature").attr("lay-verify", '');
-                            $("#yAccelerat").attr("lay-verify", 'required');
+                            $("#yAccelerat").attr("lay-verify", 'required|number');
                             $("#radarCount").attr("lay-verify", '');
                             $("#flow").attr("lay-verify", '');
                             $("#electricLimit").attr("lay-verify", '');
-                            $("#zAccelerat").attr("lay-verify", 'required');
+                            $("#zAccelerat").attr("lay-verify", 'required|number');
                             $("#electricTime").attr("lay-verify", '');
-                            $("#xFrequen").attr("lay-verify", 'required');
+                            $("#xFrequen").attr("lay-verify", 'required|number');
                             $("#powerLimit").attr("lay-verify", '');
-                            $("#zFrequen").attr("lay-verify", 'required');
+                            $("#zFrequen").attr("lay-verify", 'required|number');
                             $("#powerTime").attr("lay-verify", '');
-                            $("#yFrequen").attr("lay-verify", 'required');
+                            $("#yFrequen").attr("lay-verify", 'required|number');
                             $("#ratedPower").attr("lay-verify", '');
                             $("#ratedU").attr("lay-verify", '');
-                            $("#ratedPower").attr("lay-verify", '');
                         }
                         $("#ecType").empty();
                         axios({
