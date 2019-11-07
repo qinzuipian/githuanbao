@@ -247,7 +247,7 @@
 							}else if(res.data.tDeviceRealtime.status == "3"){
 								app.status = "失联"
 							}
-							app.modifyDate = res.data.tDeviceRealtime.modifyDate;
+							app.modifyDate = res.data.tDeviceRealtime.acttime;
 							app.enterpriseName = res.data.tDeviceRealtime.enterpriseName;
 							
 							res.data.tDeviceRealtime.ia  ==  undefined ? 0:app.ia = res.data.tDeviceRealtime.ia
