@@ -1,11 +1,4 @@
-/**
 
- @Name：echarts 主题
- @Author：贤心
- @Site：http://www.layui.com/admin/
- @License：GPL-2
-    
- */
 
 
 layui.define(function(exports) {

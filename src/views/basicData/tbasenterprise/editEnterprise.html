@@ -183,6 +183,22 @@
 									</div>
 								</div>
 								<div class="layui-form-item">
+									<label for="bitian" class="layui-form-label">经度
+										<!-- <span class="red">*</span> -->
+										</label>
+									<div class="layui-input-inline">
+										<input type="text" name="longitude" lay-verify="required" class="layui-input" readonly="readonly"  />
+									</div>
+								</div>
+								<div class="layui-form-item">
+									<label for="bitian" class="layui-form-label">纬度
+										<!-- <span class="red">*</span> -->
+										</label>
+									<div class="layui-input-inline">
+										<input type="text" name="latitude" lay-verify="required" class="layui-input" readonly="readonly" />
+									</div>
+								</div>
+								<div class="layui-form-item">
 									<label class="layui-form-label">行政区域</label>
 									<div class="layui-input-inline AdminArea">
 										<input type="text" name="organizeName" v-model="atraName" placeholder="请选择行政区域" autocomplete="off" class="layui-input"
@@ -567,6 +583,8 @@
 										// "tradeName": list.tradeName,
 										"concern": list.concern,
 										"trustCode": list.trustCode,
+										"latitude":list.latitude,
+										"longitude":list.longitude,
 										"tBasShopList": list.tBasShopList
 									});
 									// $('#eventType').val(list.tradeId);

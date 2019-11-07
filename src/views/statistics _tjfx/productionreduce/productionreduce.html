@@ -121,15 +121,16 @@
 							</div>
 						</div>
 						<div class="layui-inline">
-							<label class="layui-form-label">行政区域</label>
-							<div class="layui-input-inline AdminArea">
-								<input type="text" name="organizeName" v-model="atraName" placeholder="请选择行政区域" autocomplete="off" class="layui-input">
-								<i class="layui-icon layui-icon-triangle-d" @click="AdminFocus"></i>
-								<div class="Areashow layui-anim layui-anim-upbit" v-show="Areashow">
-									<el-tree :highlight-current="treeHign" default-expand-all :expand-on-click-node="false" :data="treeData"
-									 :props="defaultProps" @node-click="handleNodeClick"></el-tree>
-								</div>
-							</div>
+						    <label class="layui-form-label">行政区域</label>
+						    <div class="layui-input-inline AdminArea">
+						        <input type="text" name="organizeName" readonly="readonly" id= "div_" v-model="atraName" placeholder="请选择行政区域" autocomplete="off" class="layui-input">
+								<!-- <el-input type="text" name="organizeName" readonly="readonly"  id= "div_" v-model="atraName" placeholder="请选择行政区域" ></el-input> -->
+								<i class="layui-icon-triangle-d layui-icon" v-bind:class="[{ actived: isActive },{ actived_after: !isActive }]"
+								 @click="appear()"></i>
+						        <div class="Areashow layui-anim layui-anim-upbit" v-show="Areashow">
+						            <el-tree :highlight-current="treeHign" default-expand-all :expand-on-click-node="false" :data="treeData" :props="defaultProps" @node-click="handleNodeClick"></el-tree>
+						        </div>
+						    </div>
 						</div>
 						<div class="layui-inline">
 							<div class="layui-form-item">
@@ -143,7 +144,7 @@
 							</div>
 						</div>
 						<div class="layui-inline">
-							<button class="layui-btn layuiadmin-btn-list" lay-submit lay-filter="LAY-app-contlist-search" @click="search">
+							<button class="layui-btn layuiadmin-btn-list" lay-submit lay-filter="LAY-app-contlist-search" >
 								<i class="layui-icon layui-icon-search layuiadmin-button-btn"></i>
 							</button>
 						</div>
@@ -200,36 +201,44 @@
 								{
 									title: '企业名称',
 									field: 'enterpriseName',
-									minWidth: 200
+									minWidth: 200,
+									sort:'true'
 								}, {
 									title: '机构',
 									field: 'organizeName',
-									minWidth: 100
+									minWidth: 100,
+									sort:'true'
 								}, {
 									title: '行业',
 									field: 'tradeName',
-									minWidth: 100
+									minWidth: 100,
+									sort:'true'
 								}, {
 									title: '生产状态',
 									field: 'produceType',
-									minWidth: 60
+									minWidth: 60,
+									sort:'true'
 								}, {
 									title: '是否污染日',
 									field: 'isPollutionDay',
-									minWidth: 100
+									minWidth: 100,
+									sort:'true'
 								}, {
 									title: '用电量(kWh)',
 									field: 'w',
-									minWidth: 100
+									minWidth: 100,
+									sort:'true'
 								}, {
 									title: '排名',
 									field: 'rank',
-									Width: 30
+									Width: 30,
+									sort:'true'
 								},
 								{
 									title: '详情',
 									minWidth: 100,
-									toolbar: '#barDemo'
+									toolbar: '#barDemo',
+									sort:'true'
 								}
 							]
 						] //设置表头
@@ -335,19 +344,16 @@
 					active[type] ? active[type].call(this) : '';
 				});
 				$("#div_").bind("click", function() {
-					vm.isActive = 1;
-					$("#tree").css("display", "inline-block");
-					event.stopPropagation(); //==========阻止冒泡1
+					vm.isActive = true
+					vm.Areashow = true;
+					event.stopPropagation(); //==========阻止冒泡1======阻止冒泡1
 				})
 				//点击外面其他部分,触发的事件
 				$(document).bind("click", function() {
-					vm.isActive = 0;
-					$("#tree").css("display", "none");
+					vm.isActive = false
+					vm.Areashow = false;
 
 				});
-
-
-
 			});
 
 
@@ -376,7 +382,7 @@
 					endCreateDate: "",
 					name: '',
 					tree: 0,
-					isActive: 0,
+					isActive: false,
 					tradeName: '',
 					today: ""
 
@@ -387,81 +393,10 @@
 						vm.atraName = "",
 							vm.treeId = ""
 					},
-					search: function() {
-						if(vm.atraName == ""){
-							vm.treeId = ""
-						}
-						tables.reload({
-							elem: '#LAY-app-content-list',
-							height: 555 //容器高度
-								,
-							where: {
-								organizeId: vm.treeId
-
-							},
-							url: layui.setter.BASEURL + 'environmental_intelligent_monitoring/dataMonitor/queryEnterpriseReduceList' //数据接口
-								,
-							page: true,
-
-							cols: [
-									[{
-											type: 'numbers',
-											minWidth: 40,
-											width: 50
-										},
-										{
-											title: '企业名称',
-											field: 'enterpriseName',
-											minWidth: 200
-										}, {
-											title: '机构',
-											field: 'organizeName',
-											minWidth: 100
-										}, {
-											title: '行业',
-											field: 'tradeName',
-											minWidth: 100
-										}, {
-											title: '生产状态',
-											field: 'produceType',
-											minWidth: 60
-										}, {
-											title: '是否污染日',
-											field: 'isPollutionDay',
-											minWidth: 100
-										}, {
-											title: '用电量(kWh)',
-											field: 'w',
-											minWidth: 100
-										}, {
-											title: '排名',
-											field: 'rank',
-											Width: 30
-										},
-										{
-											title: '详情',
-											minWidth: 100,
-											toolbar: '#barDemo'
-										}
-									]
-								] //设置表头
-								,
-							limit: 10,
-							limits: [10, 15, 20, 25, 30],
-							// done: function(res, page, count) {
-							// 	document.getElementById("[data-field='isPollutionDay']").each(function() {
-							// 		if ($(this).text() == '0') {
-							// 			$(this).text("非污染日")
-							// 		} else if ($(this).text() == '1') {
-							// 			$(this).text("是污染日")
-							// 		}
-							// 	})
-							// }
-						});
-					},
 					appear: function(isActive) {
-						this.tree = !this.tree
-						this.isActive = !this.isActive
+						vm.isActive = true
+						vm.Areashow = true;
+						event.stopPropagation();
 					},
 					// 树状图组件
 					treeDataInit: function() {
@@ -474,6 +409,10 @@
 						}).then(function(res) {
 							if (res.data.code == 0) {
 								var data = res.data.data;
+								var obj = {
+									title: '请选择'
+								}
+								data.unshift(obj);
 								vm.treeData = data;
 					
 					
@@ -496,9 +435,13 @@
 						vm.treeId = data.id;
 						vm.treeHign = true;
 						vm.Areashow = false;
+						if(data.title == "请选择"){
+							vm.atraName = ""
+						}
 					
 					},
 					AdminFocus: function() {
+						vm.isActive = !vm.isActive
 						vm.Areashow = !vm.Areashow;
 					}
 				},

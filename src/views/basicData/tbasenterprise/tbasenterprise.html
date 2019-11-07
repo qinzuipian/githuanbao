@@ -99,8 +99,10 @@
 					<div class="layui-inline">
 					    <label class="layui-form-label">行政区域</label>
 					    <div class="layui-input-inline AdminArea">
-					        <input type="text" name="organizeName" v-model="atraName" placeholder="请选择行政区域" autocomplete="off" class="layui-input">
-					        <i class="layui-icon layui-icon-triangle-d" @click="AdminFocus"></i>
+					        <input type="text" name="organizeName" readonly="readonly" id= "div_" v-model="atraName" placeholder="请选择行政区域" autocomplete="off" class="layui-input">
+							<!-- <el-input type="text" name="organizeName" readonly="readonly"  id= "div_" v-model="atraName" placeholder="请选择行政区域" ></el-input> -->
+							<i class="layui-icon-triangle-d layui-icon" v-bind:class="[{ actived: isActive },{ actived_after: !isActive }]"
+							 @click="appear()"></i>
 					        <div class="Areashow layui-anim layui-anim-upbit" v-show="Areashow">
 					            <el-tree :highlight-current="treeHign" default-expand-all :expand-on-click-node="false" :data="treeData" :props="defaultProps" @node-click="handleNodeClick"></el-tree>
 					        </div>
@@ -249,7 +251,8 @@
 				cols: [
 					[{
 						type: 'numbers',
-						minWidth: 100
+						minWidth: 100,
+						sort:true
 					},
 					{
 						checkbox: true
@@ -257,25 +260,30 @@
 					}, {
 						title: '企业名称',
 						field: 'name',
-						minWidth: 100
+						minWidth: 100,
+						sort:true
 					}, {
 						title: '企业社会信用代码',
 						field: 'trustCode',
 						minWidth: 100,
-						width: 200
+						width: 200,
+						sort:true
 					}, {
 						title: '地址',
 						field: 'address',
 						minWidth: 100,
-						width: 200
+						width: 200,
+						sort:true
 					}, {
 						title: '行业名称',
 						field: 'tradeName',
-						minWidth: 100
+						minWidth: 100,
+						sort:true
 					}, {
 						title: '创建时间',
 						field: 'createDate',
-						minWidth: 100
+						minWidth: 100,
+						sort:true
 					}
 					]
 				] //设置表头
@@ -394,14 +402,14 @@
 
 			// 点击input框触发的事件
 			$("#div_").bind("click", function () {
-				vm.isActive = 1;
-				$("#tree").css("display", "inline-block");
+				vm.isActive = true
+				vm.Areashow = true;
 				event.stopPropagation(); //==========阻止冒泡1
 			})
 			//点击外面其他部分,触发的事件
 			$(document).bind("click", function () {
-				vm.isActive = 0;
-				$("#tree").css("display", "none");
+				vm.isActive = false
+				vm.Areashow = false;
 
 			})
 
@@ -427,11 +435,12 @@
 				endCreateDate: "",
 				name: '',
 				tree: 0,
-				isActive: 0,
+				isActive: false,
 				treeValue: ""
 			},
 			methods: {
 				AdminFocus:function() {
+					vm.isActive = !vm.isActive
 				    vm.Areashow = !vm.Areashow;
 				},
 				emptyTree: function () {
@@ -441,9 +450,10 @@
 				atraClick:function() {
 				    vm.atraShow = !vm.atraShow;
 				},
-				appear: function (isActive) {
-					this.tree = !this.tree
-					this.isActive = !this.isActive
+				appear: function () {
+					vm.isActive = true
+					vm.Areashow = true;
+					event.stopPropagation();
 				},
 				// 树状图组件
 				treeDataInit:function() {
@@ -456,6 +466,10 @@
 				    }).then(function (res) {
 				        if (res.data.code == 0) {
 				            var data = res.data.data;
+							var obj = {
+								title: '请选择'
+							}
+							data.unshift(obj);
 				            vm.treeData = data;
 				        } else {
 							vm.$notify.error({
@@ -473,7 +487,9 @@
 				    vm.atraName = data.title;
 				    vm.treeHign = true;
 				    vm.Areashow = false;
-				    
+				    if(data.title == "请选择"){
+						vm.atraName = ""
+					}
 				}
 			},
 			created() {
