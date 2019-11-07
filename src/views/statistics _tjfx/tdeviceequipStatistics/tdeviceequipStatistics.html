@@ -122,15 +122,16 @@
 					<div v-show="show == 1">
 						<div class="layui-form-item">
 							<div class="layui-inline">
-								<label class="layui-form-label">行政区域</label>
-								<div class="layui-input-inline AdminArea">
-									<input type="text" name="organizeName" v-model="atraName" placeholder="请选择行政区域" autocomplete="off" class="layui-input">
-									<i class="layui-icon layui-icon-triangle-d" @click="AdminFocus"></i>
-									<div class="Areashow layui-anim layui-anim-upbit" v-show="Areashow">
-										<el-tree :highlight-current="treeHign" default-expand-all :expand-on-click-node="false" :data="treeData"
-										 :props="defaultProps" @node-click="handleNodeClick"></el-tree>
-									</div>
-								</div>
+							    <label class="layui-form-label">行政区域</label>
+							    <div class="layui-input-inline AdminArea">
+							        <input type="text" name="organizeName" readonly="readonly" id= "div_" v-model="atraName" placeholder="请选择行政区域" autocomplete="off" class="layui-input">
+									<!-- <el-input type="text" name="organizeName" readonly="readonly"  id= "div_" v-model="atraName" placeholder="请选择行政区域" ></el-input> -->
+									<i class="layui-icon-triangle-d layui-icon" v-bind:class="[{ actived: isActive },{ actived_after: !isActive }]"
+									 @click="appear()"></i>
+							        <div class="Areashow layui-anim layui-anim-upbit" v-show="Areashow">
+							            <el-tree :highlight-current="treeHign" default-expand-all :expand-on-click-node="false" :data="treeData" :props="defaultProps" @node-click="handleNodeClick"></el-tree>
+							        </div>
+							    </div>
 							</div>
 							<div class="layui-inline">
 								<label class="layui-form-label">状态</label>
@@ -607,16 +608,15 @@
 
 				//点击输入框出现的行政区域
 				$("#div_").bind("click", function() {
-					vm.isActive = 1;
-					$("#tree").css("display", "inline-block");
-					event.stopPropagation(); //==========阻止冒泡1
+					vm.isActive = true
+					vm.Areashow = true;
+					event.stopPropagation();  //==========阻止冒泡1
 				})
 
 				//点击外面其他部分,触发的事件
 				$(document).bind("click", function() {
-					vm.isActive = 0;
-
-					$("#tree").css("display", "none");
+					vm.isActive = false
+					vm.Areashow = false;
 
 				})
 			});
@@ -639,7 +639,7 @@
 					endCreateDate: "",
 					name: '',
 					tree: 0,
-					isActive: 0,
+					isActive: false,
 					show: 1,
 					list_box1: [],
 					list_box2: [],
@@ -663,8 +663,9 @@
 						this.show = 2;
 					},
 					appear: function(isActive) {
-						this.tree = !this.tree
-						this.isActive = !this.isActive
+						vm.isActive = true
+						vm.Areashow = true;
+						event.stopPropagation();
 					},
 					Xsearch: function() {
 						axios({
@@ -883,6 +884,10 @@
 						}).then(function(res) {
 							if (res.data.code == 0) {
 								var data = res.data.data;
+								var obj = {
+									title: '请选择'
+								}
+								data.unshift(obj);
 								vm.treeData = data;
 
 
@@ -905,6 +910,9 @@
 						vm.treeId = data.id;
 						vm.treeHign = true;
 						vm.Areashow = false;
+						if(data.title == "请选择"){
+							vm.atraName = ""
+						}
 
 					},
 					AdminFocus: function() {
