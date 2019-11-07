@@ -60,13 +60,13 @@
                     <span class="layui-icon layui-icon-note"></span>
                     <div class="layui-inline layui-form">
                         <div class="layui-input-inline">
-                            <el-select v-model="enterprise" @change="enterSelect" placeholder="请选择">
+                            <el-select v-model="enterprise" @change="enterSelect" placeholder="企业选择">
                                 <el-option v-for="item in enterpriseOptions" :key="item.value" :label="item.name" :value="item.id">
                                 </el-option>
                             </el-select>
                         </div>
                         <div class="layui-input-inline">
-                            <el-select v-model="monitorName" @change="monitorSelect" placeholder="请选择">
+                            <el-select v-model="monitorName" @change="monitorSelect" placeholder="监测点选择">
                                 <el-option value="" label="全部">
                                 </el-option>
                                 <el-option v-for="item in monitorNameOptions" :key="item.value" :label="item.monitorName" :value="item.id">
@@ -94,8 +94,9 @@
                 <div class="title" v-show="energyShow==3" v-cloak>
                     <span class="layui-icon layui-icon-location"></span>
                     <div class="layui-inline layui-form">
-                        <div class="layui-input-inline AdminArea">
-                            <input type="text" name="organizeName" v-model="atraName" placeholder="请选择行政区域" autocomplete="off" class="layui-input">
+                        <div class="layui-input-inline AdminArea" v-clickoutside="adminDisplay">
+                            <input type="text" name="organizeName" disabled v-model="atraName" placeholder="请选择行政区域" autocomplete="off" class="layui-input">
+                            <i style="font-size: 14px;position: absolute; right: 14%;cursor: pointer;" class="layui-icon layui-icon-close" @click="AdminClear"></i>
                             <i class="layui-icon layui-icon-triangle-d" @click="AdminFocus"></i>
                             <div class="Areashow layui-anim layui-anim-upbit" v-show="Areashow">
                                 <el-tree :highlight-current="treeHign" default-expand-all :expand-on-click-node="false" :data="treeData" :props="defaultProps"
@@ -508,9 +509,51 @@
                 tongbiShow:true
 
             },
+             // 实现行政区域下拉框点击外部下拉框消失
+             directives: {
+                clickoutside: {
+                    bind(el, binding, vnode) {
+                        function documentHandler(e) {
+                            if (el.contains(e.target)) {
+                                return false
+                            }
+                            if (binding.expression) {
+                                binding.value(e)
+                            }
+                        }
+
+                        function KeyUp(e) {
+                            if (e.keyCode == 27) {
+                                if (binding.expression) {
+                                    binding.value(e)
+                                }
+                            }
+                        }
+                        el.__vueClickOutSize__ = documentHandler
+                        el.__vueKeyup__ = KeyUp
+
+                        document.addEventListener('keyup', KeyUp)
+                        document.addEventListener('click', documentHandler)
+                    },
+                    unbind(el, binding) {
+                        document.removeEventListener('click', el.__vueClickOutSize__)
+                        delete el.__vueClickOutSize__
+
+                        document.removeEventListener('keyup', el.__vueKeyup__)
+                        delete el.__vueKeyup__
+                    }
+                }
+            },
             methods: {
                 AdminFocus:function() {
                     vm.Areashow = !vm.Areashow;
+                },
+                adminDisplay: function () {
+                    vm.Areashow = false;
+                },
+                AdminClear:function() {
+                    vm.atraName = "";
+
                 },
                 // 行政区域列表数据的获取
                 treeDataInit:function() {
@@ -770,6 +813,8 @@
 
                 }
                 , enterSelect:function(val) {
+                    // 监测点
+                    this.monitorNameInit(val)
                     // console.log(val)
                     vm.enterpriseId = val;
                     this.electricityTop(vm.enterpriseId, vm.monitorId)
@@ -793,11 +838,13 @@
                     }
                 }
                 // 监测点列表展示
-                , monitorNameInit:function() {
+                , monitorNameInit:function(val) {
                     axios({
                         method: "post",
                         url: BASEURL + 'environmental_intelligent_monitoring/tdevicemonitor/list?limit=10000',
-                        params: {}
+                        params: {
+                            enterpriseId:val
+                        }
                     }).then(function (res) {
                         if (res.data.code == 0) {
                             vm.monitorNameOptions = res.data.page.list
@@ -1950,7 +1997,7 @@
             }
             , created:function() {      
                 this.enterpriseInit();
-                this.monitorNameInit();
+                // this.monitorNameInit();
                 this.industryInit();
                 this.treeDataInit();        
             }

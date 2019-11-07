@@ -382,21 +382,27 @@
                             if (res.data.code == 0) {
                                 // console.log(res.data.data)
                                 var allData = res.data.data;
-
-                                allData.forEach(function (data) {
-                                    // console.log(data);
-                                    var hourData = [];
-                                    for (let key in data) {
-                                        if (key == 'monitorName') {
-                                            key = '监测点名称';
+                                if (allData.length != 0) {
+                                    allData.forEach(function (data) {
+                                        // console.log(data);
+                                        var hourData = [];
+                                        for (let key in data) {
+                                            if (key == 'monitorName') {
+                                                key = '监测点名称';
+                                            }
+                                            hourData.push(key);
                                         }
-                                        hourData.push(key);
-                                    }
-                                    vm.dataTime = hourData;
-                                    /*  var json = JSON.parse(JSON.stringify(data).replace(/monitorName/g,"监测点名称"));
-                                     hourData.push(json); */
-                                });
-                                vm.reportDataDay = allData;
+                                        vm.dataTime = hourData;
+                                        /*  var json = JSON.parse(JSON.stringify(data).replace(/monitorName/g,"监测点名称"));
+                                         hourData.push(json); */
+                                    });
+                                    vm.reportDataDay = allData;
+                                    vm.flag = '';
+                                } else {
+                                    vm.flag = 'noData';
+                                }
+
+
                                 // vm.reportDataDay = [];
                                 // var allData = res.data.data;
                                 // var timeData = [];
@@ -444,7 +450,7 @@
                                 //     vm.reportDataDay.push(obj);
                                 // })
                                 // console.log(vm.reportDataDay)
-                                vm.flag = '';
+
                             } else if (res.data.code == 203) {
                                 vm.$notify({
                                     title: '提示',
@@ -498,22 +504,29 @@
                             if (res.data.code == 0) {
                                 var allData = res.data.data;
 
-                                allData.forEach(function (data) {
-                                    var hourData = [];
-                                    // console.log(data);
-                                    for (let key in data) {
-                                        // console.log(key + '---' + data[key]);
-                                        if (key == 'monitorName') {
-                                            key = '监测点名称';
+                                if (allData.length != 0) {
+                                    allData.forEach(function (data) {
+                                        var hourData = [];
+                                        // console.log(data);
+                                        for (let key in data) {
+                                            // console.log(key + '---' + data[key]);
+                                            if (key == 'monitorName') {
+                                                key = '监测点名称';
+                                            }
+                                            hourData.push(key);
                                         }
-                                        hourData.push(key);
-                                    }
-                                    vm.dataTime = hourData;
-                                    /*  var json = JSON.parse(JSON.stringify(data).replace(/monitorName/g,"监测点名称"));
-                                     hourData.push(json); */
-                                });
-                                vm.reportDataDay = allData;
-                                vm.flag = '';
+                                        vm.dataTime = hourData;
+                                        /*  var json = JSON.parse(JSON.stringify(data).replace(/monitorName/g,"监测点名称"));
+                                         hourData.push(json); */
+                                    });
+                                    vm.reportDataDay = allData;
+                                    vm.flag = '';
+
+                                } else {
+                                    vm.flag = 'noData';
+                                }
+
+
                             } else if (res.data.code == 203) {
                                 vm.$notify({
                                     title: '提示',
@@ -558,24 +571,30 @@
                         }).then(function (res) {
                             if (res.data.code == 0) {
                                 var allData = res.data.data;
-
-                                allData.forEach(function (data) {
-                                    var hourData = [];
-                                    console.log(data);
-                                    for (let key in data) {
-                                        console.log(key + '---' + data[key]);
-                                        if (key == 'monitorName') {
-                                            key = '监测点名称';
+                                if (allData.length != 0) {
+                                    allData.forEach(function (data) {
+                                        var hourData = [];
+                                        console.log(data);
+                                        for (let key in data) {
+                                            console.log(key + '---' + data[key]);
+                                            if (key == 'monitorName') {
+                                                key = '监测点名称';
+                                            }
+                                            hourData.push(key);
                                         }
-                                        hourData.push(key);
-                                    }
-                                    vm.dataTime = hourData;
-                                    /*  var json = JSON.parse(JSON.stringify(data).replace(/monitorName/g,"监测点名称"));
-                                     hourData.push(json); */
-                                });
+                                        vm.dataTime = hourData;
+                                        /*  var json = JSON.parse(JSON.stringify(data).replace(/monitorName/g,"监测点名称"));
+                                         hourData.push(json); */
+                                    });
 
-                                vm.reportDataDay = allData;
-                                vm.flag = '';
+                                    vm.reportDataDay = allData;
+                                    vm.flag = '';
+
+                                } else {
+                                    vm.flag = 'noData';
+                                }
+
+
                             } else if (res.data.code == 203) {
                                 vm.$notify({
                                     title: '提示',
@@ -623,20 +642,27 @@
                         }).then(function (res) {
                             if (res.data.code == 0) {
                                 var allData = res.data.data;
+                                if (allData.length != 0) {
+                                    allData.forEach(function (data) {
+                                        var hourData = [];
+                                        // console.log(data);
+                                        for (var key in data) {
+                                            // console.log(key + '---' + data[key]);
+                                            hourData.push(key);
+                                        }
+                                        vm.dataTime = hourData;
+                                        /*  var json = JSON.parse(JSON.stringify(data).replace(/monitorName/g,"监测点名称"));
+                                         hourData.push(json); */
+                                    });
 
-                                allData.forEach(function (data) {
-                                    var hourData = [];
-                                    // console.log(data);
-                                    for (var key in data) {
-                                        // console.log(key + '---' + data[key]);
-                                        hourData.push(key);
-                                    }
-                                    vm.dataTime = hourData;
-                                    /*  var json = JSON.parse(JSON.stringify(data).replace(/monitorName/g,"监测点名称"));
-                                     hourData.push(json); */
-                                });
+                                    vm.reportDataDay = allData;
+                                    vm.flag = '';
 
-                                vm.reportDataDay = allData;
+                                } else {
+                                    vm.flag = 'noData';
+
+                                }
+
                                 // vm.reportDataDay = [];
                                 // var allData = res.data.data;
                                 // var all = [];
@@ -696,7 +722,7 @@
                                 //     allData[i].list =  allData[i].tKwhlist;
                                 // }
                                 // vm.reportDataDay = allData; 
-                                vm.flag = '';
+
                             } else if (res.data.code == 203) {
                                 vm.$notify({
                                     title: '提示',

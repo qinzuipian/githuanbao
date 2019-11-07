@@ -35,6 +35,8 @@
 
         .layui-card .layui-icon-triangle-d {
             color: #c2c2c2;
+            position: absolute;
+            right: 2px;
         }
 
         .layui-card .layui-icon-triangle-d,
@@ -92,8 +94,9 @@
                     </div>
 
                     <div class="layui-inline layui-form">
-                        <div class="layui-input-inline">
-                            <input type="text" name="atraCode" v-model="atraName" placeholder="请选择行政区域" autocomplete="off" class="layui-input">
+                        <div class="layui-input-inline" v-clickoutside="adminDisplay">
+                            <input type="text" name="atraCode" disabled v-model="atraName" placeholder="请选择行政区域" autocomplete="off" class="layui-input">
+                            <i style="font-size: 14px;position: absolute; color: gray; right: 10%;cursor: pointer;" class="layui-icon layui-icon-close" @click="AdminClear"></i>
                             <i class="layui-icon layui-icon-triangle-d" @click="atraClick"></i>
                             <div class="atraShow layui-anim layui-anim-upbit" v-show="atraShow">
                                 <el-tree :highlight-current="treeHign" default-expand-all :expand-on-click-node="false" :data="treeData" :props="organProps"
@@ -157,6 +160,41 @@
                     checkKey: [],
                     monitoridList: []
 
+                },
+                // 实现行政区域下拉框点击外部下拉框消失
+                directives: {
+                    clickoutside: {
+                        bind(el, binding, vnode) {
+                            function documentHandler(e) {
+                                if (el.contains(e.target)) {
+                                    return false
+                                }
+                                if (binding.expression) {
+                                    binding.value(e)
+                                }
+                            }
+
+                            function KeyUp(e) {
+                                if (e.keyCode == 27) {
+                                    if (binding.expression) {
+                                        binding.value(e)
+                                    }
+                                }
+                            }
+                            el.__vueClickOutSize__ = documentHandler
+                            el.__vueKeyup__ = KeyUp
+
+                            document.addEventListener('keyup', KeyUp)
+                            document.addEventListener('click', documentHandler)
+                        },
+                        unbind(el, binding) {
+                            document.removeEventListener('click', el.__vueClickOutSize__)
+                            delete el.__vueClickOutSize__
+
+                            document.removeEventListener('keyup', el.__vueKeyup__)
+                            delete el.__vueKeyup__
+                        }
+                    }
                 },
                 methods: {
                     // 获取单选框列表
@@ -234,15 +272,12 @@
 
                             }).then(function (res) {
                                 if (res.data.code == 0) {
-
                                     vm.$notify.success({
                                         title: '提示',
                                         position: 'top-center',
                                         message: '授权成功'
                                     });
                                     vm.enterPriseInit();
-
-
                                 } else {
                                     vm.$notify.error({
                                         title: '错误',
@@ -254,12 +289,7 @@
                             }).catch(function (err) {
                                 console.log(err);
                             });
-
                         }
-
-
-
-
                     },
                     // 左右列表对应删除
                     treeClear: function () {
@@ -295,9 +325,7 @@
                                     console.log(err);
                                 });
                             })
-
                         }
-
                     },
                     // 企业列表树状图
                     enterPriseInit: function () {
@@ -325,8 +353,6 @@
                                             return;
                                         }
                                     }
-
-
                                     dataList.push({
                                         label: data.enterpriseName,
                                         enterpriseId: data.enterpriseId,
@@ -343,7 +369,6 @@
                                 })
                                 // console.log(dataList)
                                 vm.enpriseData = dataList;
-
                             }
 
                         }).catch(function (err) {
@@ -353,6 +378,13 @@
                     },
                     atraClick: function () {
                         vm.atraShow = !vm.atraShow;
+                    },
+                    adminDisplay: function () {
+                        vm.atraShow = false;
+                    },
+                    AdminClear: function () {
+                        vm.atraName = "";
+
                     },
                     // 树状图组件
                     treeDataInit: function () {
@@ -385,6 +417,7 @@
                         });
 
                     },
+
                     handleNodeClick: function (data, node) {
                         console.log(data);
                         vm.atraName = data.title;
@@ -422,8 +455,6 @@
                         //             }
                         //         }
                         //         // }
-
-
                         //     } else {
                         //         vm.$notify.error({
                         //             title: '错误',
@@ -446,7 +477,6 @@
                             // var obj = {};
                             vm.enpriseData.forEach(function (item, index) {
                                 // console.log(item,index)
-
                                 item.children.forEach(function (it, index) {
                                     it.children.forEach(function (itthird, index) {
                                         itthird.children.forEach(function (itfourth, index) {
@@ -531,19 +561,13 @@
                         // data.forEach(function (dataItem, index) {
                         //     // console.log(dataItem)
                         //     var obj = {};
-
                         // vm.enpriseData.forEach(function (item, index) {
                         //     // console.log(item,index)
-
                         //     item.children.forEach(function (it, index) {
                         //         it.children.forEach(function (itthird, index) {
                         //             itthird.children.forEach(function (itfourth, index) {
                         //                 // console.log(itfourth);
-
-
-
                         //                 if (itfourth.monitorId === dataItem.monitorId && itfourth.label === dataItem.label) {
-
                         //                     // console.log(dataItem);
                         //                     // console.log(item)
 
@@ -595,13 +619,8 @@
                         //         // localStorage.setItem("data",JSON.stringify(value));
                         //     })
                         //     console.log(vm.monitorIdData)
-
                         // }
                         // console.log(obj);
-
-
-
-
                     },
 
                     // 搜索
@@ -697,11 +716,6 @@
                 //     },
                 // }
             })
-
-
-
-
-
             layui.config({
                 base: '../../../layuiadmin/' //静态资源所在路径
             }).extend({

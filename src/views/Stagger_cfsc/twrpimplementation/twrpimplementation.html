@@ -30,6 +30,11 @@
             cursor: pointer;
             color: #c2c2c2;
         }
+
+        /* .inputcuror {
+            cursor: pointer;
+            outline: none;
+        } */
     </style>
 </head>
 
@@ -50,8 +55,9 @@
                         </div>
                         <div class="layui-inline">
                             <label class="layui-form-label">行政区域</label>
-                            <div class="layui-input-inline AdminArea">
-                                <input type="text" name="organizeName" v-model="atraName" placeholder="请选择行政区域" autocomplete="off" class="layui-input">
+                            <div class="layui-input-inline AdminArea" v-clickoutside="adminDisplay">
+                                <input type="text" name="organizeName" disabled v-model="atraName" placeholder="请选择行政区域" autocomplete="off" class="layui-input inputcuror">
+                                <i style="font-size: 14px;position: absolute; right: 14%;cursor: pointer;" class="layui-icon layui-icon-close" @click="AdminClear"></i>
                                 <i class="layui-icon layui-icon-triangle-d" @click="AdminFocus"></i>
                                 <div class="Areashow layui-anim layui-anim-upbit" v-show="Areashow">
                                     <el-tree :highlight-current="treeHign" default-expand-all :expand-on-click-node="false" :data="treeData" :props="defaultProps"
@@ -259,9 +265,52 @@
                 enterpriseName: ""
 
             },
+            // 实现行政区域下拉框点击外部下拉框消失
+            directives: {
+                clickoutside: {
+                    bind(el, binding, vnode) {
+                        function documentHandler(e) {
+                            if (el.contains(e.target)) {
+                                return false
+                            }
+                            if (binding.expression) {
+                                binding.value(e)
+                            }
+                        }
+
+                        function KeyUp(e) {
+                            if (e.keyCode == 27) {
+                                if (binding.expression) {
+                                    binding.value(e)
+                                }
+                            }
+                        }
+                        el.__vueClickOutSize__ = documentHandler
+                        el.__vueKeyup__ = KeyUp
+
+                        document.addEventListener('keyup', KeyUp)
+                        document.addEventListener('click', documentHandler)
+                    },
+                    unbind(el, binding) {
+                        document.removeEventListener('click', el.__vueClickOutSize__)
+                        delete el.__vueClickOutSize__
+
+                        document.removeEventListener('keyup', el.__vueKeyup__)
+                        delete el.__vueKeyup__
+                    }
+                }
+            },
+
             methods: {
                 AdminFocus: function () {
                     vm.Areashow = !vm.Areashow;
+                },
+                adminDisplay: function () {
+                    vm.Areashow = false;
+                },
+                AdminClear:function() {
+                    vm.atraName = "";
+
                 },
                 treeDataInit: function () {
                     axios({

@@ -145,7 +145,7 @@
                         <label for="bitian" class="layui-form-label">
                             企业选择</label>
                         <div class="layui-input-inline">
-                            <el-autocomplete v-model="firmName" :fetch-suggestions="querySearchAsync" placeholder="请输入内容" @select="handleSelect"></el-autocomplete>
+                            <el-autocomplete v-model="firmName" :fetch-suggestions="querySearchAsync" placeholder="请选择" @select="handleSelect"></el-autocomplete>
                         </div>
 
 
@@ -1063,10 +1063,10 @@
                     console.log(vm.swicthId)
                     var reg = /^[0-9]*$/
                     if (vm.swicthId != "" && vm.swicthId.length != 24) {
-                        vm.$message.warning('网管编码为24位数字，请修改');
+                        vm.$message.warning('网关编码为24位数字，请修改');
                         vm.swicthId = "";
                     } else if (!reg.test(vm.swicthId)) {
-                        vm.$message.warning('网管编码只能为24位数字，请修改');
+                        vm.$message.warning('网关编码只能为24位数字，请修改');
                         vm.swicthId = "";
                     }
                 },
