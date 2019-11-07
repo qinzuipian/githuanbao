@@ -198,7 +198,9 @@
             axios({
                 method: "post",
                 url: BASEURL + 'environmental_intelligent_monitoring/twarnsubscribe/queryEventTypeDictionary',
-                params: {}
+                params: {
+                    type:1
+                }
             }).then(function (res) {
                 if (res.data.code == 0) {
                     // console.log(res)
