@@ -20,20 +20,21 @@
 		}
 
 		.bar {
-			width: 150px;
+			width: 19%;
 			height: 100px;
 			background: ghostwhite;
 			text-align: center;
 			margin-top: 10px;
-			margin-right: 10px;
-
+			margin-right: 1%;
 		}
 
 		.bar p:nth-child(1) {
 			font-size: 20px;
 			font-weight: 800;
 			margin-top: 15px;
+			
 		}
+		
 
 		.bar span {
 			font-size: 20px;
@@ -63,13 +64,39 @@
 			margin: 0rem;
 			padding: 0px;
 		}
+		.big {
+			animation: rotated 0.2s linear forwards;
+		}
+		
+		@keyframes rotated {
+			from {
+				transform: scale(1,1);
+			}
+		
+			to {
+				transform: scale(2,2);
+			}
+		}
+		.small {
+			animation: rotated_after 0.2s linear forwards;
+		}
+		
+		@keyframes rotated_after {
+			from {
+				transform: scale(2,2);
+			}
+		
+			to {
+				transform: scale(1,1);
+			}
+		}
 	</style>
 	<body>
 		<div class="layui-fluid" id="app">
 			<div class="layui-card">
 				<div class="layui-form layui-card-header layuiadmin-card-header-auto">
 					<div style="display: flex;justify-content: space-between;">
-						<div class="flex">
+						<div class="flex ">
 							<p>企业 :</p>
 							<p v-text="enterpriseName"></p>
 						</div>
@@ -88,7 +115,7 @@
 					</div>
 					<div class="data">实时数据</div>
 					<div class="flex">
-						<div class="bar">
+						<div class="bar" >
 							<div id="flex">
 								<p v-text="ua"></p>
 								<span>V</span>
@@ -132,14 +159,14 @@
 						</div>
 						<div class="bar">
 							<div id="flex">
-								<p v-text="pv"></p>
+								<p v-text="pi"></p>
 								<span>kWh</span>
 							</div>
 							<p>有功电能</p>
 						</div>
 						<div class="bar">
 							<div id="flex">
-								<p v-text="w"></p>
+								<p v-text="p"></p>
 								<span>kW</span>
 							</div>
 							<p>总有功功率</p>
@@ -252,14 +279,15 @@
 							
 							res.data.tDeviceRealtime.ia  ==  undefined ? 0:app.ia = res.data.tDeviceRealtime.ia
 							res.data.tDeviceRealtime.ib  ==  undefined ? 0:app.ib = res.data.tDeviceRealtime.ib
-							res.data.tDeviceRealtime.ic  ==  undefined ? 0:app.ib = res.data.tDeviceRealtime.ic
+							res.data.tDeviceRealtime.ic  ==  undefined ? 0:app.ic = res.data.tDeviceRealtime.ic
 							res.data.tDeviceRealtime.ua  ==  undefined ? 0:app.ua = res.data.tDeviceRealtime.ua
 							res.data.tDeviceRealtime.ub  ==  undefined ? 0:app.ub = res.data.tDeviceRealtime.ub
 							res.data.tDeviceRealtime.uc  ==  undefined ?0:app.uc = res.data.tDeviceRealtime.uc
-							res.data.tDeviceRealtime.pv  ==  undefined ?0:app.pv = res.data.tDeviceRealtime.pv
-							res.data.tDeviceRealtime.w  ==  undefined ?0:app.w = res.data.tDeviceRealtime.w
-							res.data.tDeviceRealtime.q  ==  undefined ?0:app.q = res.data.tDeviceRealtime.q
-							res.data.tDeviceRealtime.the  ==  undefined ?0:app.the = res.data.tDeviceRealtime.the
+							res.data.tDeviceRealtime.pi  ==  undefined ?0:app.pi = res.data.tDeviceRealtime.pi
+							res.data.tDeviceRealtime.p  ==  undefined ?0:app.p = res.data.tDeviceRealtime.p
+							res.data.tDeviceRealtime.q  ==  undefined ?0:app.q = res.data.tDeviceRealtime.q,
+							res.data.tDeviceRealtime.the  ==  undefined ?0:app.the = res.data.tDeviceRealtime.the,
+							
 							// res.data.tDeviceRealtime.pa  ==  undefined ?0:app.pa = res.data.tDeviceRealtime.pa
 							// res.data.tDeviceRealtime.pb  ==  undefined ?0:app.pb = res.data.tDeviceRealtime.pb
 							// res.data.tDeviceRealtime.pc  ==  undefined ?0:app.pc = res.data.tDeviceRealtime.pc
@@ -295,10 +323,11 @@
 					ua:0,
 					ub:0,
 					uc:0,
-					pv:0,
+					pi:0,
 					w:0,
 					q:0,
 					the:0,
+					p:0,
 					pa:0,
 					pb:0,
 					pc:0,
@@ -308,7 +337,13 @@
 					modifyDate:'',
 					enterpriseName:"",
 					monitorName:'',
-					status:""
+					status:"",
+					isbig:false
+				},
+				methods:{
+					appear:function  () {
+						app.isbig = !app.isbig
+					}
 				}
 			})
 		</script>
