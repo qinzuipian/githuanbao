@@ -138,12 +138,12 @@
 						batchdel: function() {
 							var checkStatus = table.checkStatus('LAY-app-content-list'),
 								checkData = checkStatus.data; //得到选中的数据
-							console.log(checkData);
+							// console.log(checkData);
 							var idList = [];
 							for (var i = 0; i < checkData.length; i++) {
 								idList.push(checkData[i].id)
 							}
-							console.log(idList)
+							// console.log(idList)
 							if (checkData.length === 0) {
 								return layer.msg('请选择数据');
 							}
@@ -161,7 +161,7 @@
 										}
 									}).then(function (res) {
 										if (res.data.code == 0) {
-											console.log(res)
+											// console.log(res)
 											table.reload('LAY-app-content-list');
 											layer.msg('已删除');
 							
@@ -169,7 +169,7 @@
 											layer.msg('删除失败!');
 										}
 									}).catch(function (err) {
-										console.log(err);
+										// console.log(err);
 									});
 							});
 						},

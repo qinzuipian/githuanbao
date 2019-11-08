@@ -148,12 +148,12 @@
 					batchdel: function() {
 						var checkStatus = table.checkStatus('LAY-app-content-list'),
 							checkData = checkStatus.data; //得到选中的数据
-						console.log(checkData);
+
 						var idList = [];
 						for (var i = 0; i < checkData.length; i++) {
 							idList.push(checkData[i].id)
 						}
-						console.log(idList)
+
 						if (checkData.length === 0) {
 							return layer.msg('请选择数据');
 						}

@@ -179,7 +179,7 @@
 
 					}
 				}).catch(function(err) {
-					console.log(err);
+					// console.log(err);
 				});
 
 
@@ -253,7 +253,6 @@
 						this.item_voc = 0
 					},
 					change:function(){
-						console.log(11);
 					},
 					dust: function() {
 						vm.aqi_list = [];
@@ -270,7 +269,6 @@
 								enterpriseId: parent.id
 							}
 						}).then(function(res) {
-							console.log(res);
 							dus_chart.hideLoading();
 							if (res.data.code == 0) {
 								
@@ -280,9 +278,6 @@
 									vm.p10_list.push(res.data.data[i].pm10);
 									vm.p2_list.push(res.data.data[i].pm25);
 									vm.aqi_list.push(res.data.data[i].AQI);
-									console.log(vm.p10_list);
-									console.log(vm.p2_list);
-									console.log(vm.aqi_list);
 
 								}
 								dus_chart.setOption({
@@ -351,7 +346,7 @@
 
 							}
 						}).catch(function(err) {
-							console.log(err);
+							// console.log(err);
 						});
 
 
@@ -370,7 +365,6 @@
 								enterpriseId: parent.id
 							}
 						}).then(function(res) {
-							console.log(res);
 							voc_chart.hideLoading();
 							if (res.data.code == 0) {
 								for (var i = 0; i < res.data.data.length; i++) {
@@ -436,7 +430,7 @@
 
 							}
 						}).catch(function(err) {
-							console.log(err);
+							// console.log(err);
 						});
 
 

@@ -645,21 +645,19 @@
 
 					}
 				}).catch(function(err) {
-					console.log(err);
+					// console.log(err);
 				});
 
 
 
 				// 监听select框获取选中的text值
 				form.on('select(tradeName)', function(data) {
-					console.log(data.elem[data.elem.selectedIndex].text);
 					vm.tradeName = data.elem[data.elem.selectedIndex].text
 					form.render();
 
 				});
 				// 监听select框获取选中的text值
 				form.on('select(concern)', function(data) {
-					console.log(data.elem[data.elem.selectedIndex].text);
 					vm.concern = data.elem[data.elem.selectedIndex].text
 					form.render();
 
@@ -685,7 +683,7 @@
 						}
 					}).then(function(res) {
 						if (res.data.code == 0) {
-							console.log(res)
+							// console.log(res)
 							layer.msg('编辑成功！', {
 								time: 500
 							}, function() {
@@ -703,7 +701,7 @@
 							});
 						}
 					}).catch(function(err) {
-						console.log(err);
+						// console.log(err);
 					});
 					return false;
 				})

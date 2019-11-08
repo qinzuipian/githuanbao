@@ -104,9 +104,7 @@
 					enterpriseId: "89"
 				}
 			}).then(function(res) {
-				console.log(res.data.data)
 				if (res.data.code == 0) {
-					console.log(res.data.data);
 					for (var i = 0; i < res.data.data.length; i++) {
 						vm.list_data.push(res.data.data[i].createDate);
 						vm.list_num.push(res.data.data[i].num);
@@ -203,7 +201,7 @@
 
 				}
 			}).catch(function(err) {
-				console.log(err);
+				// console.log(err);
 			});
 
 

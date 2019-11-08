@@ -352,7 +352,7 @@
 
 					}
 				}).catch(function(err) {
-					console.log(err);
+					// console.log(err);
 				});
 
 
@@ -378,7 +378,7 @@
 						});
 					}
 				}).catch(function(err) {
-					console.log(err);
+					// console.log(err);
 				});
 
 				//行政区域获取下拉行业的选项
@@ -409,7 +409,7 @@
 
 					}
 				}).catch(function(err) {
-					console.log(err);
+					// console.log(err);
 				});
 
 
@@ -425,16 +425,13 @@
 					echart.hideLoading();
 					// console.log(res.data.data)
 					if (res.data.code == 0) {
-						console.log(res.data.data);
 						for (var i = 0; i < res.data.data.length; i++) {
 							var obj = {}
-							console.log(i);
 							obj.value = res.data.data[i].percent * 100;
 							obj.name = res.data.data[i].name;
 							vm.list_Hpic.push(obj);
 							vm.list_box1.push(obj)
 						}
-						console.log(vm.list_Hpic);
 						echart.setOption({
 							textStyle: {
 								fontSize: 32,
@@ -487,7 +484,7 @@
 
 					}
 				}).catch(function(err) {
-					console.log(err);
+					// console.log(err);
 				});
 
 
@@ -561,7 +558,7 @@
 
 					}
 				}).catch(function(err) {
-					console.log(err);
+					// console.log(err);
 				});
 
 
@@ -905,7 +902,6 @@
 
 					},
 					handleNodeClick: function(data, node) {
-						console.log(data);
 						vm.atraName = data.title;
 						vm.treeId = data.id;
 						vm.treeHign = true;
