@@ -188,6 +188,17 @@
                 }
             });
 
+            table.on('sort(LAY-app-content-list)', function (obj) {
+                console.log(obj)
+                $("[data-field='violation']").children().each(function () {
+                    if ($(this).text() == '1') {
+                        $(this).text("是")
+                    } else if ($(this).text() == '0') {
+                        $(this).text("否")
+                    }
+                })
+            });
+
             //监听搜索
             form.on('submit(LAY-app-contlist-search)', function (data) {
                 console.log(data)
@@ -326,9 +337,9 @@
                             // vm.treeData = res.data.page.list;
                             var data = res.data.data;
                             var obj = {
-								title: '请选择'
-							}
-							data.unshift(obj);
+                                title: '请选择'
+                            }
+                            data.unshift(obj);
                             vm.treeData = data;
 
                             // for (var i = 0; i < data.length; i++) {
@@ -358,9 +369,9 @@
                     vm.atraName = data.title;
                     vm.treeHign = true;
                     vm.Areashow = false;
-                    if(data.title == "请选择"){
-						vm.atraName = ""
-					}
+                    if (data.title == "请选择") {
+                        vm.atraName = ""
+                    }
                     // console.log(node.parent.childNodes[0].parent.data.label)
                     /*    var localname = node.parent.childNodes[0].parent.data.label === undefined ? '无上级目录' : node.parent.childNodes[0].parent.data.label;
                        localStorage.setItem("nodeParentName", localname) */

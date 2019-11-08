@@ -230,12 +230,12 @@
                     , cols: [[
                         // { type: 'numbers', width: 50, fixed: 'left' },
                         // { checkbox: true },
-                        { title: '生产单元', sort:true, field: 'shopName', minWidth: 100 },
-                        { title: '产污监测点', sort:true, field: 'productName', minWidth: 120 },
+                        { title: '生产单元', sort: true, field: 'shopName', minWidth: 100 },
+                        { title: '产污监测点', sort: true, field: 'productName', minWidth: 120 },
                         // { title: '事件类型编码', field: 'eventtypeid', minWidth: 100 },
-                        { title: '治污监测点', sort:true,  field: 'treatName', minWidth: 120 },
-                        { title: '备用关系', sort:true,  field: 'backup', minWidth: 80 },
-                        { fixed: 'right', sort:true,  title: '操作', toolbar: '#barDemo', width: 100 }
+                        { title: '治污监测点', sort: true, field: 'treatName', minWidth: 120 },
+                        { title: '备用关系', sort: true, field: 'backup', minWidth: 80 },
+                        { fixed: 'right', sort: true, title: '操作', toolbar: '#barDemo', width: 100 }
                     ]] //设置表头
                     , limit: 10
                     , limits: [10, 15, 20, 25, 30]
@@ -249,6 +249,16 @@
                         })
 
                     }
+                });
+                table.on('sort(LAY-app-content-list)', function (obj) {
+                    console.log(obj)
+                    $("[data-field='backup']").children().each(function () {
+                        if ($(this).text() == '1') {
+                            $(this).text("备用")
+                        } else if ($(this).text() == '0') {
+                            $(this).text("使用")
+                        }
+                    })
                 });
 
 
