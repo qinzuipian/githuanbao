@@ -189,7 +189,6 @@
             });
 
             table.on('sort(LAY-app-content-list)', function (obj) {
-                console.log(obj)
                 $("[data-field='violation']").children().each(function () {
                     if ($(this).text() == '1') {
                         $(this).text("是")
