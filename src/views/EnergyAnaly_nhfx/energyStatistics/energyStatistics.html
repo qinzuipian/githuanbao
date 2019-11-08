@@ -48,7 +48,7 @@
 
 <body>
     <div id="vm">
-        <div class="energyMain">
+        <div class="energyMain" v-loading="mainLoading" v-cloak>
             <div class="head">
                 <button type="button" :class="{'active': energyShow == 1}" @click="energyShowClick(1)">企业</button>
                 <button type="button" :class="{'active': energyShow == 2}" @click="energyShowClick(2)">行业</button>
@@ -410,21 +410,11 @@
     <script src="./../../../layuiadmin/plugin/echarts.min.js"></script>
     <script src="./../../../layuiadmin/js/baseUrlConfig.js"></script>
     <script type="text/babel">
-        layui.config({
-            base: '../../../layuiadmin/' //静态资源所在路径
-        }).extend({
-            index: 'lib/index' //主入口模块
-        }).use(['index', 'form', 'table', 'jquery', 'laydate', 'echarts'], function () {
-            var form = layui.form,
-                table = layui.table,
-                $ = layui.jquery,
-                echarts = layui.echarts,
-                laydate = layui.laydate;
-
-        });
+     
         var vm = new Vue({
             el: "#vm",
             data: {
+                mainLoading:true,
                 energyShow: 1,
                 electricShow: 1,
                 radiusShow: 1,
@@ -810,6 +800,7 @@
                         if (res.data.code == 0) {
                             // console.log(res)
                             vm.enterpriseOptions = res.data.page.list;
+                            vm.mainLoading = false;
 
                         } else {
 
@@ -2006,9 +1997,23 @@
                 this.enterpriseInit();
                 // this.monitorNameInit();
                 this.industryInit();
-                this.treeDataInit();        
+                this.treeDataInit();     
             }
         })
+
+
+        layui.config({
+            base: '../../../layuiadmin/' //静态资源所在路径
+        }).extend({
+            index: 'lib/index' //主入口模块
+        }).use(['index', 'form', 'table', 'jquery', 'laydate', 'echarts'], function () {
+            var form = layui.form,
+                table = layui.table,
+                $ = layui.jquery,
+                echarts = layui.echarts,
+                laydate = layui.laydate;
+
+        });
     </script>
 </body>
 
