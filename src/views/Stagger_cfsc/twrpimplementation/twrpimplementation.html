@@ -57,7 +57,7 @@
                             <label class="layui-form-label">行政区域</label>
                             <div class="layui-input-inline AdminArea" v-clickoutside="adminDisplay">
                                 <input type="text" name="organizeName" disabled v-model="atraName" placeholder="请选择行政区域" autocomplete="off" class="layui-input inputcuror">
-                                <i style="font-size: 14px;position: absolute; right: 14%;cursor: pointer;" class="layui-icon layui-icon-close" @click="AdminClear"></i>
+                                <!-- <i style="font-size: 14px;position: absolute; right: 14%;cursor: pointer;" class="layui-icon layui-icon-close" @click="AdminClear"></i> -->
                                 <i class="layui-icon layui-icon-triangle-d" @click="AdminFocus"></i>
                                 <div class="Areashow layui-anim layui-anim-upbit" v-show="Areashow">
                                     <el-tree :highlight-current="treeHign" default-expand-all :expand-on-click-node="false" :data="treeData" :props="defaultProps"
@@ -170,11 +170,11 @@
                     return msg;
                 },
                 cols: [[
-                    { title: '企业名称', sort:true, field: 'enterpriseName', minWidth: 100 },
-                    { title: '时间', sort:true, field: 'tDateTime', minWidth: 100 },
-                    { title: '目标负荷', sort:true, field: 'targetLoad', minWidth: 100 },
-                    { title: '当天负荷', sort:true, field: 'nowaDaysLoad', minWidth: 100 },
-                    { title: '是否违规', sort:true, field: 'violation', minWidth: 100 }]] //设置表头
+                    { title: '企业名称', sort: true, field: 'enterpriseName', minWidth: 100 },
+                    { title: '时间', sort: true, field: 'tDateTime', minWidth: 100 },
+                    { title: '目标负荷', sort: true, field: 'targetLoad', minWidth: 100 },
+                    { title: '当天负荷', sort: true, field: 'nowaDaysLoad', minWidth: 100 },
+                    { title: '是否违规', sort: true, field: 'violation', minWidth: 100 }]] //设置表头
                 , limit: 10
                 , limits: [10, 15, 20, 25, 30]
                 , done: function (res, page, count) {
@@ -308,7 +308,7 @@
                 adminDisplay: function () {
                     vm.Areashow = false;
                 },
-                AdminClear:function() {
+                AdminClear: function () {
                     vm.atraName = "";
 
                 },
@@ -325,6 +325,10 @@
                             // vm.treeData = [];
                             // vm.treeData = res.data.page.list;
                             var data = res.data.data;
+                            var obj = {
+								title: '请选择'
+							}
+							data.unshift(obj);
                             vm.treeData = data;
 
                             // for (var i = 0; i < data.length; i++) {
@@ -338,6 +342,10 @@
 
 
                         } else {
+                            vm.$notify.error({
+                                title: '错误',
+                                message: res.data.msg
+                            });
 
                         }
                     }).catch(function (err) {
@@ -350,6 +358,9 @@
                     vm.atraName = data.title;
                     vm.treeHign = true;
                     vm.Areashow = false;
+                    if(data.title == "请选择"){
+						vm.atraName = ""
+					}
                     // console.log(node.parent.childNodes[0].parent.data.label)
                     /*    var localname = node.parent.childNodes[0].parent.data.label === undefined ? '无上级目录' : node.parent.childNodes[0].parent.data.label;
                        localStorage.setItem("nodeParentName", localname) */

@@ -96,7 +96,8 @@
                     <div class="layui-inline layui-form">
                         <div class="layui-input-inline" v-clickoutside="adminDisplay">
                             <input type="text" name="atraCode" disabled v-model="atraName" placeholder="请选择行政区域" autocomplete="off" class="layui-input">
-                            <i style="font-size: 14px;position: absolute; color: gray; right: 10%;cursor: pointer;" class="layui-icon layui-icon-close" @click="AdminClear"></i>
+                            <!-- <i style="font-size: 14px;position: absolute; color: gray; right: 10%;cursor: pointer;" class="layui-icon layui-icon-close"
+                                @click="AdminClear"></i> -->
                             <i class="layui-icon layui-icon-triangle-d" @click="atraClick"></i>
                             <div class="atraShow layui-anim layui-anim-upbit" v-show="atraShow">
                                 <el-tree :highlight-current="treeHign" default-expand-all :expand-on-click-node="false" :data="treeData" :props="organProps"
@@ -119,7 +120,7 @@
                 <!-- @check-change="mmmm" -->
                 <!-- :indent="0" -->
                 <div class="l-card-border" style="min-height: 400px;">
-                    <el-tree :data="enpriseData" show-checkbox default-expand-all :default-checked-keys="checkKey" node-key="monitorId" @check="manageCheck"
+                    <el-tree :data="enpriseData" show-checkbox default-expand-all :default-checked-keys="checkKey" node-key="monitorId" @node-click="manageNode" @check="manageCheck"
                         ref="tree" highlight-current :props="defaultProps">
                     </el-tree>
                 </div>
@@ -170,6 +171,7 @@
                                     return false
                                 }
                                 if (binding.expression) {
+                                    console.log(binding.expression)
                                     binding.value(e)
                                 }
                             }
@@ -386,6 +388,11 @@
                         vm.atraName = "";
 
                     },
+                    manageNode:function(node) {
+                        // console.log(node)
+                        vm.atraShow = false;
+
+                    },
                     // 树状图组件
                     treeDataInit: function () {
                         axios({
@@ -400,6 +407,10 @@
                                 // vm.treeData = [];
                                 // vm.treeData = res.data.page.list;
                                 var data = res.data.data;
+                                var obj = {
+                                    title: '请选择'
+                                }
+                                data.unshift(obj);
                                 vm.treeData = data;
                                 // for (var i = 0; i < data.length; i++) {
                                 //     var obj = {};
@@ -423,6 +434,9 @@
                         vm.atraName = data.title;
                         vm.treeHign = true;
                         vm.atraShow = false;
+                        if (data.title == "请选择") {
+                            vm.atraName = ""
+                        }
                         // console.log(node.parent.childNodes[0].parent.data.label)
                         /*    var localname = node.parent.childNodes[0].parent.data.label === undefined ? '无上级目录' : node.parent.childNodes[0].parent.data.label;
                            localStorage.setItem("nodeParentName", localname) */

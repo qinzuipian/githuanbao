@@ -171,7 +171,11 @@
 
 						var idList = [];
 						for (var i = 0; i < checkData.length; i++) {
-							idList.push(checkData[i].id)
+							var obj = {};
+							obj.enterpriseId = checkData[i].enterpriseId;
+							obj.userType = checkData[i].userType;
+							obj.SendType = checkData[i].sendType;
+							idList.push(obj)
 						}
 
 						if (checkData.length === 0) {
@@ -183,9 +187,9 @@
 							//执行 axios 后重载
 							axios({
 								method: "post",
-								url: layui.setter.BASEURL + 'environmental_intelligent_monitoring/twarnsubscribe/delete',
+								url: layui.setter.BASEURL + 'environmental_intelligent_monitoring/twarnsubscribe/deleteByEnterpriseId',
 								data: {
-									ids: idList
+									enterpriselist: idList
 								},
 								headers: {
 									"Content-Type": "application/json;charset=UTF-8"
@@ -214,27 +218,28 @@
 							title: '添加异常订阅',
 							content: 'warnsubAdd.html',
 							maxmin: true,
-							area: ['600px', '480px']
+							area: ['600px', '500px']
 
 						});
 					},
 					edit: function () {
 						var checkStatus = table.checkStatus('LAY-app-content-list'),
 							checkData = checkStatus.data; //得到选中的数据
-
+						console.log(checkData)
 						if (checkData.length === 0) {
 							return layer.msg('请选择需要修改的数据');
 						} else if (checkData.length > 1) {
 							return layer.msg('只能选择单条数据进行编辑');
 						}
 						// 获取行数据的id传值至弹窗页面
-						window.id = checkData[0].id;
+						// window.id = checkData[0].id;
+						window.data = checkData;
 						layer.open({
 							type: 2,
 							title: '编辑异常订阅',
 							content: 'warnsubEdit.html',
 							maxmin: true,
-							area: ['600px', '480px']
+							area: ['600px', '500px']
 						});
 
 					}

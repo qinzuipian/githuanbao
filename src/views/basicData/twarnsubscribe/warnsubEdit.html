@@ -42,6 +42,7 @@
             color: #f00;
             font-size: 22px;
         }
+
         .layui-form {
             padding-top: 20px;
         }
@@ -53,14 +54,15 @@
         <div class="layui-fluid">
             <div class="layui-row">
                 <form class="layui-form" lay-filter="editWarn">
-                    <input type="hidden" name="id">
+                    <input type="hidden" name="enterpriseId">
                     <div class="layui-form-item">
                         <label for="bitian" class="layui-form-label">
                             企业名称
                             <span class="red">*</span>
                         </label>
                         <div class="layui-input-inline">
-                            <input type="text" name="enterpriseName" disabled lay-verify="required" class="layui-input layui-disabled" placeholder="企业名称" />
+                            <input type="text" name="enterpriseName" disabled lay-verify="required" class="layui-input layui-disabled" placeholder="企业名称"
+                            />
                         </div>
 
                     </div>
@@ -70,12 +72,12 @@
                             事件类型
                             <span class="red">*</span>
                         </label>
-                        <div class="layui-input-inline">
+                        <div class="layui-input-inline" id="eventType">
                             <!-- <input type="text" v-model="tWarnSubscribe.eventtype" class="layui-input" placeholder="事件类型名称" /> -->
-                            <select name="eventTypeId" id="eventType" lay-filter="eventType" lay-verify="required">
+                            <!-- <select name="eventTypeId" id="eventType" lay-filter="eventType" lay-verify="required">
                                 <option value="">请选择事件类型</option>
                                 <option value=""></option>
-                            </select>
+                            </select> -->
                         </div>
 
                     </div>
@@ -156,7 +158,7 @@
             var form = layui.form,
                 $ = layui.jquery;
 
-            // select事件类型数据填充
+            // checkbox事件类型数据填充
             axios({
                 method: "post",
                 url: BASEURL + 'environmental_intelligent_monitoring/twarnsubscribe/queryEventTypeDictionary',
@@ -166,9 +168,38 @@
                     // console.log(res)
                     $.each(res.data.data, function (index, item) {
                         // console.log(index, item)
-                        $('#eventType').append(new Option(item.eventType, item.eventTypeId));// 下拉菜单里添加元素
+                        // $('#eventType').append(new Option(item.eventType, item.eventTypeId));// 下拉菜单里添加元素
+                        $('#eventType').append('<input type="checkbox"  lay-filter="eventType"  value="' + item.eventTypeId + '" title="' + item.eventType + '" lay-skin="primary">');
                     });
-                    layui.form.render("select");
+                    // form.render();
+
+
+
+                    console.log(parent.data)
+                    // 单个信息数据展示
+                    var WarnData = parent.data[0];
+                    form.val('editWarn', {
+                        'enterpriseId': WarnData.enterpriseId,
+                        'enterpriseName': WarnData.enterpriseName,
+                        // 'eventType': WarnData.eventType,
+                        // 'eventTypeId': WarnData.eventTypeId,
+                        'sendType': WarnData.sendType,
+                        'userType': WarnData.userType,
+                        'sendToList': WarnData.sendToList,
+                        'remark': WarnData.remark
+
+                    })
+                    var idList = WarnData.eventTypeId.split(",");
+                    // console.log(idList);
+                    for (i = 0; i < idList.length; i++) {
+                        var Checkbox = $("input[type=checkbox]");
+                        for (j = 0; j < Checkbox.length; j++) {
+                            if (Checkbox[j].value == idList[i]) {
+                                Checkbox[j].checked = true;  //设置选中
+                            }
+                        }
+                    }
+                    form.render();
 
                 } else {
 
@@ -177,41 +208,62 @@
                 console.log(err);
             });
 
-            // 单个信息数据展示
-            axios({
-                method: "get",
-                url: BASEURL + "environmental_intelligent_monitoring/twarnsubscribe/info/" + parent.id,
-            })
-                .then(res => {
-                    if (res.data.code == 0) {
-                        var WarnData = res.data.tWarnSubscribe;
-                        form.val('editWarn', {
-                            'id': WarnData.id,
-                            'enterpriseName': WarnData.enterpriseName,
-                            'eventType': WarnData.eventType,
-                            'eventTypeId': WarnData.eventTypeId,
-                            'sendType': WarnData.sendType,
-                            'userType': WarnData.userType,
-                            'sendToList': WarnData.sendToList,
-                            'remark': WarnData.remark
 
-                        })
-                    } else {
-                        vm.$notify.error({
-                            title: '错误',
-                            message: res.data.msg
-                        });
+            // form.on('checkbox(eventType)', function (data) {
+            //     vm.eventTypeList.push(data.othis[0].innerText);
+            //     vm.eventTypeIdList.push(data.value);
+            //     console.log(vm.eventTypeList)
+            //     console.log(vm.eventTypeIdList)
+            //     // vm.eventType = data.elem[data.elem.selectedIndex].text
+            //     form.render();
 
-                    }
-                }).catch(error => {
+            // })
 
-                });
+
+            // axios({
+            //     method: "get",
+            //     url: BASEURL + "environmental_intelligent_monitoring/twarnsubscribe/info/" + parent.id,
+            // })
+            //     .then(res => {
+            //         if (res.data.code == 0) {
+            //             var WarnData = res.data.tWarnSubscribe;
+            //             form.val('editWarn', {
+            //                 'id': WarnData.id,
+            //                 'enterpriseName': WarnData.enterpriseName,
+            //                 'eventType': WarnData.eventType,
+            //                 'eventTypeId': WarnData.eventTypeId,
+            //                 'sendType': WarnData.sendType,
+            //                 'userType': WarnData.userType,
+            //                 'sendToList': WarnData.sendToList,
+            //                 'remark': WarnData.remark
+
+            //             })
+            //         } else {
+            //             vm.$notify.error({
+            //                 title: '错误',
+            //                 message: res.data.msg
+            //             });
+
+            //         }
+            //     }).catch(error => {
+
+            //     });
 
             // form表单的提交
             form.on('submit(warnForm)', function (data) {
+                vm.eventTypeList = [];
+                vm.eventTypeIdList = [];
+                $("input:checkbox[type='checkbox']:checked").each(function () {
+                    console.log($(this)[0].title)
+                    vm.eventTypeList.push($(this)[0].title);
+                    vm.eventTypeIdList.push($(this)[0].value);
+                })
+                data.field.eventTypeListStr = vm.eventTypeList.join();
+                data.field.eventTypeIdListStr = vm.eventTypeIdList.join();
+                console.log(data.field)
                 axios({
                     method: "post",
-                    url: BASEURL + 'environmental_intelligent_monitoring/twarnsubscribe/update',
+                    url: BASEURL + 'environmental_intelligent_monitoring/twarnsubscribe/batchSave',
                     data: data.field,
                     headers: {
                         "Content-Type": "application/json;charset=UTF-8"
@@ -245,7 +297,10 @@
 
         var vm = new Vue({
             el: "#vm",
-            data: {},
+            data: {
+                eventTypeList: [],
+                eventTypeIdList: []
+            },
             methods: {
                 cancel() {
                     parent.layer.closeAll('iframe');//关闭弹窗

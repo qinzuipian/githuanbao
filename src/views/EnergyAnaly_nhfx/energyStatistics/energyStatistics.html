@@ -96,7 +96,7 @@
                     <div class="layui-inline layui-form">
                         <div class="layui-input-inline AdminArea" v-clickoutside="adminDisplay">
                             <input type="text" name="organizeName" disabled v-model="atraName" placeholder="请选择行政区域" autocomplete="off" class="layui-input">
-                            <i style="font-size: 14px;position: absolute; right: 14%;cursor: pointer;" class="layui-icon layui-icon-close" @click="AdminClear"></i>
+                            <!-- <i style="font-size: 14px;position: absolute; right: 14%;cursor: pointer;" class="layui-icon layui-icon-close" @click="AdminClear"></i> -->
                             <i class="layui-icon layui-icon-triangle-d" @click="AdminFocus"></i>
                             <div class="Areashow layui-anim layui-anim-upbit" v-show="Areashow">
                                 <el-tree :highlight-current="treeHign" default-expand-all :expand-on-click-node="false" :data="treeData" :props="defaultProps"
@@ -569,6 +569,10 @@
                             // vm.treeData = [];
                             // vm.treeData = res.data.page.list;
                             var data = res.data.data;
+                            var obj = {
+								title: '请选择'
+							}
+							data.unshift(obj);
                             vm.treeData = data;
                         } else {
 
@@ -583,6 +587,9 @@
                     vm.atraId = data.id;
                     vm.treeHign = true;
                     vm.Areashow = false;
+                    if(data.title == "请选择"){
+						vm.atraName = ""
+					}
                     this.electricyRadius(-1, -1, -1, vm.atraId);
                     if (this.electricShow == 1) {
                         // 电能趋势按日统计

@@ -38,10 +38,12 @@
         .layui-form-item .layui-input-inline {
             width: 340px;
         }
+
         .red {
             color: #f00;
             font-size: 22px;
         }
+
         .layui-form {
             padding-top: 20px;
         }
@@ -56,34 +58,40 @@
                     <input type="hidden" name="enterpriseId">
                     <div class="layui-form-item">
                         <label for="bitian" class="layui-form-label">
-                            企业名称<span class="red">*</span></label>
+                            企业名称
+                            <span class="red">*</span>
+                        </label>
                         <div class="layui-input-inline">
                             <!-- <input type="text" v-model="tWarnSubscribe.enterprisename" name="enterpriseName" class="layui-input" placeholder="企业名称" /> -->
                             <select name="enterpriseId" id="enterpriseName" lay-verify="required" lay-filter="enterpriseName">
                                 <option value=""></option>
                             </select>
                         </div>
-                       
+
                     </div>
 
                     <div class="layui-form-item">
                         <label for="bitian" class="layui-form-label">
-                            事件类型<span class="red">*</span></label>
-                        <div class="layui-input-inline">
+                            事件类型
+                            <span class="red">*</span>
+                        </label>
+                        <div class="layui-input-inline" id="eventType">
                             <!-- <input type="text" v-model="tWarnSubscribe.eventtype" class="layui-input" placeholder="事件类型名称" /> -->
-                            <select name="eventTypeId" id="eventType" lay-filter="eventType" lay-verify="required">
+                            <!-- <select multiple name="eventTypeId" id="eventType" lay-filter="eventType" lay-verify="required">
                                 <option value="">请选择事件类型</option>
                                 <option value=""></option>
-                            </select>
+                            </select> -->
                         </div>
-                       
+
                     </div>
 
 
 
                     <div class="layui-form-item">
                         <label for="bitian" class="layui-form-label">
-                            发送方式<span class="red">*</span></label>
+                            发送方式
+                            <span class="red">*</span>
+                        </label>
                         <div class="layui-input-inline">
                             <!-- <input type="text" v-model="tWarnSubscribe.sendtype" class="layui-input" placeholder="发送方式名称：短信、邮件、App、语音外呼" /> -->
                             <select name="sendType" id="eventtype" lay-verify="required">
@@ -94,28 +102,32 @@
                                 <!-- <option value="语音外呼">语音外呼</option> -->
                             </select>
                         </div>
-                        
+
                     </div>
 
                     <div class="layui-form-item">
                         <label for="bitian" class="layui-form-label">
-                            用户类型<span class="red">*</span></label>
+                            用户类型
+                            <span class="red">*</span>
+                        </label>
                         <div class="layui-input-inline">
                             <!-- <input type="text" v-model="tWarnSubscribe.usertype" class="layui-input" placeholder="用户类型：1、企业人员 2、检查人员 3、执法人员" /> -->
-                            <input type="radio" name="userType" checked  value="1" title="企业人员">
-                            <input type="radio" name="userType"  value="2" title="检查人员">
-                            <input type="radio" name="userType"  value="3" title="执法人员">
+                            <input type="radio" name="userType" checked value="1" title="企业人员">
+                            <input type="radio" name="userType" value="2" title="检查人员">
+                            <input type="radio" name="userType" value="3" title="执法人员">
                         </div>
-                        
+
                     </div>
                     <div class="layui-form-item">
                         <label for="bitian" class="layui-form-label">
-                            发送对象<span class="red">*</span></label>
+                            发送对象
+                            <span class="red">*</span>
+                        </label>
                         <div class="layui-input-inline">
                             <input type="text" name="sendToList" lay-verify="required" class="layui-input" placeholder="多个对象用；隔开" />
-                           
+
                         </div>
-                        
+
                     </div>
                     <div class="layui-form-item">
                         <label for="bitian" class="layui-form-label">
@@ -158,11 +170,17 @@
             }).then(function (res) {
                 if (res.data.code == 0) {
                     // console.log(res)
+                    // $.each(res.data.data, function (index, item) {
+                    //     // console.log(index, item)
+                    //     $('#eventType').append(new Option(item.eventType, item.eventTypeId));// 下拉菜单里添加元素
+                    // });
+                    // layui.form.render("select");
                     $.each(res.data.data, function (index, item) {
-                        // console.log(index, item)
-                        $('#eventType').append(new Option(item.eventType, item.eventTypeId));// 下拉菜单里添加元素
+                        // console.log(index,item)
+                        // name="eventType"
+                        $('#eventType').append('<input type="checkbox" lay-filter="eventType"  value="' + item.eventTypeId + '" title="' + item.eventType + '" lay-skin="primary">');
                     });
-                    layui.form.render("select");
+                    form.render();
 
                 } else {
 
@@ -200,9 +218,14 @@
                 form.render();
 
             });
-            form.on('select(eventType)', function (data) {
-                // console.log(data.elem[data.elem.selectedIndex].text);
-                vm.eventType = data.elem[data.elem.selectedIndex].text
+            form.on('checkbox(eventType)', function (data) {
+                // console.log(data.elem[data.elem.checkedIndex].text);
+                // console.log(data.othis[0].innerText);
+                vm.eventTypeList.push(data.othis[0].innerText);
+                vm.eventTypeIdList.push(data.value);
+                console.log(vm.eventTypeList)
+                console.log(vm.eventTypeIdList)
+                // vm.eventType = data.elem[data.elem.selectedIndex].text
                 form.render();
 
             })
@@ -210,10 +233,13 @@
             form.on('submit(warnForm)', function (data) {
                 console.log(data);
                 data.field.enterpriseName = vm.enterpriseName;
-                data.field.eventType = vm.eventType;
+                data.field.eventTypeListStr = vm.eventTypeList.join();
+                data.field.eventTypeIdListStr = vm.eventTypeIdList.join();
+                console.log(data.field);
                 axios({
                     method: "post",
-                    url: layui.setter.BASEURL + 'environmental_intelligent_monitoring/twarnsubscribe/save',
+                    // url: layui.setter.BASEURL + 'environmental_intelligent_monitoring/twarnsubscribe/save',
+                    url: layui.setter.BASEURL + 'environmental_intelligent_monitoring/twarnsubscribe/batchSave',
                     data: data.field,
                     headers: {
                         "Content-Type": "application/json;charset=UTF-8"
@@ -244,7 +270,8 @@
             el: "#vm",
             data: {
                 enterpriseName: "",
-                eventType: ""
+                eventTypeList: [],
+                eventTypeIdList: [],
             },
             methods: {
                 cancel() {
