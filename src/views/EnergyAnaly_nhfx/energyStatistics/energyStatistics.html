@@ -48,7 +48,9 @@
 
 <body>
     <div id="vm">
-        <div class="energyMain" v-loading="mainLoading">
+            <!-- element-loading-background="rgba(0, 0, 0, 0.8)"
+            element-loading-text="加载中" -->
+        <div class="energyMain" v-loading="mainLoading"  element-loading-spinner="el-icon-loading">
             <div class="head">
                 <button type="button" :class="{'active': energyShow == 1}" @click="energyShowClick(1)">企业</button>
                 <button type="button" :class="{'active': energyShow == 2}" @click="energyShowClick(2)">行业</button>
@@ -800,13 +802,13 @@
                         if (res.data.code == 0) {
                             // console.log(res)
                             vm.enterpriseOptions = res.data.page.list;
-                            vm.mainLoading = false;
-
                         } else {
 
                         }
+                        vm.mainLoading = false;
                     }).catch(function (err) {
                         console.log(err);
+                        vm.mainLoading = false;
                     });
 
                 }
