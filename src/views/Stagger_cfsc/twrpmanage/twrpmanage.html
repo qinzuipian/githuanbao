@@ -347,7 +347,7 @@
                                                 label: data.shopName,
                                                 children: [{
                                                     label: data.codeType === "0" ? '生产设备' : data.codeType === "1" ? '治污设备' : '总进线',
-                                                    // id: data.type,
+                                                    id: data.codeType,
                                                     children: [{ label: data.monitorName, monitorId: data.id }]
                                                 }]
                                             });
@@ -658,8 +658,8 @@
                                             dataList[i].children.push({
                                                 label: data.shopName,
                                                 children: [{
-                                                    label: data.type === "1" ? '生产设备' : '治污设备',
-                                                    id: data.type,
+                                                    label: data.codeType === "0" ? '生产设备' : data.codeType === "1" ? '治污设备' : '总进线',
+                                                    id: data.codeType,
                                                     children: [{ label: data.monitorName, id: data.id }]
                                                 }]
                                             });
@@ -676,8 +676,8 @@
                                         children: [{
                                             label: data.shopName,
                                             children: [{
-                                                label: data.type === "1" ? '生产设备' : '治污设备',
-                                                id: data.type,
+                                                label: data.codeType === "0" ? '生产设备' : data.codeType === "1" ? '治污设备' : '总进线',
+                                                id: data.codeType,
                                                 children: [{ label: data.monitorName, id: data.id }]
                                             }]
                                         }]
