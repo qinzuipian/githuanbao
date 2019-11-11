@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>能耗统计报表</title>
+    <title>能耗统计</title>
     <link rel="stylesheet" href="./../../../layuiadmin/layui/css/layui.css" media="all">
     <link rel="stylesheet" href="./../../../layuiadmin/style/admin.css" media="all">
     <link rel="stylesheet" href="./../../../layuiadmin/style/firmMonitor.css">
@@ -190,7 +190,7 @@
 
             // 监听select框选择事件
             // form.on('select(timeType)', function (data) {
-            //     console.log(data)
+            //     // console.log(data)
             //     if (data.value == 'year') {
             //         vm.timeShow = 2;
 
@@ -259,7 +259,7 @@
             methods: {
                 // 为时间添加默认时间
                 timePicker: function () {
-                    // console.log(this.timeShow)
+                    // // console.log(this.timeShow)
                     var now = new Date();
                     var year = now.getFullYear(); //得到年份
                     var month = now.getMonth() + 1; //得到月份
@@ -318,12 +318,12 @@
 
                         }
                     }).catch(function (err) {
-                        console.log(err);
+                        // console.log(err);
                     });
                 },
                 handleNodeClick: function (data, node) {
                     if (data.type == "t_bas_enterprise") {
-                        // console.log(data)
+                        // // console.log(data)
                         this.enpriseName = data.title;
                         this.enpriseId = data.id;
 
@@ -365,7 +365,7 @@
                         hourData.push(i + '时');
                     }
                     this.dataTime = hourData;
-                    console.log(this.dataTime)
+                    // console.log(this.dataTime)
                 },
                 // 企业能耗统计报表按天统计
                 enpriseDay: function (enterpriseId) {
@@ -380,11 +380,11 @@
                             }
                         }).then(function (res) {
                             if (res.data.code == 0) {
-                                // console.log(res.data.data)
+                                // // console.log(res.data.data)
                                 var allData = res.data.data;
                                 if (allData.length != 0) {
                                     allData.forEach(function (data) {
-                                        // console.log(data);
+                                        // // console.log(data);
                                         var hourData = [];
                                         for (let key in data) {
                                             if (key == 'monitorName') {
@@ -420,17 +420,17 @@
                                 //         return value1 - value2;
                                 //     }
                                 // }
-                                // // console.log(timeData);
+                                // // // console.log(timeData);
                                 // var dataItem = [];
 
                                 // allData.forEach(function (data) {
-                                //     console.log(data);
+                                //     // console.log(data);
                                 //     var obj = {};
                                 //     var sortData = [];
                                 //     timeData.forEach(t1 => {
 
                                 //         let exist = data.tKwhlist.some(t2 => t1 == t2.time);
-                                //         console.log(exist);
+                                //         // console.log(exist);
                                 //         if (!exist) {
                                 //             sortData.push({
                                 //                 time: t1,
@@ -439,17 +439,17 @@
                                 //         }
 
                                 //     });
-                                //     // console.log(sortData)       
+                                //     // // console.log(sortData)       
                                 //     data.tKwhlist.forEach(function (item) {
                                 //         sortData.push(item)
                                 //     })
-                                //     console.log(sortData)
+                                //     // console.log(sortData)
                                 //     dataItem = sortData.sort(compare('time'));
                                 //     obj.monitorName = data.monitorName;
                                 //     obj.list = dataItem;
                                 //     vm.reportDataDay.push(obj);
                                 // })
-                                // console.log(vm.reportDataDay)
+                                // // console.log(vm.reportDataDay)
 
                             } else if (res.data.code == 203) {
                                 vm.$notify({
@@ -467,7 +467,7 @@
                             }
                         })
                             .catch(function (err) {
-                                console.log(err);
+                                // console.log(err);
                             });
                     } else {
                         var h = this.$createElement;
@@ -487,7 +487,7 @@
                 },
                 // 企业能耗统计报表按月统计
                 enpriseMonth: function (enterpriseId) {
-                    console.log(this.monthDate);
+                    // console.log(this.monthDate);
                     if (enterpriseId != "") {
                         var year = this.monthDate.substring(0, 4);
                         var month = this.monthDate.substring(4, 6);
@@ -507,9 +507,9 @@
                                 if (allData.length != 0) {
                                     allData.forEach(function (data) {
                                         var hourData = [];
-                                        // console.log(data);
+                                        // // console.log(data);
                                         for (let key in data) {
-                                            // console.log(key + '---' + data[key]);
+                                            // // console.log(key + '---' + data[key]);
                                             if (key == 'monitorName') {
                                                 key = '监测点名称';
                                             }
@@ -543,7 +543,7 @@
                             }
                         })
                             .catch(function (err) {
-                                console.log(err);
+                                // console.log(err);
                             });
                     } else {
                         // vm.$notify({
@@ -574,9 +574,9 @@
                                 if (allData.length != 0) {
                                     allData.forEach(function (data) {
                                         var hourData = [];
-                                        console.log(data);
+                                        // console.log(data);
                                         for (let key in data) {
-                                            console.log(key + '---' + data[key]);
+                                            // console.log(key + '---' + data[key]);
                                             if (key == 'monitorName') {
                                                 key = '监测点名称';
                                             }
@@ -612,7 +612,7 @@
 
                         })
                             .catch(function (err) {
-                                console.log(err);
+                                // console.log(err);
                             });
                     }
                     else {
@@ -645,9 +645,9 @@
                                 if (allData.length != 0) {
                                     allData.forEach(function (data) {
                                         var hourData = [];
-                                        // console.log(data);
+                                        // // console.log(data);
                                         for (var key in data) {
-                                            // console.log(key + '---' + data[key]);
+                                            // // console.log(key + '---' + data[key]);
                                             hourData.push(key);
                                         }
                                         vm.dataTime = hourData;
@@ -669,7 +669,7 @@
                                 // var timeData = [];
                                 // allData.forEach(function (data) {
                                 //     for (var i = 0; i < data.tKwhlist.length; i++) {
-                                //         console.log(data.tKwhlist[i])
+                                //         // console.log(data.tKwhlist[i])
                                 //         all.push(data.tKwhlist[i])
                                 //     }
 
@@ -686,17 +686,17 @@
                                 //         return value1 - value2;
                                 //     }
                                 // }
-                                // // console.log(timeData);
+                                // // // console.log(timeData);
                                 // var dataItem = [];
 
                                 // allData.forEach(function (data) {
-                                //     console.log(data);
+                                //     // console.log(data);
                                 //     var obj = {};
                                 //     var sortData = [];
                                 //     timeData.forEach(t1 => {
 
                                 //         let exist = data.tKwhlist.some(t2 => t1 == t2.time);
-                                //         console.log(exist);
+                                //         // console.log(exist);
                                 //         if (!exist) {
                                 //             sortData.push({
                                 //                 time: t1,
@@ -705,17 +705,17 @@
                                 //         }
 
                                 //     });
-                                //     // console.log(sortData)       
+                                //     // // console.log(sortData)       
                                 //     data.tKwhlist.forEach(function (item) {
                                 //         sortData.push(item)
                                 //     })
-                                //     console.log(sortData)
+                                //     // console.log(sortData)
                                 //     dataItem = sortData.sort(compare('time'));
                                 //     obj.monitorName = data.monitorName;
                                 //     obj.list = dataItem;
                                 //     vm.reportDataDay.push(obj);
                                 // })
-                                // console.log(vm.reportDataDay)
+                                // // console.log(vm.reportDataDay)
 
 
                                 // for (var i = 1; i < allData.length; i++) {
@@ -739,7 +739,7 @@
                             }
                         })
                             .catch(function (err) {
-                                console.log(err);
+                                // console.log(err);
                             });
 
                     } else {
@@ -766,7 +766,7 @@
                         if (this.enpriseId != 0) {
                             if (this.timeType == 'year') {
                                 type = 'year';
-                                // console.log(this.enpriseId, this.enpriseName)
+                                // // console.log(this.enpriseId, this.enpriseName)
                                 location = BASEURL + 'environmental_intelligent_monitoring/tkwhhour/exportExcel?'
                                     + "yearTime=" + this.yearDate + "&"
                                     + "enterpriseId=" + this.enpriseId + "&"
@@ -774,11 +774,11 @@
                                     + "title=" + this.enpriseName;
                             } else if (this.timeType == 'month') {
                                 type = 'month';
-                                console.log(this.enpriseId, this.enpriseName)
+                                // console.log(this.enpriseId, this.enpriseName)
                                 var year = this.monthDate.substring(0, 4);
                                 var month = this.monthDate.substring(4, 6);
                                 var num = this.getMonthDays(year, month);
-                                console.log(num)
+                                // console.log(num)
                                 location = BASEURL + 'environmental_intelligent_monitoring/tkwhhour/exportExcel?'
                                     + "monthTime=" + this.monthDate + "&"
                                     + "enterpriseId=" + this.enpriseId + "&"
@@ -787,7 +787,7 @@
                                     + "title=" + this.enpriseName;
                             } else if (this.timeType == 'date') {
                                 type = 'daily';
-                                console.log(this.enpriseId, this.enpriseName)
+                                // console.log(this.enpriseId, this.enpriseName)
                                 location = BASEURL + 'environmental_intelligent_monitoring/tkwhhour/exportExcel?'
                                     + "dailyTime=" + this.timeDate + "&"
                                     + "enterpriseId=" + this.enpriseId + "&"
@@ -795,7 +795,7 @@
                                     + "title=" + this.enpriseName;
                             } else {
                                 type = 'sumyear';
-                                console.log(this.enpriseId, this.enpriseName)
+                                // console.log(this.enpriseId, this.enpriseName)
                                 location = BASEURL + 'environmental_intelligent_monitoring/tkwhhour/exportExcel?'
                                     + "enterpriseId=" + this.enpriseId + "&"
                                     + "flag=" + type + "&"

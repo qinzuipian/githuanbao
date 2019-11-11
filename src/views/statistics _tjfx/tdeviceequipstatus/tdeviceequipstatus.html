@@ -153,7 +153,7 @@
 					}
 				});
 				table.on('sort(LAY-app-content-list)', function (obj) {
-					console.log(obj)
+					// console.log(obj)
 					$("[data-field='status']").children().each(function() {
 						if ($(this).text() == '1') {
 							$(this).text("运行")
@@ -187,7 +187,10 @@
 
 					//执行重载
 					table.reload('LAY-app-content-list', {
-						where: field
+						where: field,
+						page: {
+							curr: 1 //重新从第 1 页开始
+						}
 					});
 				});
 

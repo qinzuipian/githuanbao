@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8">
-    <title>企业错峰生产执行情况</title>
+    <title>企业限产停产状况</title>
     <meta name="renderer" content="webkit">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
@@ -138,7 +138,7 @@
             }).then(function (res) {
                 if (res.data.code == 0) {
                     $.each(res.data.page.list, function (index, item) {
-                        // console.log(index, item)
+                        // // console.log(index, item)
                         $('#tradeName').append(new Option(item.name, item.name));// 下拉菜单里添加元素
                     });
                     form.render("select");
@@ -147,11 +147,11 @@
 
                 }
             }).catch(function (err) {
-                console.log(err);
+                // console.log(err);
             });
             // 监听行业select
             form.on('select(tradeName)', function (data) {
-                console.log(data);
+                // console.log(data);
                 vm.trade = data.value;
 
             })
@@ -200,11 +200,15 @@
 
             //监听搜索
             form.on('submit(LAY-app-contlist-search)', function (data) {
-                console.log(data)
+                // console.log(data)
                 var field = data.field;
                 //执行重载
                 table.reload('LAY-app-content-list', {
-                    where: field
+                    where: field,
+					page: {
+						curr: 1 //重新从第 1 页开始
+					}
+					
                 });
             });
 
@@ -359,19 +363,19 @@
 
                         }
                     }).catch(function (err) {
-                        console.log(err);
+                        // console.log(err);
                     });
 
                 },
                 handleNodeClick: function (data, node) {
-                    console.log(data);
+                    // console.log(data);
                     vm.atraName = data.title;
                     vm.treeHign = true;
                     vm.Areashow = false;
                     if (data.title == "请选择") {
                         vm.atraName = ""
                     }
-                    // console.log(node.parent.childNodes[0].parent.data.label)
+                    // // console.log(node.parent.childNodes[0].parent.data.label)
                     /*    var localname = node.parent.childNodes[0].parent.data.label === undefined ? '无上级目录' : node.parent.childNodes[0].parent.data.label;
                        localStorage.setItem("nodeParentName", localname) */
                     // axios({
@@ -385,14 +389,14 @@
 
                     //         // vm.treeData = res.data.page.list;
                     //         var treedata = res.data.page.list;
-                    //         // console.log(treedata)
+                    //         // // console.log(treedata)
                     //         // for (var i = 0; i < vm.treeData.length; i++) {
                     //         data.children = [];
                     //         for (var j = 0; j < treedata.length; j++) {
 
                     //             // if (vm.treeData[i].id == data[j].parentId) {
                     //             if (data.id == treedata[j].parentId) {
-                    //                 // console.log(treedata[j])
+                    //                 // // console.log(treedata[j])
                     //                 let obj = {
                     //                     label: treedata[j].name,
                     //                     id: treedata[j].id,
@@ -412,13 +416,13 @@
                     //         });
                     //     }
                     // }).catch(function (err) {
-                    //     console.log(err);
+                    //     // console.log(err);
                     // });
                 },
 
                 // 导出
                 downloadClick: function () {
-                    console.log(vm.startDate, vm.endDate, vm.atraName, vm.trade, vm.enterpriseName)
+                    // console.log(vm.startDate, vm.endDate, vm.atraName, vm.trade, vm.enterpriseName)
                     location =
                         BASEURL +
                         "environmental_intelligent_monitoring/twrpimplementation/exportWord?" +
@@ -427,14 +431,14 @@
                         "&" + "organizeName=" + vm.atraName +
                         "&" + "trade=" + vm.trade +
                         "&" + "enterpriseName=" + vm.enterpriseName;
-                    // console.log('1111');
+                    // // console.log('1111');
                     // axios({
                     //     method: "get",
                     //     url: BASEURL + 'environmental_intelligent_monitoring/twrpimplementation/exportWord',
                     // }).then(function (res) {
 
                     // }).catch(function (err) {
-                    //     console.log(err);
+                    //     // console.log(err);
                     // });
                 }
             },

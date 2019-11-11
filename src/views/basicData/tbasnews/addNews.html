@@ -119,8 +119,8 @@
 
 			form.on('submit(save)', function (data) {
 				var content = layedit.getContent(index);
-				/* 	console.log(content);
-					console.log(data.field); */
+				/* 	// console.log(content);
+					// console.log(data.field); */
 				data.field.content = content;
 				axios({
 					method: "post",
@@ -130,7 +130,7 @@
 						"Content-Type": "application/json;charset=UTF-8"
 					}
 				}).then(function (res) {
-					// console.log(res)
+					// // console.log(res)
 					if (res.data.code == 0) {
 						layer.msg('保存成功！', {
 							time: 500
@@ -142,7 +142,7 @@
 						layer.msg(res.data.msg);
 					}
 				}).catch(function (err) {
-					console.log(err);
+					// console.loglog(err);
 				});
 				return false;
 			})

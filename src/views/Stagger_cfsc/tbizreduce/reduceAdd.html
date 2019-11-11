@@ -173,9 +173,9 @@
                 params: {}
             }).then(function (res) {
                 if (res.data.code == 0) {
-                    // console.log(res)
+                    // // console.log(res)
                     $.each(res.data.page.list, function (index, item) {
-                        // console.log(index, item)
+                        // // console.log(index, item)
                         $('#enterpriseName').append(new Option(item.name, item.id));// 下拉菜单里添加元素
                     });
                     form.render("select");
@@ -184,11 +184,11 @@
 
                 }
             }).catch(function (err) {
-                console.log(err);
+                // console.log(err);
             });
             // 监听select框获取选中的text值
             form.on('select(enterpriseName)', function (data) {
-                // console.log(data.elem[data.elem.selectedIndex].text);
+                // // console.log(data.elem[data.elem.selectedIndex].text);
                 vm.enterpriseName = data.elem[data.elem.selectedIndex].text
                 form.render();
 
@@ -196,7 +196,7 @@
 
             // form表单提交
             form.on('submit(reduceForm)', function (data) {
-                console.log(data);
+                // console.log(data);
                 // data.field.enterpriseName = vm.enterpriseName;
                 if (!data.field.active) { 
                     vm.$message.warning('请选择是否启用');
@@ -210,7 +210,7 @@
                         }
                     }).then(function (res) {
                         if (res.data.code == 0) {
-                            console.log(res)
+                            // console.log(res)
                             layer.msg('保存成功！', {
                                 time: 500
                             }, function () {
@@ -225,7 +225,7 @@
                             });
                         }
                     }).catch(function (err) {
-                        console.log(err);
+                        // console.log(err);
                     });
                 }
                 return false;
@@ -240,7 +240,7 @@
             },
             methods: {
                 addData: function () {
-                    console.log(this.tBizReduce.bitian);
+                    // console.log(this.tBizReduce.bitian);
                 },
                 cancel() {
                     parent.layer.closeAll('iframe');//关闭弹窗

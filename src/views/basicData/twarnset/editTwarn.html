@@ -164,7 +164,7 @@
             })
                 .then(res => {
                     if (res.data.code == 0) {
-                        console.log(res.data.tWarnSet);
+                        // console.log(res.data.tWarnSet);
                         var tWarnSet = res.data.tWarnSet;
                         form.val('editTwarn', {
                             "id": tWarnSet.id
@@ -194,7 +194,7 @@
                 });
             // form表单的提交
             form.on('submit(editFormDemo)', function (data) {
-                console.log(data.field)
+                // console.log(data.field)
                 if (!data.field.active) {
                     vm.$message.warning('请选择是否启用');
                 } else {
@@ -207,7 +207,7 @@
                         }
                     }).then(function (res) {
                         if (res.data.code == 0) {
-                            console.log(res)
+                            // console.log(res)
                             layer.msg('编辑成功！', {
                                 time: 500
                             }, function () {
@@ -222,7 +222,7 @@
                             });
                         }
                     }).catch(function (err) {
-                        console.log(err);
+                        // console.log(err);
                     });
                 }
                 return false;

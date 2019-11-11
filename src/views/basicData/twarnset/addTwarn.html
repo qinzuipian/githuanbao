@@ -203,9 +203,9 @@
                 }
             }).then(function (res) {
                 if (res.data.code == 0) {
-                    // console.log(res)
+                    // // console.log(res)
                     $.each(res.data.data, function (index, item) {
-                        // console.log(index, item)
+                        // // console.log(index, item)
                         $('#eventType').append(new Option(item.eventType, item.eventTypeId));// 下拉菜单里添加元素
                     });
                     layui.form.render("select");
@@ -214,18 +214,18 @@
 
                 }
             }).catch(function (err) {
-                console.log(err);
+                // console.log(err);
             });
 
 
             form.on('select(eventType)', function (data) {
-                // console.log(data.elem[data.elem.selectedIndex].text);
+                // // console.log(data.elem[data.elem.selectedIndex].text);
                 vm.eventType = data.elem[data.elem.selectedIndex].text
                 form.render()
 
             })
             form.on('submit(formDemo)', function (data) {
-                console.log(data);
+                // console.log(data);
                 // data.field.monitorId = Math.floor(Math.random() * 100);
                 data.field.eventType = vm.eventType;
                 data.field.monitorName = vm.treeLabel;
@@ -242,7 +242,7 @@
                         }
                     }).then(function (res) {
                         if (res.data.code == 0) {
-                            console.log(res)
+                            // console.log(res)
                             layer.msg('保存成功！', {
                                 time: 500
                             }, function () {
@@ -257,7 +257,7 @@
                             });
                         }
                     }).catch(function (err) {
-                        console.log(err);
+                        // console.log(err);
                     });
                 }
                 return false;
@@ -287,27 +287,27 @@
             },
             methods: {
                 handleNodeClick(data) {
-                    console.log(data);
+                    // console.log(data);
                     if (data.type == "t_device_monitor") {
                         vm.treeLabel = data.title
                         vm.monitorId = data.id;
                     }
-                    // console.log(vm.treeLabel, vm.monitorId);
+                    // // console.log(vm.treeLabel, vm.monitorId);
 
                 },
                 getArray(data, name) {
                     for (var i in data) {
-                        // console.log('i', i);
-                        // console.log('datai', data[i].children);
+                        // // console.log('i', i);
+                        // // console.log('datai', data[i].children);
                         // var dataPush = [];
                         if (data[i].type == name) {
-                            console.log(data[i]);
+                            // console.log(data[i]);
                             vm.dataPush.push(data[i])
                             // break;
                         } else {
                             vm.getArray(data[i].children, name);
                         }
-                        console.log(vm.dataPush)
+                        // console.log(vm.dataPush)
                     }
                 },
 
@@ -332,7 +332,7 @@
 
                         }
                     }).catch(function (err) {
-                        console.log(err);
+                        // console.log(err);
                     });
                 },
                 // twarnInit() {
@@ -346,7 +346,7 @@
                 //             var treedata = res.data.page.list;
                 //             var newList = [];
                 //             treedata.forEach(function (data) {
-                //                 // console.log(data)
+                //                 // // console.log(data)
                 //                 for (var i = 0; i < newList.length; i++) {
                 //                     if (newList[i].id === data.enterpriseId) {
                 //                         for (var j = 0; j < newList[i].children.length; j++) {
@@ -354,7 +354,7 @@
                 //                                 newList[i].children[j].children.push({
                 //                                     label: data.monitorName, id: data.id
                 //                                 });
-                //                                 console.log(data.shopName)
+                //                                 // console.log(data.shopName)
 
                 //                             } else {
                 //                                 newList[i].children.push({
@@ -385,7 +385,7 @@
                 //                     }]
                 //                 });
                 //             });
-                //             console.log(newList);
+                //             // console.log(newList);
                 //             vm.WarntreeData = newList;
 
 
@@ -397,7 +397,7 @@
 
                 //         }
                 //     }).catch(function (err) {
-                //         console.log(err);
+                //         // console.log(err);
                 //     });
                 // },
                 cancel() {

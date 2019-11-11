@@ -276,10 +276,10 @@
                     // , bindAction: '#testListAction'
                     , choose: function (obj) {
                         var files = this.files = obj.pushFile(); //将每次选择的文件追加到文件队列
-                        console.log(files)
+                        // console.log(files)
                         //读取本地文件
                         obj.preview(function (index, file, result) {
-                            // console.log(result);
+                            // // console.log(result);
                             var tr = $(['<tr id="upload-' + index + '">'
                                 , '<td>' + file.name + '</td>'
                                 , '</tr>'].join(''));
@@ -312,7 +312,7 @@
                         });
                     }
                     // , done: function (res, index, upload) {
-                    //     console.log(res, index, upload)
+                    //     // console.log(res, index, upload)
                     //     if (res.code == 0) { //上传成功
                     //         var tr = demoListView.find('tr#upload-' + index)
                     //             , tds = tr.children();
@@ -332,7 +332,7 @@
 
             // form表单提交
             form.on('submit(handleForm)', function (data) {
-                console.log(data);
+                // console.log(data);
                 // data.field.enterpriseName = vm.enterpriseName;
                 axios({
                     method: "post",
@@ -351,7 +351,7 @@
                     }
                 }).then(function (res) {
                     if (res.data.code == 0) {
-                        console.log(res)
+                        // console.log(res)
                         layer.msg('提交成功！', {
                             time: 500
                         }, function () {
@@ -365,7 +365,7 @@
                         });
                     }
                 }).catch(function (err) {
-                    console.log(err);
+                    // console.log(err);
                 });
                 return false;
             })
@@ -376,14 +376,14 @@
             //     , multiple: true
             //     // , bindAction: '#test9'
             //     , choose: function (obj) {
-            //         // console.log(obj)
+            //         // // console.log(obj)
             //         var files = obj.pushFile();
 
             //         //预读本地文件，如果是多文件，则会遍历。(不支持ie8/9)
             //         obj.preview(function (index, file, result) {
-            //             // console.log(index); //得到文件索引
-            //             console.log(file); //得到文件对象
-            //             // console.log(result); //得到文件base64编码，比如图片
+            //             // // console.log(index); //得到文件索引
+            //             // console.log(file); //得到文件对象
+            //             // // console.log(result); //得到文件base64编码，比如图片
             //         })
             //     }
             // });
@@ -400,7 +400,7 @@
             },
             created() {
                 // this.detailInit();
-                // console.log(parent.currentStatus);
+                // // console.log(parent.currentStatus);
             }
         });
 

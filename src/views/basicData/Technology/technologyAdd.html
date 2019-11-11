@@ -100,7 +100,7 @@
                 }
                 // data.field.parentId = 0
 
-                console.log(data.field)
+                // console.log(data.field)
                 axios({
                     method: "post",
                     url: layui.setter.BASEURL + 'environmental_intelligent_monitoring/tdevicemonitor/savePollute',
@@ -124,7 +124,7 @@
 
                     }
                 }).catch(function (err) {
-                    console.log(err);
+                    // console.log(err);
                 });
                 return false;
             })
@@ -145,7 +145,7 @@
                 }
             },
             created() {
-                console.log(parent.data)
+                // console.log(parent.data)
             }
         });
     </script>

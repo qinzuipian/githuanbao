@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>企业用电汇总表</title>
+    <title>企业用电汇总统计</title>
     <link rel="stylesheet" href="./../../../layuiadmin/layui/css/layui.css" media="all">
     <link rel="stylesheet" href="./../../../layuiadmin/style/admin.css" media="all">
     <link rel="stylesheet" href="./../../../layuiadmin/style/firmMonitor.css">
@@ -203,7 +203,7 @@
 
             // 监听select事件
             // form.on('select(timeSelect)', function (data) {
-            //     // console.log(data)
+            //     // // console.log(data)
             //     if (data.value == 'year') {
             //         vm.timeShow = 2;
 
@@ -254,8 +254,8 @@
             },
             watch: {
                 endDate: function (val) {
-                    console.log(val);
-                    console.log(this.enterpriseId)
+                    // console.log(val);
+                    // console.log(this.enterpriseId)
                     if (this.enterpriseId === "") {
                         this.$notify({
                             title: '提示',
@@ -294,7 +294,7 @@
             methods: {
 
                 timeSelect: function (val) {
-                    // console.log(val)
+                    // // console.log(val)
                     if (val == 'year') {
                         vm.timeShow = 2;
                     } else if (val == 'month') {
@@ -330,12 +330,12 @@
 
                         }
                     }).catch(function (err) {
-                        console.log(err);
+                        // console.log(err);
                     });
                 },
                 handleNodeClick: function (data, node) {
                     this.enterpriseName = data.title;
-                    console.log(data)
+                    // console.log(data)
                     if (data.type == "t_bas_enterprise") {
                         this.enterpriseId = data.id;
                         this.organizeId = 0;
@@ -343,7 +343,7 @@
                         this.organizeId = data.id;
                         this.enterpriseId = 0;
                     }
-                    console.log(vm.timeShow)
+                    // console.log(vm.timeShow)
                     if (vm.timeShow == 1) {
                         if (this.startDate == "" || this.endDate == "") {
                             vm.$message.warning({
@@ -419,7 +419,7 @@
                         data.flag = type;
 
                     }
-                    // console.log(data)
+                    // // console.log(data)
                     axios({
                         method: "post",
                         url: BASEURL + 'environmental_intelligent_monitoring/tdevicehistory/queryEnergyStatistics',
@@ -440,7 +440,7 @@
                             //     }
                             // }
                             vm.tableData = elecityData;
-                            console.log(vm.tableData);
+                            // console.log(vm.tableData);
                             vm.flag = "";
 
                         } else if (res.data.code == 203) {
@@ -453,7 +453,7 @@
                         }
                     })
                         .catch(function (err) {
-                            console.log(err);
+                            // console.log(err);
                         });
                 },
                 // excel表导出
@@ -475,7 +475,7 @@
                             startTime = this.startDate;
                             endTime = this.endDate;
                         }
-                        console.log(this.enterpriseName)
+                        // console.log(this.enterpriseName)
                         if (this.enterpriseId == 0) {
                             location = BASEURL + 'environmental_intelligent_monitoring/tdevicehistory/exportExcel?'
                                 + "organizeId=" + this.organizeId + "&"

@@ -343,7 +343,7 @@
 				//一进页面获取到企业总表的id
 
 
-				// console.log(vm.enterpriseTreeList);
+				// // console.log(vm.enterpriseTreeList);
 				
 
 
@@ -351,7 +351,7 @@
 
 
 				// function treeinits(){
-				// 	console.log(111);
+				// 	// console.log(111);
 				// //左边的树形结构
 				
 				// }
@@ -410,7 +410,7 @@
 							enterpriseId: vm.companyId
 						}
 					}).then(function(res) {
-						console.log(res.data.page.list);
+						// console.log(res.data.page.list);
 						if (res.data.code == 0) {
 							vm.address = res.data.page.list[0].province + res.data.page.list[0].city + res.data.page.list[0].area + res.data
 								.page.list[0].address // 企业地址
@@ -516,7 +516,7 @@
 					}
 				});
 				table.on('sort(LAY-app-content-list)', function (obj) {
-					console.log(obj)
+					// console.log(obj)
 					$("[data-field='codeType']").children().each(function() {
 						if ($(this).text() == '0') {
 							$(this).text("产污设备")
@@ -821,7 +821,7 @@
 
 						}
 					}).catch(function(err) {
-						// console.log(err);
+						// // console.log(err);
 					});
 
 					//企业界面的柱状图
@@ -875,7 +875,7 @@
 
 						}
 					}).catch(function(err) {
-						// console.log(err);
+						// // console.log(err);
 					});
 
 
@@ -1055,7 +1055,7 @@
 									vm.enterpriseTreeList.push(res.data.data);
 									for (var i = 0; i < vm.enterpriseTreeList.length; i++) {
 										vm.enterpriseTreeList[i].spread = true;
-										// console.log(vm.enterpriseTreeList[i].children.length);
+										// // console.log(vm.enterpriseTreeList[i].children.length);
 										for (var j = 0; j < vm.enterpriseTreeList[i].children.length; j++) {
 											vm.enterpriseTreeList[i].children[j].spread = true;
 										}
@@ -1115,14 +1115,14 @@
 											if (vm.enterpriseTreeList[i].children[j].type == "t_device_monitor_all") {
 												x = true;
 												vm.all_monitorId = vm.enterpriseTreeList[i].children[j].id;
-												// console.log(vm.all_monitorId);
+												// // console.log(vm.all_monitorId);
 												document.getElementById("eee").style.display = "block"
 												document.getElementById("e").style.display = "block"
 												document.getElementById("ee").style.display = "block"
 											}
 										}
 										if (x == false) {
-											// console.log(vm.enterpriseTreeList[i].children[j].type);
+											// // console.log(vm.enterpriseTreeList[i].children[j].type);
 											document.getElementById("eee").style.display = "none"
 											document.getElementById("e").style.display = "none"
 											document.getElementById("ee").style.display = "none"
@@ -1205,7 +1205,7 @@
 
 						}
 					}).catch(function(err) {
-						// console.log(err);
+						// // console.log(err);
 					});
 					//柱状图的搜索
 					axios({
@@ -1256,7 +1256,7 @@
 
 						}
 					}).catch(function(err) {
-						// console.log(err);
+						// // console.log(err);
 					});
 
 					//更多   企业的搜索
@@ -1313,7 +1313,7 @@
 
 							}
 						}).catch(function(err) {
-							// console.log(err);
+							// // console.log(err);
 						});
 					}
 
@@ -1380,7 +1380,7 @@
 
 						}
 					}).catch(function(err) {
-						// console.log(err);
+						// // console.log(err);
 					});
 
 					// 监测点     里面的柱状图
@@ -1439,7 +1439,7 @@
 
 						}
 					}).catch(function(err) {
-						// console.log(err);
+						// // console.log(err);
 					});
 
 
@@ -1504,7 +1504,7 @@
 
 						}
 					}).catch(function(err) {
-						// console.log(err);
+						// // console.log(err);
 					});
 					//监测点的柱状图
 					axios({
@@ -1559,7 +1559,7 @@
 
 						}
 					}).catch(function(err) {
-						// console.log(err);
+						// // console.log(err);
 					});
 
 					//更多         页面的搜索时间折现图
@@ -1614,7 +1614,7 @@
 
 							}
 						}).catch(function(err) {
-							console.log(err);
+							// console.log(err);
 						});
 					}
 				}, 1000)
@@ -1622,7 +1622,7 @@
 
 			//获取电压功率电流
 			function getdetail(ids) {
-				// console.log(ids);
+				// // console.log(ids);
 				axios({
 						method: "post",
 						url: BASEURL + '/environmental_intelligent_monitoring/tdevicehistory/queryEnterMonitoringActTime',
@@ -1630,7 +1630,7 @@
 							monitorId: ids
 						}
 					}).then(function(res) {
-						// console.log(res.data.data);
+						// // console.log(res.data.data);
 						if (res.data.code == 0) {
 							vm.ua = res.data.data.ua; //A相电压
 							vm.ub = res.data.data.ub;
@@ -1651,7 +1651,7 @@
 			}
 			//获取单个监测点的信息
 			function getmonitordetail(id) {
-				// console.log(id);
+				// // console.log(id);
 				axios({
 						method: "get",
 						url: BASEURL + 'environmental_intelligent_monitoring/tdevicemonitor/info/' + id
@@ -1725,7 +1725,7 @@
 
 						}
 					}).catch(function(err) {
-						// console.log(err);
+						// // console.log(err);
 					});
 				}, 1000)
 			}
@@ -1783,7 +1783,7 @@
 
 						}
 					}).catch(function(err) {
-						console.log(err);
+						// console.log(err);
 					});
 				}, 1000)
 			}

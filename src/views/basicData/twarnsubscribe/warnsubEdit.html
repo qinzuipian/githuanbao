@@ -165,9 +165,9 @@
                 params: {}
             }).then(function (res) {
                 if (res.data.code == 0) {
-                    // console.log(res)
+                    // // console.log(res)
                     $.each(res.data.data, function (index, item) {
-                        // console.log(index, item)
+                        // // console.log(index, item)
                         // $('#eventType').append(new Option(item.eventType, item.eventTypeId));// 下拉菜单里添加元素
                         $('#eventType').append('<input type="checkbox"  lay-filter="eventType"  value="' + item.eventTypeId + '" title="' + item.eventType + '" lay-skin="primary">');
                     });
@@ -175,7 +175,7 @@
 
 
 
-                    console.log(parent.data)
+                    // console.log(parent.data)
                     // 单个信息数据展示
                     var WarnData = parent.data[0];
                     form.val('editWarn', {
@@ -190,7 +190,7 @@
 
                     })
                     var idList = WarnData.eventTypeId.split(",");
-                    // console.log(idList);
+                    // // console.log(idList);
                     for (i = 0; i < idList.length; i++) {
                         var Checkbox = $("input[type=checkbox]");
                         for (j = 0; j < Checkbox.length; j++) {
@@ -205,15 +205,15 @@
 
                 }
             }).catch(function (err) {
-                console.log(err);
+                // console.log(err);
             });
 
 
             // form.on('checkbox(eventType)', function (data) {
             //     vm.eventTypeList.push(data.othis[0].innerText);
             //     vm.eventTypeIdList.push(data.value);
-            //     console.log(vm.eventTypeList)
-            //     console.log(vm.eventTypeIdList)
+            //     // console.log(vm.eventTypeList)
+            //     // console.log(vm.eventTypeIdList)
             //     // vm.eventType = data.elem[data.elem.selectedIndex].text
             //     form.render();
 
@@ -254,13 +254,13 @@
                 vm.eventTypeList = [];
                 vm.eventTypeIdList = [];
                 $("input:checkbox[type='checkbox']:checked").each(function () {
-                    console.log($(this)[0].title)
+                    // console.log($(this)[0].title)
                     vm.eventTypeList.push($(this)[0].title);
                     vm.eventTypeIdList.push($(this)[0].value);
                 })
                 data.field.eventTypeListStr = vm.eventTypeList.join();
                 data.field.eventTypeIdListStr = vm.eventTypeIdList.join();
-                console.log(data.field)
+                // console.log(data.field)
                 axios({
                     method: "post",
                     url: BASEURL + 'environmental_intelligent_monitoring/twarnsubscribe/batchSave',
@@ -270,7 +270,7 @@
                     }
                 }).then(function (res) {
                     if (res.data.code == 0) {
-                        console.log(res)
+                        // console.log(res)
                         layer.msg('编辑成功！', {
                             time: 500
                         }, function () {
@@ -285,7 +285,7 @@
                         });
                     }
                 }).catch(function (err) {
-                    console.log(err);
+                    // console.log(err);
                 });
                 return false;
             })

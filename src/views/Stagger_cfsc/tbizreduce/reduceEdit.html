@@ -190,7 +190,7 @@
 
             // form表单的提交
             form.on('submit(editForm)', function (data) {
-                // console.log(data.field)
+                // // console.log(data.field)
                 if (!data.field.active) {
                     vm.$message.warning('请选择是否启用');
                 } else {
@@ -203,7 +203,7 @@
                         }
                     }).then(function (res) {
                         if (res.data.code == 0) {
-                            console.log(res)
+                            // console.log(res)
                             layer.msg('编辑成功！', {
                                 time: 500
                             }, function () {
@@ -218,7 +218,7 @@
                             });
                         }
                     }).catch(function (err) {
-                        console.log(err);
+                        // console.log(err);
                     });
                 }
                 return false;
@@ -237,12 +237,12 @@
                 pageInit: function () {
                     var editData = JSON.parse(window.localStorage.getItem("memberEdit"));
                     this.tBizReduce = editData[0];
-                    console.log(this.tBizReduce.bitian);
+                    // console.log(this.tBizReduce.bitian);
                     this.$forceUpdate();
                     window.localStorage.removeItem("memberEdit");
                 },
                 submitData: function () {
-                    console.log(this.tBizReduce.bitian);
+                    // console.log(this.tBizReduce.bitian);
                 },
                 cancel() {
                     parent.layer.closeAll('iframe');//关闭弹窗

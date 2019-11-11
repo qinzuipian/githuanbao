@@ -515,9 +515,9 @@
                 params: {}
             }).then(function (res) {
                 if (res.data.code == 0) {
-                    // console.log(res)
+                    // // console.log(res)
                     $.each(res.data.data, function (index, item) {
-                        // console.log(index, item)
+                        // // console.log(index, item)
                         $('#ecPolluteType').append(new Option(item.text, item.id));// 下拉菜单里添加元素
                     });
                     layui.form.render("select");
@@ -526,7 +526,7 @@
 
                 }
             }).catch(function (err) {
-                console.log(err);
+                // console.log(err);
             });
 
             // 第二层填充
@@ -544,9 +544,9 @@
                     } */
                 }).then(function (res) {
                     if (res.data.code == 0) {
-                        // console.log(res)
+                        // // console.log(res)
                         $.each(res.data.data, function (index, item) {
-                            console.log(index, item);
+                            // console.log(index, item);
                             $('#ecType').append(new Option(item.text, item.id));// 下拉菜单里添加元素
                         });
                         layui.form.render("select");
@@ -564,9 +564,9 @@
                             } */
                         }).then(function (res) {
                             if (res.data.code == 0) {
-                                // console.log(res)
+                                // // console.log(res)
                                 $.each(res.data.data, function (index, item) {
-                                    console.log(index, item);
+                                    // console.log(index, item);
                                     $('#route').append(new Option(item.text, item.id));// 下拉菜单里添加元素
                                 });
                                 layui.form.render("select");
@@ -575,14 +575,14 @@
 
                             }
                         }).catch(function (err) {
-                            console.log(err);
+                            // console.log(err);
                         });
 
                     } else {
 
                     }
                 }).catch(function (err) {
-                    console.log(err);
+                    // console.log(err);
                 });
 
 
@@ -602,9 +602,9 @@
                     } */
                 }).then(function (res) {
                     if (res.data.code == 0) {
-                        // console.log(res)
+                        // // console.log(res)
                         $.each(res.data.data, function (index, item) {
-                            console.log(index, item);
+                            // console.log(index, item);
                             $('#route').append(new Option(item.text, item.id));// 下拉菜单里添加元素
                         });
                         layui.form.render("select");
@@ -613,7 +613,7 @@
 
                     }
                 }).catch(function (err) {
-                    console.log(err);
+                    // console.log(err);
                 });
 
 
@@ -749,13 +749,13 @@
             }).then(function (res) {
                 if (res.data.code == 0) {
                     vm.shopOptions = res.data.page.list;
-                    console.log(vm.shopOptions)
+                    // console.log(vm.shopOptions)
 
                 } else {
 
                 }
             }).catch(function (err) {
-                console.log(err);
+                // console.log(err);
             });
             // 单个信息数据展示
             axios({
@@ -764,11 +764,11 @@
             })
                 .then(res => {
                     if (res.data.code == 0) {
-                        console.log(res.data.tDeviceMonitor);
+                        // console.log(res.data.tDeviceMonitor);
 
                         var Devicedata = res.data.tDeviceMonitor;
-                        // console.log(Devicedata.isShow)
-                        // console.log(Devicedata.collectType,vm.shopname)
+                        // // console.log(Devicedata.isShow)
+                        // // console.log(Devicedata.collectType,vm.shopname)
                         form.val('editDevice', {
                             "id": Devicedata.id
                             , "monitorName": Devicedata.monitorName// "name": "value"
@@ -933,9 +933,9 @@
                             }
                         }).then(function (res) {
                             if (res.data.code == 0) {
-                                // console.log(res)
+                                // // console.log(res)
                                 $.each(res.data.data, function (index, item) {
-                                    // console.log(index, item)
+                                    // // console.log(index, item)
                                     $('#ecType').append(new Option(item.text, item.id));// 下拉菜单里添加元素
                                 });
                                 layui.form.render("select");
@@ -952,9 +952,9 @@
                                     } */
                                 }).then(function (res) {
                                     if (res.data.code == 0) {
-                                        // console.log(res)
+                                        // // console.log(res)
                                         $.each(res.data.data, function (index, item) {
-                                            console.log(index, item);
+                                            // console.log(index, item);
                                             $('#route').append(new Option(item.text, item.id));// 下拉菜单里添加元素
                                         });
                                         layui.form.render("select");
@@ -963,16 +963,16 @@
 
                                     }
                                 }).catch(function (err) {
-                                    console.log(err);
+                                    // console.log(err);
                                 });
 
                             } else {
 
                             }
                         }).catch(function (err) {
-                            console.log(err);
+                            // console.log(err);
                         });
-                        // console.log(Devicedata.collectType)
+                        // // console.log(Devicedata.collectType)
                         // $("#collectType option[value=Devicedata.collectType]").prop("selected", true)
                         form.render();
 
@@ -1009,7 +1009,7 @@
                 data.field.swicthId = vm.swicthId;
                 data.field.meterId = vm.meterCode;
                 data.field.mn = vm.tnCode;
-                console.log(data.field)
+                // console.log(data.field)
                 axios({
                     method: "post",
                     url: BASEURL + 'environmental_intelligent_monitoring/tdevicemonitor/update',
@@ -1019,7 +1019,7 @@
                     }
                 }).then(function (res) {
                     if (res.data.code == 0) {
-                        console.log(res)
+                        // console.log(res)
                         layer.msg('编辑成功！', {
                             time: 500
                         }, function () {
@@ -1034,7 +1034,7 @@
                         });
                     }
                 }).catch(function (err) {
-                    console.log(err);
+                    // console.log(err);
                 });
                 return false;
             })
@@ -1069,7 +1069,7 @@
                     if (val > 99) {
                         this.$message.warning('必须为0-99中的任意数字');
                     } else {
-                        console.log(vm.swicthId + val);
+                        // console.log(vm.swicthId + val);
                         vm.tnCode = vm.swicthId + val;
 
                     }
@@ -1085,7 +1085,7 @@
                     form.render();
 
                     form.on('radio(beshared)', function (data) {
-                        console.log(data);
+                        // console.log(data);
                         vm.shopname = data.value;
                     })
                 })
@@ -1114,13 +1114,13 @@
                 //                 }
                 //             }
 
-                //             console.log(datalist)
+                //             // console.log(datalist)
                 //             vm.treeData = datalist;
                 //         } else {
 
                 //         }
                 //     }).catch(function (err) {
-                //         console.log(err);
+                //         // console.log(err);
                 //     });
                 // },
                 // treeItem(item) {
@@ -1138,13 +1138,13 @@
                 //         if (res.data.code == 0) {
                 //             // vm.treeItemShow = !vm.treeItemShow;
 
-                //             // console.log(res)
+                //             // // console.log(res)
                 //             vm.enterpriseName = item.enterpriseName;
                 //             vm.i = item.enterpriseId
                 //             var _vm = vm;
                 //             vm.$nextTick(function () {
                 //                 _vm.treeItemData = res.data.page.list;
-                //                 console.log(_vm.treeItemData);
+                //                 // console.log(_vm.treeItemData);
                 //             })
                 //             layui.form.render();
 
@@ -1154,13 +1154,13 @@
 
                 //         }
                 //     }).catch(function (err) {
-                //         console.log(err);
+                //         // console.log(err);
                 //     });
                 // },
 
                 // 企业远程搜索框
                 querySearchAsync(queryString, callback) {
-                    console.log(queryString);
+                    // console.log(queryString);
                     var list = [{}];
                     // 车间树状组件请求数据
                     axios({
@@ -1186,10 +1186,10 @@
                                     }
                                 }
                             }
-                            // console.log(datalist)
+                            // // console.log(datalist)
                             for (let i of datalist) {
                                 i.value = i.enterpriseName; //将想要展示的数据作为value
-                                // console.log(i.value)
+                                // // console.log(i.value)
                             }
                             list = datalist;
                             callback(list);
@@ -1197,13 +1197,13 @@
 
                         }
                     }).catch(function (err) {
-                        console.log(err);
+                        // console.log(err);
                     });
                 },
                 handleSelect(item) {
                     this.firmName = item.enterpriseName;
                     this.enterpriseId = item.enterpriseId;
-                    console.log(item);
+                    // console.log(item);
                     this.shopOptions = [];
                     this.shopId = "";
                     this.swicthId = "";
@@ -1219,13 +1219,13 @@
                     }).then(function (res) {
                         if (res.data.code == 0) {
                             vm.shopOptions = res.data.page.list;
-                            console.log(vm.shopOptions)
+                            // console.log(vm.shopOptions)
 
                         } else {
 
                         }
                     }).catch(function (err) {
-                        console.log(err);
+                        // console.log(err);
                     });
 
                 }
@@ -1251,7 +1251,7 @@
                             //         }
                             //     }
                             // }
-                            // console.log(datalist)
+                            // // console.log(datalist)
                             for (let i = 0, len = datalist.length; i < len; i++) {
                                 if (datalist[i] == null) {
                                     datalist.splice(i, 1)
@@ -1259,7 +1259,7 @@
                             }
                             for (let i of datalist) {
                                 // i.value = i.swicthId; //将想要展示的数据作为value
-                                // console.log(i.value)
+                                // // console.log(i.value)
                                 var obj = {};
                                 // i.value = i.swicthId; //将想要展示的数据作为value
                                 obj.value = i; //将想要展示的数据作为value
@@ -1272,18 +1272,18 @@
 
                         }
                     }).catch(function (err) {
-                        console.log(err);
+                        // console.log(err);
                     });
 
                 }
                 , selectGet(val) {
-                    console.log(val);
+                    // console.log(val);
                     obj = this.shopOptions.find((item) => {//这里的userList就是上面遍历的数据源
-                        console.log(item)
+                        // console.log(item)
                         return item.id === val;//筛选出匹配数据
                     });
                     this.shopName = obj.name;
-                    console.log(obj.name);//我这边的name就是对应label的
+                    // console.log(obj.name);//我这边的name就是对应label的
                 }
                 , cancel() {
                     parent.layer.closeAll('iframe');//关闭弹窗

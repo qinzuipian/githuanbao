@@ -256,7 +256,7 @@
 					}
 				});
 				table.on('sort(LAY-app-content-list)', function (obj) {
-					console.log(obj)
+					// console.log(obj)
 					$("[data-field='isPollutionDay']").children().each(function() {
 						if ($(this).text() == '0') {
 							$(this).text("非污染日")
@@ -267,7 +267,7 @@
 				});
 				table.on('tool(LAY-app-content-list)', function(obj) {
 					var data = obj.data;
-					// console.log(data.enterpriseId);
+					// // console.log(data.enterpriseId);
 					if (obj.event === 'detail') {
 						window.id = data.enterpriseId;
 						layer.open({
@@ -299,7 +299,7 @@
 					params: {}
 				}).then(function(res) {
 					if (res.data.code == 0) {
-						// console.log(res)
+						// // console.log(res)
 						$.each(res.data.page.list, function(index, item) {
 							$('#eventType').append(new Option(item.name, item.id)); // 下拉菜单里添加元素
 						});
@@ -312,7 +312,7 @@
 
 					}
 				}).catch(function(err) {
-					// console.log(err);
+					// // console.log(err);
 				});
 
 
@@ -331,7 +331,10 @@
 
 					//执行重载
 					table.reload('LAY-app-content-list', {
-						where: field
+						where: field,
+						page: {
+							curr: 1 //重新从第 1 页开始
+						}
 					});
 				});
 
@@ -434,7 +437,7 @@
 					
 							}
 						}).catch(function(err) {
-							// console.log(err);
+							// // console.log(err);
 						});
 					
 					},

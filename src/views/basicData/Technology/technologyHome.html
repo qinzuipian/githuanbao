@@ -79,14 +79,14 @@
             var $ = layui.$,
                 active = {
                     batchdel: function () {
-                        console.log()
+                        // console.log()
                         if (vm.nodedata.length === 0) {
                             return layer.msg('请选择数据');
                         }
-                        console.log(vm.nodedata)
+                        // console.log(vm.nodedata)
                         // var idList = [];
                         // idList.push(vm.nodedata.id);
-                        // console.log(idList)
+                        // // console.log(idList)
                         layer.confirm('确定删除吗？', function (index) {
                             //执行 axios 后重载
                             axios({
@@ -100,7 +100,7 @@
                                 }
                             }).then(function (res) {
                                 if (res.data.code == 0) {
-                                    console.log(res)
+                                    // console.log(res)
                                     vm.technologyTree();
                                     layer.msg('已删除');
 
@@ -111,14 +111,14 @@
                                     });
                                 }
                             }).catch(function (err) {
-                                console.log(err);
+                                // console.log(err);
                             });
 
                         });
                     },
                     add: function () {
                         window.data = vm.nodedata;
-                        console.log(window.data)
+                        // console.log(window.data)
                         layer.open({
                             type: 2,
                             title: '添加信息',
@@ -129,7 +129,7 @@
                     },
                     edit: function () {
                         window.data = vm.nodedata;
-                        // console.log(window.data)
+                        // // console.log(window.data)
                         if (window.data.length === 0) {
                             return layer.msg('请选择需要修改的数据');
                         }
@@ -168,7 +168,7 @@
             },
             methods: {
                 handleNodeClick: function (data, node) {
-                    console.log(data, node);
+                    // console.log(data, node);
                     vm.treeHign = true;
                     var localname = node.parent.childNodes[0].parent.data.title === undefined ? '无上级目录' : node.parent.childNodes[0].parent.data.title;
                     localStorage.setItem("nodeParentName", localname)
@@ -195,7 +195,7 @@
 
                         }
                     }).catch(function (err) {
-                        console.log(err);
+                        // console.log(err);
                     });
                 }
             },

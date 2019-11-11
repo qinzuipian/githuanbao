@@ -120,17 +120,17 @@
 					elem: '#organizeId' //默认是点击节点可进行收缩
 					// , data: vm.treeData
 					, click: function (obj) {
-						console.log(obj.data); //得到当前点击的节点数据
-						console.log(obj.state); //得到当前节点的展开状态：open、close、normal
-						console.log(obj.elem); //得到当前节点元素
+						// console.log(obj.data); //得到当前点击的节点数据
+						// console.log(obj.state); //得到当前节点的展开状态：open、close、normal
+						// console.log(obj.elem); //得到当前节点元素
 
-						console.log(obj.data.children); //当前节点下是否有子节点
+						// console.log(obj.data.children); //当前节点下是否有子节点
 					}
 				});
 				// layer.close(loading);
 			}, 500)
 
-			// console.log(vm.treeData)
+			// // console.log(vm.treeData)
 
 			//监听搜索
 			form.on('submit(LAY-app-contlist-search)', function (data) {
@@ -138,21 +138,24 @@
 
 				//执行重载
 				table.reload('LAY-app-content-list', {
-					where: field
+					where: field,
+					page: {
+						curr: 1 //重新从第 1 页开始
+					}
 				});
 			});
 
 			var $ = layui.$,
 				active = {
 					batchdel: function () {
-						console.log()
+						// console.log()
 						if (vm.nodedata.length === 0) {
 							return layer.msg('请选择数据');
 						}
-						console.log(vm.nodedata)
+						// console.log(vm.nodedata)
 						var idList = [];
 						idList.push(vm.nodedata.id);
-						console.log(idList)
+						// console.log(idList)
 
 						layer.confirm('确定删除吗？', function (index) {
 							//执行 axios 后重载
@@ -167,7 +170,7 @@
 								}
 							}).then(function (res) {
 								if (res.data.code == 0) {
-									console.log(res)
+									// console.log(res)
 									vm.organizeTree();
 									layer.msg('已删除');
 
@@ -186,14 +189,14 @@
 
 								}
 							}).catch(function (err) {
-								console.log(err);
+								// console.log(err);
 							});
 
 						});
 					},
 					add: function () {
 						window.data = vm.nodedata;
-						console.log(window.data)
+						// console.log(window.data)
 						layer.open({
 							type: 2,
 							title: '添加行政区域信息',
@@ -205,7 +208,7 @@
 					},
 					edit: function () {
 						window.data = vm.nodedata;
-						// console.log(window.data)
+						// // console.log(window.data)
 						if (window.data.length === 0) {
 							return layer.msg('请选择需要修改的数据');
 						}
@@ -249,13 +252,13 @@
 			},
 			methods: {
 				handleNodeClick: function (data, node) {
-					console.log(data, node);
+					// console.log(data, node);
 					vm.treeHign = true;
-					// console.log(node.parent.childNodes[0].parent.data.label)
+					// // console.log(node.parent.childNodes[0].parent.data.label)
 					var localname = node.parent.childNodes[0].parent.data.title === undefined ? '无上级目录' : node.parent.childNodes[0].parent.data.title;
 					localStorage.setItem("nodeParentName", localname)
 					vm.nodedata = data;
-					console.log(node.childNodes.length)
+					// console.log(node.childNodes.length)
 					if (node.level === 3) {
 							document.getElementById("addOrgan").classList.add("layui-btn-disabled");
 							vm.btnDisable = true;
@@ -279,14 +282,14 @@
 
 					// 		// vm.treeData = res.data.page.list;
 					// 		var treedata = res.data.page.list;
-					// 		// console.log(treedata)
+					// 		// // console.log(treedata)
 					// 		// for (var i = 0; i < vm.treeData.length; i++) {
 					// 		data.children = [];
 					// 		for (var j = 0; j < treedata.length; j++) {
 
 					// 			// if (vm.treeData[i].id == data[j].parentId) {
 					// 			if (data.id == treedata[j].parentId) {
-					// 				// console.log(treedata[j])
+					// 				// // console.log(treedata[j])
 					// 				let obj = {
 					// 					label: treedata[j].name,
 					// 					id: treedata[j].id,
@@ -295,7 +298,7 @@
 					// 					children: []
 					// 				};
 					// 				data.children.push(obj);
-					// 				console.log(data.children)
+					// 				// console.log(data.children)
 					// 			}
 					// 		}
 					// 		// }
@@ -308,7 +311,7 @@
 					// 		});
 					// 	}
 					// }).catch(function (err) {
-					// 	console.log(err);
+					// 	// console.log(err);
 					// });
 				},
 				// 获取树状组件的data值
@@ -350,7 +353,7 @@
 
 						}
 					}).catch(function (err) {
-						console.log(err);
+						// console.log(err);
 					});
 				}
 			},

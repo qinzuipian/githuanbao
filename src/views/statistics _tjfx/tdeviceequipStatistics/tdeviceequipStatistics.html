@@ -338,9 +338,9 @@
 					params: {}
 				}).then(function(res) {
 					if (res.data.code == 0) {
-						// console.log(res)
+						// // console.log(res)
 						$.each(res.data.page.list, function(index, item) {
-							// console.log(item.id)
+							// // console.log(item.id)
 							$('#eventType').append(new Option(item.name, item.id)); // 下拉菜单里添加元素
 						});
 						layui.form.render("select");
@@ -352,7 +352,7 @@
 
 					}
 				}).catch(function(err) {
-					// console.log(err);
+					// // console.log(err);
 				});
 
 
@@ -378,12 +378,12 @@
 						});
 					}
 				}).catch(function(err) {
-					// console.log(err);
+					// // console.log(err);
 				});
 
 				//行政区域获取下拉行业的选项
 				form.on('select(eventType)', function(data) {
-					// console.log(data.elem[data.elem.selectedIndex].value);
+					// // console.log(data.elem[data.elem.selectedIndex].value);
 					vm.tradeName = data.elem[data.elem.selectedIndex].value
 					form.render();
 				});
@@ -398,7 +398,7 @@
 						produceType: vm.state_
 					}
 				}).then(function(res) {
-					// console.log(res)
+					// // console.log(res)
 					if (res.data.code == 0) {
 						vm.list_Xtable = res.data.data;
 					} else {
@@ -409,7 +409,7 @@
 
 					}
 				}).catch(function(err) {
-					// console.log(err);
+					// // console.log(err);
 				});
 
 
@@ -423,7 +423,7 @@
 					}
 				}).then(function(res) {
 					echart.hideLoading();
-					// console.log(res.data.data)
+					// // console.log(res.data.data)
 					if (res.data.code == 0) {
 						for (var i = 0; i < res.data.data.length; i++) {
 							var obj = {}
@@ -484,7 +484,7 @@
 
 					}
 				}).catch(function(err) {
-					// console.log(err);
+					// // console.log(err);
 				});
 
 
@@ -558,7 +558,7 @@
 
 					}
 				}).catch(function(err) {
-					// console.log(err);
+					// // console.log(err);
 				});
 
 
@@ -569,13 +569,16 @@
 
 					//执行重载
 					table.reload('LAY-app-content-list', {
-						where: field
+						where: field,
+						page: {
+							curr: 1 //重新从第 1 页开始
+						}
 					});
 				});
 				//获取下拉框的值
 				form.on('select(state)', function(data) {
 					vm.state_ = data.value;
-					// console.log(field);
+					// // console.log(field);
 					form.render("select")
 				});
 
@@ -673,7 +676,7 @@
 								produceType: vm.state_
 							}
 						}).then(function(res) {
-							// console.log(res)
+							// // console.log(res)
 							if (res.data.code == 0) {
 								vm.list_Xtable = res.data.data;
 							} else {
@@ -683,7 +686,7 @@
 								});
 							}
 						}).catch(function(err) {
-							console.log(err);
+							// console.log(err);
 						});
 
 
@@ -759,7 +762,7 @@
 
 							}
 						}).catch(function(err) {
-							console.log(err);
+							// console.log(err);
 						});
 					},
 					Hsearch: function() {
@@ -777,7 +780,7 @@
 								produceType: vm.state_
 							},
 						}).then(function(res) {
-							// console.log(res)
+							// // console.log(res)
 							if (res.data.code == 0) {
 								vm.list_Htable = res.data.data;
 							} else {
@@ -788,7 +791,7 @@
 
 							}
 						}).catch(function(err) {
-							console.log(err);
+							// console.log(err);
 						});
 
 						//行业搜索扇形图
@@ -810,7 +813,7 @@
 									obj.name = res.data.data[i].name;
 									vm.list_Hpic.push(obj)
 									vm.list_box1.push(obj);
-									// console.log(vm.list_Hpic);
+									// // console.log(vm.list_Hpic);
 								}
 
 								echart.setOption({
@@ -865,7 +868,7 @@
 
 							}
 						}).catch(function(err) {
-							console.log(err);
+							// console.log(err);
 						});
 
 
@@ -897,7 +900,7 @@
 
 							}
 						}).catch(function(err) {
-							console.log(err);
+							// console.log(err);
 						});
 
 					},
