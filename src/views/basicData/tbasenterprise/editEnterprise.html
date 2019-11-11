@@ -625,7 +625,7 @@
 
 
 
-									// console.log($('#eventType').val());
+									// // console.log($('#eventType').val());
 								} else {
 									vm.$notify.error({
 										title: '错误',
@@ -645,7 +645,7 @@
 
 					}
 				}).catch(function(err) {
-					// console.log(err);
+					// // console.log(err);
 				});
 
 
@@ -683,7 +683,7 @@
 						}
 					}).then(function(res) {
 						if (res.data.code == 0) {
-							// console.log(res)
+							// // console.log(res)
 							layer.msg('编辑成功！', {
 								time: 500
 							}, function() {
@@ -701,7 +701,7 @@
 							});
 						}
 					}).catch(function(err) {
-						// console.log(err);
+						// // console.log(err);
 					});
 					return false;
 				})
@@ -716,9 +716,9 @@
 				$(document).bind("click", function() {
 					vm.isActive = 0;
 					// vm.tree = !vm.tree;
-					// console.log(vm.isActive);
-					// console.log(vm.tree);
-					// console.log("点击了其他部位");
+					// // console.log(vm.isActive);
+					// // console.log(vm.tree);
+					// // console.log("点击了其他部位");
 					$("#tree").css("display", "none");
 
 				})
@@ -785,8 +785,8 @@
 									for (var i = 0; i < list.length; i++) {
 										it.name = list[i].name;
 										it.remark = list[i].remark;
-										console.log(it.name);
-										console.log(it.remark);
+										// console.loglog(it.name);
+										// console.loglog(it.remark);
 									}
 
 								})
@@ -824,12 +824,12 @@
 								});
 							}
 						}).catch(function(err) {
-							console.log(err);
+							// console.loglog(err);
 						});
 
 					},
 					handleNodeClick: function(data, node) {
-						console.log(data);
+						// console.loglog(data);
 						vm.atraName = data.title;
 						vm.treeId = data.id;
 						vm.treeHign = true;

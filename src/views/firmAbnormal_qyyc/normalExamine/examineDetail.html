@@ -261,7 +261,7 @@
 
             // form表单提交
             form.on('submit(examineForm)', function (data) {
-                console.log(data);
+                // console.log(data);
                 // data.field.enterpriseName = vm.enterpriseName;
                 axios({
                     method: "post",
@@ -280,7 +280,7 @@
                     }
                 }).then(function (res) {
                     if (res.data.code == 0) {
-                        console.log(res)
+                        // console.log(res)
                         layer.msg('提交成功！', {
                             time: 500
                         }, function () {
@@ -294,7 +294,7 @@
                         });
                     }
                 }).catch(function (err) {
-                    console.log(err);
+                    // console.log(err);
                 });
                 return false;
             })
@@ -312,7 +312,7 @@
             },
             created() {
                 // this.detailInit();
-                // console.log(parent.currentStatus);
+                // // console.log(parent.currentStatus);
             }
         });
 

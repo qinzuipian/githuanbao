@@ -441,7 +441,7 @@
 				}).then(function(res) {
 					if (res.data.code == 0) {
 						$.each(res.data.page.list, function(index, item) {
-							// console.log(index, item)
+							// // console.log(index, item)
 							$('#tradeName').append(new Option(item.name, item.id)); // 下拉菜单里添加元素
 						});
 						layui.form.render("select");
@@ -452,7 +452,7 @@
 						});
 					}
 				}).catch(function(err) {
-					// console.log(err);
+					// // console.log(err);
 				});
 
 
@@ -485,7 +485,7 @@
 
 				// 监听select框获取选中的text值
 				form.on('select(tradeName)', function(data) {
-					// console.log(data.elem[data.elem.selectedIndex].text);
+					// // console.log(data.elem[data.elem.selectedIndex].text);
 					vm.tradeName = data.elem[data.elem.selectedIndex].text
 					form.render();
 
@@ -505,8 +505,8 @@
 					data.field.concern = vm.concern;
 					data.field.organizeName = vm.atraName;
 					data.field.organizeId = vm.treeId;
-					// console.log(vm.atraName);
-					// console.log(vm.pic);
+					// // console.log(vm.atraName);
+					// // console.log(vm.pic);
 					axios({
 						method: "post",
 						url: layui.setter.BASEURL + 'environmental_intelligent_monitoring/tbasenterprise/save',
@@ -515,7 +515,7 @@
 							"Content-Type": "application/json;charset=UTF-8"
 						}
 					}).then(function(res) {
-						// console.log(res)
+						// // console.log(res)
 						if (res.data.code == 0) {
 							layer.msg('保存成功！', {
 								time: 500
@@ -530,7 +530,7 @@
 							});
 						}
 					}).catch(function(err) {
-						// console.log(err);
+						// // console.log(err);
 					});
 					return false;
 				})
@@ -577,9 +577,9 @@
 				$(document).bind("click", function() {
 					vm.isActive = 0;
 					// vm.tree = !vm.tree;
-					// console.log(vm.isActive);
-					// console.log(vm.tree);
-					// console.log("点击了其他部位");
+					// // console.log(vm.isActive);
+					// // console.log(vm.tree);
+					// // console.log("点击了其他部位");
 					$("#tree").css("display", "none");
 
 				})
@@ -684,12 +684,12 @@
 								});
 					        }
 					    }).catch(function (err) {
-					        console.log(err);
+					        // console.loglog(err);
 					    });
 					
 					},
 					handleNodeClick:function(data, node) {
-					    console.log(data);
+					    // console.loglog(data);
 					    vm.atraName = data.title;
 						vm.treeId = data.id
 					    vm.treeHign = true;
@@ -700,7 +700,7 @@
 						var phone = document.getElementById('phone').value;
 						if(!(/^1[3456789]\d{9}$/.test(phone))){ 
 							// vm.chargePhone = ""
-							console.log(vm.chargePhone);
+							// console.loglog(vm.chargePhone);
 						    vm.$notify.error({
 						        title: '错误',
 						        message: "手机号码有误，请重填"

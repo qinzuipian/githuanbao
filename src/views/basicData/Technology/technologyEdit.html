@@ -104,7 +104,7 @@
                     }
                 }).then(function (res) {
                     if (res.data.code == 0) {
-                        console.log(res)
+                        // console.log(res)
                         layer.msg('编辑成功！', {
                             time: 500
                         }, function () {
@@ -118,7 +118,7 @@
                         });
                     }
                 }).catch(function (err) {
-                    console.log(err);
+                    // console.log(err);
                 });
                 return false;
             })
@@ -139,7 +139,7 @@
                 }
             },
             mounted() {
-                console.log(parent.data)
+                // console.log(parent.data)
                 // this.pageInit();
             }
         });

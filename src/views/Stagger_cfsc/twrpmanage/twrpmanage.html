@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8">
-    <title>企业错峰生产</title>
+    <title>企业限产停产管理</title>
     <meta name="renderer" content="webkit">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
@@ -171,7 +171,7 @@
                                     return false
                                 }
                                 if (binding.expression) {
-                                    console.log(binding.expression)
+                                    // console.log(binding.expression)
                                     binding.value(e)
                                 }
                             }
@@ -211,13 +211,13 @@
                             }
 
                         }).catch(function (err) {
-                            console.log(err);
+                            // console.log(err);
                         });
 
                     },
                     // 单选框选择事件改变
                     levelChange: function (val) {
-                        console.log(val);
+                        // console.log(val);
                         vm.levelId = val;
                         vm.levelLength = val;
 
@@ -236,7 +236,7 @@
                                 })
                                 vm.monitoridList = keyData;
                                 vm.checkKey = keyData
-                                console.log(vm.checkKey);
+                                // console.log(vm.checkKey);
                                 vm.$refs.tree.setCheckedKeys(vm.checkKey);
                             } else {
                                 vm.$notify.error({
@@ -248,7 +248,7 @@
                             }
 
                         }).catch(function (err) {
-                            console.log(err);
+                            // console.log(err);
                         });
 
                     },
@@ -289,7 +289,7 @@
                                 }
 
                             }).catch(function (err) {
-                                console.log(err);
+                                // console.log(err);
                             });
                         }
                     },
@@ -324,7 +324,7 @@
                                         });
                                     }
                                 }).catch(function (err) {
-                                    console.log(err);
+                                    // console.log(err);
                                 });
                             })
                         }
@@ -369,12 +369,12 @@
                                         }]
                                     });
                                 })
-                                // console.log(dataList)
+                                // // console.log(dataList)
                                 vm.enpriseData = dataList;
                             }
 
                         }).catch(function (err) {
-                            console.log(err);
+                            // console.log(err);
                         });
 
                     },
@@ -389,7 +389,7 @@
 
                     },
                     manageNode:function(node) {
-                        // console.log(node)
+                        // // console.log(node)
                         vm.atraShow = false;
 
                     },
@@ -424,20 +424,20 @@
 
                             }
                         }).catch(function (err) {
-                            console.log(err);
+                            // console.log(err);
                         });
 
                     },
 
                     handleNodeClick: function (data, node) {
-                        console.log(data);
+                        // console.log(data);
                         vm.atraName = data.title;
                         vm.treeHign = true;
                         vm.atraShow = false;
                         if (data.title == "请选择") {
                             vm.atraName = ""
                         }
-                        // console.log(node.parent.childNodes[0].parent.data.label)
+                        // // console.log(node.parent.childNodes[0].parent.data.label)
                         /*    var localname = node.parent.childNodes[0].parent.data.label === undefined ? '无上级目录' : node.parent.childNodes[0].parent.data.label;
                            localStorage.setItem("nodeParentName", localname) */
                         // axios({
@@ -451,14 +451,14 @@
 
                         //         // vm.treeData = res.data.page.list;
                         //         var treedata = res.data.page.list;
-                        //         // console.log(treedata)
+                        //         // // console.log(treedata)
                         //         // for (var i = 0; i < vm.treeData.length; i++) {
                         //         data.children = [];
                         //         for (var j = 0; j < treedata.length; j++) {
 
                         //             // if (vm.treeData[i].id == data[j].parentId) {
                         //             if (data.id == treedata[j].parentId) {
-                        //                 // console.log(treedata[j])
+                        //                 // // console.log(treedata[j])
                         //                 let obj = {
                         //                     label: treedata[j].name,
                         //                     id: treedata[j].id,
@@ -476,28 +476,28 @@
                         //         });
                         //     }
                         // }).catch(function (err) {
-                        //     console.log(err);
+                        //     // console.log(err);
                         // });
                     },
                     // 复选框选中
                     manageCheck: function (data, node) {
                         vm.monitoridList = [];
                         var data = this.$refs.tree.getCheckedNodes(true);
-                        console.log(data)
+                        // console.log(data)
 
                         for (var i = 0; i < data.length; i++) {
-                            console.log(data[i]);
-                            // console.log(dataItem)
+                            // console.log(data[i]);
+                            // // console.log(dataItem)
                             // var obj = {};
                             vm.enpriseData.forEach(function (item, index) {
-                                // console.log(item,index)
+                                // // console.log(item,index)
                                 item.children.forEach(function (it, index) {
                                     it.children.forEach(function (itthird, index) {
                                         itthird.children.forEach(function (itfourth, index) {
-                                            // console.log(itfourth);
+                                            // // console.log(itfourth);
                                             if (itfourth.monitorId === data[i].monitorId && itfourth.label === data[i].label) {
-                                                // console.log(dataItem);
-                                                // console.log(item)
+                                                // // console.log(dataItem);
+                                                // // console.log(item)
                                                 data[i].monitorId = itfourth.monitorId;
                                                 data[i].monitorName = itfourth.label;
                                                 data[i].enterpriseId = item.enterpriseId;
@@ -512,33 +512,33 @@
                         }
                         vm.monitorIdData = data;
                         vm.monitorIdData.forEach(function (item, index) {
-                            console.log(item);
+                            // console.log(item);
                             vm.monitoridList.push(item.monitorId);
                         })
-                        console.log(vm.monitoridList)
+                        // console.log(vm.monitoridList)
 
-                        // console.log(data)
+                        // // console.log(data)
                         // this.$refs.tree.setCheckedKeys([])
-                        // console.log(data, node);
+                        // // console.log(data, node);
                         // var nodeData = node.checkedNodes;
                         // var halfData = node.halfCheckedNodes;
                         // // var monitorIdData = [];
 
                         // vm.treeObj = {}
                         // nodeData.forEach(function (item, index) {
-                        //     console.log(item, index);
+                        //     // console.log(item, index);
                         //     if (item.enterpriseId != undefined) {
                         //         vm.treeObj.enterpriseId = item.enterpriseId;
                         //         vm.treeObj.enterpriseName = item.label;
 
                         //     } else if (item.monitorId != undefined) {
-                        //         console.log(item);
+                        //         // console.log(item);
                         //         vm.treeObj.monitorId = item.monitorId;
                         //         vm.treeObj.monitorName = item.label;
                         //     } else {
                         //         halfData.forEach(function (item, index) {
                         //             if (item.enterpriseId != undefined) {
-                        //                 console.log(item);
+                        //                 // console.log(item);
                         //                 vm.treeObj.enterpriseId = item.enterpriseId;
                         //                 vm.treeObj.enterpriseName = item.label;
                         //                 // monitorIdData.push(obj);
@@ -547,43 +547,43 @@
 
                         //     }
                         // })
-                        // console.log(vm.treeObj)
+                        // // console.log(vm.treeObj)
                         // vm.monitorIdData.push(vm.treeObj);
                         // // Array.prototype.push.apply(monitorIdData)
-                        // console.log(vm.monitorIdData)
-                        // console.log(this.$refs.tree.getCheckedKeys())
-                        // console.log(this.$refs.tree.getHalfCheckedNodes(true))
+                        // // console.log(vm.monitorIdData)
+                        // // console.log(this.$refs.tree.getCheckedKeys())
+                        // // console.log(this.$refs.tree.getHalfCheckedNodes(true))
 
-                        // console.log(this.$refs.tree.getHalfCheckedNodes(true).concat(this.$refs.tree.getCheckedNodes()));
+                        // // console.log(this.$refs.tree.getHalfCheckedNodes(true).concat(this.$refs.tree.getCheckedNodes()));
                         // var data = this.$refs.tree.getHalfCheckedNodes(true).concat(this.$refs.tree.getCheckedNodes());
-                        // console.log(this.$refs.tree.getCheckedNodes(true));
-                        // console.log(data)
+                        // // console.log(this.$refs.tree.getCheckedNodes(true));
+                        // // console.log(data)
 
-                        // console.log(this.$refs.tree.getNode())
+                        // // console.log(this.$refs.tree.getNode())
                     },
 
                     mmmm: function (node, key, istrue) {
-                        // console.log(node,key,istrue);
-                        // console.log(this.$refs.tree.getCheckedNodes(true));
+                        // // console.log(node,key,istrue);
+                        // // console.log(this.$refs.tree.getCheckedNodes(true));
                         // var data = this.$refs.tree.getCheckedNodes(true);
 
 
-                        // console.log(data)
+                        // // console.log(data)
                         // for (var i = 0; i < data.length; i++) {
-                        //     // console.log(data[i])
+                        //     // // console.log(data[i])
                         // }
                         // data.forEach(function (dataItem, index) {
-                        //     // console.log(dataItem)
+                        //     // // console.log(dataItem)
                         //     var obj = {};
                         // vm.enpriseData.forEach(function (item, index) {
-                        //     // console.log(item,index)
+                        //     // // console.log(item,index)
                         //     item.children.forEach(function (it, index) {
                         //         it.children.forEach(function (itthird, index) {
                         //             itthird.children.forEach(function (itfourth, index) {
-                        //                 // console.log(itfourth);
+                        //                 // // console.log(itfourth);
                         //                 if (itfourth.monitorId === dataItem.monitorId && itfourth.label === dataItem.label) {
-                        //                     // console.log(dataItem);
-                        //                     // console.log(item)
+                        //                     // // console.log(dataItem);
+                        //                     // // console.log(item)
 
                         //                     obj.monitorId = itfourth.monitorId;
                         //                     obj.monitorName = itfourth.label;
@@ -604,7 +604,7 @@
 
 
                         // })
-                        // console.log(vm.monitorIdData)
+                        // // console.log(vm.monitorIdData)
 
 
                         // var obj = {};
@@ -628,13 +628,13 @@
                         //     })
 
                         //     obj.map(function (value, index, array) {
-                        //         console.log(value);
+                        //         // console.log(value);
                         //         vm.monitorIdData.push(value)
                         //         // localStorage.setItem("data",JSON.stringify(value));
                         //     })
-                        //     console.log(vm.monitorIdData)
+                        //     // console.log(vm.monitorIdData)
                         // }
-                        // console.log(obj);
+                        // // console.log(obj);
                     },
 
                     // 搜索
@@ -683,13 +683,13 @@
                                         }]
                                     });
                                 })
-                                // console.log(dataList)
+                                // // console.log(dataList)
                                 vm.enpriseData = dataList;
 
                             }
 
                         }).catch(function (err) {
-                            console.log(err);
+                            // console.log(err);
                         });
                     }
                 },
@@ -749,7 +749,7 @@
                 }).then(function (res) {
                     if (res.data.code == 0) {
                         $.each(res.data.page.list, function (index, item) {
-                            // console.log(index, item)
+                            // // console.log(index, item)
                             $('#tradeName').append(new Option(item.name, item.id));// 下拉菜单里添加元素
                         });
                         layui.form.render("select");
@@ -758,13 +758,13 @@
 
                     }
                 }).catch(function (err) {
-                    console.log(err);
+                    // console.log(err);
                 });
 
 
                 // 监听行业select
                 form.on('select(tradeLay)', function (data) {
-                    // console.log(data);
+                    // // console.log(data);
                     vm.trade = data.value;
 
                 })

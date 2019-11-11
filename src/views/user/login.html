@@ -61,7 +61,7 @@
 								"Content-Type": "application/json;charset=UTF-8"
 							}
 						}).then(function(res) {
-							console.log(res);
+							// console.log(res);
 							if (res.data.code == 0) {
 								window.localStorage.setItem("userId", res.data.user.userId);
 								window.localStorage.setItem("token", res.data.token);

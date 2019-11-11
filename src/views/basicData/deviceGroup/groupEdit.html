@@ -154,7 +154,7 @@
                         Pdata[i].name = '生产设备';
                     }
                     this.productData = Pdata;
-                    // console.log(Pdata)
+                    // // console.log(Pdata)
                     axios({
                         method: "post",
                         url: BASEURL + 'environmental_intelligent_monitoring/tdevicemonitor/queryProductAndTreatList',
@@ -165,7 +165,7 @@
                             "Content-Type": "application/json;charset=UTF-8"
                         } */
                     }).then(function (res) {
-                        // console.log(res)
+                        // // console.log(res)
                         if (res.data.code == 0) {
                             var data = res.data.data.list;
                             for (var i = 0; i < data.length; i++) {
@@ -182,13 +182,13 @@
                             }
                             // vm.productData = data;
                             vm.productName = parent.data.productName;
-                            console.log(vm.treatData)
+                            // console.loglog(vm.treatData)
 
                         } else {
 
                         }
                     }).catch(function (err) {
-                        console.log(err);
+                        // console.loglog(err);
                     });
 
                 },
@@ -203,7 +203,7 @@
                             "Content-Type": "application/json;charset=UTF-8"
                         } */
                     }).then(function (res) {
-                        // console.log(res)
+                        // // console.log(res)
                         if (res.data.code == 0) {
                             // vm.productOptions = res.data.data.list;
                             vm.treatOptions = res.data.data;
@@ -216,8 +216,8 @@
                             //     }
                             // }
                             // vm.productData = data;
-                            // console.log(vm.productData)
-                            // console.log(vm.treatData)
+                            // // console.log(vm.productData)
+                            // // console.log(vm.treatData)
 
 
 
@@ -226,20 +226,20 @@
 
                         }
                     }).catch(function (err) {
-                        console.log(err);
+                        // console.loglog(err);
                     });
 
                 },
                 // 产污监测点添加
                 treatSelect(value) {
-                    console.log(value);
+                    // console.loglog(value);
                     let obj = {};
                     obj = this.treatOptions.find((item) => {
-                        console.log(item)
+                        // console.loglog(item)
                         return item.treatId === value;
                     });
                     vm.pName = obj.treatName;
-                    // console.log(obj.productName);
+                    // // console.log(obj.productName);
                 },
                 treatClick() {
                     var obj = {
@@ -275,12 +275,12 @@
                         vm.vmObj = obj;
                     } else {
                         vm.treatData.push(obj)
-                        console.log(obj)
+                        // console.loglog(obj)
                         vm.vmObj = obj;
                     }
                 },
                 deleteClick(index, row) {
-                    // console.log(index, row);
+                    // // console.log(index, row);
                     // vm.treatData.splice(index);
                     this.$confirm('确认删除', '确认信息', {
                         distinguishCancelAndClose: true,
@@ -310,7 +310,7 @@
                             //         });
                             //     }
                             // }).catch(function (err) {
-                            //     console.log(err);
+                            //     // console.log(err);
                             // });
 
                         })
@@ -319,21 +319,21 @@
                 },
                 // 数据添加
                 addData() {
-                    // console.log(vm.vmObj);
+                    // // console.log(vm.vmObj);
                     // var vmObjList = [];
                     // vmObjList.push(vm.vmObj)
                     var idList = [];
                     var backupId;
                     vm.treatData.forEach(function (item) {
-                        // console.log(item)
+                        // // console.log(item)
                         idList.push(item.treatId);
                         if (item.backup == '使用') {
                             backupId = item.treatId;
                         }
                     })
-                    // console.log(vm.treatData)
-                    console.log(idList)
-                    console.log(backupId)
+                    // // console.log(vm.treatData)
+                    // console.loglog(idList)
+                    // console.loglog(backupId)
                     axios({
                         method: "post",
                         url: BASEURL + 'environmental_intelligent_monitoring/tdevicemonitor/saveProductAndTreat',
@@ -346,7 +346,7 @@
                             "Content-Type": "application/json;charset=UTF-8"
                         }
                     }).then(function (res) {
-                        // console.log(res)
+                        // // console.log(res)
                         //先得到当前iframe层的索引
                         var index = parent.layer.getFrameIndex(window.name);
                         if (res.data.code == 0) {
@@ -368,7 +368,7 @@
 
                         }
                     }).catch(function (err) {
-                        console.log(err);
+                        // console.loglog(err);
                     });
 
                 },
@@ -379,7 +379,7 @@
             }, created() {
                 this.productInit();
                 this.selectInit();
-                console.log(parent.data)
+                // console.loglog(parent.data)
             }
         })
     </script>

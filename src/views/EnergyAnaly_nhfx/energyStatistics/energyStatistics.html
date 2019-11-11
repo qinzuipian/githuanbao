@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>能耗统计</title>
+    <title>企业能耗汇总统计</title>
     <link rel="stylesheet" href="./../../../layuiadmin/layui/css/layui.css" media="all">
     <link rel="stylesheet" href="./../../../layuiadmin/style/admin.css" media="all">
     <link rel="stylesheet" href="./../../../layuiadmin/plugin/element.css">
@@ -570,11 +570,11 @@
 
                         }
                     }).catch(function (err) {
-                        console.log(err);
+                        // console.log(err);
                     });
                 },
                 handleNodeClick:function(data, node) {
-                    // console.log(data, node)
+                    // // console.log(data, node)
                     vm.atraName = data.title;
                     vm.atraId = data.id;
                     vm.treeHign = true;
@@ -685,7 +685,7 @@
                     vm.EleRadius = [];
                 },
                 electriClick:function(value) {
-                    // console.log(value);
+                    // // console.log(value);
                     if (value == 1) {
                         this.electricShow = 1;
                         // 电能趋势按日统计
@@ -800,7 +800,7 @@
                         params: {}
                     }).then(function (res) {
                         if (res.data.code == 0) {
-                            // console.log(res)
+                            // // console.log(res)
                             vm.enterpriseOptions = res.data.page.list;
                         } else {
 
@@ -815,7 +815,7 @@
                 , enterSelect:function(val) {
                     // 监测点
                     this.monitorNameInit(val)
-                    // console.log(val)
+                    // // console.log(val)
                     vm.enterpriseId = val;
                     this.electricityTop(vm.enterpriseId, vm.monitorId)
                     this.powerInit(vm.enterpriseId, vm.monitorId)
@@ -852,11 +852,11 @@
 
                         }
                     }).catch(function (err) {
-                        console.log(err);
+                        // console.log(err);
                     });
                 }
                 , monitorSelect:function(val) {
-                    // console.log(val);
+                    // // console.log(val);
                     vm.monitorId = val;
                     this.electricityTop(vm.enterpriseId, vm.monitorId)
                     this.powerInit(vm.enterpriseId, vm.monitorId)
@@ -874,7 +874,7 @@
                 }
                 // 用电量峰值展示
                 , electricityTop:function(enterpriseId, monitorId) {
-                    // console.log(enterpriseId, monitorId)
+                    // // console.log(enterpriseId, monitorId)
                     axios({
                         method: "post",
                         url: BASEURL + 'environmental_intelligent_monitoring/tkwhhour/queryElePeak',
@@ -888,7 +888,7 @@
                             var data = res.data.data;
                             if (data.length != 0) {
                                 data.forEach(function (data) {
-                                    // console.log(data);
+                                    // // console.log(data);
                                     if (data.flag == "y") {
                                         vm.Yelectricity = data;
                                     } else {
@@ -905,11 +905,11 @@
                                     nowday: "00",
                                 };
                             }
-                            // console.log(vm.electricity)
+                            // // console.log(vm.electricity)
                         } else {
                         }
                     }).catch(function (err) {
-                        console.log(err);
+                        // console.log(err);
                     });
                 }
                 // 功率峰值展示
@@ -927,7 +927,7 @@
                             var data = res.data.data;
                             if (data.length != 0) {
                                 data.forEach(function (data) {
-                                    // console.log(data);
+                                    // // console.log(data);
                                     if (data.flag == "y") {
                                         vm.YpowerData = data;
                                     } else {
@@ -944,11 +944,11 @@
                                     nowp: 0
                                 };
                             }
-                            // console.log(vm.powerData)
+                            // // console.log(vm.powerData)
                         } else {
                         }
                     }).catch(function (err) {
-                        console.log(err);
+                        // console.log(err);
                     });
                 }
                 // 功率曲线展示
@@ -982,16 +982,16 @@
                             // for (var i = 0; i < yesList.length; i++) {
                             //     yes.push(yesList[i].ysday);
                             // }
-                            // // console.log(now, yes);
+                            // // // console.log(now, yes);
                             // let RemoveSame = [...new Set([...now, ...yes])]
                             // RemoveSame.sort(function (a, b) {
                             //     return a > b ? 1 : -1
                             // });
-                            // // console.log(RemoveSame);
+                            // // // console.log(RemoveSame);
                             // RemoveSame.forEach(t1 => {
                             //     let exist = nowList.some(t2 => t1 == t2.nowday);
                             //     let Ysexist = yesList.some(t2 => t1 == t2.ysday);
-                            //     // console.log(exist);
+                            //     // // console.log(exist);
                             //     if (!exist) {
                             //         nowdata.push({
                             //             nowp: 0,
@@ -1006,21 +1006,21 @@
                             //     }
                             // });
                             // nowList.forEach(function (item) {
-                            //     // console.log(item)
+                            //     // // console.log(item)
                             //     nowdata.push(item)
                             // })
                             // yesList.forEach(function (item) {
-                            //     // console.log(item)
+                            //     // // console.log(item)
                             //     yesdata.push(item)
                             // })
-                            // // console.log(nowdata, yesdata);
+                            // // // console.log(nowdata, yesdata);
                             // var a = nowdata.sort(function (a, b) {
                             //     return a.nowday > b.nowday ? 1 : -1
                             // });
                             // var b = yesdata.sort(function (a, b) {
                             //     return a.ysday > b.ysday ? 1 : -1
                             // });
-                            // // console.log(a, b);
+                            // // // console.log(a, b);
                             // var Anow = [];
                             // var Byes = [];
                             // for (var i = 0; i < a.length; i++) {
@@ -1088,7 +1088,7 @@
                         } else {
                         }
                     }).catch(function (err) {
-                        console.log(err);
+                        // console.log(err);
                     });
                 }
                 // 电能环比展示
@@ -1130,7 +1130,7 @@
                                 }
                                 powerbot = today - yestoday < 0 ? '-' + (today - yestoday) : '+' + (today - yestoday);
                                 powertop = isNaN(powerbot / today) === true ? 0 : ((powerbot / today).toFixed(2)) * 100;
-                                // console.log(powerbot, powertop, today, yestoday)
+                                // // console.log(powerbot, powertop, today, yestoday)
 
                             }
                             daily.push({
@@ -1161,7 +1161,7 @@
                                 }
 
                             }
-                            // console.log(vm.EleRadius.daily)
+                            // // console.log(vm.EleRadius.daily)
 
                             month.push({
                                 flag: 'n',
@@ -1203,14 +1203,14 @@
                                     pb: powerbot
                                 })
                             vm.EleRadius.push(daily, month, year)
-                            // console.log(vm.EleRadius)
+                            // // console.log(vm.EleRadius)
 
 
                         } else {
 
                         }
                     }).catch(function (err) {
-                        console.log(err);
+                        // console.log(err);
                     });
 
                 }
@@ -1265,7 +1265,7 @@
                             // timeData.forEach(t1 => {
                             //     let exist = nowdata.some(t2 => t1 == t2.hour);
                             //     let Ysexist = ysNowdata.some(t2 => t1 == t2.hour);
-                            //     // console.log(exist);
+                            //     // // console.log(exist);
                             //     if (!exist) {
                             //         c.push({
                             //             hour: t1,
@@ -1280,14 +1280,14 @@
                             //     }
                             // });
                             // nowdata.forEach(function (item) {
-                            //     // console.log(item)
+                            //     // // console.log(item)
                             //     c.push(item)
                             // })
                             // ysNowdata.forEach(function (item) {
-                            //     // console.log(item)
+                            //     // // console.log(item)
                             //     yes.push(item)
                             // })
-                            // // console.log(c)
+                            // // // console.log(c)
                             // function compare(property) {
                             //     return function (a, b) {
                             //         var value1 = a[property];
@@ -1303,8 +1303,8 @@
                             // for (var i = 0; i < yesdata.length; i++) {
                             //     yesTodayData.push(yesdata[i].kwh);
                             // }
-                            // console.log(yesTodayData)
-                            // console.log(nowdata)
+                            // // console.log(yesTodayData)
+                            // // console.log(nowdata)
 
                             var electricity = echarts.init(document.getElementById("electricityId"));
                             var option = {
@@ -1351,7 +1351,7 @@
 
                         }
                     }).catch(function (err) {
-                        console.log(err);
+                        // console.log(err);
                     });
 
                 }
@@ -1404,7 +1404,7 @@
                             // timeData.forEach(t1 => {
                             //     let exist = nowdata.some(t2 => t1 == t2.day);
                             //     let Ysexist = ysNowdata.some(t2 => t1 == t2.day);
-                            //     // console.log(exist);
+                            //     // // console.log(exist);
                             //     if (!exist) {
                             //         c.push({
                             //             day: t1,
@@ -1419,14 +1419,14 @@
                             //     }
                             // });
                             // nowdata.forEach(function (item) {
-                            //     // console.log(item)
+                            //     // // console.log(item)
                             //     c.push(item)
                             // })
                             // ysNowdata.forEach(function (item) {
-                            //     // console.log(item)
+                            //     // // console.log(item)
                             //     yes.push(item)
                             // })
-                            // // console.log(c)
+                            // // // console.log(c)
                             // function compare(property) {
                             //     return function (a, b) {
                             //         var value1 = a[property];
@@ -1442,8 +1442,8 @@
                             // for (var i = 0; i < yesdata.length; i++) {
                             //     yesTodayData.push(yesdata[i].kwh);
                             // }
-                            // // console.log(yesTodayData)
-                            // // console.log(nowdata)
+                            // // // console.log(yesTodayData)
+                            // // // console.log(nowdata)
 
                             var electricity = echarts.init(document.getElementById("electricityId"));
                             var option = {
@@ -1490,7 +1490,7 @@
                         }
                     })
                         .catch(function (err) {
-                            console.log(err);
+                            // console.log(err);
                         });
 
                 }
@@ -1545,7 +1545,7 @@
                             // timeData.forEach(t1 => {
                             //     let exist = nowdata.some(t2 => t1 == t2.month);
                             //     let Ysexist = ysNowdata.some(t2 => t1 == t2.month);
-                            //     // console.log(exist);
+                            //     // // console.log(exist);
                             //     if (!exist) {
                             //         c.push({
                             //             month: t1,
@@ -1560,14 +1560,14 @@
                             //     }
                             // });
                             // nowdata.forEach(function (item) {
-                            //     // console.log(item)
+                            //     // // console.log(item)
                             //     c.push(item)
                             // })
                             // ysNowdata.forEach(function (item) {
-                            //     // console.log(item)
+                            //     // // console.log(item)
                             //     yes.push(item)
                             // })
-                            // // console.log(c)
+                            // // // console.log(c)
                             // function compare(property) {
                             //     return function (a, b) {
                             //         var value1 = a[property];
@@ -1583,8 +1583,8 @@
                             // for (var i = 0; i < yesdata.length; i++) {
                             //     yesTodayData.push(yesdata[i].kwh);
                             // }
-                            // console.log(yesTodayData)
-                            // console.log(nowdata)
+                            // // console.log(yesTodayData)
+                            // // console.log(nowdata)
 
                             var electricity = echarts.init(document.getElementById("electricityId"));
                             var option = {
@@ -1631,7 +1631,7 @@
                         }
                     })
                         .catch(function (err) {
-                            console.log(err);
+                            // console.log(err);
                         });
                 }
                 // 用电排名按日统计
@@ -1733,7 +1733,7 @@
                         }
                     })
                         .catch(function (err) {
-                            console.log(err);
+                            // console.log(err);
                         });
 
                 }
@@ -1841,7 +1841,7 @@
                         }
                     })
                         .catch(function (err) {
-                            console.log(err);
+                            // console.log(err);
                         });
 
                 }
@@ -1947,7 +1947,7 @@
                         }
                     })
                         .catch(function (err) {
-                            console.log(err);
+                            // console.log(err);
                         });
 
                 }
@@ -1959,14 +1959,14 @@
                         params: {}
                     }).then(function (res) {
                         if (res.data.code == 0) {
-                            // console.log(res)
+                            // // console.log(res)
                             vm.industryOptions = res.data.page.list;
 
                         } else {
 
                         }
                     }).catch(function (err) {
-                        console.log(err);
+                        // console.log(err);
                     });
                 },
                 industrySelect:function(val) {

@@ -152,7 +152,7 @@
 			});
 
 			 table.on('sort(LAY-app-content-list)', function (obj) {
-                    console.log(obj)
+                    // console.log(obj)
 					$("[data-field='active']").children().each(function () {
 						if ($(this).text() == '1') {
 							$(this).text("启用")
@@ -179,9 +179,9 @@
 				params: {}
 			}).then(function (res) {
 				if (res.data.code == 0) {
-					// console.log(res)
+					// // console.log(res)
 					$.each(res.data.data, function (index, item) {
-						// console.log(index, item)
+						// // console.log(index, item)
 						$('#eventType').append(new Option(item.eventType, item.eventTypeId));// 下拉菜单里添加元素
 					});
 					layui.form.render("select");
@@ -189,16 +189,19 @@
 
 				}
 			}).catch(function (err) {
-				console.log(err);
+				// console.log(err);
 			});
 			//监听搜索
 			form.on('submit(LAY-app-contlist-search)', function (data) {
 				var field = data.field;
-				console.log(field);
+				// console.log(field);
 
 				//执行重载
 				table.reload('LAY-app-content-list', {
-					where: field
+					where: field,
+					page: {
+						curr: 1 //重新从第 1 页开始
+					}
 				});
 			});
 
@@ -207,12 +210,12 @@
 					batchdel: function () {
 						var checkStatus = table.checkStatus('LAY-app-content-list'),
 							checkData = checkStatus.data; //得到选中的数据
-						console.log(checkData);
+						// console.log(checkData);
 						var idList = [];
 						for (var i = 0; i < checkData.length; i++) {
 							idList.push(checkData[i].id)
 						}
-						console.log(idList)
+						// console.log(idList)
 						if (checkData.length === 0) {
 							return layer.msg('请选择数据');
 						}
@@ -231,7 +234,7 @@
 								}
 							}).then(function (res) {
 								if (res.data.code == 0) {
-									console.log(res)
+									// console.log(res)
 									table.reload('LAY-app-content-list');
 									layer.msg('已删除');
 
@@ -243,7 +246,7 @@
 									});
 								}
 							}).catch(function (err) {
-								console.log(err);
+								// console.log(err);
 							});
 
 						});
@@ -266,7 +269,7 @@
 					edit: function () {
 						var checkStatus = table.checkStatus('LAY-app-content-list'),
 							checkData = checkStatus.data; //得到选中的数据
-						// console.log(checkData)
+						// // console.log(checkData)
 						if (checkData.length === 0) {
 							return layer.msg('请选择需要修改的数据');
 						} else if (checkData.length > 1) {

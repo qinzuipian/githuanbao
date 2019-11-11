@@ -83,7 +83,7 @@
 
 
 				form.on('submit(save)', function(data) {
-					// console.log(data);
+					// // console.log(data);
 					axios({
 						method: "post",
 						url: layui.setter.BASEURL + 'environmental_intelligent_monitoring/tbastrade/save',
@@ -92,7 +92,7 @@
 							"Content-Type": "application/json;charset=UTF-8"
 						}
 					}).then(function(res) {
-						// console.log(res)
+						// // console.log(res)
 						if (res.data.code == 0) {
 							layer.msg('保存成功！', {
 								time: 500
@@ -107,7 +107,7 @@
 							});
 						}
 					}).catch(function(err) {
-						// console.log(err);
+						// // console.log(err);
 					});
 					return false;
 				})

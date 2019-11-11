@@ -96,7 +96,7 @@
 			        });
 			    // form表单的提交
 			    form.on('submit(editFormDemo)', function (data) {
-					// console.log(data);
+					// // console.log(data);
 			        axios({
 			            method: "post",
 			            url: BASEURL + 'environmental_intelligent_monitoring/tbastrade/update',
@@ -106,7 +106,7 @@
 			            }
 			        }).then(function (res) {
 			            if (res.data.code == 0) {
-			                // console.log(res)
+			                // // console.log(res)
 			                layer.msg('编辑成功！', {
 			                    time: 500
 			                }, function () {
@@ -121,7 +121,7 @@
 			                });
 			            }
 			        }).catch(function (err) {
-			            // console.log(err);
+			            // // console.log(err);
 			        });
 			        return false;
 			    })

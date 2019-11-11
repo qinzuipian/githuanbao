@@ -109,6 +109,9 @@
 													url: layui.setter.BASEURL + '/environmental_intelligent_monitoring/tdevicehistory/list',
 													where: {
 														monitorId: vm.monitorId
+													},
+													page: {
+														curr: 1 //重新从第 1 页开始
 													}
 												});
 											}
@@ -137,7 +140,7 @@
 				},
 				watch: {
 					searchTxt: function() {
-						console.log(vm.enterpriseTreeList);
+						// console.log(vm.enterpriseTreeList);
 						// var searchTxtCopy = this.searchTxt.replace(/\s*/g,""); // 去掉空格
 
 						// if(searchTxtCopy == ''){
@@ -148,7 +151,7 @@
 						// 	});
 						// }else{
 						// 	this.enterpriseTreeList = [];
-						// 	console.log(this.enterpriseTreeListCopy);
+						// 	// console.log(this.enterpriseTreeListCopy);
 						// 	for(var i = 0; i < this.enterpriseTreeListCopy.length; i++){
 						// 		if(this.enterpriseTreeListCopy[i].type == "t_bas_enterprise"){ // 判断是否为企业
 						// 			if(this.enterpriseTreeListCopy[i].title.indexOf(searchTxtCopy) != -1){
@@ -188,6 +191,9 @@
 								where: {
 									monitorId: vm.monitorId,
 									acttime: vm.testTime
+								},
+								page: {
+									curr: 1 //重新从第 1 页开始
 								}
 							});
 						}

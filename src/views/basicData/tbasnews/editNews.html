@@ -133,9 +133,9 @@
 						// form表单的提交
 						form.on('submit(editFormDemo)', function (data) {
 							var content = layedit.getContent(index);
-							console.log(content)
+							// console.loglog(content)
 							data.field.content = content;
-							console.log(data.field)
+							// console.loglog(data.field)
 							axios({
 								method: "post",
 								url: BASEURL + 'environmental_intelligent_monitoring/tbasnews/update',
@@ -145,7 +145,7 @@
 								}
 							}).then(function (res) {
 								if (res.data.code == 0) {
-									console.log(res)
+									// console.loglog(res)
 									layer.msg('编辑成功！', {
 										time: 500
 									}, function () {
@@ -159,7 +159,7 @@
 									});
 								}
 							}).catch(function (err) {
-								console.log(err);
+								// console.loglog(err);
 							});
 							return false;
 						})

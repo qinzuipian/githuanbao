@@ -169,14 +169,14 @@
                 params: {}
             }).then(function (res) {
                 if (res.data.code == 0) {
-                    // console.log(res)
+                    // // console.log(res)
                     // $.each(res.data.data, function (index, item) {
-                    //     // console.log(index, item)
+                    //     // // console.log(index, item)
                     //     $('#eventType').append(new Option(item.eventType, item.eventTypeId));// 下拉菜单里添加元素
                     // });
                     // layui.form.render("select");
                     $.each(res.data.data, function (index, item) {
-                        // console.log(index,item)
+                        // // console.log(index,item)
                         // name="eventType"
                         $('#eventType').append('<input type="checkbox" lay-filter="eventType"  value="' + item.eventTypeId + '" title="' + item.eventType + '" lay-skin="primary">');
                     });
@@ -186,7 +186,7 @@
 
                 }
             }).catch(function (err) {
-                console.log(err);
+                // console.log(err);
             });
 
 
@@ -197,9 +197,9 @@
                 params: {}
             }).then(function (res) {
                 if (res.data.code == 0) {
-                    // console.log(res)
+                    // // console.log(res)
                     $.each(res.data.page.list, function (index, item) {
-                        // console.log(index, item)
+                        // // console.log(index, item)
                         $('#enterpriseName').append(new Option(item.name, item.id));// 下拉菜单里添加元素
                     });
                     layui.form.render("select");
@@ -208,34 +208,34 @@
 
                 }
             }).catch(function (err) {
-                console.log(err);
+                // console.log(err);
             });
 
             // 监听select框获取选中的text值
             form.on('select(enterpriseName)', function (data) {
-                // console.log(data.elem[data.elem.selectedIndex].text);
+                // // console.log(data.elem[data.elem.selectedIndex].text);
                 vm.enterpriseName = data.elem[data.elem.selectedIndex].text
                 form.render();
 
             });
             form.on('checkbox(eventType)', function (data) {
-                // console.log(data.elem[data.elem.checkedIndex].text);
-                // console.log(data.othis[0].innerText);
+                // // console.log(data.elem[data.elem.checkedIndex].text);
+                // // console.log(data.othis[0].innerText);
                 vm.eventTypeList.push(data.othis[0].innerText);
                 vm.eventTypeIdList.push(data.value);
-                console.log(vm.eventTypeList)
-                console.log(vm.eventTypeIdList)
+                // console.log(vm.eventTypeList)
+                // console.log(vm.eventTypeIdList)
                 // vm.eventType = data.elem[data.elem.selectedIndex].text
                 form.render();
 
             })
 
             form.on('submit(warnForm)', function (data) {
-                console.log(data);
+                // console.log(data);
                 data.field.enterpriseName = vm.enterpriseName;
                 data.field.eventTypeListStr = vm.eventTypeList.join();
                 data.field.eventTypeIdListStr = vm.eventTypeIdList.join();
-                console.log(data.field);
+                // console.log(data.field);
                 axios({
                     method: "post",
                     // url: layui.setter.BASEURL + 'environmental_intelligent_monitoring/twarnsubscribe/save',
@@ -246,7 +246,7 @@
                     }
                 }).then(function (res) {
                     if (res.data.code == 0) {
-                        console.log(res)
+                        // console.log(res)
                         layer.msg('保存成功！', {
                             time: 500
                         }, function () {
@@ -261,7 +261,7 @@
                         });
                     }
                 }).catch(function (err) {
-                    console.log(err);
+                    // console.log(err);
                 });
                 return false;
             })

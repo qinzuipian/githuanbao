@@ -328,6 +328,9 @@
 								enterpriseName: vm.enterpriseName,
 								produceType: vm.selectStatus,
 								tradeId: vm.selectIndustry
+							},
+							page: {
+								curr: 1 //重新从第 1 页开始
 							}
 						});
 					}
@@ -558,7 +561,7 @@
 				var tabsheaderDomList = window.parent.document.getElementById("LAY_app_tabsheader").getElementsByTagName("li")
 				for(var i = 0; i < tabsheaderDomList.length; i++){
 					if(tabsheaderDomList[i].attributes[0].value == "firmAbnormal_qyyc/normalQuery/firmMonitor.html"){
-						console.log("已经打开该页面了");
+						// console.log("已经打开该页面了");
 						parent.layui.index.refreshTab(i);
 					}else{
 						// 没有打开的情况下直接新增tab
