@@ -86,7 +86,7 @@
 							})
 							.then(function(res) {
 								if (res.data.code == 0) {
-									layui.layer.alert("删除成功",function(index){
+									layui.layer.alert("删除成功", function(index) {
 										layui.table.reload('roletab', {
 											page: {
 												curr: 1 //重新从第 1 页开始
@@ -128,23 +128,19 @@
 								field: 'roleId',
 								title: 'ID',
 								width: 80,
-								sort: true,
-								fixed: 'left'
+								ixed: 'left'
 							},
 							{
 								field: 'roleName',
 								title: '角色名',
-								sort: true,
 							},
 							{
 								field: 'createTime',
 								title: '创建时间',
-								sort: true,
 							},
 							{
 								field: 'remark',
 								title: '备注',
-								sort: true,
 							}
 						]
 					],
