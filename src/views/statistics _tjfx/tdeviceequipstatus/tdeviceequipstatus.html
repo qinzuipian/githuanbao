@@ -97,49 +97,49 @@
 								{
 									title: '企业名称',
 									field: 'enterprisename',
-									minWidth: 200,
-									sort:true
+									minWidth: 200
+									 
 								}, {
 									title: '车间名称',
 									field: 'shopname',
-									minWidth: 100,
-									sort:true
+									minWidth: 100
+									 
 								}, {
 									title: '设备名称',
 									field: 'codename',
-									minWidth: 100,
-									sort:true
+									minWidth: 100
+									 
 								}, {
 									title: '监测点名称',
 									field: 'monitorname',
-									minWidth: 60,
-									sort:true
+									minWidth: 60
+									 
 								}, {
 									title: '网关编号',
 									field: 'swicthid',
-									minWidth: 100,
-									sort:true
+									minWidth: 100
+									 
 								}, {
 									title: '表地址',
 									field: 'meterid',
-									minWidth: 100,
-									sort:true
+									minWidth: 100
+									 
 								}, {
 									title: '状态',
 									field: 'status',
-									Width: 30,
-									sort:true
+									Width: 30
+									 
 								}, {
 									title: '详情',
 									minWidth: 100,
-									toolbar: '#barDemo',
-									sort:true
+									toolbar: '#barDemo'
+									 
 								}
 							]
 						] //设置表头
 						,
-					limit: 10,
-					limits: [10, 15, 20, 25, 30],
+					 limit: 15,
+					limits: [15, 30, 50, 100, 200],
 					done: function(res, page, count) {
 						$("[data-field='status']").children().each(function() {
 							if ($(this).text() == '1') {

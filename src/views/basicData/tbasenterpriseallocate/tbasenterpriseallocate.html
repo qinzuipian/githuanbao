@@ -204,7 +204,7 @@
 								url: BASEURL + "environmental_intelligent_monitoring/tbasenterpriseallocate/list",
 								params: {
 									userId: vm.selectUserId,
-									limit: 10000
+									 limit: 15000
 								}
 							})
 							.then(function(res) {
@@ -234,7 +234,7 @@
 								method: "POST",
 								url: BASEURL + "environmental_intelligent_monitoring/tbasenterprise/list",
 								params: {
-									limit: 100000,
+									 limit: 150000,
 									name: vm.enterpriseName,
 									tradeId: vm.selectTrade
 								}

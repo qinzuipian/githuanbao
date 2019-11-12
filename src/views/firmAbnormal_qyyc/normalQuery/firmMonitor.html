@@ -453,32 +453,32 @@
 							[{
 									title: '监测点名称',
 									field: 'monitorName',
-									minWidth: 100,
-									sort:true
+									minWidth: 100
+									 
 								},
 								{
 									title: '类别',
 									field: 'codeType',
-									minWidth: 100,
-									sort:true
+									minWidth: 100
+									 
 								},
 								{
 									title: '状态',
 									field: 'status',
-									minWidth: 100,
-									sort:true
+									minWidth: 100
+									 
 								},
 								{
 									title: 'CT',
 									field: 'ct',
-									minWidth: 100,
-									sort:true
+									minWidth: 100
+									 
 								},
 								{
 									title: '功率启停阀值',
 									field: 'electricLimit',
-									minWidth: 200,
-									sort:true
+									minWidth: 200
+									 
 								},
 								{
 									title: '功率门限时间',
@@ -488,14 +488,14 @@
 								{
 									title: '额定功率',
 									field: 'ratedPower',
-									minWidth: 100,
-									sort:true
+									minWidth: 100
+									 
 								}
 							]
 						] //设置表头
 						,
-					limit: 10,
-					limits: [10, 15, 20, 25, 30],
+					 limit: 15,
+					limits: [15, 30, 50, 100, 200],
 					done: function(res, page, count) {
 						$("[data-field='status']").children().each(function() {
 							if ($(this).text() == '1') {
@@ -560,31 +560,31 @@
 									title: '产污监测点',
 									field: 'productName',
 									minWidth: 100,
-									sort:true
+									 
 								},
 								{
 									title: '治污监测点',
 									field: 'treatName',
 									minWidth: 100,
-									sort:true
+									 
 								},
 								{
 									title: '发生时间',
 									field: 'createDate',
 									minWidth: 100,
-									sort:true
+									 
 								},
 								{
 									title: '状态',
 									field: 'currentStatus',
 									minWidth: 100,
-									sort:true
+									 
 								}
 							]
 						] //设置表头
 						,
-					limit: 10,
-					limits: [10, 15, 20, 25, 30],
+					 limit: 15,
+					limits: [15, 30, 50, 100, 200],
 					done: function(res, page, count) {
 						$("[data-field='currentStatus']").children().each(function() {
 							if ($(this).text() == '0') {
@@ -647,32 +647,32 @@
 							[{
 									title: '产污监测点',
 									field: 'productName',
-									minWidth: 100,
-									sort:true
+									minWidth: 100
+									 
 								},
 								{
 									title: '治污监测点',
 									field: 'treatName',
-									minWidth: 100,
-									sort:true
+									minWidth: 100
+									 
 								},
 								{
 									title: '发生时间',
 									field: 'createDate',
-									minWidth: 100,
-									sort:true
+									minWidth: 100
+									 
 								},
 								{
 									title: '状态',
 									field: 'currentStatus',
-									minWidth: 100,
-									sort:true
+									minWidth: 100
+									 
 								}
 							]
 						] //设置表头
 						,
-					limit: 10,
-					limits: [10, 15, 20, 25, 30],
+					 limit: 15,
+					limits: [15, 30, 50, 100, 200],
 					done: function(res, page, count) {
 						$("[data-field='currentStatus']").children().each(function() {
 							if ($(this).text() == '0') {
@@ -717,31 +717,31 @@
 									title: '产污监测点',
 									field: 'productName',
 									minWidth: 100,
-									sort:true
+									 
 								},
 								{
 									title: '治污监测点',
 									field: 'treatName',
 									minWidth: 100,
-									sort:true
+									 
 								},
 								{
 									title: '发生时间',
 									field: 'createDate',
 									minWidth: 100,
-									sort:true
+									 
 								},
 								{
 									title: '状态',
 									field: 'currentStatus',
 									minWidth: 100,
-									sort:true
+									 
 								}
 							]
 						] //设置表头
 						,
-					limit: 10,
-					limits: [10, 15, 20, 25, 30],
+					 limit: 15,
+					limits: [15, 30, 50, 100, 200],
 					done: function(res, page, count) {
 						$("[data-field='currentStatus']").children().each(function() {
 							if ($(this).text() == '0') {
