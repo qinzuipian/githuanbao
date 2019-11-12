@@ -8,9 +8,8 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
 		<link rel="stylesheet" href="../../../layuiadmin/layui/css/layui.css" media="all">
 		<link rel="stylesheet" href="../../../layuiadmin/style/admin.css" media="all">
-		<link rel="stylesheet" href="../../../layuiadmin/style/login.css" media="all">
-		<link rel="stylesheet" type="text/css" href="../../layuiadmin/plugin/element.css" />
-		<link rel="stylesheet" type="text/css" href="../../../layuiadmin/style/role.css"/>
+		<link rel="stylesheet" type="text/css" href="../../../layuiadmin/plugin/element.css" />
+		<link rel="stylesheet" type="text/css" href="../../../layuiadmin/style/role.css" />
 	</head>
 	<body>
 
@@ -18,7 +17,7 @@
 			<div style="padding: 20px 0 10px 20px;" class="layui-row">
 				<button class="layui-btn layuiadmin-btn-role" @click="addRole">添加</button>
 				<button class="layui-btn layuiadmin-btn-role" @click="editRole">编辑</button>
-				<button class="layui-btn layuiadmin-btn-role">删除</button>
+				<button class="layui-btn layuiadmin-btn-role" @click="removeRole">删除</button>
 			</div>
 			<table id="roleTab" lay-filter="roleTab"></table>
 		</div>
@@ -28,6 +27,7 @@
 		<script src="../../../layuiadmin/plugin/vue.min.js"></script>
 		<script src="../../../layuiadmin/plugin/axios.js"></script>
 		<script src="../../../layuiadmin/plugin/element.js"></script>
+		<script src="../../../layuiadmin/js/common.js"></script>
 
 		<script>
 			var vm = new Vue({
@@ -37,58 +37,98 @@
 				},
 				methods: {
 					// 新增角色
-					addRole: function(){
+					addRole: function() {
 						layui.layer.open({
 							type: 2,
 							title: "新增角色",
 							maxmin: true,
 							shadeClose: true,
-							area : ['800px' , '520px'],
+							area: ['800px', '520px'],
 							content: './addRole.html'
 						})
 					},
 					// 编辑角色
-					editRole: function(){
-						layui.layer.open({
-							type: 2,
-							title: "编辑角色",
-							maxmin: true,
-							shadeClose: true,
-							area : ['800px' , '520px'],
-							content: './editRole.html'
-						})
+					editRole: function() {
+						// // console.log(layui.table.checkStatus('roletab'));
+						var selectRole = layui.table.checkStatus('roletab').data;
+						// 判断是否只选中了一个
+						var isOne = checkOne(selectRole);
+						
+						if(isOne){
+							window.localStorage.setItem("roleId", selectRole[0].roleId)
+							layui.layer.open({
+								type: 2,
+								title: "编辑角色",
+								maxmin: true,
+								shadeClose: true,
+								area: ['800px', '520px'],
+								content: './editRole.html'
+							})
+						}
+					},
+					removeRole: function(){
+						var selectRole = layui.table.checkStatus('roletab').data;
+						// 判断是否只选中了一个
+						var isOne = checkOne(selectRole);
+						
+						if(isOne){
+							layui.layer.msg("删除成功")
+						}
 					}
 				}
 			});
 
 			layui.config({
-			    base: '../../../layuiadmin/' //静态资源所在路径
+				base: '../../../layuiadmin/' //静态资源所在路径
 			}).extend({
-			    index: 'lib/index' //主入口模块
+				index: 'lib/index' //主入口模块
 			}).use(['table', 'index', 'layer'], function() {
 				var table = layui.table;
 				var layer = layui.layer;
 				//第一个实例
 				table.render({
 					elem: '#roleTab',
+					id: "roletab",
 					height: 450,
 					url: layui.setter.BASEURL + 'sys-mgr/sys/role/list', //数据接口
 					page: true, //开启分页
-					cols: [[
-						{type: 'checkbox', fixed: 'left'},
-						{field: 'roleId', title: 'ID', width:80, sort: true, fixed: 'left'},
-						{field: 'roleName', title: '角色名'},
-						{field: 'createTime', title: '创建时间'},
-						{field: 'remark', title: '备注'}
-					]],
-					parseData: function (res) { // 数据重新处理为layUI的数据格式
-					    var msg = {
-					        "code": res.code, //解析接口状态
-					        "msg": res.msg, //解析提示文本
-					        "count": res.page.totalCount, //解析数据长度
-					        "data": res.page.list //解析数据列表
-					    };
-					    return msg;
+					cols: [
+						[{
+								type: 'checkbox',
+								fixed: 'left'
+							},
+							{
+								field: 'roleId',
+								title: 'ID',
+								width: 80,
+								sort: true,
+								fixed: 'left'
+							},
+							{
+								field: 'roleName',
+								title: '角色名',
+								sort: true,
+							},
+							{
+								field: 'createTime',
+								title: '创建时间',
+								sort: true,
+							},
+							{
+								field: 'remark',
+								title: '备注',
+								sort: true,
+							}
+						]
+					],
+					parseData: function(res) { // 数据重新处理为layUI的数据格式
+						var msg = {
+							"code": res.code, //解析接口状态
+							"msg": res.msg, //解析提示文本
+							"count": res.page.totalCount, //解析数据长度
+							"data": res.page.list //解析数据列表
+						};
+						return msg;
 					}
 				});
 			});

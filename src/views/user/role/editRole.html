@@ -8,21 +8,43 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
 		<link rel="stylesheet" href="../../../layuiadmin/layui/css/layui.css" media="all">
 		<link rel="stylesheet" href="../../../layuiadmin/style/admin.css" media="all">
-		<link rel="stylesheet" href="../../../layuiadmin/style/login.css" media="all">
 		<link rel="stylesheet" type="text/css" href="../../layuiadmin/plugin/element.css" />
 		<style type="text/css">
-			#vm{
+			#vm {
 				background: white;
+				padding: 20px;
+				min-height: 435px;
 			}
 		</style>
 	</head>
 	<body>
 
 		<div id="vm">
-			edit
+			<form class="layui-form">
+				<div class="layui-form-item">
+					<label class="layui-form-label">角色名称</label>
+					<div class="layui-input-block">
+						<input type="text" v-model="rolename" name="title" required lay-verify="required" placeholder="请输入角色名称" autocomplete="off" class="layui-input">
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label">分配权限</label>
+					<div class="layui-input-block" id="templateList"></div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label">备注</label>
+					<div class="layui-input-block">
+						<input type="text" v-model="roleremark" name="remark" required lay-verify="required" placeholder="请输入角色备注" autocomplete="off" class="layui-input">
+					</div>
+				</div>
+				<div class="layui-form-item" style="display: flex;justify-content: center;">
+					<button type="button" class="layui-btn" @click="saveRole">确定</button>
+					<button type="button" class="layui-btn">取消</button>
+				</div>
+			</form>
 		</div>
 
-		<script src="../../../layuiadmin/layui/layui.js"></script>
+		<script src="../../../layuiadmin/layui/layui.all.js"></script>
 		<script src="../../../layuiadmin/js/baseUrlConfig.js"></script>
 		<script src="../../../layuiadmin/plugin/vue.min.js"></script>
 		<script src="../../../layuiadmin/plugin/axios.js"></script>
@@ -32,20 +54,107 @@
 			var vm = new Vue({
 				el: "#vm",
 				data: {
-
+					templateList: [], // 所有权限目录
+					catalogList: [], // 一级目录
+					menuList: [], // 二级目录
+					buttonList: [], // 按钮
+					
+					selectBtnIdList: [], // 选中的按钮ID
+					
+					roleId: '',
+					rolename: '', // 角色名字
+					roleremark: '', // 角色备注
 				},
 				methods: {
-
+					pageInit: function() {
+						this.roleId = window.localStorage.getItem("roleId");
+						window.localStorage.removeItem("roleId");
+						axios({
+								url: BASEURL + '/sys-mgr/sys/menu/queryMenuList',
+								method: 'POST'
+							})
+							.then(function(res) {
+								if (res.data.code == 0) {
+									for (var i = 0; i < res.data.data.length; i++) {
+										res.data.data[i].spread = true;
+									}
+									layuiInit(res.data.data);
+									vm.templateList = res.data.data;
+								} else {
+									vm.$message.error(res.data.msg);
+								}
+							})
+						
+						// 根据ID获取角色详情
+						axios({
+								url: BASEURL + '/sys-mgr/sys/role/info/' + this.roleId,
+								method: 'post'
+							})
+							.then(function(res) {
+								if(res.data.code == 0){
+									vm.catalogList = res.data.role.catalogList;
+									vm.menuList = res.data.role.menuList;
+									vm.buttonList = res.data.role.buttonList;
+									
+									layui.tree.setChecked('templateList', res.data.role.buttonList); //批量勾选 id 为 2、3 的节点
+									
+								}else{
+									vm.$notify.error({
+									    title: '错误',
+									    message: res.data.msg
+									});
+								}
+							})
+					},
+					saveRole: function(){
+						var checkData = layui.tree.getChecked('templateList');
+						for(var i = 0; i < checkData.length; i++){
+							for(var j = 0; j < checkData[i].children.length; j++){
+								for(var k = 0; k < checkData[i].children[j].children.length; k++){
+									vm.selectBtnIdList.push(checkData[i].children[j].children[k].id)
+								}
+							}
+						};
+						console.log(vm.selectBtnIdList);
+						var data = JSON.stringify({
+							roleId: vm.roleId,
+							menuIdList: vm.selectBtnIdList
+						})
+						axios({
+							method: "POST",
+							url: BASEURL + "/sys-mgr/sys/role/update",
+							headers: {
+							    "Content-Type": "application/json;charset=UTF-8"
+							},
+							data: data
+						})
+					}
+				},
+				mounted: function() {
+					this.pageInit();
 				}
 			});
 
-			layui.config({
-			    base: '../../../layuiadmin/' //静态资源所在路径
-			}).extend({
-			    index: 'lib/index' //主入口模块
-			}).use(['index'], function() {
-				
-			});
+			function layuiInit(templateList) {
+				layui.config({
+					base: '../../../layuiadmin/' //静态资源所在路径
+				}).extend({
+					index: 'lib/index' //主入口模块
+				}).use(['index', 'tree'], function() {
+					var tree = layui.tree;
+
+					tree.render({
+						elem: '#templateList', //默认是点击节点可进行收缩
+						data: templateList,
+						showCheckbox: true,
+						id: 'templateList',
+						click: function(obj) {
+							//得到当前点击的节点数据
+
+						}
+					});
+				});
+			}
 		</script>
 	</body>
 </html>

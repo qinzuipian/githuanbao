@@ -8,12 +8,12 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
 		<link rel="stylesheet" href="../../../layuiadmin/layui/css/layui.css" media="all">
 		<link rel="stylesheet" href="../../../layuiadmin/style/admin.css" media="all">
-		<link rel="stylesheet" href="../../../layuiadmin/style/login.css" media="all">
 		<link rel="stylesheet" type="text/css" href="../../layuiadmin/plugin/element.css" />
 		<style type="text/css">
 			#vm {
 				background: white;
 				padding: 20px;
+				min-height: 435px;
 			}
 		</style>
 	</head>
@@ -24,12 +24,22 @@
 				<div class="layui-form-item">
 					<label class="layui-form-label">角色名称</label>
 					<div class="layui-input-block">
-						<input type="text" name="title" required lay-verify="required" placeholder="请输入角色名称" autocomplete="off" class="layui-input">
+						<input type="text" v-model="rolename" name="title" required lay-verify="required" placeholder="请输入角色名称" autocomplete="off" class="layui-input">
 					</div>
 				</div>
 				<div class="layui-form-item">
 					<label class="layui-form-label">分配权限</label>
 					<div class="layui-input-block" id="templateList"></div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label">备注</label>
+					<div class="layui-input-block">
+						<input type="text" v-model="roleremark" name="remark" required lay-verify="required" placeholder="请输入角色备注" autocomplete="off" class="layui-input">
+					</div>
+				</div>
+				<div class="layui-form-item" style="display: flex;justify-content: center;">
+					<button type="button" class="layui-btn">确定</button>
+					<button type="button" class="layui-btn">取消</button>
 				</div>
 			</form>
 		</div>
@@ -45,21 +55,23 @@
 				el: "#vm",
 				data: {
 					// templateList: []
+					rolename: '',
+					roleremark: '',
 				},
 				methods: {
 					pageInit: function() {
 						axios({
-								url: '../../../layuiadmin/data/template.json',
-								method: 'get'
+								url: BASEURL + '/sys-mgr/sys/menu/queryMenuList',
+								method: 'POST'
 							})
 							.then(function(res) {
 								if (res.data.code == 0) {
 									for (var i = 0; i < res.data.data.length; i++) {
-										res.data.data[i].spread = true;
+										// res.data.data[i].spread = true;
 									}
 									layuiInit(res.data.data);
 								} else {
-									vm.$message.error("本地template数据丢失,请联系开发人员");
+									vm.$message.error(res.data.msg);
 								}
 							})
 					}
@@ -70,7 +82,7 @@
 			});
 
 			function layuiInit(templateList) {
-				console.log(vm.enterpriseTreeList);
+				// console.log(vm.enterpriseTreeList);
 				layui.config({
 					base: '../../../layuiadmin/' //静态资源所在路径
 				}).extend({
