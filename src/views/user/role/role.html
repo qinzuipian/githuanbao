@@ -53,8 +53,8 @@
 						var selectRole = layui.table.checkStatus('roletab').data;
 						// 判断是否只选中了一个
 						var isOne = checkOne(selectRole);
-						
-						if(isOne){
+
+						if (isOne) {
 							window.localStorage.setItem("roleId", selectRole[0].roleId)
 							layui.layer.open({
 								type: 2,
@@ -66,14 +66,41 @@
 							})
 						}
 					},
-					removeRole: function(){
+					removeRole: function() {
 						var selectRole = layui.table.checkStatus('roletab').data;
-						// 判断是否只选中了一个
-						var isOne = checkOne(selectRole);
-						
-						if(isOne){
-							layui.layer.msg("删除成功")
+						var selectRoleIdList = [];
+						for (var i = 0; i < selectRole.length; i++) {
+							selectRoleIdList.push(selectRole[i].roleId);
 						}
+						console.log(selectRoleIdList);
+						var data = JSON.stringify({
+							roleIds: selectRoleIdList
+						})
+						axios({
+								method: "POST",
+								url: BASEURL + "sys-mgr/sys/role/delete",
+								headers: {
+									"Content-Type": "application/json;charset=UTF-8"
+								},
+								data: data
+							})
+							.then(function(res) {
+								if (res.data.code == 0) {
+									layui.layer.alert("删除成功",function(index){
+										layui.table.reload('roletab', {
+											page: {
+												curr: 1 //重新从第 1 页开始
+											}
+										});
+										layer.close(index)
+									})
+								} else {
+									vm.$notify.error({
+										title: '错误',
+										message: res.data.msg
+									});
+								}
+							})
 					}
 				}
 			});

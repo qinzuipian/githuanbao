@@ -24,7 +24,8 @@
 				<div class="layui-form-item">
 					<label class="layui-form-label">角色名称</label>
 					<div class="layui-input-block">
-						<input type="text" v-model="rolename" name="title" required lay-verify="required" placeholder="请输入角色名称" autocomplete="off" class="layui-input">
+						<input type="text" v-model="rolename" name="title" required lay-verify="required" placeholder="请输入角色名称"
+						 autocomplete="off" class="layui-input">
 					</div>
 				</div>
 				<div class="layui-form-item">
@@ -34,12 +35,13 @@
 				<div class="layui-form-item">
 					<label class="layui-form-label">备注</label>
 					<div class="layui-input-block">
-						<input type="text" v-model="roleremark" name="remark" required lay-verify="required" placeholder="请输入角色备注" autocomplete="off" class="layui-input">
+						<input type="text" v-model="roleremark" name="remark" required lay-verify="required" placeholder="请输入角色备注"
+						 autocomplete="off" class="layui-input">
 					</div>
 				</div>
 				<div class="layui-form-item" style="display: flex;justify-content: center;">
-					<button type="button" class="layui-btn">确定</button>
-					<button type="button" class="layui-btn">取消</button>
+					<button type="button" class="layui-btn" @click="saveRole">确定</button>
+					<button type="button" class="layui-btn" @click="cancelRole">取消</button>
 				</div>
 			</form>
 		</div>
@@ -55,6 +57,7 @@
 				el: "#vm",
 				data: {
 					// templateList: []
+					selectBtnIdList: [],
 					rolename: '',
 					roleremark: '',
 				},
@@ -67,13 +70,63 @@
 							.then(function(res) {
 								if (res.data.code == 0) {
 									for (var i = 0; i < res.data.data.length; i++) {
-										// res.data.data[i].spread = true;
+										res.data.data[i].spread = true;
 									}
 									layuiInit(res.data.data);
 								} else {
 									vm.$message.error(res.data.msg);
 								}
 							})
+					},
+					saveRole: function() {
+						var checkData = layui.tree.getChecked('templateList');
+						for (var i = 0; i < checkData.length; i++) {
+							for (var j = 0; j < checkData[i].children.length; j++) {
+								for (var k = 0; k < checkData[i].children[j].children.length; k++) {
+									vm.selectBtnIdList.push(checkData[i].children[j].children[k].id)
+								}
+							}
+						};
+						var data = JSON.stringify({
+							menuIdList: vm.selectBtnIdList,
+							roleName: vm.rolename,
+							remark: vm.roleremark
+						})
+						axios({
+								method: "POST",
+								url: BASEURL + "/sys-mgr/sys/role/save",
+								headers: {
+									"Content-Type": "application/json;charset=UTF-8"
+								},
+								data: data
+							})
+							.then(function(res) {
+								if (res.data.code == 0) {
+									layer.alert('保存成功', function(index) {
+										layer.close(index);
+										vm.cancelRole();
+										vm.reloadParentTable();
+									})
+								} else {
+									vm.$notify.error({
+										title: '错误',
+										message: res.data.msg
+									})
+								}
+							})
+					},
+					cancelRole: function() {
+						var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+						parent.layer.close(index); //再执行关闭 
+						this.reloadParentTable();
+					},
+					// 父页面表格重载
+					reloadParentTable: function() {
+						parent.layui.table.reload('roletab', {
+							page: {
+								curr: 1 //重新从第 1 页开始
+							}
+						});
 					}
 				},
 				mounted: function() {
@@ -95,10 +148,6 @@
 						data: templateList,
 						showCheckbox: true,
 						id: 'templateList',
-						click: function(obj) {
-							//得到当前点击的节点数据
-
-						}
 					});
 				});
 			}

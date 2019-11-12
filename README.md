@@ -63,3 +63,9 @@ for(var i = 0; i < tabsheaderDomList.length; i++){
 	}
 }
 ```
+
+#### 连续关闭当前弹框和父级弹框
+``` 
+	layer.close(index);
+	parent.layer.close(index);
+```
