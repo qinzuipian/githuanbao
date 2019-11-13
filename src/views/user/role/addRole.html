@@ -22,25 +22,24 @@
 		<div id="vm">
 			<form class="layui-form">
 				<div class="layui-form-item">
-					<label class="layui-form-label">角色名称</label>
+					<label class="layui-form-label">角色名称<span class="red">*</span></label>
 					<div class="layui-input-block">
-						<input type="text" v-model="rolename" name="title" required lay-verify="required" placeholder="请输入角色名称"
-						 autocomplete="off" class="layui-input">
+						<input type="text" v-model="rolename" name="title" lay-verify="required" placeholder="请输入角色名称" autocomplete="off"
+						 class="layui-input">
 					</div>
 				</div>
 				<div class="layui-form-item">
-					<label class="layui-form-label">分配权限</label>
+					<label class="layui-form-label">分配权限<span class="red">*</span></label>
 					<div class="layui-input-block" id="templateList"></div>
 				</div>
 				<div class="layui-form-item">
 					<label class="layui-form-label">备注</label>
 					<div class="layui-input-block">
-						<input type="text" v-model="roleremark" name="remark" required lay-verify="required" placeholder="请输入角色备注"
-						 autocomplete="off" class="layui-input">
+						<input type="text" v-model="roleremark" name="remark" placeholder="请输入角色备注" autocomplete="off" class="layui-input">
 					</div>
 				</div>
 				<div class="layui-form-item" style="display: flex;justify-content: center;">
-					<button type="button" class="layui-btn" @click="saveRole">确定</button>
+					<button type="button" class="layui-btn" lay-submit lay-filter="save">确定</button>
 					<button type="button" class="layui-btn" @click="cancelRole">取消</button>
 				</div>
 			</form>
@@ -140,8 +139,9 @@
 					base: '../../../layuiadmin/' //静态资源所在路径
 				}).extend({
 					index: 'lib/index' //主入口模块
-				}).use(['index', 'tree'], function() {
+				}).use(['index', 'tree', 'form'], function() {
 					var tree = layui.tree;
+					var form = layui.form;
 
 					tree.render({
 						elem: '#templateList', //默认是点击节点可进行收缩
@@ -149,6 +149,11 @@
 						showCheckbox: true,
 						id: 'templateList',
 					});
+
+					form.on('submit(save)', function(data) {
+						vm.saveRole();
+					})
+
 				});
 			}
 		</script>
