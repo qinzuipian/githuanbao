@@ -8,6 +8,7 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
 		<link rel="stylesheet" href="../layuiadmin/layui/css/layui.css" media="all">
 		<link rel="stylesheet" href="../layuiadmin/style/admin.css" media="all">
+		<link rel="stylesheet" type="text/css" href="../layuiadmin/plugin/element.css"/>
 
 	</head>
 	<body class="layui-layout-body">
@@ -41,6 +42,12 @@
 							<li class="layui-nav-item layui-hide-xs" lay-unselect>
 								<a href="javascript:;" layadmin-event="theme">
 									<i class="layui-icon layui-icon-theme"></i>
+								</a>
+							</li>
+							
+							<li class="layui-nav-item layui-hide-xs" lay-unselect>
+								<a href="./dataControler.html">
+									<i class="layui-icon layui-icon-console"></i>
 								</a>
 							</li>
 
@@ -262,6 +269,7 @@
 		<script src="../layuiadmin/js/baseUrlConfig.js"></script>
 		<script src="../layuiadmin/plugin/vue.min.js"></script>
 		<script src="../layuiadmin/plugin/axios.js"></script>
+		<script src="../layuiadmin/plugin/element.js"></script>
 		<script>
 			layui.config({
 				base: '../layuiadmin/' //静态资源所在路径
@@ -279,8 +287,22 @@
 						var token = window.localStorage.getItem("token");
 						if(!userId || !token){
 							window.location.href = "./user/login.html"
+						}else{
+							axios({
+									url: BASEURL + '/sys-mgr/sys/user/info/' + userId,
+									method: 'post'
+								})
+								.then(function(res) {
+									if (res.data.code == 0) {
+										console.log(res.data.user.roleIdList);
+									} else {
+										vm.$notify.error({
+											title: '错误',
+											message: res.data.msg
+										});
+									}
+								})
 						}
-						// vm.username = window.localStorage.getItem("username")
 					},
 					logout: function(){
 						axios({
