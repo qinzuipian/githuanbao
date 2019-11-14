@@ -84,7 +84,8 @@
 								method: "POST",
 								url: BASEURL + 'environmental_intelligent_monitoring/tbasorganize/dendrogramList',
 								params: {
-									type: 5
+									type: 5,
+									userId: window.localStorage.getItem("userId")
 								}
 							})
 							.then(function(res) {
@@ -100,7 +101,7 @@
 										id: 'enterpriseList',
 										click: function(obj) {
 											//得到当前点击的节点数据
-											if(obj.data.type == "t_device_monitor"){
+											if (obj.data.type == "t_device_monitor") {
 												vm.testNameTxt = obj.data.title
 											}
 											if (obj.data.type == "t_device_monitor") { // 如果当前点击的是监测点
@@ -125,12 +126,14 @@
 								}
 							})
 					},
-					
-					expordExcel: function(){
-						if(vm.monitorId == "" || vm.testTime == ""){
+
+					expordExcel: function() {
+						if (vm.monitorId == "" || vm.testTime == "") {
 							vm.$message.error('监测点或者时间不能为空');
-						}else{
-							parent.window.location.href = BASEURL + '/environmental_intelligent_monitoring/tdevicehistory/exportEnterpriseExcel' + "?" + "actTime=" + vm.testTime + "&" + "monitorId=" + vm.monitorId;
+						} else {
+							parent.window.location.href = BASEURL +
+								'/environmental_intelligent_monitoring/tdevicehistory/exportEnterpriseExcel' + "?" + "actTime=" + vm.testTime +
+								"&" + "monitorId=" + vm.monitorId;
 						}
 					},
 
@@ -208,14 +211,15 @@
 				var tree = layui.tree;
 				var data = vm.enterpriseTreeList;
 				var table = layui.table;
-				
+
 				table.render({
 					elem: '#testData',
 					height: 650,
 					url: layui.setter.BASEURL + '/environmental_intelligent_monitoring/tdevicehistory/list', //数据接口
 					where: {
 						monitorId: vm.monitorId,
-						acttime: vm.testTime
+						acttime: vm.testTime,
+						userId: window.localStorage.getItem("userId")
 					},
 					parseData: function(res) { // 数据重新处理为layUI的数据格式
 						var msg = {
@@ -233,17 +237,17 @@
 								field: 'monitorName',
 								title: '监测点名称',
 								width: 140,
-								   
+
 							}, {
 								field: 'acttime',
 								title: '时间',
 								width: 170,
-								   
+
 							}, {
 								field: 'ua',
 								title: 'Ua(V)',
 								// width: 80,
-								   
+
 							}, {
 								field: 'ub',
 								title: 'Ub(V)',
@@ -256,12 +260,12 @@
 								field: 'ia',
 								title: 'Ia(A)',
 								// width: 80,
-								   
+
 							}, {
 								field: 'ib',
 								title: 'Ib(A)',
 								// width: 80,
-								   
+
 							}, {
 								field: 'ic',
 								title: 'Ic(A)',
@@ -270,22 +274,22 @@
 								field: 'p',
 								title: 'P(kW)',
 								// width: 80,
-								   
+
 							}, {
 								field: 'q',
 								title: 'Q(kVAR)',
 								width: 100,
-								   
+
 							}, {
 								field: 'pi',
 								title: 'Pv(KWH)',
 								width: 120,
-								   
+
 							}, {
 								field: 'the',
 								title: 'The',
 								// width: 80,
-								   
+
 							}
 						]
 					]

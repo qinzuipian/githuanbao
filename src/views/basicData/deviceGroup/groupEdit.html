@@ -159,7 +159,8 @@
                         method: "post",
                         url: BASEURL + 'environmental_intelligent_monitoring/tdevicemonitor/queryProductAndTreatList',
                         params: {
-                            id: parent.data.productId
+                            id: parent.data.productId,
+							userId: window.localStorage.getItem("userId")
                         },
                         /* headers: {
                             "Content-Type": "application/json;charset=UTF-8"
@@ -197,7 +198,8 @@
                         method: "post",
                         url: BASEURL + 'environmental_intelligent_monitoring/tdevicemonitor/querytreatNameList',
                         params: {
-                            enterpriseId: parent.data.enterpriseId
+                            enterpriseId: parent.data.enterpriseId,
+							userId: window.localStorage.getItem("userId")
                         },
                         /* headers: {
                             "Content-Type": "application/json;charset=UTF-8"

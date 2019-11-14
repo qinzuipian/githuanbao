@@ -104,6 +104,9 @@
 						axios({
 								method: "GET",
 								url: BASEURL + "sys-mgr/sys/user/list",
+								params: {
+									userId: window.localStorage.getItem("userId")
+								}
 							})
 							.then(function(res) {
 								if (res.data.code == 0) {
@@ -119,6 +122,9 @@
 						axios({
 								method: "GET",
 								url: BASEURL + "environmental_intelligent_monitoring/tbasenterprise/list?limit=100000",
+								params: {
+									userId: window.localStorage.getItem("userId")
+								}
 							})
 							.then(function(res) {
 								if (res.data.code == 0) {
@@ -134,7 +140,10 @@
 						// 行业
 						axios({
 								method: "GET",
-								url: BASEURL + "environmental_intelligent_monitoring/tbastrade/list?limit=100000"
+								url: BASEURL + "environmental_intelligent_monitoring/tbastrade/list?limit=100000",
+								params: {
+									userId: window.localStorage.getItem("userId")
+								}
 							})
 							.then(function(res) {
 								if (res.data.code == 0) {
@@ -204,7 +213,8 @@
 								url: BASEURL + "environmental_intelligent_monitoring/tbasenterpriseallocate/list",
 								params: {
 									userId: vm.selectUserId,
-									 limit: 15000
+									limit: 15000
+
 								}
 							})
 							.then(function(res) {
@@ -234,9 +244,10 @@
 								method: "POST",
 								url: BASEURL + "environmental_intelligent_monitoring/tbasenterprise/list",
 								params: {
-									 limit: 150000,
+									limit: 150000,
 									name: vm.enterpriseName,
-									tradeId: vm.selectTrade
+									tradeId: vm.selectTrade,
+									userId: window.localStorage.getItem("userId")
 								}
 							})
 							.then(function(res) {

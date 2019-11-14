@@ -336,6 +336,9 @@
 						axios({
 								methods: "POST",
 								url: BASEURL + "/environmental_intelligent_monitoring/tbasnews/list",
+								params: {
+									userId: window.localStorage.getItem("userId")
+								}
 							})
 							.then(function(res) {
 								if (res.data.code == 0) {
@@ -420,19 +423,19 @@
 									field: 'enterpriseName',
 									title: '企业名称',
 									width: '20%'
-									 
+
 								}, {
 									field: 'MonitorName',
 									title: '监测点名称'
-									 
+
 								}, {
 									field: 'TradeName',
 									title: '行业'
-									 
+
 								}, {
 									field: 'ProduceType',
 									title: '停限产'
-									 
+
 								}
 							]
 						]

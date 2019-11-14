@@ -144,7 +144,9 @@
                             // url: BASEURL + 'environmental_intelligent_monitoring/tdevicemonitor/list?limit=10000',
                             url: BASEURL + 'environmental_intelligent_monitoring/tbasorganize/dendrogramList',
                             params: {
-                                type: "4"
+                                type: "4",
+								userId: window.localStorage.getItem("userId")
+								
                             }
                         }).then(function (res) {
                             if (res.data.code == 0) {
@@ -218,7 +220,8 @@
                     , page: true
                     , where: {
                         shopId: 0,
-                        enterpriseId: 0
+                        enterpriseId: 0,
+						userId: window.localStorage.getItem("userId")
                     }
                     , parseData: function (res) { // 数据重新处理为layUI的数据格式
                         var msg = {

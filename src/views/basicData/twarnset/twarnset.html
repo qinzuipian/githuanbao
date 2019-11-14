@@ -84,7 +84,6 @@
 		<script src="../../../layuiadmin/plugin/vue.js"></script>
 		<script src="../../../layuiadmin/plugin/axios.js"></script>
 		<script>
-			
 			var vm = new Vue({
 				el: "#vm",
 				data: {
@@ -133,6 +132,9 @@
 					url: layui.setter.BASEURL + 'environmental_intelligent_monitoring/twarnset/list' //数据接口
 						,
 					page: true,
+					where: {
+						userId: window.localStorage.getItem("userId")
+					},
 					parseData: function(res) { // 数据重新处理为layUI的数据格式
 						var msg = {
 							"code": res.code, //解析接口状态
@@ -242,7 +244,9 @@
 				axios({
 					method: "post",
 					url: layui.setter.BASEURL + 'environmental_intelligent_monitoring/twarnset/queryEventTypeList',
-					params: {}
+					params: {
+						userId: window.localStorage.getItem("userId")
+					}
 				}).then(function(res) {
 					if (res.data.code == 0) {
 						// // console.log(res)

@@ -166,32 +166,30 @@
 			.ui-jqgrid-bdiv table {
 				width: 100% !important
 			}
-			
+
 			.u-paddingLeft20 {
-			    padding-left: 20px !important
+				padding-left: 20px !important
 			}
-			
+
 			.u-paddingRight20 {
-			    padding-right: 20px !important
+				padding-right: 20px !important
 			}
-			
+
 			.u-paddingTop10 {
-			    padding-top: 10px !important
+				padding-top: 10px !important
 			}
-			
+
 			.u-paddingBottom15 {
-			    padding-bottom: 15px !important
+				padding-bottom: 15px !important
 			}
-			
+
 			.u-paddingRight0 {
-			    padding-right: 0 !important
+				padding-right: 0 !important
 			}
-			
+
 			.u-paddingBottom0 {
-			    padding-bottom: 0 !important
+				padding-bottom: 0 !important
 			}
-
-
 		</style>
 	</head>
 	<body>
@@ -281,7 +279,10 @@
 					pageInit: function() {
 						axios({
 								method: "POST",
-								url: BASEURL + 'environmental_intelligent_monitoring/tbastrade/list'
+								url: BASEURL + 'environmental_intelligent_monitoring/tbastrade/list',
+								params: {
+									userId: window.localStorage.getItem("userId")
+								}
 							})
 							.then(function(res) {
 								if (res.data.code == 0) {
@@ -301,6 +302,9 @@
 						axios({
 								method: "POST",
 								url: BASEURL + 'environmental_intelligent_monitoring/dataMonitor/queryALLEnterpriseReport',
+								params: {
+									userId: window.localStorage.getItem("userId")
+								}
 							})
 							.then(function(res) {
 								if (res.data.code == 0) {
@@ -355,18 +359,21 @@
 				base: '../../../layuiadmin/' //静态资源所在路径
 			}).extend({
 				index: 'lib/index' //主入口模块
-			}).use(['index', 'table', 'laydate', 'layer','admin'], function() {
+			}).use(['index', 'table', 'laydate', 'layer', 'admin'], function() {
 				var table = layui.table,
 					layer = layui.layer,
 					admin = layui.admin;
 				var $ = layui.$;
-				
+
 				table.render({
 					elem: '#timeMonitor',
 					height: 599, //容器高度
 					method: 'post',
 					url: layui.setter.BASEURL + 'environmental_intelligent_monitoring/dataMonitor/queryEnterpriseReportList', //数据接口
 					page: true,
+					where: {
+						userId: window.localStorage.getItem("userId")
+					},
 					parseData: function(res) { // 数据重新处理为layUI的数据格式
 						var msg = {
 							"code": res.code, //解析接口状态
@@ -386,7 +393,7 @@
 								field: 'enterpriseName',
 								title: '企业',
 								minWidth: 180,
-								  
+
 								rowspan: 2,
 								align: 'center'
 							},
@@ -395,7 +402,7 @@
 								align: 'center',
 								title: '行业',
 								minWidth: 120,
-								  
+
 								rowspan: 2
 							},
 							{
@@ -403,7 +410,7 @@
 								align: 'center',
 								title: '生产状态',
 								minWidth: 85,
-								  
+
 								rowspan: 2
 							},
 							{
@@ -411,7 +418,7 @@
 								align: 'center',
 								title: '异常污染',
 								minWidth: 115,
-								  
+
 								rowspan: 2
 							},
 							{
@@ -419,7 +426,7 @@
 								align: 'center',
 								title: '产污监测点数量',
 								minWidth: 155,
-								  
+
 								rowspan: 2
 							},
 							{
@@ -427,7 +434,7 @@
 								align: 'center',
 								title: '治污监测点数量',
 								minWidth: 155,
-								  
+
 								rowspan: 2
 							},
 							{
@@ -440,23 +447,23 @@
 								field: 'startStatusNum',
 								title: '运行',
 								minWidth: 80,
-								   
+
 							},
 							{
 								field: 'endStatusNum',
 								title: '停机',
 								minWidth: 80,
-								   
+
 							},
 							{
 								field: 'unknownStatusNum',
 								title: '失联',
 								minWidth: 80,
-								   
+
 							},
 						]
 					], //设置表头
-					 limit: 15,
+					limit: 15,
 					limits: [15, 30, 50, 100, 200],
 					done: function(res, page, count) {
 						addMarkerFunc(res.data);
@@ -491,13 +498,15 @@
 			// 循环添加企业位置标记
 			function addMarkerFunc(enterpriseData) {
 				var centerPoint;
-				if(enterpriseData.length == 0){
-					centerPoint = [114.504434,37.069162]
-				}else{
+				if (enterpriseData.length == 0) {
+					centerPoint = [114.504434, 37.069162]
+				} else {
 					centerPoint = [enterpriseData[0].longitude, enterpriseData[0].latitude]
 				}
 				// 加载地图
-				var map = new BMap.Map("container",{ enableMapClick: false }); // 创建地图实例  
+				var map = new BMap.Map("container", {
+					enableMapClick: false
+				}); // 创建地图实例  
 				var point = new BMap.Point(centerPoint[0], centerPoint[1]); // 创建点坐标  
 				map.centerAndZoom(point, 12);
 				map.enableScrollWheelZoom(true); //开启鼠标滚轮缩放
@@ -515,7 +524,7 @@
 						}
 					});
 				}
-				
+
 				// 添加信息窗口
 				var opts = {
 					width: 350, // 信息窗口宽度
@@ -536,10 +545,14 @@
 						')"><div class="myMapInfo">' + '<div class="shang">' + '<div class="qybt">' + json.enterpriseName +
 						'<input type="hidden" value="/MainMonitor/EntMon?EnterpriseId=' + json.id + '" /></div>' +
 						'<div class="u-paddingLeft20 u-paddingRight20 u-paddingTop10 u-marginBottom15">' + '<div class="layui-row">' +
-						'<div class="layui-col-sm5 layui-col-xs5 u-paddingRight0">' + '行业:' + '<span>' + json.tradeName + '</span>' + '</div>' +
-						'<div class="layui-col-sm7 layui-col-xs7">' + '生产:' + '<span>' + json.produceType + '</span>' + '</div>' + '</div>' +
-						'<div class="layui-row">' + '<div class="layui-col-sm5 layui-col-xs5  u-paddingRight0">' + '状态:' + '<span>' + json.produceType +
-						'</span>' + '</div>' + '<div class="layui-col-sm7 layui-col-xs7">' + '行政区域:' + '<span>' + json.organizeName + '</span>' +
+						'<div class="layui-col-sm5 layui-col-xs5 u-paddingRight0">' + '行业:' + '<span>' + json.tradeName + '</span>' +
+						'</div>' +
+						'<div class="layui-col-sm7 layui-col-xs7">' + '生产:' + '<span>' + json.produceType + '</span>' + '</div>' +
+						'</div>' +
+						'<div class="layui-row">' + '<div class="layui-col-sm5 layui-col-xs5  u-paddingRight0">' + '状态:' + '<span>' +
+						json.produceType +
+						'</span>' + '</div>' + '<div class="layui-col-sm7 layui-col-xs7">' + '行政区域:' + '<span>' + json.organizeName +
+						'</span>' +
 						'</div>' + '</div>' + '<div>' + '地址:' + '<span>' + json.address + '</span>' + '</div>' + '</div>' +
 						'<div class="daTa">' + '<div class="xm xm1">' + '<p class=" u-marginBottom0">' + '<span class="shuJu">' + json.productMonitorNum +
 						'</span>个' + '</p>' + '<span class="biaoti">产污监测点</span>' + '</div>' + '<div class="xm xm2">' +
@@ -559,13 +572,13 @@
 				window.localStorage.setItem("enterpriseId", someT);
 				// 搜索 企业监控 页面是否打开,如果打开就先关闭 企业监控 页面,然后再打开传值,相当于重新刷新一遍企业页面
 				var tabsheaderDomList = window.parent.document.getElementById("LAY_app_tabsheader").getElementsByTagName("li")
-				for(var i = 0; i < tabsheaderDomList.length; i++){
-					if(tabsheaderDomList[i].attributes[0].value == "firmAbnormal_qyyc/normalQuery/firmMonitor.html"){
+				for (var i = 0; i < tabsheaderDomList.length; i++) {
+					if (tabsheaderDomList[i].attributes[0].value == "firmAbnormal_qyyc/normalQuery/firmMonitor.html") {
 						// console.log("已经打开该页面了");
 						parent.layui.index.refreshTab(i);
-					}else{
+					} else {
 						// 没有打开的情况下直接新增tab
-						 window.parent.document.getElementById("yincang").click(); 
+						window.parent.document.getElementById("yincang").click();
 					}
 				}
 			}

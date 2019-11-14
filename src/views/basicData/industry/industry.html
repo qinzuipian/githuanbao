@@ -98,6 +98,9 @@
 					url: layui.setter.BASEURL + 'environmental_intelligent_monitoring/tbastrade/list' //数据接口
 						,
 					page: true,
+					where: {
+						userId: window.localStorage.getItem("userId")
+					},
 					parseData: function(res) { // 数据重新处理为layUI的数据格式
 						var msg = {
 							"code": res.code, //解析接口状态
