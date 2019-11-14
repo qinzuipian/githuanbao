@@ -88,142 +88,142 @@
 							</div>
 
 							<ul class="layui-nav layui-nav-tree" lay-shrink="all" id="LAY-system-side-menu" lay-filter="layadmin-system-side-menu">
-								<li data-name="industry" class="layui-nav-item" v-show="doesItContain(2, catalogList)">
+								<li data-name="industry" class="layui-nav-item" v-if="doesItContain(2, catalogList)">
 									<a href="javascript:;" lay-tips="企业监控" lay-direction="2">
 										<i class="layui-icon layui-icon-console"></i>
 										<cite>企业监控</cite>
 									</a>
 									<dl class="layui-nav-child">
-										<dd v-show="doesItContain(3, menuList)"><a lay-href="dataMonitor_sjjc/timeMonitor/timeMonitor.html" id="totalCtrl">总体监控</a></dd>
+										<dd v-if="doesItContain(3, menuList)"><a lay-href="dataMonitor_sjjc/timeMonitor/timeMonitor.html" id="totalCtrl">总体监控</a></dd>
 									</dl>
 									<dl class="layui-nav-child">
-										<dd v-show="doesItContain(4, menuList)"><a lay-href="dataMonitor_sjjc/enterprisePower/enterprisePower.html">企业用电明细统计</a></dd>
+										<dd v-if="doesItContain(4, menuList)"><a lay-href="dataMonitor_sjjc/enterprisePower/enterprisePower.html">企业用电明细统计</a></dd>
 									</dl>
 									<dl class="layui-nav-child">
-										<dd v-show="doesItContain(5, menuList)"><a lay-href="dataMonitor_sjjc/enterpriseRunData/enterpriseRunData.html">企业设施运行统计</a></dd>
+										<dd v-if="doesItContain(5, menuList)"><a lay-href="dataMonitor_sjjc/enterpriseRunData/enterpriseRunData.html">企业设施运行统计</a></dd>
 									</dl>
 								</li>
-								<li data-name="industry" class="layui-nav-item" v-show="doesItContain(6, catalogList)">
+								<li data-name="industry" class="layui-nav-item" v-if="doesItContain(6, catalogList)">
 									<a href="javascript:;" lay-tips="减产减排管理" lay-direction="2">
 										<i class="layui-icon layui-icon-date"></i>
 										<cite>减产减排管理</cite>
 									</a>
 									<dl class="layui-nav-child">
-										<dd v-show="doesItContain(7, menuList)"><a lay-href="Stagger_cfsc/twrpimplementation/twrpimplementation.html">企业限产停产状况</a></dd>
+										<dd v-if="doesItContain(7, menuList)"><a lay-href="Stagger_cfsc/twrpimplementation/twrpimplementation.html">企业限产停产状况</a></dd>
 									</dl>
 									<dl class="layui-nav-child">
-										<dd v-show="doesItContain(8, menuList)"><a lay-href="Stagger_cfsc/twrpmanage/twrpmanage.html">企业限产停产管理</a></dd>
+										<dd v-if="doesItContain(8, menuList)"><a lay-href="Stagger_cfsc/twrpmanage/twrpmanage.html">企业限产停产管理</a></dd>
 									</dl>
 									<dl class="layui-nav-child">
-										<dd v-show="doesItContain(9, menuList)"><a lay-href="Stagger_cfsc/tbizreduce/tbizreduce.html">减排方案管理</a></dd>
+										<dd v-if="doesItContain(9, menuList)"><a lay-href="Stagger_cfsc/tbizreduce/tbizreduce.html">减排方案管理</a></dd>
 									</dl>
 								</li>
-								<li data-name="industry" class="layui-nav-item" v-show="doesItContain(10, catalogList)">
+								<li data-name="industry" class="layui-nav-item" v-if="doesItContain(10, catalogList)">
 									<a href="javascript:;" lay-tips="企业能耗分析" lay-direction="2">
 										<i class="layui-icon layui-icon-fire"></i>
 										<cite>企业能耗分析</cite>
 									</a>
 									<dl class="layui-nav-child">
-										<dd v-show="doesItContain(11, menuList)"><a lay-href="EnergyAnaly_nhfx/energyReport/energyReport.html">企业能耗明细统计</a></dd>
+										<dd v-if="doesItContain(11, menuList)"><a lay-href="EnergyAnaly_nhfx/energyReport/energyReport.html">企业能耗明细统计</a></dd>
 									</dl>
 									<dl class="layui-nav-child">
-										<dd v-show="doesItContain(12, menuList)"><a lay-href="EnergyAnaly_nhfx/energyStatistics/energyStatistics.html">企业能耗汇总统计</a></dd>
+										<dd v-if="doesItContain(12, menuList)"><a lay-href="EnergyAnaly_nhfx/energyStatistics/energyStatistics.html">企业能耗汇总统计</a></dd>
 									</dl>
 									<dl class="layui-nav-child">
-										<dd v-show="doesItContain(13, menuList)"><a lay-href="EnergyAnaly_nhfx/EnterpriseElectricity/EnterpriseElectricity.html">企业用电汇总统计</a></dd>
+										<dd v-if="doesItContain(13, menuList)"><a lay-href="EnergyAnaly_nhfx/EnterpriseElectricity/EnterpriseElectricity.html">企业用电汇总统计</a></dd>
 									</dl>
 								</li>
-								<li data-name="industry" class="layui-nav-item" v-show="doesItContain(14, catalogList)">
+								<li data-name="industry" class="layui-nav-item" v-if="doesItContain(14, catalogList)">
 									<a href="javascript:;" lay-tips="企业设施分析" lay-direction="2">
 										<i class="layui-icon layui-icon-chart-screen"></i>
 										<cite>企业设施分析</cite>
 									</a>
 									<dl class="layui-nav-child">
-										<dd v-show="doesItContain(15, menuList)"><a id="toDeviceequipstatus" lay-href="statistics _tjfx/tdeviceequipstatus/tdeviceequipstatus.html">设施状态查询</a></dd>
+										<dd v-if="doesItContain(15, menuList)"><a id="toDeviceequipstatus" lay-href="statistics _tjfx/tdeviceequipstatus/tdeviceequipstatus.html">设施状态查询</a></dd>
 									</dl>
 
 									<dl class="layui-nav-child">
-										<dd v-show="doesItContain(16, menuList)"><a lay-href="statistics _tjfx/productionreduce/productionreduce.html">减产减排分析</a></dd>
+										<dd v-if="doesItContain(16, menuList)"><a lay-href="statistics _tjfx/productionreduce/productionreduce.html">减产减排分析</a></dd>
 									</dl>
 
 									<dl class="layui-nav-child">
-										<dd v-show="doesItContain(17, menuList)"><a lay-href="statistics _tjfx/tdeviceequipStatistics/tdeviceequipStatistics.html">企业及产污设施分析</a></dd>
+										<dd v-if="doesItContain(17, menuList)"><a lay-href="statistics _tjfx/tdeviceequipStatistics/tdeviceequipStatistics.html">企业及产污设施分析</a></dd>
 									</dl>
 								</li>
-								<li data-name="industry" class="layui-nav-item" v-show="doesItContain(18, catalogList)">
+								<li data-name="industry" class="layui-nav-item" v-if="doesItContain(18, catalogList)">
 									<a href="javascript:;" lay-tips="企业告警管理" lay-direction="2">
 										<i class="layui-icon layui-icon-form"></i>
 										<cite>企业告警管理</cite>
 									</a>
 									<dl class="layui-nav-child">
-										<dd v-show="doesItContain(19, menuList)"><a lay-href="firmAbnormal_qyyc/normalQuery/tfirmabnormal.html" id="enterpriseErrQuery">企业告警查询</a></dd>
-										<dd v-show="doesItContain(20, menuList)"><a lay-href="firmAbnormal_qyyc/normalHandle/handleHome.html">企业告警处理</a></dd>
-										<dd v-show="doesItContain(21, menuList)"><a lay-href="firmAbnormal_qyyc/normalDeclare/declareHome.html">企业告警申报</a></dd>
-										<dd v-show="doesItContain(22, menuList)"><a lay-href="firmAbnormal_qyyc/normalExamine/examineHome.html">告警申报审核</a></dd>
+										<dd v-if="doesItContain(19, menuList)"><a lay-href="firmAbnormal_qyyc/normalQuery/tfirmabnormal.html" id="enterpriseErrQuery">企业告警查询</a></dd>
+										<dd v-if="doesItContain(20, menuList)"><a lay-href="firmAbnormal_qyyc/normalHandle/handleHome.html">企业告警处理</a></dd>
+										<dd v-if="doesItContain(21, menuList)"><a lay-href="firmAbnormal_qyyc/normalDeclare/declareHome.html">企业告警申报</a></dd>
+										<dd v-if="doesItContain(22, menuList)"><a lay-href="firmAbnormal_qyyc/normalExamine/examineHome.html">告警申报审核</a></dd>
 									</dl>
 								</li>
-								<li data-name="industry" class="layui-nav-item" v-show="doesItContain(23, catalogList)">
+								<li data-name="industry" class="layui-nav-item" v-if="doesItContain(23, catalogList)">
 									<a href="javascript:;" lay-tips="系统日志" lay-direction="2">
 										<i class="layui-icon layui-icon-log"></i>
 										<cite>系统日志</cite>
 									</a>
 									<dl class="layui-nav-child">
-										<dd v-show="doesItContain(24, menuList)"><a lay-href="log/login_log.html">系统登录日志</a></dd>
+										<dd v-if="doesItContain(24, menuList)"><a lay-href="log/login_log.html">系统登录日志</a></dd>
 									</dl>
 									<dl class="layui-nav-child">
-										<dd v-show="doesItContain(25, menuList)"><a lay-href="log/visit_log.html">系统访问日志</a></dd>
+										<dd v-if="doesItContain(25, menuList)"><a lay-href="log/visit_log.html">系统访问日志</a></dd>
 									</dl>
 									<dl class="layui-nav-child">
-										<dd v-show="doesItContain(26, menuList)"><a lay-href="log/chart_log.html">系统访问统计</a></dd>
+										<dd v-if="doesItContain(26, menuList)"><a lay-href="log/chart_log.html">系统访问统计</a></dd>
 									</dl>
 								</li>
-								<li data-name="industry" class="layui-nav-item" v-show="doesItContain(27, catalogList)">
+								<li data-name="industry" class="layui-nav-item" v-if="doesItContain(27, catalogList)">
 									<a href="javascript:;" lay-tips="系统数据管理" lay-direction="2">
 										<i class="layui-icon layui-icon-template-1"></i>
 										<cite>系统数据管理</cite>
 									</a>
 
 									<dl class="layui-nav-child">
-										<dd v-show="doesItContain(28, menuList)"><a lay-href="basicData/tbasorganize/tbasorganize.html">监管机构管理</a></dd>
+										<dd v-if="doesItContain(28, menuList)"><a lay-href="basicData/tbasorganize/tbasorganize.html">监管机构管理</a></dd>
 									</dl>
 									<dl class="layui-nav-child">
-										<dd v-show="doesItContain(29, menuList)"><a lay-href="basicData/tbasenterprise/tbasenterprise.html">企业管理</a></dd>
+										<dd v-if="doesItContain(29, menuList)"><a lay-href="basicData/tbasenterprise/tbasenterprise.html">企业管理</a></dd>
 									</dl>
 									<dl class="layui-nav-child">
-										<dd v-show="doesItContain(30, menuList)"><a lay-href="basicData/industry/industry.html">企业行业管理</a></dd>
+										<dd v-if="doesItContain(30, menuList)"><a lay-href="basicData/industry/industry.html">企业行业管理</a></dd>
 									</dl>
 									<dl class="layui-nav-child">
-										<dd v-show="doesItContain(31, menuList)"><a lay-href="basicData/tdevicemonitor/tdevicemonitor.html">监测点管理</a></dd>
+										<dd v-if="doesItContain(31, menuList)"><a lay-href="basicData/tdevicemonitor/tdevicemonitor.html">监测点管理</a></dd>
 									</dl>
 									<dl class="layui-nav-child">
-										<dd v-show="doesItContain(32, menuList)"><a lay-href="basicData/Technology/technologyHome.html">信息工艺管理</a></dd>
+										<dd v-if="doesItContain(32, menuList)"><a lay-href="basicData/Technology/technologyHome.html">信息工艺管理</a></dd>
 									</dl>
 									<dl class="layui-nav-child">
-										<dd v-show="doesItContain(33, menuList)"><a lay-href="basicData/deviceGroup/devicegroup.html">产污治污设备分组</a></dd>
+										<dd v-if="doesItContain(33, menuList)"><a lay-href="basicData/deviceGroup/devicegroup.html">产污治污设备分组</a></dd>
 									</dl>
 									<dl class="layui-nav-child">
-										<dd v-show="doesItContain(34, menuList)"><a lay-href="basicData/tbasenterpriseallocate/tbasenterpriseallocate.html">企业监管分配</a></dd>
+										<dd v-if="doesItContain(34, menuList)"><a lay-href="basicData/tbasenterpriseallocate/tbasenterpriseallocate.html">企业监管分配</a></dd>
 									</dl>
 									<dl class="layui-nav-child">
-										<dd v-show="doesItContain(35, menuList)"><a lay-href="basicData/twarnset/twarnset.html">设备异常设置</a></dd>
+										<dd v-if="doesItContain(35, menuList)"><a lay-href="basicData/twarnset/twarnset.html">设备异常设置</a></dd>
 									</dl>
 									<dl class="layui-nav-child">
-										<dd v-show="doesItContain(36, menuList)"><a lay-href="basicData/twarnsubscribe/twarnsubscribe.html">机构异常订阅</a></dd>
+										<dd v-if="doesItContain(36, menuList)"><a lay-href="basicData/twarnsubscribe/twarnsubscribe.html">机构异常订阅</a></dd>
 									</dl>
 									<dl class="layui-nav-child">
-										<dd v-show="doesItContain(37, menuList)"><a lay-href="basicData/tbasnews/tbasnews.html">系统公告管理</a></dd>
+										<dd v-if="doesItContain(37, menuList)"><a lay-href="basicData/tbasnews/tbasnews.html">系统公告管理</a></dd>
 									</dl>
 								</li>
-								<li data-name="industry" class="layui-nav-item" v-show="doesItContain(38, catalogList)">
+								<li data-name="industry" class="layui-nav-item" v-if="doesItContain(38, catalogList)">
 									<a href="javascript:;" lay-tips="用户角色管理" lay-direction="2">
 										<i class="layui-icon layui-icon-user"></i>
 										<cite>用户角色管理</cite>
 									</a>
 									<dl class="layui-nav-child">
-										<dd v-show="doesItContain(39, menuList)"><a lay-href="user/role/role.html">角色管理</a></dd>
+										<dd v-if="doesItContain(39, menuList)"><a lay-href="user/role/role.html">角色管理</a></dd>
 									</dl>
 									<dl class="layui-nav-child">
-										<dd v-show="doesItContain(40, menuList)"><a lay-href="user/user/user.html">用户管理</a></dd>
+										<dd v-if="doesItContain(40, menuList)"><a lay-href="user/user/user.html">用户管理</a></dd>
 									</dl>
 								</li>
 								<li data-name="industry3" class="layui-nav-item" style="display: none;">
