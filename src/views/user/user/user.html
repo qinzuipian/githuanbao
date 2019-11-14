@@ -21,9 +21,9 @@
 
 		<div id="vm">
 			<div style="padding: 20px 0 10px 20px;" class="layui-row">
-				<button class="layui-btn layuiadmin-btn-role" @click="addUser">添加</button>
-				<button class="layui-btn layuiadmin-btn-role" @click="editUser">编辑</button>
-				<button class="layui-btn layuiadmin-btn-role" @click="removeUser">删除</button>
+				<button class="layui-btn layuiadmin-btn-role" @click="addUser" v-if="doesItContain(68, buttonList)">添加</button>
+				<button class="layui-btn layuiadmin-btn-role" @click="editUser" v-if="doesItContain(69, buttonList)">编辑</button>
+				<button class="layui-btn layuiadmin-btn-role" @click="removeUser" v-if="doesItContain(70, buttonList)">删除</button>
 			</div>
 			<table id="userTab" lay-filter="userTab"></table>
 		</div>
@@ -39,9 +39,20 @@
 			var vm = new Vue({
 				el: "#vm",
 				data: {
-
+					buttonList: []
 				},
 				methods: {
+					pageInit: function() {
+						this.buttonList = JSON.parse(window.localStorage.getItem("buttonList"));
+					},
+					doesItContain: function(v, l) {
+						for (var i = 0; i < l.length; i++) {
+							if (v === l[i]) {
+								return true
+							}
+						}
+						return false;
+					},
 					// 新增用户
 					addUser: function() {
 						layui.layer.open({
@@ -106,6 +117,9 @@
 								}
 							})
 					}
+				},
+				mounted: function() {
+					this.pageInit();
 				}
 			});
 
@@ -124,7 +138,7 @@
 					url: layui.setter.BASEURL + 'sys-mgr/sys/user/list', //数据接口
 					page: true, //开启分页
 					limit: 15,
-					limits: [15,30,50,100,200],
+					limits: [15, 30, 50, 100, 200],
 					cols: [
 						[{
 								type: 'checkbox',

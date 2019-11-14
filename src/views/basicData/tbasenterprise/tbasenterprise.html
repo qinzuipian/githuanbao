@@ -1,505 +1,523 @@
 <!DOCTYPE html>
 <html>
 
-<head>
-	<meta charset="utf-8">
-	<title>企业管理</title>
-	<meta name="renderer" content="webkit">
-	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
-	<link rel="stylesheet" href="../../../layuiadmin/layui/css/layui.css" media="all">
-	<link rel="stylesheet" href="../../../layuiadmin/style/admin.css" media="all">
-	<link rel="stylesheet" type="text/css" href="../../../layuiadmin/plugin/element.css" />
+	<head>
+		<meta charset="utf-8">
+		<title>企业管理</title>
+		<meta name="renderer" content="webkit">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+		<link rel="stylesheet" href="../../../layuiadmin/layui/css/layui.css" media="all">
+		<link rel="stylesheet" href="../../../layuiadmin/style/admin.css" media="all">
+		<link rel="stylesheet" type="text/css" href="../../../layuiadmin/plugin/element.css" />
 
 
-</head>
-<style type="text/css">
-	.layui-form-label {}
+	</head>
+	<style type="text/css">
+		.layui-form-label {}
 
-	.tree {
-		z-index: 999;
-		background: white;
-		border: gainsboro solid 1px;
-		margin-top: 2px;
-		position: relative;
-		padding: 0px 8px;
-	}
-
-	.actived {
-		animation: rotated 0.2s linear forwards;
-	}
-
-	.actived_after {
-		animation: rotated_after 0.2s linear forwards;
-	}
-
-	@keyframes rotated {
-		from {
-			transform: rotate(0deg);
+		.tree {
+			z-index: 999;
+			background: white;
+			border: gainsboro solid 1px;
+			margin-top: 2px;
+			position: relative;
+			padding: 0px 8px;
 		}
 
-		to {
-			transform: rotate(180deg);
-		}
-	}
-
-	@keyframes rotated_after {
-		from {
-			transform: rotate(180deg);
+		.actived {
+			animation: rotated 0.2s linear forwards;
 		}
 
-		to {
-			transform: rotate(0deg);
+		.actived_after {
+			animation: rotated_after 0.2s linear forwards;
 		}
-	}
 
-	.empty {
-		height: 30px;
-		z-index: 999;
-		background: white;
-		position: relative;
-		padding-left: 26px;
+		@keyframes rotated {
+			from {
+				transform: rotate(0deg);
+			}
 
-	}
-	.AdminArea {
-	    position: relative;
-	}
-	
-	.AdminArea .Areashow {
-	    position: absolute;
-	    width: 100%;
-	    border: 1px solid #e6e6e6;
-	    /* border-radius: 4px; */
-	    z-index: 999;
-	    /* height: 200px; */
-	    background-color: #fff;
-	
-	}
-	
-	.AdminArea .layui-icon {
-	    cursor: pointer;
-	    color: #c2c2c2;
-	}
-</style>
+			to {
+				transform: rotate(180deg);
+			}
+		}
 
-<body>
-	<div class="layui-fluid" id="app">
-		<div class="layui-card">
-			<div class="layui-form layui-card-header layuiadmin-card-header-auto">
-				<div class="layui-form-item">
-					<div class="layui-inline">
-						<label class="layui-form-label">创建日期</label>
-						<div class="layui-input-inline">
-							<input type="text" name="startCreateDate" v-model="startCreateDate" class="layui-input" id="startDate" placeholder="请输入开始日期">
-						</div>
-						<div class="layui-input-inline">
-							<input type="text" name="endCreateDate" v-model="endCreateDate" class="layui-input" id="endDate" placeholder="请输入结束日期">
-						</div>
-					</div>
-					<div class="layui-inline">
-					    <label class="layui-form-label">行政区域</label>
-					    <div class="layui-input-inline AdminArea">
-					        <input type="text" name="organizeName" readonly="readonly" id= "div_" v-model="atraName" placeholder="请选择行政区域" autocomplete="off" class="layui-input">
-							<!-- <el-input type="text" name="organizeName" readonly="readonly"  id= "div_" v-model="atraName" placeholder="请选择行政区域" ></el-input> -->
-							<i class="layui-icon-triangle-d layui-icon" v-bind:class="[{ actived: isActive },{ actived_after: !isActive }]"
-							 @click="appear()"></i>
-					        <div class="Areashow layui-anim layui-anim-upbit" v-show="Areashow">
-					            <el-tree :highlight-current="treeHign" default-expand-all :expand-on-click-node="false" :data="treeData" :props="defaultProps" @node-click="handleNodeClick"></el-tree>
-					        </div>
-					    </div>
-					</div>
-					<div class="layui-inline">
-						<label class="layui-form-label">企业名称</label>
-						<div class="layui-input-inline">
-							<input type="text" name="name" v-model="name" class="layui-input" placeholder="请输入企业名称">
-						</div>
-					</div>
-					<div class="layui-inline">
-						<div class="layui-form-item">
-							<label class="layui-form-label">所属行业</label>
-							<div class="layui-input-block">
-								<select name="tradeId" id="eventType" lay-filter="eventType">
-									<option value="">请选择</option>
-									<option value=""></option>
-								</select>
+		@keyframes rotated_after {
+			from {
+				transform: rotate(180deg);
+			}
+
+			to {
+				transform: rotate(0deg);
+			}
+		}
+
+		.empty {
+			height: 30px;
+			z-index: 999;
+			background: white;
+			position: relative;
+			padding-left: 26px;
+
+		}
+
+		.AdminArea {
+			position: relative;
+		}
+
+		.AdminArea .Areashow {
+			position: absolute;
+			width: 100%;
+			border: 1px solid #e6e6e6;
+			/* border-radius: 4px; */
+			z-index: 999;
+			/* height: 200px; */
+			background-color: #fff;
+
+		}
+
+		.AdminArea .layui-icon {
+			cursor: pointer;
+			color: #c2c2c2;
+		}
+	</style>
+
+	<body>
+		<div class="layui-fluid" id="app">
+			<div class="layui-card">
+				<div class="layui-form layui-card-header layuiadmin-card-header-auto">
+					<div class="layui-form-item">
+						<div class="layui-inline">
+							<label class="layui-form-label">创建日期</label>
+							<div class="layui-input-inline">
+								<input type="text" name="startCreateDate" v-model="startCreateDate" class="layui-input" id="startDate"
+								 placeholder="请输入开始日期">
+							</div>
+							<div class="layui-input-inline">
+								<input type="text" name="endCreateDate" v-model="endCreateDate" class="layui-input" id="endDate" placeholder="请输入结束日期">
 							</div>
 						</div>
-					</div>
-					<div class="layui-inline">
-						<label class="layui-form-label" style="width: 114px;">企业社会信用代码</label>
-						<div class="layui-input-inline">
-							<input type="text" name="trustCode" v-model="trustCode" class="layui-input" placeholder="请输入企业社会信用代码">
+						<div class="layui-inline">
+							<label class="layui-form-label">行政区域</label>
+							<div class="layui-input-inline AdminArea">
+								<input type="text" name="organizeName" readonly="readonly" id="div_" v-model="atraName" placeholder="请选择行政区域"
+								 autocomplete="off" class="layui-input">
+								<!-- <el-input type="text" name="organizeName" readonly="readonly"  id= "div_" v-model="atraName" placeholder="请选择行政区域" ></el-input> -->
+								<i class="layui-icon-triangle-d layui-icon" v-bind:class="[{ actived: isActive },{ actived_after: !isActive }]"
+								 @click="appear()"></i>
+								<div class="Areashow layui-anim layui-anim-upbit" v-show="Areashow">
+									<el-tree :highlight-current="treeHign" default-expand-all :expand-on-click-node="false" :data="treeData"
+									 :props="defaultProps" @node-click="handleNodeClick"></el-tree>
+								</div>
+							</div>
 						</div>
-					</div>
-					<div class="layui-inline">
-						<label class="layui-form-label">地址</label>
-						<div class="layui-input-inline">
-							<input type="text" name="address" v-model="address" class="layui-input" placeholder="请输入地址">
+						<div class="layui-inline">
+							<label class="layui-form-label">企业名称</label>
+							<div class="layui-input-inline">
+								<input type="text" name="name" v-model="name" class="layui-input" placeholder="请输入企业名称">
+							</div>
 						</div>
-					</div>
-					<div class="layui-inline">
-						<button class="layui-btn layuiadmin-btn-list" lay-submit lay-filter="LAY-app-contlist-search">
-							<i class="layui-icon layui-icon-search layuiadmin-button-btn"></i>
-						</button>
-					</div>
+						<div class="layui-inline">
+							<div class="layui-form-item">
+								<label class="layui-form-label">所属行业</label>
+								<div class="layui-input-block">
+									<select name="tradeId" id="eventType" lay-filter="eventType">
+										<option value="">请选择</option>
+										<option value=""></option>
+									</select>
+								</div>
+							</div>
+						</div>
+						<div class="layui-inline">
+							<label class="layui-form-label" style="width: 114px;">企业社会信用代码</label>
+							<div class="layui-input-inline">
+								<input type="text" name="trustCode" v-model="trustCode" class="layui-input" placeholder="请输入企业社会信用代码">
+							</div>
+						</div>
+						<div class="layui-inline">
+							<label class="layui-form-label">地址</label>
+							<div class="layui-input-inline">
+								<input type="text" name="address" v-model="address" class="layui-input" placeholder="请输入地址">
+							</div>
+						</div>
+						<div class="layui-inline">
+							<button class="layui-btn layuiadmin-btn-list" lay-submit lay-filter="LAY-app-contlist-search">
+								<i class="layui-icon layui-icon-search layuiadmin-button-btn"></i>
+							</button>
+						</div>
 
+					</div>
 				</div>
-			</div>
 
-			<div class="layui-card-body">
-				<div style="padding-bottom: 10px;">
-					<button id="uploadfile" class="layui-btn layuiadmin-btn-list layui-bg-cyan">
-						<i class="layui-icon">&#xe654;</i>批量导入</button>
-					<button class="layui-btn layuiadmin-btn-list layui-bg-green" data-type="add">
-						<i class="layui-icon">&#xe654;</i>添加</button>
-					<button class="layui-btn layuiadmin-btn-list layui-bg-blue" data-type="edit">
-						<i class="layui-icon">&#xe642;</i>编辑</button>
-					<button class="layui-btn layuiadmin-btn-list layui-bg-red" data-type="batchdel">
-						<i class="layui-icon">&#xe640;</i>删除</button>
-					<button class="layui-btn layuiadmin-btn-list layui-bg-orange layui-icon  layui-icon-link" data-type="out">导出</button>
+				<div class="layui-card-body">
+					<div style="padding-bottom: 10px;">
+						<button id="uploadfile" class="layui-btn layuiadmin-btn-list layui-bg-cyan">
+							<i class="layui-icon">&#xe654;</i>批量导入</button>
+						<button class="layui-btn layuiadmin-btn-list layui-bg-green" data-type="add" v-if="doesItContain(62, buttonList)">
+							<i class="layui-icon">&#xe654;</i>添加</button>
+						<button class="layui-btn layuiadmin-btn-list layui-bg-blue" data-type="edit" v-if="doesItContain(63, buttonList)">
+							<i class="layui-icon">&#xe642;</i>编辑</button>
+						<button class="layui-btn layuiadmin-btn-list layui-bg-red" data-type="batchdel" v-if="doesItContain(64, buttonList)">
+							<i class="layui-icon">&#xe640;</i>删除</button>
+						<button class="layui-btn layuiadmin-btn-list layui-bg-orange layui-icon  layui-icon-link" data-type="out">导出</button>
+					</div>
+					<table id="LAY-app-content-list" lay-filter="LAY-app-content-list"></table>
 				</div>
-				<table id="LAY-app-content-list" lay-filter="LAY-app-content-list"></table>
 			</div>
 		</div>
-	</div>
 
-	<script src="../../../layuiadmin/layui/layui.js"></script>
-	<script src="../../../layuiadmin/plugin/vue.min.js"></script>
-	<script src="../../../layuiadmin/plugin/axios.js"></script>
-	<script src="../../../layuiadmin/js/baseUrlConfig.js" type="text/javascript" charset="utf-8"></script>
-	<script src="../../../layuiadmin/plugin/element.js" type="text/javascript" charset="utf-8"></script>
-	<script>
-		layui.config({
-			base: '../../../layuiadmin/' //静态资源所在路径
-		}).extend({
-			index: 'lib/index' //主入口模块
-		}).use(['index', 'table', "jquery", "laydate", "upload", "tree", "util"], function () {
-			var table = layui.table,
-				form = layui.form,
-				laydate = layui.laydate,
-				upload = layui.upload,
-				tree = layui.tree,
-				util = layui.util,
-				$ = layui.jquery;
+		<script src="../../../layuiadmin/layui/layui.js"></script>
+		<script src="../../../layuiadmin/plugin/vue.min.js"></script>
+		<script src="../../../layuiadmin/plugin/axios.js"></script>
+		<script src="../../../layuiadmin/js/baseUrlConfig.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../../layuiadmin/plugin/element.js" type="text/javascript" charset="utf-8"></script>
+		<script>
+			layui.config({
+				base: '../../../layuiadmin/' //静态资源所在路径
+			}).extend({
+				index: 'lib/index' //主入口模块
+			}).use(['index', 'table', "jquery", "laydate", "upload", "tree", "util"], function() {
+				var table = layui.table,
+					form = layui.form,
+					laydate = layui.laydate,
+					upload = layui.upload,
+					tree = layui.tree,
+					util = layui.util,
+					$ = layui.jquery;
 
-			// select事件类型数据填充
-			axios({
-				method: "post",
-				url: BASEURL + 'environmental_intelligent_monitoring/tbastrade/list?limit=10000',
-				params: {}
-			}).then(function (res) {
-				if (res.data.code == 0) {
-					// // console.log(res)
-					$.each(res.data.page.list, function (index, item) {
-						// // console.log(index, item)
-						$('#eventType').append(new Option(item.name, item.id)); // 下拉菜单里添加元素
-					});
-					layui.form.render("select");
-				} else {
-					vm.$notify.error({
-					    title: '错误',
-					    message: res.data.msg
-					});
-				}
-			}).catch(function (err) {
-				// // console.log(err);
-			});
-
-
-			// 批量导入
-			upload.render({
-				elem: '#uploadfile',
-				url: layui.setter.BASEURL + 'environmental_intelligent_monitoring/tbasenterprise/saveExcel',
-				accept: 'file', //普通文件,
-				multiple: true,
-				exts: 'xls',
-				done: function (res) {
-					// // console.log(res);
-					if (res.code == 0) {
-						layer.msg('导入成功！', {
-							time: 800
-						}, function () {
-							window.parent.location.reload();
-							parent.layer.close('iframe');
+				// select事件类型数据填充
+				axios({
+					method: "post",
+					url: BASEURL + 'environmental_intelligent_monitoring/tbastrade/list?limit=10000',
+					params: {}
+				}).then(function(res) {
+					if (res.data.code == 0) {
+						// // console.log(res)
+						$.each(res.data.page.list, function(index, item) {
+							// // console.log(index, item)
+							$('#eventType').append(new Option(item.name, item.id)); // 下拉菜单里添加元素
 						});
+						layui.form.render("select");
 					} else {
 						vm.$notify.error({
-						    title: '错误',
-						    message: res.data.msg
+							title: '错误',
+							message: res.data.msg
 						});
 					}
-				}
-			});
+				}).catch(function(err) {
+					// // console.log(err);
+				});
 
 
-			table.render({
-				elem: '#LAY-app-content-list',
-				height: 555 //容器高度
-				,
-				url: layui.setter.BASEURL + 'environmental_intelligent_monitoring/tbasenterprise/list' //数据接口
-				,
-				page: true,
-				parseData: function (res) { // 数据重新处理为layUI的数据格式
-					var msg = {
-						"code": res.code, //解析接口状态
-						"msg": res.msg, //解析提示文本
-						"count": res.page.totalCount, //解析数据长度
-						"data": res.page.list //解析数据列表
-					};
-					return msg;
-				},
-				cols: [
-					[{
-						type: 'numbers',
-						minWidth: 100,
-						 
-					},
-					{
-						checkbox: true
-
-					}, {
-						title: '企业名称',
-						field: 'name',
-						minWidth: 100
-						
-					}, {
-						title: '企业社会信用代码',
-						field: 'trustCode',
-						minWidth: 100,
-						width: 200
-						 
-					}, {
-						title: '地址',
-						field: 'address',
-						minWidth: 100,
-						width: 200
-						 
-					}, {
-						title: '行业名称',
-						field: 'tradeName',
-						minWidth: 100
-						 
-					}, {
-						title: '创建时间',
-						field: 'createDate',
-						minWidth: 100
-						 
-					}
-					]
-				] //设置表头
-				,
-				 limit: 15,
-				limits: [15, 30, 50, 100, 200]
-			});
-			//日期选择器(设置日期的最后期限为今天)
-			var data = new Date();
-			var max_data = data.getDate();
-			laydate.render({
-				elem: '#startDate',
-				btns: ['confirm']
-			});
-			laydate.render({
-				elem: '#endDate',
-				btns: ['confirm']
-			});
-
-
-			//监听搜索
-			form.on('submit(LAY-app-contlist-search)', function (data) {
-				var field = data.field;
-
-				//执行重载
-				table.reload('LAY-app-content-list', {
-					where: field,
-					page: {
-						curr: 1 //重新从第 1 页开始
+				// 批量导入
+				upload.render({
+					elem: '#uploadfile',
+					url: layui.setter.BASEURL + 'environmental_intelligent_monitoring/tbasenterprise/saveExcel',
+					accept: 'file', //普通文件,
+					multiple: true,
+					exts: 'xls',
+					done: function(res) {
+						// // console.log(res);
+						if (res.code == 0) {
+							layer.msg('导入成功！', {
+								time: 800
+							}, function() {
+								window.parent.location.reload();
+								parent.layer.close('iframe');
+							});
+						} else {
+							vm.$notify.error({
+								title: '错误',
+								message: res.data.msg
+							});
+						}
 					}
 				});
-			});
 
-			var $ = layui.$,
-				active = {
-					batchdel: function () {
-						var checkStatus = table.checkStatus('LAY-app-content-list'),
-							checkData = checkStatus.data; //得到选中的数据
-						// // console.log(checkData);
-						var idList = [];
-						for (var i = 0; i < checkData.length; i++) {
-							idList.push(checkData[i].id)
-						}
-						// // console.log(idList)
-						if (checkData.length === 0) {
-							return layer.msg('请选择数据');
-						}
-						layer.confirm('确定删除吗？', function (index) {
-							axios({
-								method: "post",
-								url: layui.setter.BASEURL + 'environmental_intelligent_monitoring/tbasenterprise/delete',
-								data: {
-									ids: idList
+
+				table.render({
+					elem: '#LAY-app-content-list',
+					height: 555 //容器高度
+						,
+					url: layui.setter.BASEURL + 'environmental_intelligent_monitoring/tbasenterprise/list' //数据接口
+						,
+					page: true,
+					parseData: function(res) { // 数据重新处理为layUI的数据格式
+						var msg = {
+							"code": res.code, //解析接口状态
+							"msg": res.msg, //解析提示文本
+							"count": res.page.totalCount, //解析数据长度
+							"data": res.page.list //解析数据列表
+						};
+						return msg;
+					},
+					cols: [
+							[{
+									type: 'numbers',
+									minWidth: 100,
+
 								},
-								headers: {
-									"Content-Type": "application/json;charset=UTF-8"
-								}
-							}).then(function (res) {
-								if (res.data.code == 0) {
-									// // console.log(res)
-									table.reload('LAY-app-content-list');
-									layer.msg('已删除');
+								{
+									checkbox: true
 
-								} else {
-									vm.$notify.error({
-									    title: '错误',
-									    message: res.data.msg
-									});
-									layer.close(layer.index);
-								}
-							}).catch(function (err) {
-								// // console.log(err);
-							});
-						});
-					},
-					add: function () {
-						layer.open({
-							type: 2,
-							title: '添加企业',
-							content: 'addEnterprise.html',
-							maxmin: true,
-							area: ['990px', '550px']
+								}, {
+									title: '企业名称',
+									field: 'name',
+									minWidth: 100
 
-						});
-					},
-					edit: function () {
-						var checkStatus = table.checkStatus('LAY-app-content-list'),
-							checkData = checkStatus.data; //得到选中的数据
-						if (checkData.length === 0) {
-							return layer.msg('请选择需要修改的数据');
-						} else if (checkData.length > 1) {
-							return layer.msg('只能选择单条数据进行编辑');
+								}, {
+									title: '企业社会信用代码',
+									field: 'trustCode',
+									minWidth: 100,
+									width: 200
+
+								}, {
+									title: '地址',
+									field: 'address',
+									minWidth: 100,
+									width: 200
+
+								}, {
+									title: '行业名称',
+									field: 'tradeName',
+									minWidth: 100
+
+								}, {
+									title: '创建时间',
+									field: 'createDate',
+									minWidth: 100
+
+								}
+							]
+						] //设置表头
+						,
+					limit: 15,
+					limits: [15, 30, 50, 100, 200]
+				});
+				//日期选择器(设置日期的最后期限为今天)
+				var data = new Date();
+				var max_data = data.getDate();
+				laydate.render({
+					elem: '#startDate',
+					btns: ['confirm']
+				});
+				laydate.render({
+					elem: '#endDate',
+					btns: ['confirm']
+				});
+
+
+				//监听搜索
+				form.on('submit(LAY-app-contlist-search)', function(data) {
+					var field = data.field;
+
+					//执行重载
+					table.reload('LAY-app-content-list', {
+						where: field,
+						page: {
+							curr: 1 //重新从第 1 页开始
 						}
-						// 获取行数据的id传值至弹窗页面
-						window.id = checkData[0].id;
-						layer.open({
-							type: 2,
-							title: '编辑企业',
-							content: 'editEnterprise.html',
-							maxmin: true,
-							area: ['990px', '550px']
-						});
+					});
+				});
 
-					},
-					out: function () {
-						// // console.log(vm.name);
-						window.location.href = BASEURL +
-							'environmental_intelligent_monitoring/tbasenterprise/exportExcel?startCreateDate=' + vm.startCreateDate +
-							'&endCreateDate=' + vm.endCreateDate + '&trustCode=' + vm.trustCode + '&address=' + vm.address + '&name=' +
-							vm.name
+				var $ = layui.$,
+					active = {
+						batchdel: function() {
+							var checkStatus = table.checkStatus('LAY-app-content-list'),
+								checkData = checkStatus.data; //得到选中的数据
+							// // console.log(checkData);
+							var idList = [];
+							for (var i = 0; i < checkData.length; i++) {
+								idList.push(checkData[i].id)
+							}
+							// // console.log(idList)
+							if (checkData.length === 0) {
+								return layer.msg('请选择数据');
+							}
+							layer.confirm('确定删除吗？', function(index) {
+								axios({
+									method: "post",
+									url: layui.setter.BASEURL + 'environmental_intelligent_monitoring/tbasenterprise/delete',
+									data: {
+										ids: idList
+									},
+									headers: {
+										"Content-Type": "application/json;charset=UTF-8"
+									}
+								}).then(function(res) {
+									if (res.data.code == 0) {
+										// // console.log(res)
+										table.reload('LAY-app-content-list');
+										layer.msg('已删除');
+
+									} else {
+										vm.$notify.error({
+											title: '错误',
+											message: res.data.msg
+										});
+										layer.close(layer.index);
+									}
+								}).catch(function(err) {
+									// // console.log(err);
+								});
+							});
+						},
+						add: function() {
+							layer.open({
+								type: 2,
+								title: '添加企业',
+								content: 'addEnterprise.html',
+								maxmin: true,
+								area: ['990px', '550px']
+
+							});
+						},
+						edit: function() {
+							var checkStatus = table.checkStatus('LAY-app-content-list'),
+								checkData = checkStatus.data; //得到选中的数据
+							if (checkData.length === 0) {
+								return layer.msg('请选择需要修改的数据');
+							} else if (checkData.length > 1) {
+								return layer.msg('只能选择单条数据进行编辑');
+							}
+							// 获取行数据的id传值至弹窗页面
+							window.id = checkData[0].id;
+							layer.open({
+								type: 2,
+								title: '编辑企业',
+								content: 'editEnterprise.html',
+								maxmin: true,
+								area: ['990px', '550px']
+							});
+
+						},
+						out: function() {
+							// // console.log(vm.name);
+							window.location.href = BASEURL +
+								'environmental_intelligent_monitoring/tbasenterprise/exportExcel?startCreateDate=' + vm.startCreateDate +
+								'&endCreateDate=' + vm.endCreateDate + '&trustCode=' + vm.trustCode + '&address=' + vm.address + '&name=' +
+								vm.name
+						}
 					}
-				}
 
-			$('.layui-btn.layuiadmin-btn-list').on('click', function () {
-				var type = $(this).data('type');
-				active[type] ? active[type].call(this) : '';
-			});
+				$('.layui-btn.layuiadmin-btn-list').on('click', function() {
+					var type = $(this).data('type');
+					active[type] ? active[type].call(this) : '';
+				});
 
 
-			// 点击input框触发的事件
-			$("#div_").bind("click", function () {
-				vm.isActive = true
-				vm.Areashow = true;
-				event.stopPropagation(); //==========阻止冒泡1
-			})
-			//点击外面其他部分,触发的事件
-			$(document).bind("click", function () {
-				vm.isActive = false
-				vm.Areashow = false;
-
-			})
-
-		});
-
-		var vm = new Vue({
-			el: '#app',
-			data: {
-				Areashow: false,
-				treeHign: true,
-				treeData: [],
-				defaultProps: {
-				    children: 'children',
-				    label: 'title'
-				},
-				atraName: "",
-				enpriseData: [],
-				enterpriseName: "",
-				trade: "",
-				startCreateDate: "",
-				address: "",
-				trustCode: "",
-				endCreateDate: "",
-				name: '',
-				tree: 0,
-				isActive: false,
-				treeValue: ""
-			},
-			methods: {
-				AdminFocus:function() {
-					vm.isActive = !vm.isActive
-				    vm.Areashow = !vm.Areashow;
-				},
-				emptyTree: function () {
-					vm.treeValue = "",
-						vm.treeId = ""
-				},
-				atraClick:function() {
-				    vm.atraShow = !vm.atraShow;
-				},
-				appear: function () {
+				// 点击input框触发的事件
+				$("#div_").bind("click", function() {
 					vm.isActive = true
 					vm.Areashow = true;
-					event.stopPropagation();
+					event.stopPropagation(); //==========阻止冒泡1
+				})
+				//点击外面其他部分,触发的事件
+				$(document).bind("click", function() {
+					vm.isActive = false
+					vm.Areashow = false;
+
+				})
+
+			});
+
+			var vm = new Vue({
+				el: '#app',
+				data: {
+					Areashow: false,
+					treeHign: true,
+					treeData: [],
+					defaultProps: {
+						children: 'children',
+						label: 'title'
+					},
+					atraName: "",
+					enpriseData: [],
+					enterpriseName: "",
+					trade: "",
+					startCreateDate: "",
+					address: "",
+					trustCode: "",
+					endCreateDate: "",
+					name: '',
+					tree: 0,
+					isActive: false,
+					treeValue: "",
+
+					buttonList: [] // 按钮权限数组
 				},
-				// 树状图组件
-				treeDataInit:function() {
-				    axios({
-				        method: "post",
-				        url: BASEURL + 'environmental_intelligent_monitoring/tbasorganize/dendrogramList',
-				        params: {
-				            type: "2"
-				        }
-				    }).then(function (res) {
-				        if (res.data.code == 0) {
-				            var data = res.data.data;
-							var obj = {
-								title: '请选择'
+				methods: {
+					pageInit: function() {
+						this.buttonList = JSON.parse(window.localStorage.getItem("buttonList"));
+					},
+					doesItContain: function(v, l) {
+						for (var i = 0; i < l.length; i++) {
+							if (v === l[i]) {
+								return true
 							}
-							data.unshift(obj);
-				            vm.treeData = data;
-				        } else {
-							vm.$notify.error({
-							    title: '错误',
-							    message: res.data.msg
-							});
-				
-				        }
-				    }).catch(function (err) {
-				        // // console.log(err);
-				    });
-				
-				},
-				handleNodeClick:function(data, node) {
-				    vm.atraName = data.title;
-				    vm.treeHign = true;
-				    vm.Areashow = false;
-				    if(data.title == "请选择"){
-						vm.atraName = ""
+						}
+						return false;
+					},
+					AdminFocus: function() {
+						vm.isActive = !vm.isActive
+						vm.Areashow = !vm.Areashow;
+					},
+					emptyTree: function() {
+						vm.treeValue = "",
+							vm.treeId = ""
+					},
+					atraClick: function() {
+						vm.atraShow = !vm.atraShow;
+					},
+					appear: function() {
+						vm.isActive = true
+						vm.Areashow = true;
+						event.stopPropagation();
+					},
+					// 树状图组件
+					treeDataInit: function() {
+						axios({
+							method: "post",
+							url: BASEURL + 'environmental_intelligent_monitoring/tbasorganize/dendrogramList',
+							params: {
+								type: "2"
+							}
+						}).then(function(res) {
+							if (res.data.code == 0) {
+								var data = res.data.data;
+								var obj = {
+									title: '请选择'
+								}
+								data.unshift(obj);
+								vm.treeData = data;
+							} else {
+								vm.$notify.error({
+									title: '错误',
+									message: res.data.msg
+								});
+
+							}
+						}).catch(function(err) {
+							// // console.log(err);
+						});
+
+					},
+					handleNodeClick: function(data, node) {
+						vm.atraName = data.title;
+						vm.treeHign = true;
+						vm.Areashow = false;
+						if (data.title == "请选择") {
+							vm.atraName = ""
+						}
 					}
+				},
+				created() {
+					this.treeDataInit();
+					this.pageInit();
 				}
-			},
-			created() {
-				this.treeDataInit();
-			}
-		})
-	</script>
-</body>
+			})
+		</script>
+	</body>
 
 </html>

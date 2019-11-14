@@ -310,7 +310,7 @@
 										vm.buttonList = res.data.role.buttonList;
 										vm.catalogList = res.data.role.catalogList;
 										vm.menuList = res.data.role.menuList;
-										
+										window.localStorage.setItem("buttonList", JSON.stringify(vm.buttonList));
 									} else {
 										vm.$notify.error({
 											title: '错误',
