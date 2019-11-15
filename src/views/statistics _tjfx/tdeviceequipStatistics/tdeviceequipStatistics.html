@@ -335,7 +335,9 @@
 				axios({
 					method: "post",
 					url: BASEURL + 'environmental_intelligent_monitoring/tbastrade/list?limit=10000',
-					params: {}
+					params: {
+						userId: window.localStorage.getItem("userId")    
+					}
 				}).then(function(res) {
 					if (res.data.code == 0) {
 						// // console.log(res)
@@ -366,7 +368,8 @@
 					url: BASEURL + 'environmental_intelligent_monitoring/dataMonitor/queryEnterpriseReportOrderByTrade',
 					params: {
 						organizeId: vm.treeId,
-						produceType: vm.state_
+						produceType: vm.state_,
+						userId: window.localStorage.getItem("userId")    
 					},
 				}).then(function(res) {
 					if (res.data.code == 0) {
@@ -395,7 +398,8 @@
 					url: BASEURL + 'environmental_intelligent_monitoring/dataMonitor/queryEnterpriseReportOrderByOrganize',
 					params: {
 						tradeId: vm.tradeName,
-						produceType: vm.state_
+						produceType: vm.state_,
+						userId: window.localStorage.getItem("userId")    
 					}
 				}).then(function(res) {
 					// // console.log(res)
@@ -419,7 +423,8 @@
 					url: BASEURL + 'environmental_intelligent_monitoring/dataMonitor/queryTradeReport',
 					params: {
 						organizeId: vm.treeId,
-						produceType: vm.state_
+						produceType: vm.state_,
+						userId: window.localStorage.getItem("userId")    
 					}
 				}).then(function(res) {
 					echart.hideLoading();
@@ -494,7 +499,8 @@
 					url: BASEURL + 'environmental_intelligent_monitoring/dataMonitor/queryOrganizeReport',
 					params: {
 						tradeId: vm.tradeName,
-						produceType: vm.state_
+						produceType: vm.state_,
+						userId: window.localStorage.getItem("userId")    
 					}
 				}).then(function(res) {
 
@@ -673,7 +679,8 @@
 							url: BASEURL + 'environmental_intelligent_monitoring/dataMonitor/queryEnterpriseReportOrderByOrganize',
 							params: {
 								tradeId: vm.tradeName,
-								produceType: vm.state_
+								produceType: vm.state_,
+								userId: window.localStorage.getItem("userId")    
 							}
 						}).then(function(res) {
 							// // console.log(res)
@@ -696,7 +703,8 @@
 							url: BASEURL + 'environmental_intelligent_monitoring/dataMonitor/queryOrganizeReport',
 							params: {
 								tradeId: vm.tradeName,
-								produceType: vm.state_
+								produceType: vm.state_,
+								userId: window.localStorage.getItem("userId")    
 							}
 						}).then(function(res) {
 							vm.list_Xpic = [];
@@ -777,7 +785,8 @@
 							url: BASEURL + 'environmental_intelligent_monitoring/dataMonitor/queryEnterpriseReportOrderByTrade',
 							params: {
 								organizeId: vm.treeId,
-								produceType: vm.state_
+								produceType: vm.state_,
+								userId: window.localStorage.getItem("userId")    
 							},
 						}).then(function(res) {
 							// // console.log(res)
@@ -800,7 +809,8 @@
 							url: BASEURL + 'environmental_intelligent_monitoring/dataMonitor/queryTradeReport',
 							params: {
 								organizeId: vm.treeId,
-								produceType: vm.state_
+								produceType: vm.state_,
+								userId: window.localStorage.getItem("userId")    
 							}
 						}).then(function(res) {
 							echart.hideLoading();
@@ -879,7 +889,8 @@
 							method: "post",
 							url: BASEURL + 'environmental_intelligent_monitoring/tbasorganize/dendrogramList',
 							params: {
-								type: "2"
+								type: "2",
+								userId: window.localStorage.getItem("userId")    
 							}
 						}).then(function(res) {
 							if (res.data.code == 0) {

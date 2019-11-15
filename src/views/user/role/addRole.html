@@ -64,7 +64,10 @@
 					pageInit: function() {
 						axios({
 								url: BASEURL + '/sys-mgr/sys/menu/queryMenuList',
-								method: 'POST'
+								method: 'POST',
+								params: {
+									userId: window.localStorage.getItem("userId")
+								}
 							})
 							.then(function(res) {
 								if (res.data.code == 0) {
@@ -86,33 +89,39 @@
 								}
 							}
 						};
-						var data = JSON.stringify({
-							menuIdList: vm.selectBtnIdList,
-							roleName: vm.rolename,
-							remark: vm.roleremark
-						})
-						axios({
-								method: "POST",
-								url: BASEURL + "/sys-mgr/sys/role/save",
-								headers: {
-									"Content-Type": "application/json;charset=UTF-8"
-								},
-								data: data
+						if (vm.selectBtnIdList.length == 0) {
+							layui.layer.msg("角色不能没有任何权限")
+						} else {
+							var data = JSON.stringify({
+								menuIdList: vm.selectBtnIdList,
+								roleName: vm.rolename,
+								remark: vm.roleremark,
+								userId: window.localStorage.getItem("userId")
 							})
-							.then(function(res) {
-								if (res.data.code == 0) {
-									layer.alert('保存成功', function(index) {
-										layer.close(index);
-										vm.cancelRole();
-										vm.reloadParentTable();
-									})
-								} else {
-									vm.$notify.error({
-										title: '错误',
-										message: res.data.msg
-									})
-								}
-							})
+							axios({
+									method: "POST",
+									url: BASEURL + "/sys-mgr/sys/role/save",
+									headers: {
+										"Content-Type": "application/json;charset=UTF-8"
+									},
+									data: data
+								})
+								.then(function(res) {
+									if (res.data.code == 0) {
+										layer.alert('保存成功', function(index) {
+											layer.close(index);
+											vm.cancelRole();
+											vm.reloadParentTable();
+										})
+									} else {
+										vm.$notify.error({
+											title: '错误',
+											message: res.data.msg
+										})
+									}
+								})
+						}
+
 					},
 					cancelRole: function() {
 						var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引

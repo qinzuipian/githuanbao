@@ -188,7 +188,7 @@
 								    <label class="layui-form-label">行政区域
 									<span class="red">*</span></label></label>
 								    <div class="layui-input-inline AdminArea">
-								        <input type="text" name="organizeName" v-model="atraName" placeholder="请选择行政区域" autocomplete="off" class="layui-input" lay-verify="required">
+								        <input type="text" readonly="readonly" name="organizeName" v-model="atraName" placeholder="请选择行政区域" autocomplete="off" class="layui-input" lay-verify="required">
 										<i class="layui-icon layui-icon-triangle-d" @click="AdminFocus"></i>
 								        <div class="Areashow layui-anim layui-anim-upbit" v-show="Areashow">
 								            <el-tree :highlight-current="treeHign" default-expand-all :expand-on-click-node="false" :data="treeData" :props="defaultProps" @node-click="handleNodeClick"></el-tree>
@@ -437,7 +437,9 @@
 				axios({
 					method: "post",
 					url: BASEURL + 'environmental_intelligent_monitoring/tbastrade/list?limit=10000',
-					params: {}
+					params: {
+						userId: window.localStorage.getItem("userId")  
+					}
 				}).then(function(res) {
 					if (res.data.code == 0) {
 						$.each(res.data.page.list, function(index, item) {
@@ -505,6 +507,7 @@
 					data.field.concern = vm.concern;
 					data.field.organizeName = vm.atraName;
 					data.field.organizeId = vm.treeId;
+					data.field.userId = window.localStorage.getItem("userId");
 					// // console.log(vm.atraName);
 					// // console.log(vm.pic);
 					axios({
@@ -671,7 +674,8 @@
 					        method: "post",
 					        url: BASEURL + 'environmental_intelligent_monitoring/tbasorganize/dendrogramList',
 					        params: {
-					            type: "2"
+					            type: "2",
+								userId: window.localStorage.getItem("userId") 
 					        }
 					    }).then(function (res) {
 					        if (res.data.code == 0) {

@@ -121,16 +121,18 @@
 							</div>
 						</div>
 						<div class="layui-inline">
-						    <label class="layui-form-label">行政区域</label>
-						    <div class="layui-input-inline AdminArea">
-						        <input type="text" name="organizeName" readonly="readonly" id= "div_" v-model="atraName" placeholder="请选择行政区域" autocomplete="off" class="layui-input">
+							<label class="layui-form-label">行政区域</label>
+							<div class="layui-input-inline AdminArea">
+								<input type="text" name="organizeName" readonly="readonly" id="div_" v-model="atraName" placeholder="请选择行政区域"
+								 autocomplete="off" class="layui-input">
 								<!-- <el-input type="text" name="organizeName" readonly="readonly"  id= "div_" v-model="atraName" placeholder="请选择行政区域" ></el-input> -->
 								<i class="layui-icon-triangle-d layui-icon" v-bind:class="[{ actived: isActive },{ actived_after: !isActive }]"
 								 @click="appear()"></i>
-						        <div class="Areashow layui-anim layui-anim-upbit" v-show="Areashow">
-						            <el-tree :highlight-current="treeHign" default-expand-all :expand-on-click-node="false" :data="treeData" :props="defaultProps" @node-click="handleNodeClick"></el-tree>
-						        </div>
-						    </div>
+								<div class="Areashow layui-anim layui-anim-upbit" v-show="Areashow">
+									<el-tree :highlight-current="treeHign" default-expand-all :expand-on-click-node="false" :data="treeData"
+									 :props="defaultProps" @node-click="handleNodeClick"></el-tree>
+								</div>
+							</div>
 						</div>
 						<div class="layui-inline">
 							<div class="layui-form-item">
@@ -144,7 +146,7 @@
 							</div>
 						</div>
 						<div class="layui-inline">
-							<button class="layui-btn layuiadmin-btn-list" lay-submit lay-filter="LAY-app-contlist-search" >
+							<button class="layui-btn layuiadmin-btn-list" lay-submit lay-filter="LAY-app-contlist-search">
 								<i class="layui-icon layui-icon-search layuiadmin-button-btn"></i>
 							</button>
 						</div>
@@ -191,7 +193,9 @@
 					url: layui.setter.BASEURL + 'environmental_intelligent_monitoring/dataMonitor/queryEnterpriseReduceList' //数据接口
 						,
 					page: true,
-
+					where: {
+						userId: window.localStorage.getItem("userId")
+					},
 					cols: [
 							[{
 									type: 'numbers',
@@ -202,48 +206,48 @@
 									title: '企业名称',
 									field: 'enterpriseName',
 									minWidth: 200,
-									   
+
 								}, {
 									title: '机构',
 									field: 'organizeName',
 									minWidth: 100,
-									   
+
 								}, {
 									title: '行业',
 									field: 'tradeName',
 									minWidth: 100,
-									   
+
 								}, {
 									title: '生产状态',
 									field: 'produceType',
 									minWidth: 60,
-									   
+
 								}, {
 									title: '是否污染日',
 									field: 'isPollutionDay',
 									minWidth: 100,
-									   
+
 								}, {
 									title: '用电量(kWh)',
 									field: 'w',
 									minWidth: 100,
-									   
+
 								}, {
 									title: '排名',
 									field: 'rank',
 									Width: 30,
-									   
+
 								},
 								{
 									title: '详情',
 									minWidth: 100,
 									toolbar: '#barDemo',
-									   
+
 								}
 							]
 						] //设置表头
 						,
-					 limit: 15,
+					limit: 15,
 					limits: [15, 30, 50, 100, 200],
 					done: function(res, page, count) {
 						$("[data-field='isPollutionDay']").children().each(function() {
@@ -255,7 +259,7 @@
 						})
 					}
 				});
-				table.on('sort(LAY-app-content-list)', function (obj) {
+				table.on('sort(LAY-app-content-list)', function(obj) {
 					// console.log(obj)
 					$("[data-field='isPollutionDay']").children().each(function() {
 						if ($(this).text() == '0') {
@@ -296,7 +300,9 @@
 				axios({
 					method: "post",
 					url: BASEURL + 'environmental_intelligent_monitoring/tbastrade/list?limit=10000',
-					params: {}
+					params: {
+						userId: window.localStorage.getItem("userId")    
+					}
 				}).then(function(res) {
 					if (res.data.code == 0) {
 						// // console.log(res)
@@ -416,7 +422,8 @@
 							method: "post",
 							url: BASEURL + 'environmental_intelligent_monitoring/tbasorganize/dendrogramList',
 							params: {
-								type: "2"
+								type: "2",
+								userId: window.localStorage.getItem("userId")    
 							}
 						}).then(function(res) {
 							if (res.data.code == 0) {
@@ -426,20 +433,20 @@
 								}
 								data.unshift(obj);
 								vm.treeData = data;
-					
-					
-					
+
+
+
 							} else {
 								vm.$notify.error({
-								    title: '错误',
-								    message: res.data.msg
+									title: '错误',
+									message: res.data.msg
 								});
-					
+
 							}
 						}).catch(function(err) {
 							// // console.log(err);
 						});
-					
+
 					},
 					handleNodeClick: function(data, node) {
 
@@ -447,10 +454,10 @@
 						vm.treeId = data.id;
 						vm.treeHign = true;
 						vm.Areashow = false;
-						if(data.title == "请选择"){
+						if (data.title == "请选择") {
 							vm.atraName = ""
 						}
-					
+
 					},
 					AdminFocus: function() {
 						vm.isActive = !vm.isActive

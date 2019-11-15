@@ -21,9 +21,9 @@
 
 		<div id="vm">
 			<div style="padding: 20px 0 10px 20px;" class="layui-row">
-				<button class="layui-btn layuiadmin-btn-role" @click="addRole">添加</button>
-				<button class="layui-btn layuiadmin-btn-role" @click="editRole">编辑</button>
-				<button class="layui-btn layuiadmin-btn-role" @click="removeRole">删除</button>
+				<button class="layui-btn layuiadmin-btn-role" @click="addRole" v-if="doesItContain(71, buttonList)">添加</button>
+				<button class="layui-btn layuiadmin-btn-role" @click="editRole" v-if="doesItContain(72, buttonList)">编辑</button>
+				<button class="layui-btn layuiadmin-btn-role" @click="removeRole" v-if="doesItContain(73, buttonList)">删除</button>
 			</div>
 			<table id="roleTab" lay-filter="roleTab"></table>
 		</div>
@@ -39,9 +39,20 @@
 			var vm = new Vue({
 				el: "#vm",
 				data: {
-
+					buttonList: []
 				},
 				methods: {
+					pageInit: function() {
+						this.buttonList = JSON.parse(window.localStorage.getItem("buttonList"));
+					},
+					doesItContain: function(v, l) {
+						for (var i = 0; i < l.length; i++) {
+							if (v === l[i]) {
+								return true
+							}
+						}
+						return false;
+					},
 					// 新增角色
 					addRole: function() {
 						layui.layer.open({
@@ -79,7 +90,8 @@
 							selectRoleIdList.push(selectRole[i].roleId);
 						}
 						var data = JSON.stringify({
-							roleIds: selectRoleIdList
+							roleIds: selectRoleIdList,
+							userId: window.localStorage.getItem("userId")
 						})
 						axios({
 								method: "POST",
@@ -107,6 +119,9 @@
 								}
 							})
 					}
+				},
+				mounted: function() {
+					this.pageInit();
 				}
 			});
 
@@ -125,7 +140,10 @@
 					url: layui.setter.BASEURL + 'sys-mgr/sys/role/list', //数据接口
 					page: true, //开启分页
 					limit: 15,
-					limits: [15,30,50,100,200],
+					where: {
+						userId: window.localStorage.getItem("userId")
+					},
+					limits: [15, 30, 50, 100, 200],
 					cols: [
 						[{
 								type: 'checkbox',

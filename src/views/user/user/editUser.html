@@ -93,7 +93,7 @@
 					email: '',
 					roleList: [],
 					selectRoleList: [],
-					
+
 					isDataReady: false, // 数据是否加载进来了
 				},
 				methods: {
@@ -102,7 +102,10 @@
 						window.localStorage.removeItem("editUserid");
 						axios({
 								url: BASEURL + 'sys-mgr/sys/role/list',
-								method: 'POST'
+								method: 'POST',
+								params: {
+									userId: window.localStorage.getItem("userId")
+								}
 							})
 							.then(function(res) {
 								if (res.data.code == 0) {

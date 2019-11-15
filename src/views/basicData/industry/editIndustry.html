@@ -96,7 +96,7 @@
 			        });
 			    // form表单的提交
 			    form.on('submit(editFormDemo)', function (data) {
-					// // console.log(data);
+					data.field.userId = window.localStorage.getItem("userId")     
 			        axios({
 			            method: "post",
 			            url: BASEURL + 'environmental_intelligent_monitoring/tbastrade/update',
