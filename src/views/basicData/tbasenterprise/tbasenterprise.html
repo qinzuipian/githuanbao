@@ -243,6 +243,9 @@
 					url: layui.setter.BASEURL + 'environmental_intelligent_monitoring/tbasenterprise/list' //数据接口
 						,
 					page: true,
+					where: {
+						userId: window.localStorage.getItem("userId")
+					},
 					parseData: function(res) { // 数据重新处理为layUI的数据格式
 						var msg = {
 							"code": res.code, //解析接口状态
@@ -340,7 +343,8 @@
 									method: "post",
 									url: layui.setter.BASEURL + 'environmental_intelligent_monitoring/tbasenterprise/delete',
 									data: {
-										ids: idList
+										ids: idList,
+										userId: window.localStorage.getItem("userId")     
 									},
 									headers: {
 										"Content-Type": "application/json;charset=UTF-8"
@@ -481,7 +485,8 @@
 							method: "post",
 							url: BASEURL + 'environmental_intelligent_monitoring/tbasorganize/dendrogramList',
 							params: {
-								type: "2"
+								type: "2",
+								userId: window.localStorage.getItem("userId")     
 							}
 						}).then(function(res) {
 							if (res.data.code == 0) {

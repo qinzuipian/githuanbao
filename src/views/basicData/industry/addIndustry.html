@@ -83,7 +83,7 @@
 
 
 				form.on('submit(save)', function(data) {
-					// // console.log(data);
+					data.field.userId = window.localStorage.getItem("userId")     
 					axios({
 						method: "post",
 						url: layui.setter.BASEURL + 'environmental_intelligent_monitoring/tbastrade/save',

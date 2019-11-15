@@ -189,7 +189,8 @@
 									method: "post",
 									url: layui.setter.BASEURL + 'environmental_intelligent_monitoring/tbastrade/delete',
 									data: {
-										ids: idList
+										ids: idList,
+										userId: window.localStorage.getItem("userId")     
 									},
 									headers: {
 										"Content-Type": "application/json;charset=UTF-8"

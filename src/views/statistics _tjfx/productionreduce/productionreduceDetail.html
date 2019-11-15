@@ -107,7 +107,8 @@
 					method: "post",
 					url: BASEURL + 'environmental_intelligent_monitoring/dataMonitor/queryEnterpriseReduceReport',
 					params: {
-						enterpriseId: parent.id
+						enterpriseId: parent.id,
+						userId: window.localStorage.getItem("userId")    
 					}
 				}).then(function(res) {
 					vm.ptotal_list =[];
@@ -269,7 +270,8 @@
 							method: "get",
 							url: BASEURL + 'environmental_intelligent_monitoring/dataMonitor/queryEnterpriseReduceReport',
 							params: {
-								enterpriseId: parent.id
+								enterpriseId: parent.id,
+								userId: window.localStorage.getItem("userId")    
 							}
 						}).then(function(res) {
 							dus_chart.hideLoading();
@@ -365,7 +367,8 @@
 							method: "get",
 							url: BASEURL + 'environmental_intelligent_monitoring/dataMonitor/queryEnterpriseReduceReport',
 							params: {
-								enterpriseId: parent.id
+								enterpriseId: parent.id,
+								userId: window.localStorage.getItem("userId")    
 							}
 						}).then(function(res) {
 							voc_chart.hideLoading();
