@@ -218,7 +218,9 @@
 									checkDataIds.push(checkData[i].id)
 								}
 								var data = JSON.stringify({
-									ids: checkDataIds
+									ids: checkDataIds,
+									userId: window.localStorage.getItem("userId")
+									
 								})
 								axios({
 										method: "POST",

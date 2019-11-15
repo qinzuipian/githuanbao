@@ -70,7 +70,10 @@
 						window.localStorage.removeItem("roleId");
 						axios({
 								url: BASEURL + '/sys-mgr/sys/menu/queryMenuList',
-								method: 'POST'
+								method: 'POST',
+								params: {
+									userId: window.localStorage.getItem("userId")
+								}
 							})
 							.then(function(res) {
 								if (res.data.code == 0) {
@@ -120,7 +123,8 @@
 								roleId: vm.roleId,
 								menuIdList: vm.selectBtnIdList,
 								roleName: vm.rolename,
-								remark: vm.roleremark
+								remark: vm.roleremark,
+								userId: window.localStorage.getItem("userId")
 							})
 							axios({
 									method: "POST",

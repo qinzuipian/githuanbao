@@ -94,14 +94,17 @@
 					email: '',
 					roleList: [],
 					selectRoleList: [],
-					
+
 					isDataReady: false, // 数据是否加载进来了
 				},
 				methods: {
 					pageInit: function() {
 						axios({
 								url: BASEURL + 'sys-mgr/sys/role/list',
-								method: 'POST'
+								method: 'POST',
+								params: {
+									userId: window.localStorage.getItem("userId")
+								}
 							})
 							.then(function(res) {
 								if (res.data.code == 0) {
@@ -172,7 +175,7 @@
 				}).use(['index', 'form'], function() {
 					var form = layui.form;
 					var $ = layui.$;
-					
+
 					vm.isDataReady = true;
 					form.render();
 					form.on('submit(save)', function(data) {
@@ -190,9 +193,9 @@
 							} else {
 								vm.saveUser();
 							}
-						}else if(vm.password !== vm.rePassword){
+						} else if (vm.password !== vm.rePassword) {
 							layer.msg("两次密码输入不一致")
-						}else {
+						} else {
 							vm.saveUser();
 						}
 					})

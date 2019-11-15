@@ -90,7 +90,8 @@
 							selectRoleIdList.push(selectRole[i].roleId);
 						}
 						var data = JSON.stringify({
-							roleIds: selectRoleIdList
+							roleIds: selectRoleIdList,
+							userId: window.localStorage.getItem("userId")
 						})
 						axios({
 								method: "POST",

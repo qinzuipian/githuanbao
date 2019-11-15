@@ -89,7 +89,8 @@
 							selectUserIdList.push(selectUser[i].userId);
 						}
 						var data = JSON.stringify({
-							userIds: selectUserIdList
+							userIds: selectUserIdList,
+							userId: window.localStorage.getItem("userId")
 						})
 						axios({
 								method: "POST",
