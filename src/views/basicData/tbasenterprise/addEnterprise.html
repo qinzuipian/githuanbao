@@ -188,7 +188,7 @@
 								    <label class="layui-form-label">行政区域
 									<span class="red">*</span></label></label>
 								    <div class="layui-input-inline AdminArea">
-								        <input type="text" name="organizeName" v-model="atraName" placeholder="请选择行政区域" autocomplete="off" class="layui-input" lay-verify="required">
+								        <input type="text" readonly="readonly" name="organizeName" v-model="atraName" placeholder="请选择行政区域" autocomplete="off" class="layui-input" lay-verify="required">
 										<i class="layui-icon layui-icon-triangle-d" @click="AdminFocus"></i>
 								        <div class="Areashow layui-anim layui-anim-upbit" v-show="Areashow">
 								            <el-tree :highlight-current="treeHign" default-expand-all :expand-on-click-node="false" :data="treeData" :props="defaultProps" @node-click="handleNodeClick"></el-tree>
