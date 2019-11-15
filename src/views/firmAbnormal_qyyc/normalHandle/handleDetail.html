@@ -333,7 +333,6 @@
             // form表单提交
             form.on('submit(handleForm)', function (data) {
                 // console.log(data);
-                // data.field.enterpriseName = vm.enterpriseName;
                 axios({
                     method: "post",
                     url: BASEURL + 'environmental_intelligent_monitoring/tfirmabnormal/saveForAttachment',
@@ -344,7 +343,8 @@
                         description: data.field.description,
                         remark: data.field.remark,
                         id: data.field.id,
-                        currentStatus: data.field.currentStatus
+                        currentStatus: data.field.currentStatus,
+                        userId:window.localStorage.getItem("userId")
                     },
                     headers: {
                         "Content-Type": "application/json;charset=UTF-8"

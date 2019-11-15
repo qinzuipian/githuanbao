@@ -94,8 +94,6 @@
                     if (res.data.code == 0) {
                         vm.parentName = localStorage.getItem("nodeParentName");
 
-
-
                         var OrganizeData = res.data.tBasOrganize;
                         form.val('editOrganize', {
                             'id': OrganizeData.id,
@@ -114,6 +112,7 @@
 
             // form表单的提交
             form.on('submit(organizeForm)', function (data) {
+                data.field.userId = window.localStorage.getItem("userId")
                 axios({
                     method: "post",
                     url: BASEURL + 'environmental_intelligent_monitoring/tbasorganize/update',

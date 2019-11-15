@@ -170,7 +170,9 @@
             axios({
                 method: "post",
                 url: BASEURL + 'environmental_intelligent_monitoring/tbasenterprise/list?limit=10000',
-                params: {}
+                params: {
+                    userId: window.localStorage.getItem("userId")
+                }
             }).then(function (res) {
                 if (res.data.code == 0) {
                     // // console.log(res)
@@ -197,7 +199,7 @@
             // form表单提交
             form.on('submit(reduceForm)', function (data) {
                 // console.log(data);
-                // data.field.enterpriseName = vm.enterpriseName;
+                data.field.userId= window.localStorage.getItem("userId");
                 if (!data.field.active) { 
                     vm.$message.warning('请选择是否启用');
                 }else {

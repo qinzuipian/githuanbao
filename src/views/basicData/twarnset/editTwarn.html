@@ -195,6 +195,7 @@
             // form表单的提交
             form.on('submit(editFormDemo)', function (data) {
                 // console.log(data.field)
+                data.field.userId= window.localStorage.getItem("userId")
                 if (!data.field.active) {
                     vm.$message.warning('请选择是否启用');
                 } else {
@@ -213,8 +214,7 @@
                             }, function () {
                                 window.parent.location.reload();
                                 parent.layer.close('iframe');
-                            }
-                            );
+                            });
                         } else {
                             vm.$notify.error({
                                 title: '错误',
@@ -234,13 +234,12 @@
             el: "#vm",
             data: {
             },
-
             methods: {
                 cancel() {
                     parent.layer.closeAll('iframe');//关闭弹窗
                 }
             },
-            created() { }
+            created() {}
         });
     </script>
 </body>

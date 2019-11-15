@@ -273,7 +273,8 @@
                         auditOpinion: data.field.auditOpinion,
                         remark: data.field.remark,
                         id: data.field.id,
-                        currentStatus: data.field.currentStatus
+                        currentStatus: data.field.currentStatus,
+                        userId: window.localStorage.getItem("userId")
                     },
                     headers: {
                         "Content-Type": "application/json;charset=UTF-8"

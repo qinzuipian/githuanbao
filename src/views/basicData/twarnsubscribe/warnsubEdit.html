@@ -162,7 +162,9 @@
             axios({
                 method: "post",
                 url: BASEURL + 'environmental_intelligent_monitoring/twarnsubscribe/queryEventTypeDictionary',
-                params: {}
+                params: {
+                    userId: window.localStorage.getItem("userId")
+                }
             }).then(function (res) {
                 if (res.data.code == 0) {
                     // // console.log(res)
@@ -260,6 +262,7 @@
                 })
                 data.field.eventTypeListStr = vm.eventTypeList.join();
                 data.field.eventTypeIdListStr = vm.eventTypeIdList.join();
+                data.field.userId= window.localStorage.getItem("userId");
                 // console.log(data.field)
                 axios({
                     method: "post",

@@ -134,7 +134,9 @@
             axios({
                 method: "post",
                 url: layui.setter.BASEURL + 'environmental_intelligent_monitoring/tbastrade/list?limit=10000',
-                params: {}
+                params: {
+                    userId: window.localStorage.getItem("userId")
+                }
             }).then(function (res) {
                 if (res.data.code == 0) {
                     $.each(res.data.page.list, function (index, item) {
@@ -168,6 +170,9 @@
                         "data": res.page.list //解析数据列表
                     };
                     return msg;
+                },
+                where:{
+                    userId: window.localStorage.getItem("userId")
                 },
                 cols: [[
                     { title: '企业名称',    field: 'enterpriseName', minWidth: 100 },
@@ -331,7 +336,8 @@
                         method: "post",
                         url: BASEURL + 'environmental_intelligent_monitoring/tbasorganize/dendrogramList',
                         params: {
-                            type: "2"
+                            type: "2",
+                            userId: window.localStorage.getItem("userId")
                         }
                     }).then(function (res) {
                         if (res.data.code == 0) {

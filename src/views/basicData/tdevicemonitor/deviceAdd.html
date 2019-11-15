@@ -476,7 +476,9 @@
             axios({
                 method: "post",
                 url: BASEURL + 'environmental_intelligent_monitoring/tdevicemonitor/queryPolluteType',
-                params: {}
+                params: {
+                    userId: window.localStorage.getItem("userId")
+                }
             }).then(function (res) {
                 if (res.data.code == 0) {
                     // // console.log(res)
@@ -502,7 +504,8 @@
                     method: "post",
                     url: BASEURL + 'environmental_intelligent_monitoring/tdevicemonitor/queryPolluteType',
                     params: {
-                        id: data.value
+                        id: data.value,
+                        userId: window.localStorage.getItem("userId")
                     }
                     /* headers: {
                         "Content-Type": "application/json;charset=UTF-8"
@@ -524,7 +527,8 @@
                             method: "post",
                             url: BASEURL + 'environmental_intelligent_monitoring/tdevicemonitor/queryPolluteType',
                             params: {
-                                id: $('#ecType').val()
+                                id: $('#ecType').val(),
+                                userId: window.localStorage.getItem("userId")
                             }
                             /* headers: {
                                 "Content-Type": "application/json;charset=UTF-8"
@@ -563,7 +567,8 @@
                     method: "post",
                     url: BASEURL + 'environmental_intelligent_monitoring/tdevicemonitor/queryPolluteType',
                     params: {
-                        id: data.value
+                        id: data.value,
+                        userId: window.localStorage.getItem("userId")
                     }
                     /* headers: {
                         "Content-Type": "application/json;charset=UTF-8"
@@ -607,7 +612,7 @@
                     $("#yFrequen").attr("lay-verify", '');
                     $("#ratedPower").attr("lay-verify", 'required|number');
                     $("#ratedU").attr("lay-verify", 'required|number');
-                    
+
                     $("#xAccelerat").val("");
                     $("#radarProport").val("");
                     $("#currentSpeed").val("");
@@ -716,7 +721,7 @@
                     $("#yFrequen").attr("lay-verify", '');
                     $("#ratedPower").attr("lay-verify", '');
                     $("#ratedU").attr("lay-verify", '');
-                    
+
                     $("#pt").val("");
                     $("#ct").val("");
                     $("#xAccelerat").val("");
@@ -755,7 +760,7 @@
                     $("#yFrequen").attr("lay-verify", '');
                     $("#ratedPower").attr("lay-verify", '');
                     $("#ratedU").attr("lay-verify", '');
-                    
+
                     $("#pt").val("");
                     $("#ct").val("");
                     $("#xAccelerat").val("");
@@ -787,6 +792,7 @@
                 data.field.swicthId = vm.swicthId;
                 data.field.meterId = vm.meterCode;
                 data.field.mn = vm.tnCode;
+                data.field.userId = window.localStorage.getItem("userId");
                 // console.log(data.field);
                 // // console.log(vm.selectShow)
                 /* data.field.ecPolluteType = $("#ecPolluteType option:selected").text();
@@ -948,7 +954,8 @@
                         method: "post",
                         url: BASEURL + 'environmental_intelligent_monitoring/tbasshop/list?limit=10000',
                         params: {
-                            enterpriseName: queryString
+                            enterpriseName: queryString,
+                            userId: window.localStorage.getItem("userId")
                         }
                         // data: {},
                         // headers: {
@@ -990,7 +997,8 @@
                         method: "post",
                         url: BASEURL + 'environmental_intelligent_monitoring/tbasshop/list',
                         params: {
-                            enterpriseId: item.enterpriseId
+                            enterpriseId: item.enterpriseId,
+                            userId: window.localStorage.getItem("userId")
                         }
                         /*  headers: {
                              "Content-Type": "application/json;charset=UTF-8"
@@ -1016,7 +1024,8 @@
                         method: "post",
                         url: BASEURL + 'environmental_intelligent_monitoring/tdevicemonitor/querySwicthIdList',
                         params: {
-                            enterpriseId: vm.enterpriseId
+                            enterpriseId: vm.enterpriseId,
+                            userId: window.localStorage.getItem("userId")
                         }
                     }).then(function (res) {
                         if (res.data.code == 0) {

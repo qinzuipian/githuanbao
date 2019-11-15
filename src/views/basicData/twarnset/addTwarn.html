@@ -52,6 +52,7 @@
             color: #f00;
             font-size: 22px;
         }
+
         .layui-form {
             padding-top: 20px;
         }
@@ -63,13 +64,6 @@
         <div class="layui-fluid">
             <div class="layui-row">
                 <form class="layui-form" action="">
-                    <!--   <div class="layui-form-item">
-                        <label for="bitian" class="layui-form-label">
-                            监测点编码</label>
-                        <div class="layui-input-inline">
-                            <input type="text" v-model="tWarnSet.monitorid" class="layui-input" placeholder="监测点编码" />
-                        </div>
-                    </div> -->
                     <!-- <input type="hidden" class="layui-input" name="monitorId"> -->
                     <!-- <input type="hidden" class="layui-input" name="eventTypeId"> -->
                     <div class="layui-form-item">
@@ -99,13 +93,6 @@
                         </div>
 
                     </div>
-                    <!-- <div class="layui-form-item">
-                        <label for="bitian" class="layui-form-label">
-                            事件类型编码</label>
-                        <div class="layui-input-inline">
-                            <input type="text" v-model="tWarnSet.eventtypeid" class="layui-input" placeholder="事件类型编码" />
-                        </div>
-                    </div> -->
                     <div class="layui-form-item">
                         <label for="bitian" class="layui-form-label">
                             参数
@@ -136,7 +123,8 @@
                             <select name="condition" id="condition" lay-verify="required">
                                 <option value="">请选择条件类型</option>
                                 <option value=">=">>=</option>
-                                <option value="<="><=</option>
+                                <option value="<=">
+                                    <=</option>
                             </select>
                         </div>
 
@@ -160,14 +148,6 @@
                             <input type="radio" name="active" value="2" title="禁用">
                         </div>
                     </div>
-                    <!-- <div class="layui-form-item">
-                        <label for="bitian" class="layui-form-label">
-                            状态</label>
-                        <div class="layui-input-inline" id="status">
-                            <input type="radio" name="status" value="1" title="有效">
-                            <input type="radio" name="status" value="2" title="无效">
-                        </div>
-                    </div> -->
                     <div class="layui-form-item">
                         <label for="bitian" class="layui-form-label">
                             备注</label>
@@ -199,7 +179,8 @@
                 method: "post",
                 url: BASEURL + 'environmental_intelligent_monitoring/twarnsubscribe/queryEventTypeDictionary',
                 params: {
-                    type:1
+                    type: 1,
+                    userId: window.localStorage.getItem("userId")
                 }
             }).then(function (res) {
                 if (res.data.code == 0) {
@@ -230,6 +211,7 @@
                 data.field.eventType = vm.eventType;
                 data.field.monitorName = vm.treeLabel;
                 data.field.monitorId = vm.monitorId;
+                data.field.userId = window.localStorage.getItem("userId");
                 if (!data.field.active) {
                     vm.$message.warning('请选择是否启用');
                 } else {
@@ -317,7 +299,10 @@
                     axios({
                         method: "post",
                         url: BASEURL + 'environmental_intelligent_monitoring/tbasorganize/dendrogramList',
-                        params: { type: "5" }
+                        params: {
+                            type: "5",
+                            userId: window.localStorage.getItem("userId")
+                        }
                     }).then(function (res) {
                         if (res.data.code == 0) {
                             var data = res.data.data;

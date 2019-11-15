@@ -148,7 +148,8 @@
 					return msg;
 				},
 				where: {
-					currentStatus: 2
+					currentStatus: 2,
+					userId: window.localStorage.getItem("userId")
 				}
 				, cols: [[
 					{ checkbox: true },
@@ -192,7 +193,9 @@
 			axios({
 				method: "post",
 				url: BASEURL + 'environmental_intelligent_monitoring/twarnsubscribe/queryEventTypeDictionary',
-				params: {}
+				params: {
+					userId: window.localStorage.getItem("userId")
+				}
 			}).then(function (res) {
 				if (res.data.code == 0) {
 					// // console.log(res)
@@ -247,7 +250,8 @@
 								data: {
 									ids: idList,
 									currentStatus: $('#IsExamine input[name="currentStatus"]:checked ').val(),
-									auditOpinion: vm.auditOpinion
+									auditOpinion: vm.auditOpinion,
+									userId: window.localStorage.getItem("userId")
 								},
 								headers: {
 									"Content-Type": "application/json;charset=UTF-8"

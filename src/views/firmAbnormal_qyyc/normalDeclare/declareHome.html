@@ -131,7 +131,8 @@
 					return msg;
 				},
 				where: {
-					currentStatus: 1
+					currentStatus: 1,
+					userId: window.localStorage.getItem("userId")
 				}
 				, cols: [[
 					{ checkbox: true },
@@ -193,7 +194,9 @@
 			axios({
 				method: "post",
 				url: BASEURL + 'environmental_intelligent_monitoring/twarnsubscribe/queryEventTypeDictionary',
-				params: {}
+				params: {
+					userId: window.localStorage.getItem("userId")
+				}
 			}).then(function (res) {
 				if (res.data.code == 0) {
 					// // console.log(res)
@@ -246,7 +249,8 @@
 								url: layui.setter.BASEURL + 'environmental_intelligent_monitoring/tfirmabnormal/update',
 								data: {
 									ids: idList,
-									currentStatus: 2
+									currentStatus: 2,
+									userId: window.localStorage.getItem("userId")
 								},
 								headers: {
 									"Content-Type": "application/json;charset=UTF-8"

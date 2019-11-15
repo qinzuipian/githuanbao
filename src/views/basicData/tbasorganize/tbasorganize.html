@@ -131,19 +131,7 @@
 			}, 500)
 
 			// // console.log(vm.treeData)
-
-			//监听搜索
-			form.on('submit(LAY-app-contlist-search)', function (data) {
-				var field = data.field;
-
-				//执行重载
-				table.reload('LAY-app-content-list', {
-					where: field,
-					page: {
-						curr: 1 //重新从第 1 页开始
-					}
-				});
-			});
+		
 
 			var $ = layui.$,
 				active = {
@@ -163,7 +151,8 @@
 								method: "post",
 								url: layui.setter.BASEURL + 'environmental_intelligent_monitoring/tbasorganize/delete',
 								data: {
-									ids: idList
+									ids: idList,
+									userId: window.localStorage.getItem("userId")
 								},
 								headers: {
 									"Content-Type": "application/json;charset=UTF-8"
@@ -322,7 +311,9 @@
 						// url: BASEURL + 'environmental_intelligent_monitoring/tbasorganize/list?limit=10000',
 						url: BASEURL + 'environmental_intelligent_monitoring/tbasorganize/dendrogramList',
 						params: {
-							type: "2"
+							type: "2",
+							userId: window.localStorage.getItem("userId")
+
 						}
 					}).then(function (res) {
 						if (res.data.code == 0) {

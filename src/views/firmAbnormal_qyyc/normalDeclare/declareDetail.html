@@ -260,7 +260,8 @@
                         description: data.field.description,
                         remark: data.field.remark,
                         id: data.field.id,
-                        currentStatus: 2
+                        currentStatus: 2,
+                        userId: window.localStorage.getItem("userId")
                     },
                     headers: {
                         "Content-Type": "application/json;charset=UTF-8"

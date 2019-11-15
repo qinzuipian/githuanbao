@@ -37,6 +37,7 @@
         .layui-form-item .layui-input-inline {
             width: 340px;
         }
+
         .layui-form {
             padding-top: 20px;
         }
@@ -95,6 +96,7 @@
 
             // form表单的提交
             form.on('submit(organizeForm)', function (data) {
+                data.field.userId = window.localStorage.getItem("userId")
                 axios({
                     method: "post",
                     url: BASEURL + 'environmental_intelligent_monitoring/tdevicemonitor/updatePollute',

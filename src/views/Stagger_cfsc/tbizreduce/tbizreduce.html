@@ -102,7 +102,8 @@
 					return msg;
 				},
 				where: {
-					isReduce: 1
+					isReduce: 1,
+					userId: window.localStorage.getItem("userId")
 				}
 				, cols: [[
 					{ type: 'numbers', width: 50, fixed: 'left' },
@@ -194,7 +195,8 @@
 								method: "post",
 								url: layui.setter.BASEURL + 'environmental_intelligent_monitoring/tbizreduce/delete',
 								data: {
-									ids: idList
+									ids: idList,
+									userId: window.localStorage.getItem("userId")
 								},
 								headers: {
 									"Content-Type": "application/json;charset=UTF-8"

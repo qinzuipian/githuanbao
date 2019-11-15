@@ -204,7 +204,9 @@
                         axios({
                             method: "post",
                             url: BASEURL + 'environmental_intelligent_monitoring/tbizreduce/queryReduceList',
-                            params: {}
+                            params: {
+                                userId: window.localStorage.getItem("userId")
+                            }
                         }).then(function (res) {
                             if (res.data.code == 0) {
                                 vm.levelList = res.data.data;
@@ -225,7 +227,8 @@
                             method: "post",
                             url: BASEURL + 'environmental_intelligent_monitoring/tbizreduce/queryEnterpriseList',
                             params: {
-                                id: val
+                                id: val,
+                                userId: window.localStorage.getItem("userId")
                             }
                         }).then(function (res) {
                             if (res.data.code == 0) {
@@ -266,7 +269,8 @@
                                 url: BASEURL + 'environmental_intelligent_monitoring/tbizreduce/saveBatchForEnterprise',
                                 data: {
                                     id: vm.levelId,
-                                    tBizEnterpriseList: vm.monitorIdData
+                                    tBizEnterpriseList: vm.monitorIdData,
+                                    userId: window.localStorage.getItem("userId")
                                 },
                                 headers: {
                                     "Content-Type": "application/json;charset=UTF-8"
@@ -307,7 +311,8 @@
                                     method: "post",
                                     url: layui.setter.BASEURL + 'environmental_intelligent_monitoring/tbizreduce/deleteByMonitorId',
                                     data: {
-                                        monitorIds: vm.monitoridList
+                                        monitorIds: vm.monitoridList,
+                                        userId: window.localStorage.getItem("userId")
                                     },
                                     headers: {
                                         "Content-Type": "application/json;charset=UTF-8"
@@ -334,7 +339,9 @@
                         axios({
                             method: "post",
                             url: BASEURL + 'environmental_intelligent_monitoring/tdevicemonitor/list?limit=10000',
-                            params: {}
+                            params: {
+                                userId: window.localStorage.getItem("userId")
+                            }
                         }).then(function (res) {
                             if (res.data.code == 0) {
                                 var treeData = res.data.page.list;
@@ -399,7 +406,8 @@
                             method: "post",
                             url: BASEURL + 'environmental_intelligent_monitoring/tbasorganize/dendrogramList',
                             params: {
-                                type: "2"
+                                type: "2",
+                                userId: window.localStorage.getItem("userId")
                             }
                         }).then(function (res) {
                             if (res.data.code == 0) {
@@ -645,7 +653,8 @@
                             params: {
                                 organizeName: vm.atraName,
                                 enterpriseName: vm.enterpriseName,
-                                tradeId: vm.trade
+                                tradeId: vm.trade,
+                                userId: window.localStorage.getItem("userId")
                             }
                         }).then(function (res) {
                             if (res.data.code == 0) {
@@ -745,7 +754,9 @@
                 axios({
                     method: "post",
                     url: layui.setter.BASEURL + 'environmental_intelligent_monitoring/tbastrade/list?limit=10000',
-                    params: {}
+                    params: {
+                        userId: window.localStorage.getItem("userId")
+                    }
                 }).then(function (res) {
                     if (res.data.code == 0) {
                         $.each(res.data.page.list, function (index, item) {

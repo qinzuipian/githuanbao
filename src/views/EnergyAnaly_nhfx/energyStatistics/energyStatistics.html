@@ -48,9 +48,9 @@
 
 <body>
     <div id="vm">
-            <!-- element-loading-background="rgba(0, 0, 0, 0.8)"
+        <!-- element-loading-background="rgba(0, 0, 0, 0.8)"
             element-loading-text="加载中" -->
-        <div class="energyMain" v-loading="mainLoading"  element-loading-spinner="el-icon-loading">
+        <div class="energyMain" v-loading="mainLoading" element-loading-spinner="el-icon-loading">
             <div class="head">
                 <button type="button" :class="{'active': energyShow == 1}" @click="energyShowClick(1)">企业</button>
                 <button type="button" :class="{'active': energyShow == 2}" @click="energyShowClick(2)">行业</button>
@@ -553,7 +553,8 @@
                         method: "post",
                         url: BASEURL + 'environmental_intelligent_monitoring/tbasorganize/dendrogramList',
                         params: {
-                            type: "2"
+                            type: "2",
+                            userId: window.localStorage.getItem("userId")
                         }
                     }).then(function (res) {
                         if (res.data.code == 0) {
@@ -797,7 +798,9 @@
                     axios({
                         method: "post",
                         url: BASEURL + 'environmental_intelligent_monitoring/tbasenterprise/list?limit=10000',
-                        params: {}
+                        params: {
+                            userId: window.localStorage.getItem("userId")
+                        }
                     }).then(function (res) {
                         if (res.data.code == 0) {
                             // // console.log(res)
@@ -843,7 +846,8 @@
                         method: "post",
                         url: BASEURL + 'environmental_intelligent_monitoring/tdevicemonitor/list?limit=10000',
                         params: {
-                            enterpriseId:val
+                            enterpriseId:val,
+                            userId: window.localStorage.getItem("userId")
                         }
                     }).then(function (res) {
                         if (res.data.code == 0) {
@@ -881,7 +885,8 @@
                         params: {
                             // enterpriseId:89
                             enterpriseId: enterpriseId,
-                            monitorId: monitorId
+                            monitorId: monitorId,
+                            userId: window.localStorage.getItem("userId")
                         }
                     }).then(function (res) {
                         if (res.data.code == 0) {
@@ -920,7 +925,8 @@
                         params: {
                             // enterpriseId:89
                             enterpriseId: enterpriseId,
-                            monitorId: monitorId
+                            monitorId: monitorId,
+                            userId: window.localStorage.getItem("userId")
                         }
                     }).then(function (res) {
                         if (res.data.code == 0) {
@@ -963,7 +969,8 @@
                         params: {
                             // enterpriseId:89,
                             enterpriseId: enterpriseId,
-                            monitorId: monitorId
+                            monitorId: monitorId,
+                            userId: window.localStorage.getItem("userId")
                             // monitorId: ""
                         }
                     }).then(function (res) {
@@ -1102,6 +1109,7 @@
                         data.enterpriseId = enterpriseId;
                         data.monitorId = monitorId;
                     }
+                    data.userId= window.localStorage.getItem("userId")
                     vm.EleRadius = [];
                     axios({
                         method: "post",
@@ -1235,6 +1243,7 @@
                         data.monitorId = monitorId;
                         data.ratioType = type;
                     }
+                    data.userId= window.localStorage.getItem("userId")
                     axios({
                         method: "post",
                         url: BASEURL + 'environmental_intelligent_monitoring/tkwhhour/queryEleTrendByDaily',
@@ -1375,6 +1384,7 @@
                         data.monitorId = monitorId;
                         data.ratioType = type;
                     }
+                    data.userId= window.localStorage.getItem("userId")
                     axios({
                         method: "post",
                         url: BASEURL + 'environmental_intelligent_monitoring/tkwhdaily/queryEleTrendByMonth',
@@ -1516,6 +1526,7 @@
                         data.monitorId = monitorId;
                         data.ratioType = type;
                     }
+                    data.userId= window.localStorage.getItem("userId")
                     axios({
                         method: "post",
                         url: BASEURL + 'environmental_intelligent_monitoring/tkwhmonthly/queryEleTrendByYear',
@@ -1656,6 +1667,7 @@
                         data.flag = type;
                         data.type = 'company';
                     }
+                    data.userId= window.localStorage.getItem("userId")
                     var myCharts = echarts.init(document.getElementById('electricNum'));
                     myCharts.showLoading({
                         text: "加载中"
@@ -1760,6 +1772,7 @@
                         data.flag = type;
                         data.type = 'company';
                     }
+                    data.userId=window.localStorage.getItem("userId")
                     var myCharts = echarts.init(document.getElementById('electricNum'));
                     myCharts.showLoading({
                         text: "加载中"
@@ -1868,6 +1881,7 @@
                         data.flag = type;
                         data.type = 'company';
                     }
+                    data.userId= window.localStorage.getItem("userId")
                     var myCharts = echarts.init(document.getElementById('electricNum'));
                     myCharts.showLoading({
                         text: "加载中"
@@ -1956,7 +1970,9 @@
                     axios({
                         method: "post",
                         url: BASEURL + 'environmental_intelligent_monitoring/tbastrade/list?limit=10000',
-                        params: {}
+                        params: {
+                            userId: window.localStorage.getItem("userId")
+                        }
                     }).then(function (res) {
                         if (res.data.code == 0) {
                             // // console.log(res)

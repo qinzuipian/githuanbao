@@ -91,11 +91,11 @@
         </div>
         <div style="margin: 0 0 10px 40px;">
             <el-table :data="treatData" stripe style="width: 100%">
-                <el-table-column prop="shopName" label="生产单元" width="180">
+                <el-table-column prop="shopName" label="生产单元" width="100">
                 </el-table-column>
                 <el-table-column prop="tName" label="设备类型" width="180">
                 </el-table-column>
-                <el-table-column prop="treatName" label="设备名称">
+                <el-table-column prop="treatName" label="设备名称" width="180">
                 </el-table-column>
                 <el-table-column prop="backup" label="备用关系">
                 </el-table-column>
@@ -159,7 +159,8 @@
                         method: "post",
                         url: BASEURL + 'environmental_intelligent_monitoring/tdevicemonitor/queryProductAndTreatList',
                         params: {
-                            id: parent.data.productId
+                            id: parent.data.productId,
+                            userId: window.localStorage.getItem("userId")
                         },
                         /* headers: {
                             "Content-Type": "application/json;charset=UTF-8"
@@ -197,7 +198,8 @@
                         method: "post",
                         url: BASEURL + 'environmental_intelligent_monitoring/tdevicemonitor/querytreatNameList',
                         params: {
-                            enterpriseId: parent.data.enterpriseId
+                            enterpriseId: parent.data.enterpriseId,
+                            userId: window.localStorage.getItem("userId")
                         },
                         /* headers: {
                             "Content-Type": "application/json;charset=UTF-8"
@@ -340,7 +342,8 @@
                         data: {
                             parentId: parent.data.productId,
                             ids: idList,
-                            backupId: backupId
+                            backupId: backupId,
+                            userId: window.localStorage.getItem("userId")
                         },
                         headers: {
                             "Content-Type": "application/json;charset=UTF-8"

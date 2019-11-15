@@ -302,7 +302,8 @@
                         // url: BASEURL + 'environmental_intelligent_monitoring/tbasorganize/list?limit=10000',
                         url: BASEURL + 'environmental_intelligent_monitoring/tbasorganize/dendrogramList',
                         params: {
-                            type: "3"
+                            type: "3",
+                            userId: window.localStorage.getItem("userId")
                         }
                     }).then(function (res) {
                         if (res.data.code == 0) {
@@ -376,7 +377,8 @@
                             params: {
                                 dailyTime: this.timeDate,
                                 // enterpriseId: 89
-                                enterpriseId: enterpriseId
+                                enterpriseId: enterpriseId,
+                                userId: window.localStorage.getItem("userId")
                             }
                         }).then(function (res) {
                             if (res.data.code == 0) {
@@ -498,7 +500,8 @@
                             params: {
                                 monthTime: this.monthDate,
                                 enterpriseId: enterpriseId,
-                                num: num
+                                num: num,
+                                userId: window.localStorage.getItem("userId")
                             }
                         }).then(function (res) {
                             if (res.data.code == 0) {
@@ -566,7 +569,8 @@
                             url: BASEURL + 'environmental_intelligent_monitoring/tkwhmonthly/query',
                             params: {
                                 yearTime: this.yearDate,
-                                enterpriseId: enterpriseId
+                                enterpriseId: enterpriseId,
+                                userId: window.localStorage.getItem("userId")
                             }
                         }).then(function (res) {
                             if (res.data.code == 0) {
@@ -637,7 +641,8 @@
                             method: "post",
                             url: BASEURL + 'environmental_intelligent_monitoring/tkwhyear/query',
                             params: {
-                                enterpriseId: enterpriseId
+                                enterpriseId: enterpriseId,
+                                userId: window.localStorage.getItem("userId")
                             }
                         }).then(function (res) {
                             if (res.data.code == 0) {

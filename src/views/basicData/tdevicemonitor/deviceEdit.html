@@ -512,7 +512,9 @@
             axios({
                 method: "post",
                 url: BASEURL + 'environmental_intelligent_monitoring/tdevicemonitor/queryPolluteType',
-                params: {}
+                params: {
+                    userId: window.localStorage.getItem("userId")
+                }
             }).then(function (res) {
                 if (res.data.code == 0) {
                     // // console.log(res)
@@ -537,7 +539,8 @@
                     method: "post",
                     url: BASEURL + 'environmental_intelligent_monitoring/tdevicemonitor/queryPolluteType',
                     params: {
-                        id: data.value
+                        id: data.value,
+                        userId: window.localStorage.getItem("userId")
                     }
                     /* headers: {
                         "Content-Type": "application/json;charset=UTF-8"
@@ -557,7 +560,8 @@
                             method: "post",
                             url: BASEURL + 'environmental_intelligent_monitoring/tdevicemonitor/queryPolluteType',
                             params: {
-                                id: $('#ecType').val()
+                                id: $('#ecType').val(),
+                                userId: window.localStorage.getItem("userId")
                             }
                             /* headers: {
                                 "Content-Type": "application/json;charset=UTF-8"
@@ -595,7 +599,8 @@
                     method: "post",
                     url: BASEURL + 'environmental_intelligent_monitoring/tdevicemonitor/queryPolluteType',
                     params: {
-                        id: data.value
+                        id: data.value,
+                        userId: window.localStorage.getItem("userId")
                     }
                     /* headers: {
                         "Content-Type": "application/json;charset=UTF-8"
@@ -741,7 +746,8 @@
                 method: "post",
                 url: BASEURL + 'environmental_intelligent_monitoring/tbasshop/list',
                 params: {
-                    enterpriseId: vm.enterpriseId
+                    enterpriseId: vm.enterpriseId,
+                    userId: window.localStorage.getItem("userId")
                 }
                 /*  headers: {
                      "Content-Type": "application/json;charset=UTF-8"
@@ -929,7 +935,8 @@
                             method: "post",
                             url: BASEURL + 'environmental_intelligent_monitoring/tdevicemonitor/queryPolluteType',
                             params: {
-                                id: $("#ecPolluteType").val()
+                                id: $("#ecPolluteType").val(),
+                                userId: window.localStorage.getItem("userId")
                             }
                         }).then(function (res) {
                             if (res.data.code == 0) {
@@ -945,7 +952,8 @@
                                     method: "post",
                                     url: BASEURL + 'environmental_intelligent_monitoring/tdevicemonitor/queryPolluteType',
                                     params: {
-                                        id: $("#ecType").val()
+                                        id: $("#ecType").val(),
+                                        userId: window.localStorage.getItem("userId")
                                     }
                                     /* headers: {
                                         "Content-Type": "application/json;charset=UTF-8"
@@ -1009,6 +1017,7 @@
                 data.field.swicthId = vm.swicthId;
                 data.field.meterId = vm.meterCode;
                 data.field.mn = vm.tnCode;
+                data.field.userId= window.localStorage.getItem("userId");
                 // console.log(data.field)
                 axios({
                     method: "post",
@@ -1167,7 +1176,8 @@
                         method: "post",
                         url: BASEURL + 'environmental_intelligent_monitoring/tbasshop/list?limit=10000',
                         params: {
-                            enterpriseName: queryString
+                            enterpriseName: queryString,
+                            userId: window.localStorage.getItem("userId")
                         }
                         // data: {},
                         // headers: {
@@ -1211,7 +1221,8 @@
                         method: "post",
                         url: BASEURL + 'environmental_intelligent_monitoring/tbasshop/list',
                         params: {
-                            enterpriseId: item.enterpriseId
+                            enterpriseId: item.enterpriseId,
+                            userId: window.localStorage.getItem("userId")
                         }
                         /*  headers: {
                              "Content-Type": "application/json;charset=UTF-8"
@@ -1236,7 +1247,8 @@
                         method: "post",
                         url: BASEURL + 'environmental_intelligent_monitoring/tdevicemonitor/querySwicthIdList',
                         params: {
-                            enterpriseId: vm.enterpriseId
+                            enterpriseId: vm.enterpriseId,
+                            userId: window.localStorage.getItem("userId")
                         }
                     }).then(function (res) {
                         if (res.data.code == 0) {

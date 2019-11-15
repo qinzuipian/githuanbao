@@ -311,7 +311,8 @@
                         // url: BASEURL + 'environmental_intelligent_monitoring/tbasorganize/list?limit=10000',
                         url: BASEURL + 'environmental_intelligent_monitoring/tbasorganize/dendrogramList',
                         params: {
-                            type: "3"
+                            type: "3",
+                            userId: window.localStorage.getItem("userId")
                         }
                     }).then(function (res) {
                         if (res.data.code == 0) {
@@ -419,6 +420,7 @@
                         data.flag = type;
 
                     }
+                    data.userId= window.localStorage.getItem("userId")
                     // // console.log(data)
                     axios({
                         method: "post",

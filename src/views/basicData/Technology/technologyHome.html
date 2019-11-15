@@ -93,7 +93,8 @@
                                 method: "post",
                                 url: layui.setter.BASEURL + 'environmental_intelligent_monitoring/tdevicemonitor/deletePollute',
                                 data: {
-                                    id: vm.nodedata.id
+                                    id: vm.nodedata.id,
+                                    userId: window.localStorage.getItem("userId")
                                 },
                                 headers: {
                                     "Content-Type": "application/json;charset=UTF-8"
@@ -180,7 +181,9 @@
                     axios({
                         method: "post",
                         url: BASEURL + '/environmental_intelligent_monitoring/tdevicemonitor/queryPolluteTree',
-                        params: {}
+                        params: {
+                            userId: window.localStorage.getItem("userId")
+                        }
                     }).then(function (res) {
                         if (res.data.code == 0) {
                             vm.loading = false;
