@@ -1,0 +1,123 @@
+
+.font-white{
+	color: white;
+}
+
+#dv-full-screen-container {
+	height: 100% !important;
+}
+
+.dv-loading .loading-tip {
+	color: white;
+}
+
+.title {
+	color: white;
+	text-align: center;
+	font-size: 25px;
+}
+
+#app {
+	position: fixed;
+	top: 0;
+	left: 0;
+	bottom: 0;
+	right: 0;
+	background: #282c34;
+	background-image: url(../img/dataV_BG.png);
+	background-repeat: no-repeat;
+	background-size: cover;
+}
+
+.dv-border-box-1 .left-bottom {
+	bottom: 40px !important;
+}
+
+.dv-border-box-1 .right-bottom {
+	bottom: 40px !important;
+}
+
+/* 头部 */
+.data-heade {
+	width: 100%;
+	display: flex;
+}
+
+.left-box{
+	width: 10%;
+}
+
+
+.home-box {
+	width: 20%;
+	text-align: center;
+}
+
+.home-icon {
+	width: 30px;
+	padding-top: 15px;
+	cursor: pointer;
+}
+
+
+
+
+
+.title-box {
+	width: 60%;
+}
+
+.time-box {
+	width: 20%;
+	
+}
+.time-item{
+	text-align: center;
+	color: white;
+	font-size: 15px;
+	padding-top: 10px;
+}
+
+
+.right-box{
+	width: 10%;
+}
+
+
+
+/* 内容 */
+.content-box{
+	overflow: scroll;
+	padding-bottom: 50px;
+}
+.data-content{
+	width: 100%;
+	display: flex;
+	padding-top: 15px;
+	padding-left: 10px;
+}
+
+.enterprise-box{
+	width: calc(20% - 24px);
+	margin: 0 10px;
+	height: 150px;
+}
+.enterprise-item{
+	width: 100%;
+	padding-top: 10px;
+	text-align: center;
+	font-size: 12px;
+}
+
+/* 内容2 */
+.data-content2{
+	width: calc(100% - 20px);
+	display: flex;
+	padding: 0 10px;
+	margin-top: 10px;
+}
+.stop-enter-list{
+	width: 50%;
+	height: 350px;
+	margin: 0 10px;
+}

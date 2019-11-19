@@ -3,10 +3,128 @@
 	<head>
 		<meta charset="utf-8">
 		<title>环保用电云平台</title>
+		<link rel="stylesheet" type="text/css" href="../layuiadmin/style/dataControler.css" />
 	</head>
-	<body>
+	<body style="margin: 0;">
 		<div id="app">
-			<dv-border-box-1>环保用电云平台</dv-border-box-1>
+			<div>
+				<dv-full-screen-container>
+					<dv-loading v-show="!isReady">加载中...</dv-loading>
+					<dv-border-box-1>
+						<div class="data-heade">
+							<div>
+								<dv-decoration-8 :reverse="false" style="width:calc(25% + 80px);height:30px;position: absolute;top: 40px;right: 20px;" />
+							</div>
+							<div class="home-box">
+								<img class="home-icon" src="../layuiadmin/img/home.png">
+							</div>
+							<div class="title-box">
+								<!-- <p class="title">环保用电在线监管云平台</p> -->
+								<p class="title">
+									环保用电在线监管云平台
+									<dv-decoration-5 style="width:300px;height:40px;position: absolute;left: calc(50% - 150px);" />
+								</p>
+							</div>
+							<div class="time-box">
+								<p class="time-item">2019-09-18 18:00:00</p>
+							</div>
+							<div>
+								<dv-decoration-8 :reverse="true" style="width:calc(25% + 80px);height:30px;position: absolute;top: 40px;left: 20px;" />
+							</div>
+						</div>
+						<div class="data-content">
+							<div class="enterprise-box">
+								<dv-border-box-2>
+									<div class="enterprise-item font-white" style="width: 100%;">
+										<p style="padding: 0;margin: 0;font-size: 12px;">各行业异常企业占比</p>
+										<dv-active-ring-chart :config="tradeAbnormal" style="height: 110px;width: calc(100% - 20px);padding: 0 10px;" />
+									</div>
+								</dv-border-box-2>
+							</div>
+						
+							<div class="enterprise-box">
+								<dv-border-box-2>
+									<div class="enterprise-item font-white">
+										<p>
+											<dv-digital-flop :config="enterpriseNum" style="width:100%;height: 20px;" />
+										</p>
+						
+										<p>
+											<dv-digital-flop :config="productMonitorNum" style="width:100%;height: 20px;" />
+										</p>
+						
+										<p>
+											<dv-digital-flop :config="treatMonitorNum" style="width:100%;height: 20px;" />
+										</p>
+						
+										<p>
+											<dv-digital-flop :config="monitorNum" style="width:100%;height: 20px;" />
+										</p>
+									</div>
+								</dv-border-box-2>
+							</div>
+						
+							<div class="enterprise-box">
+								<dv-border-box-2>
+									<div class="enterprise-item font-white">
+										<p>
+											<dv-digital-flop :config="abnormalNum" style="width:100%;height: 50px;" />
+										</p>
+										<p>
+											<dv-digital-flop :config="treatAbnormalNum" style="width:100%;height: 50px;" />
+										</p>
+									</div>
+								</dv-border-box-2>
+							</div>
+						
+							<div class="enterprise-box">
+								<dv-border-box-2>
+									<div class="enterprise-item font-white">
+										<p>
+											<dv-digital-flop :config="limitProduct" style="width:100%;height: 30px;" />
+										</p>
+										<p>
+											<dv-digital-flop :config="stopProduct" style="width:100%;height: 30px;" />
+										</p>
+						
+										<p>
+											<dv-digital-flop :config="unexecut" style="width:100%;height: 30px;" />
+										</p>
+									</div>
+								</dv-border-box-2>
+							</div>
+						
+							<div class="enterprise-box">
+								<dv-border-box-2>
+									<div class="enterprise-item font-white" style="width: 100%;">
+										<p style="padding: 0;margin: 0;font-size: 12px;">各区域异常企业占比</p>
+										<dv-active-ring-chart :config="organizeAbnormal" style="height: 110px;width: calc(100% - 20px);padding: 0 10px;" />
+									</div>
+								</dv-border-box-2>
+							</div>
+						</div>
+						
+						<div class="content-box">
+							<div class="data-content2">
+								<div class="stop-enter-list">
+									<dv-border-box-3 style="width: 100%; height: 350px;">
+										<dv-scroll-board :config="stopEnterList" style="width: 80%;height: 250px;padding: 25px 10%;" />
+									</dv-border-box-3>
+								</div>
+
+								<div class="stop-enter-list">
+									<dv-border-box-3 :reverse="true" style="width: 100%; height: 350px;">
+										<!-- <dv-scroll-board :config="stopEnterList" style="width: 80%;height: 250px;" /> -->
+									</dv-border-box-3>
+								</div>
+
+							</div>
+							
+						</div>
+
+					</dv-border-box-1>
+				</dv-full-screen-container>
+			</div>
 		</div>
 
 
@@ -14,11 +132,234 @@
 
 
 
-
+		<script src="../layuiadmin/js/baseUrlConfig.js"></script>
 		<script src="../layuiadmin/plugin/vue.js"></script>
 		<script src="../layuiadmin/plugin/dataV/datav.map.vue.js"></script>
+		<script src="../layuiadmin/plugin/axios.js"></script>
 		<script type="text/javascript">
+			var app = new Vue({
+				el: '#app',
+				data: {
+					isReady: false,
+					enterpriseNum: {
+						number: [0],
+						content: "企业数量:                {nt}家",
+						style: {
+							fontSize: 14,
+							fill: '#ffffff'
+						},
+						animationCurve: "easeOutCubic",
+						animationFrame: 100
+					},
+					productMonitorNum: {
+						number: [0],
+						content: "产污监测:                {nt}个",
+						style: {
+							fontSize: 14,
+							fill: '#ffffff'
+						},
+						animationCurve: "easeOutCubic",
+						animationFrame: 100
+					},
+					treatMonitorNum: {
+						number: [0],
+						content: "治污监测:                {nt}个",
+						style: {
+							fontSize: 14,
+							fill: '#ffffff'
+						},
+						animationCurve: "easeOutCubic",
+						animationFrame: 100
+					},
+					monitorNum: {
+						number: [0],
+						content: "监测点数量:            {nt}个",
+						style: {
+							fontSize: 14,
+							fill: '#ffffff'
+						},
+						animationCurve: "easeOutCubic",
+						animationFrame: 100
+					},
+					abnormalNum: {
+						number: [0],
+						content: "异常企业:            {nt}家",
+						style: {
+							fontSize: 14,
+							fill: '#ffffff'
+						},
+						animationCurve: "easeOutCubic",
+						animationFrame: 100
+					},
+					treatAbnormalNum: {
+						number: [0],
+						content: "涉及污染设施:     {nt}处",
+						style: {
+							fontSize: 14,
+							fill: '#ffffff'
+						},
+						animationCurve: "easeOutCubic",
+						animationFrame: 100
+					},
+					limitProduct: {
+						number: [0],
+						content: "限产企业:         {nt}家",
+						style: {
+							fontSize: 14,
+							fill: '#ffffff'
+						},
+						animationCurve: "easeOutCubic",
+						animationFrame: 100
+					},
+					stopProduct: {
+						number: [0],
+						content: "停产企业:         {nt}家",
+						style: {
+							fontSize: 14,
+							fill: '#ffffff'
+						},
+						animationCurve: "easeOutCubic",
+						animationFrame: 100
+					},
+					unexecut: {
+						number: [0],
+						content: "未执行企业:      {nt}家",
+						style: {
+							fontSize: 14,
+							fill: '#ffffff'
+						},
+						animationCurve: "easeOutCubic",
+						animationFrame: 100
+					},
+					stopEnterList: {
+						header: ['列1', '列2', '列3'],
+						data: [
+							['行1列1', '行1列2', '行1列3'],
+							['行2列1', '行2列2', '行2列3'],
+							['行3列1', '行3列2', '行3列3'],
+							['行4列1', '行4列2', '行4列3'],
+							['行5列1', '行5列2', '行5列3'],
+							['行6列1', '行6列2', '行6列3'],
+							['行7列1', '行7列2', '行7列3'],
+							['行8列1', '行8列2', '行8列3'],
+							['行9列1', '行9列2', '行9列3'],
+							['行10列1', '行10列2', '行10列3']
+						],
+						index: true,
+						columnWidth: [50],
+						align: ['center']
+					},
+					tradeAbnormal: {
+						lineWidth: 10,
+						radius: 45,
+						activeRadius: 50,
+						digitalFlopStyle: {
+							fontSize: 18
+						},
+						data: []
+					},
+					organizeAbnormal: {
+						lineWidth: 10,
+						radius: 45,
+						activeRadius: 50,
+						digitalFlopStyle: {
+							fontSize: 18
+						},
+						data: []
+					}
 
+				},
+				methods: {
+					pageInit: function() {
+						axios({
+								method: "POST",
+								url: BASEURL + "/environmental_intelligent_monitoring/homePage/queryEnterpriseReport",
+								params: {
+									userId: window.localStorage.getItem("userId")
+								}
+							})
+							.then(function(res) {
+								app.isReady = true;
+								// 企业数量
+								app.enterpriseNum = {
+									...app.enterpriseNum,
+									number: [res.data.enterpriseNum[0].enterpriseNum]
+								}
+								// 产污检测
+								app.productMonitorNum = {
+									...app.productMonitorNum,
+									number: [res.data.enterpriseNum[0].productMonitorNum]
+								}
+								// 治污监测
+								app.treatMonitorNum = {
+									...app.treatMonitorNum,
+									number: [res.data.enterpriseNum[0].treatMonitorNum]
+								}
+								// 监测点数量
+								app.monitorNum = {
+									...app.monitorNum,
+									number: [res.data.enterpriseNum[0].monitorNum]
+								}
+								// 异常企业
+								app.abnormalNum = {
+									...app.abnormalNum,
+									number: [res.data.abnormalNum[0].abnormalNum]
+								}
+								// 涉及污染设施
+								app.treatAbnormalNum = {
+									...app.treatAbnormalNum,
+									number: [res.data.abnormalNum[0].treatAbnormalNum]
+								}
+								// 限产企业
+								app.limitProduct = {
+									...app.limitProduct,
+									number: [res.data.productNum[0].limitProduct]
+								}
+								// 停产企业
+								app.stopProduct = {
+									...app.stopProduct,
+									number: [res.data.productNum[0].stopProduct]
+								}
+								// 未执行企业
+								app.unexecut = {
+									...app.unexecut,
+									number: [res.data.productNum[0].unexecut]
+								}
+								// 各行业异常企业占比
+								var tradeAbnormalData = [];
+								for (var i = 0; i < res.data.abnormalTradeNum.length; i++) {
+									var obj = {
+										name: res.data.abnormalTradeNum[i].name,
+										value: res.data.abnormalTradeNum[i].abnormalNum
+									}
+									tradeAbnormalData.push(obj);
+								}
+								app.tradeAbnormal = {
+									...app.tradeAbnormal,
+									data: tradeAbnormalData
+								}
+								// 各区域异常企业占比
+								var organizeAbnormalData = [];
+								for (var i = 0; i < res.data.abnormalOrganizeNum.length; i++) {
+									var obj = {
+										name: res.data.abnormalOrganizeNum[i].name,
+										value: res.data.abnormalOrganizeNum[i].abnormalNum
+									}
+									organizeAbnormalData.push(obj);
+								}
+								app.organizeAbnormal = {
+									...app.organizeAbnormal,
+									data: organizeAbnormalData
+								}
+
+							})
+
+					}
+				},
+				mounted: function() {
+					this.pageInit();
+				}
+			})
 		</script>
 	</body>
 </html>
