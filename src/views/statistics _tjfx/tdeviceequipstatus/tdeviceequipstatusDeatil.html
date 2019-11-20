@@ -242,6 +242,9 @@
 							<p>C相线电压</p>
 						</div> -->
 					</div>
+				      <div style="display: flex;justify-content: flex-end;">
+				      	<button type="button" style="margin-top: 10px;" class="layui-btn" @click="refresh">刷新</button>
+				      </div>
 				</div>
 			</div>
 		</div>
@@ -343,6 +346,56 @@
 				methods:{
 					appear:function  () {
 						app.isbig = !app.isbig
+					},
+					refresh:function(){
+						// location.reload();//会闪动的刷新
+						// console.log(1);
+						axios({
+								method: "get",
+								url: BASEURL + "environmental_intelligent_monitoring/tdevicerealtime/info/" + parent.id,
+							})
+							.then(res => {
+								if (res.data.code == 0) {
+									app.monitorName = res.data.tDeviceRealtime.monitorName;
+									if(res.data.tDeviceRealtime.status == "1"){
+										app.status = "运行"
+									}else if(res.data.tDeviceRealtime.status == "2"){
+										app.status = "停机"
+									}else if(res.data.tDeviceRealtime.status == "3"){
+										app.status = "失联"
+									}
+									app.modifyDate = res.data.tDeviceRealtime.acttime;
+									app.enterpriseName = res.data.tDeviceRealtime.enterpriseName;
+									
+									res.data.tDeviceRealtime.ia  ==  undefined ? 0:app.ia = res.data.tDeviceRealtime.ia
+									res.data.tDeviceRealtime.ib  ==  undefined ? 0:app.ib = res.data.tDeviceRealtime.ib
+									res.data.tDeviceRealtime.ic  ==  undefined ? 0:app.ic = res.data.tDeviceRealtime.ic
+									res.data.tDeviceRealtime.ua  ==  undefined ? 0:app.ua = res.data.tDeviceRealtime.ua
+									res.data.tDeviceRealtime.ub  ==  undefined ? 0:app.ub = res.data.tDeviceRealtime.ub
+									res.data.tDeviceRealtime.uc  ==  undefined ?0:app.uc = res.data.tDeviceRealtime.uc
+									res.data.tDeviceRealtime.pi  ==  undefined ?0:app.pi = res.data.tDeviceRealtime.pi
+									res.data.tDeviceRealtime.p  ==  undefined ?0:app.p = res.data.tDeviceRealtime.p
+									res.data.tDeviceRealtime.q  ==  undefined ?0:app.q = res.data.tDeviceRealtime.q,
+									res.data.tDeviceRealtime.the  ==  undefined ?0:app.the = res.data.tDeviceRealtime.the,
+									
+									
+									
+									form.val('editIndustry', {
+										"id": list.id,
+										"name": list.name,
+										"remark": list.remark // "name": "value"
+									});
+								} else {
+									vm.$notify.error({
+									    title: '错误',
+									    message: res.data.msg
+									});
+						
+								}
+							})
+							.catch(error => {
+						
+							});
 					}
 				}
 			})
