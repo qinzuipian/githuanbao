@@ -382,11 +382,11 @@
                             }
                         }).then(function (res) {
                             if (res.data.code == 0) {
-                                // // console.log(res.data.data)
+                                // console.log(res.data.data)
                                 var allData = res.data.data;
                                 if (allData.length != 0) {
                                     allData.forEach(function (data) {
-                                        // // console.log(data);
+                                        // console.log(data);
                                         var hourData = [];
                                         for (let key in data) {
                                             if (key == 'monitorName') {
@@ -398,11 +398,11 @@
                                         /*  var json = JSON.parse(JSON.stringify(data).replace(/monitorName/g,"监测点名称"));
                                          hourData.push(json); */
                                     });
-                                    vm.reportDataDay = allData;
                                     vm.flag = '';
                                 } else {
                                     vm.flag = 'noData';
                                 }
+                                vm.reportDataDay = allData;
 
 
                                 // vm.reportDataDay = [];
@@ -465,6 +465,7 @@
                                     title: '错误',
                                     message: res.data.msg
                                 });
+                                vm.reportDataDay = [];
 
                             }
                         })
@@ -522,12 +523,13 @@
                                         /*  var json = JSON.parse(JSON.stringify(data).replace(/monitorName/g,"监测点名称"));
                                          hourData.push(json); */
                                     });
-                                    vm.reportDataDay = allData;
+
                                     vm.flag = '';
 
                                 } else {
                                     vm.flag = 'noData';
                                 }
+                                vm.reportDataDay = allData;
 
 
                             } else if (res.data.code == 203) {
@@ -542,6 +544,7 @@
                                     title: '错误',
                                     message: res.data.msg
                                 });
+                                vm.reportDataDay = [];
 
                             }
                         })
@@ -590,13 +593,12 @@
                                         /*  var json = JSON.parse(JSON.stringify(data).replace(/monitorName/g,"监测点名称"));
                                          hourData.push(json); */
                                     });
-
-                                    vm.reportDataDay = allData;
                                     vm.flag = '';
 
                                 } else {
                                     vm.flag = 'noData';
                                 }
+                                vm.reportDataDay = allData;
 
 
                             } else if (res.data.code == 203) {
@@ -611,6 +613,7 @@
                                     title: '错误',
                                     message: res.data.msg
                                 });
+                                vm.reportDataDay = [];
 
                             }
 
@@ -660,13 +663,14 @@
                                          hourData.push(json); */
                                     });
 
-                                    vm.reportDataDay = allData;
+
                                     vm.flag = '';
 
                                 } else {
                                     vm.flag = 'noData';
 
                                 }
+                                vm.reportDataDay = allData;
 
                                 // vm.reportDataDay = [];
                                 // var allData = res.data.data;
@@ -740,6 +744,7 @@
                                     title: '错误',
                                     message: res.data.msg
                                 });
+                                vm.reportDataDay = [];
 
                             }
                         })

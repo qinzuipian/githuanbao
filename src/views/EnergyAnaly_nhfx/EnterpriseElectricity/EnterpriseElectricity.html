@@ -420,7 +420,7 @@
                         data.flag = type;
 
                     }
-                    data.userId= window.localStorage.getItem("userId")
+                    data.userId = window.localStorage.getItem("userId")
                     // // console.log(data)
                     axios({
                         method: "post",
@@ -436,11 +436,6 @@
                     }).then(function (res) {
                         if (res.data.code == 0) {
                             var elecityData = res.data.data;
-                            // for (var i = 0; i < elecityData.length; i++) {
-                            //     if (elecityData[i].enterpriseName == undefined) {
-                            //         elecityData[i].enterpriseName = '总计';
-                            //     }
-                            // }
                             vm.tableData = elecityData;
                             // console.log(vm.tableData);
                             vm.flag = "";
@@ -452,6 +447,15 @@
                             //     type: 'warning'
                             // });
                             vm.flag = 'noData';
+                            vm.tableData = [];
+                        } else {
+                            vm.$notify({
+                                title: '错误',
+                                message: res.data.msg,
+                                type: 'error'
+                            });
+                            vm.tableData = [];
+
                         }
                     })
                         .catch(function (err) {
