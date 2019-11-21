@@ -162,7 +162,7 @@
 								<p v-text="pi"></p>
 								<span>kWh</span>
 							</div>
-							<p>有功电能</p>
+							<p>总有功电量示值</p>
 						</div>
 						<div class="bar">
 							<div id="flex">
@@ -187,60 +187,177 @@
 							</div>
 							<p>总功率因数</p>
 						</div>
+						<div class="bar">
+							<div id="flex">
+								<div id="flex">
+									<p>0</p>
+									<span>A</span>
+								</div>
+							</div>
+							<p>单相电流</p>
+						</div>
 						<!-- <div class="bar">
 							<div id="flex">
 								<div id="flex">
-									<p v-text="pa"></p>
-									<span>kVar</span>
+									<p>0</p>
+									<span>A</span>
 								</div>
 							</div>
-							<p>A相有功功率</p>
-						</div>
-						<div class="bar">
-							<div id="flex">
-								<div id="flex">
-									<p v-text="pb"></p>
-									<span>kVar</span>
-								</div>
-							</div>
-							<p>B相有功功率</p>
-						</div>
-						<div class="bar">
-							<div id="flex">
-								<div id="flex">
-									<p v-text="pc"></p>
-									<span>kVar</span>
-								</div>
-							</div>
-							<p>C相有功功率</p>
-						</div>
-						<div class="bar">
-							<div id="flex">
-								<div id="flex">
-									<p v-text="uab"></p>
-									<span>V</span>
-								</div>
-							</div>
-							<p>A相线电压</p>
-						</div>
-						<div class="bar">
-							<div id="flex">
-								<div id="flex">
-									<p v-text="ubc"></p>
-									<span>V</span>
-								</div>
-							</div>
-							<p>B相线电压</p>
-						</div>
-						<div class="bar">
-							<div id="flex">
-								<div id="flex">
-									<p v-text="uca"></p>
-									<span>V</span>
-								</div>
-							</div>
-							<p>C相线电压</p>
+							<p>总有功电量示值</p>
 						</div> -->
+						<div class="bar">
+							<div id="flex">
+								<div id="flex">
+									<p>0</p>
+									<span>A</span>
+								</div>
+							</div>
+							<p>总无功电量示值</p>
+						</div>
+						<div class="bar">
+							<div id="flex">
+								<div id="flex">
+									<p>停电</p>
+									<span></span>
+								</div>
+							</div>
+							<p>停/上电</p>
+						</div>
+						<div class="bar">
+							<div id="flex">
+								<div id="flex">
+									<p>0</p>
+									<span>m/s</span>
+								</div>
+							</div>
+							<p>X轴震动加速度</p>
+						</div>
+						<div class="bar">
+							<div id="flex">
+								<div id="flex">
+									<p>0</p>
+									<span>m/s</span>
+								</div>
+							</div>
+							<p>Y轴震动加速度</p>
+						</div>
+						<div class="bar">
+							<div id="flex">
+								<div id="flex">
+									<p >0</p>
+									<span>m/s</span>
+								</div>
+							</div>
+							<p>Z轴震动加速度</p>
+						</div>
+						<div class="bar">
+							<div id="flex">
+								<div id="flex">
+									<p>0</p>
+									<span>HZ</span>
+								</div>
+							</div>
+							<p>X轴震动主频率</p>
+						</div>
+						<div class="bar">
+							<div id="flex">
+								<div id="flex">
+									<p>0</p>
+									<span>HZ</span>
+								</div>
+							</div>
+							<p>Y轴震动主频率</p>
+						</div>
+						<div class="bar">
+							<div id="flex">
+								<div id="flex">
+									<p >0</p>
+									<span>HZ</span>
+								</div>
+							</div>
+							<p>Z轴震动主频率</p>
+						</div>
+						<div class="bar">
+							<div id="flex">
+								<div id="flex">
+									<p >0</p>
+									<span>℃</span>
+								</div>
+							</div>
+							<p>温度</p>
+						</div>
+						<div class="bar">
+							<div id="flex">
+								<div id="flex">
+									<p>0</p>
+									<span>%</span>
+								</div>
+							</div>
+							<p>雷达回波时间比例</p>
+						</div>
+						<div class="bar">
+							<div id="flex">
+								<div id="flex">
+									<p>0</p>
+									<span>次/分</span>
+								</div>
+							</div>
+							<p>雷达计数</p>
+						</div>
+						<div class="bar">
+							<div id="flex">
+								<div id="flex">
+									<p>0</p>
+									<span>立方米/小时</span>
+								</div>
+							</div>
+							<p>流速</p>
+						</div>
+						<div class="bar">
+							<div id="flex">
+								<div id="flex">
+									<p>0</p>
+									<span>立方米</span>
+								</div>
+							</div>
+							<p>流量</p>
+						</div>
+						<div class="bar">
+							<div id="flex">
+								<div id="flex">
+									<p>正常</p>
+									<span></span>
+								</div>
+							</div>
+							<p>设备状态</p>
+						</div>
+						<div class="bar">
+							<div id="flex">
+								<div id="flex">
+									<p>0</p>
+									<span>%</span>
+								</div>
+							</div>
+							<p>电流幅值突变</p>
+						</div>
+						<div class="bar">
+							<div id="flex">
+								<div id="flex">
+									<p>0</p>
+									<span>%</span>
+								</div>
+							</div>
+							<p>电压幅值突变</p>
+						</div>
+						<div class="bar">
+							<div id="flex">
+								<div id="flex">
+									<p>正常</p>
+									<span></span>
+								</div>
+							</div>
+							<p>设备异常破坏</p>
+						</div>
 					</div>
 				      <div style="display: flex;justify-content: flex-end;">
 				      	<button type="button" style="margin-top: 10px;" class="layui-btn" @click="refresh">刷新</button>
