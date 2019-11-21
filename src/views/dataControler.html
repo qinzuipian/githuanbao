@@ -180,7 +180,7 @@
 					},
 					monitorNum: {
 						number: [0],
-						content: "监测点数量:            {nt}个",
+						content: "总表:                       {nt}个",
 						style: {
 							fontSize: 14,
 							fill: '#ffffff'
@@ -702,6 +702,9 @@
 				},
 				mounted: function() {
 					this.pageInit();
+					setInterval(function() {
+						app.pageInit();
+					}, 60000);
 				}
 			})
 		</script>
