@@ -16,7 +16,7 @@
 								<dv-decoration-8 :reverse="false" style="width:calc(25% + 80px);height:30px;position: absolute;top: 40px;right: 20px;" />
 							</div>
 							<div class="home-box">
-								<img class="home-icon" src="../layuiadmin/img/home.png">
+								<img class="home-icon" src="../layuiadmin/img/home.png" @click="toIndexPage">
 							</div>
 							<div class="title-box">
 								<!-- <p class="title">环保用电在线监管云平台</p> -->
@@ -26,12 +26,14 @@
 								</p>
 							</div>
 							<div class="time-box">
-								<p class="time-item">2019-09-18 18:00:00</p>
+								<p class="time-item" v-text="nowData"></p>
 							</div>
 							<div>
 								<dv-decoration-8 :reverse="true" style="width:calc(25% + 80px);height:30px;position: absolute;top: 40px;left: 20px;" />
 							</div>
 						</div>
+						
+						
 						<div class="data-content">
 							<div class="enterprise-box">
 								<dv-border-box-2>
@@ -41,29 +43,29 @@
 									</div>
 								</dv-border-box-2>
 							</div>
-						
+
 							<div class="enterprise-box">
 								<dv-border-box-2>
 									<div class="enterprise-item font-white">
 										<p>
 											<dv-digital-flop :config="enterpriseNum" style="width:100%;height: 20px;" />
 										</p>
-						
+
 										<p>
 											<dv-digital-flop :config="productMonitorNum" style="width:100%;height: 20px;" />
 										</p>
-						
+
 										<p>
 											<dv-digital-flop :config="treatMonitorNum" style="width:100%;height: 20px;" />
 										</p>
-						
+
 										<p>
 											<dv-digital-flop :config="monitorNum" style="width:100%;height: 20px;" />
 										</p>
 									</div>
 								</dv-border-box-2>
 							</div>
-						
+
 							<div class="enterprise-box">
 								<dv-border-box-2>
 									<div class="enterprise-item font-white">
@@ -76,7 +78,7 @@
 									</div>
 								</dv-border-box-2>
 							</div>
-						
+
 							<div class="enterprise-box">
 								<dv-border-box-2>
 									<div class="enterprise-item font-white">
@@ -86,14 +88,14 @@
 										<p>
 											<dv-digital-flop :config="stopProduct" style="width:100%;height: 30px;" />
 										</p>
-						
+
 										<p>
 											<dv-digital-flop :config="unexecut" style="width:100%;height: 30px;" />
 										</p>
 									</div>
 								</dv-border-box-2>
 							</div>
-						
+
 							<div class="enterprise-box">
 								<dv-border-box-2>
 									<div class="enterprise-item font-white" style="width: 100%;">
@@ -103,23 +105,27 @@
 								</dv-border-box-2>
 							</div>
 						</div>
-						
+
 						<div class="content-box">
 							<div class="data-content2">
 								<div class="stop-enter-list">
 									<dv-border-box-3 style="width: 100%; height: 350px;">
-										<dv-scroll-board :config="stopEnterList" style="width: 80%;height: 250px;padding: 25px 10%;" />
+										<p class="font-white" style="width: 100%;text-align: center;padding: 25px 0 0 0;margin: 0;height: 30px;line-height: 30px;">停限产列表</p>
+										<dv-scroll-board :config="stopEnterList" style="width: calc(100% - 50px);height: 270px;padding: 0 0 0 25px;" />
 									</dv-border-box-3>
 								</div>
 
 								<div class="stop-enter-list">
-									<dv-border-box-3 :reverse="true" style="width: 100%; height: 350px;">
-										<!-- <dv-scroll-board :config="stopEnterList" style="width: 80%;height: 250px;" /> -->
+									<dv-border-box-3 :reverse="true" style="width: 100%; height: 340px;padding-top: 10px;">
+										<dv-charts :option="effortsOption" />
 									</dv-border-box-3>
 								</div>
+								
 
 							</div>
-							
+							<div class="data-content2">
+								<dv-charts :option="startMonitorOption" style="width: 100%; height: 340px;margin-bottom: 100px;" />
+							</div>
 						</div>
 
 					</dv-border-box-1>
@@ -140,6 +146,7 @@
 			var app = new Vue({
 				el: '#app',
 				data: {
+					nowData: "",
 					isReady: false,
 					enterpriseNum: {
 						number: [0],
@@ -232,19 +239,8 @@
 						animationFrame: 100
 					},
 					stopEnterList: {
-						header: ['列1', '列2', '列3'],
-						data: [
-							['行1列1', '行1列2', '行1列3'],
-							['行2列1', '行2列2', '行2列3'],
-							['行3列1', '行3列2', '行3列3'],
-							['行4列1', '行4列2', '行4列3'],
-							['行5列1', '行5列2', '行5列3'],
-							['行6列1', '行6列2', '行6列3'],
-							['行7列1', '行7列2', '行7列3'],
-							['行8列1', '行8列2', '行8列3'],
-							['行9列1', '行9列2', '行9列3'],
-							['行10列1', '行10列2', '行10列3']
-						],
+						header: ['企业名称', '监测点名称', '行业', '停限产'],
+						data: [],
 						index: true,
 						columnWidth: [50],
 						align: ['center']
@@ -266,8 +262,151 @@
 							fontSize: 18
 						},
 						data: []
-					}
-
+					},
+					effortsOption: {
+						title: {
+							text: '错峰生产对比',
+							style: {
+								fill: "#fff"
+							}
+						},
+						xAxis: {
+							data: ['00', '01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12', '13', '14', '15',
+								'16', '17', '18', '19', '20', '21', '22', '23'
+							],
+							axisLabel: {
+								style: {
+								  fill: '#fff'
+								}
+							},
+							axisLine: {
+								style: {
+								  stroke: '#fff'
+								}
+							},
+							axisTick: {
+								style: {
+								  stroke: '#fff'
+								}
+							},
+							splitLine: {
+								style: {
+								  stroke: '#fff'
+								}
+							}
+							
+						},
+						yAxis: {
+							data: 'value',
+							axisLabel: {
+								style: {
+								  fill: '#fff'
+								}
+							},
+							axisLine: {
+								style: {
+								  stroke: '#fff'
+								}
+							},
+							axisTick: {
+								style: {
+								  stroke: '#fff'
+								}
+							},
+							splitLine: {
+								style: {
+								  stroke: '#fff'
+								}
+							}
+						},
+						series: [{
+							data: [1200, 2230, 1900, 2100, 3500, 4200, 3985],
+							type: 'line',
+							lineArea: {
+								show: true
+							}
+						}]
+					},
+					startMonitorOption: {
+						title: {
+						    text: '产/治污设施运行情况',
+							style: {
+								fill: "#fff"
+							}
+						},
+						legend: {
+						    data: ['产污', '治污'],
+							textStyle: {
+								fill: '#fff'
+							}
+						},
+						xAxis: {
+						    data: ['00', '01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12', '13', '14', '15',
+						    	'16', '17', '18', '19', '20', '21', '22', '23'
+						    ],
+						    axisLabel: {
+						    	style: {
+						    	  fill: '#fff'
+						    	}
+						    },
+						    axisLine: {
+						    	style: {
+						    	  stroke: '#fff'
+						    	}
+						    },
+						    axisTick: {
+						    	style: {
+						    	  stroke: '#fff'
+						    	}
+						    },
+						    splitLine: {
+						    	style: {
+						    	  stroke: '#fff'
+						    	}
+						    }
+						},
+						yAxis: {
+							data: 'value',
+							axisLabel: {
+								style: {
+								  fill: '#fff'
+								}
+							},
+							axisLine: {
+								style: {
+								  stroke: '#fff'
+								}
+							},
+							axisTick: {
+								style: {
+								  stroke: '#fff'
+								}
+							},
+							splitLine: {
+								style: {
+								  stroke: '#fff'
+								}
+							}
+						},
+						series: [
+						    {	
+								name: '产污',
+								data: [1200, 2230, 1900, 2100, 3500, 4200, 3985],
+								type: 'bar',
+								gradient: {
+									color: ['#37a2da', '#67e0e3']
+								}
+						    },
+							{	
+								name: '治污',
+								data: [1000, 2130, 1840, 2000, 350, 4290, 2985],
+								type: 'bar',
+								gradient: {
+									color: ['#37a2da', '#67e0e3']
+								}
+							}
+						]
+					},
 				},
 				methods: {
 					pageInit: function() {
@@ -351,9 +490,214 @@
 									...app.organizeAbnormal,
 									data: organizeAbnormalData
 								}
+								// 停限产列表
+								var reduceList = [];
+								for (var i = 0; i < res.data.reduceList.length; i++) {
+									var reduceListData = [];
+									reduceListData.push(res.data.reduceList[i].enterpriseName);
+									reduceListData.push(res.data.reduceList[i].MonitorName);
+									reduceListData.push(res.data.reduceList[i].TradeName);
+									reduceListData.push(res.data.reduceList[i].ProduceType);
+									reduceList.push(reduceListData);
+								}
+								app.stopEnterList = {
+									...app.stopEnterList,
+									data: reduceList
+								}
+								// 错峰生产对比
+								var effortsData = [];
+								for (var i = 0; i < res.data.AQIAndKwh.length; i++) {
+									effortsData.push(res.data.AQIAndKwh[i].kwh)
+								};
+								app.effortsOption = {
+									title: {
+										text: '错峰生产对比',
+										style: {
+											fill: "#fff"
+										}
+									},
+									xAxis: {
+										data: ['00', '01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12', '13', '14', '15',
+											'16', '17', '18', '19', '20', '21', '22', '23'
+										],
+										axisLabel: {
+											style: {
+											  fill: '#fff'
+											}
+										},
+										axisLine: {
+											style: {
+											  stroke: '#fff'
+											}
+										},
+										axisTick: {
+											style: {
+											  stroke: '#fff'
+											}
+										},
+										splitLine: {
+											style: {
+											  stroke: '#fff'
+											}
+										}
+										
+									},
+									yAxis: {
+										data: 'value',
+										axisLabel: {
+											style: {
+											  fill: '#fff'
+											}
+										},
+										axisLine: {
+											style: {
+											  stroke: '#fff'
+											}
+										},
+										axisTick: {
+											style: {
+											  stroke: '#fff'
+											}
+										},
+										splitLine: {
+											style: {
+											  stroke: '#fff'
+											}
+										}
+									},
+									series: [{
+										data: effortsData,
+										type: 'line',
+										lineArea: {
+											show: true
+										}
+									}]
+								};
+								
+								// 产/治污设施运行情况
+								var startMonitor1 = [];
+								var startMonitor2 = [];
+								for (var i = 0; i < res.data.startMonitorNum.length; i++) {
+									startMonitor1.push(res.data.startMonitorNum[i].productNum)
+									startMonitor2.push(res.data.startMonitorNum[i].treatNum)
+								};
+								app.startMonitorOption = {
+									title: {
+									    text: '产/治污设施运行情况',
+										style: {
+											fill: "#fff"
+										}
+									},
+									legend: {
+									    data: ['产污', '治污'],
+										textStyle: {
+											fill: '#fff'
+										}
+									},
+									xAxis: {
+									    data: ['00', '01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12', '13', '14', '15',
+									    	'16', '17', '18', '19', '20', '21', '22', '23'
+									    ],
+									    axisLabel: {
+									    	style: {
+									    	  fill: '#fff'
+									    	}
+									    },
+									    axisLine: {
+									    	style: {
+									    	  stroke: '#fff'
+									    	}
+									    },
+									    axisTick: {
+									    	style: {
+									    	  stroke: '#fff'
+									    	}
+									    },
+									    splitLine: {
+									    	style: {
+									    	  stroke: '#fff'
+									    	}
+									    }
+									},
+									yAxis: {
+										data: 'value',
+										axisLabel: {
+											style: {
+											  fill: '#fff'
+											}
+										},
+										axisLine: {
+											style: {
+											  stroke: '#fff'
+											}
+										},
+										axisTick: {
+											style: {
+											  stroke: '#fff'
+											}
+										},
+										splitLine: {
+											style: {
+											  stroke: '#fff'
+											}
+										}
+									},
+									series: [
+									    {	
+											name: '产污',
+											data: startMonitor1,
+											type: 'bar',
+											gradient: {
+												color: ['#37a2da', '#67e0e3']
+											}
+									    },
+										{	
+											name: '治污',
+											data: startMonitor2,
+											type: 'bar',
+											gradient: {
+												color: ['#37a2da', '#67e0e3']
+											}
+										}
+									]
+								}
 
 							})
 
+						this.getNowFormatDate();
+						
+					},
+					toIndexPage: function(){
+						window.location.href = "./index.html";
+					},
+					getNowFormatDate : function () {
+					    var date = new Date();
+					    var seperator1 = "-";
+					    var seperator2 = ":";
+					    var month = date.getMonth() + 1;
+					    var strDate = date.getDate();
+					    if (month >= 1 && month <= 9) {
+					        month = "0" + month;
+					    }
+					    if (strDate >= 0 && strDate <= 9) {
+					        strDate = "0" + strDate;
+					    }
+					    var hours = date.getHours();
+					    if(hours >=0 && hours <=9){
+					        hours = "0" + hours;
+					    }
+					    var minutes = date.getMinutes();
+					    if(minutes >=0 && minutes <=9){
+					        minutes = "0" + minutes;
+					    }
+					    var seconds = date.getSeconds();
+					    if(seconds >=0 && seconds <=9){
+					        seconds = "0" + seconds;
+					    }
+					    var currentdate = date.getFullYear() + seperator1 + month + seperator1 + strDate
+					            + " " + hours + seperator2 + minutes
+					            + seperator2 + seconds;
+						this.nowData = currentdate;
 					}
 				},
 				mounted: function() {

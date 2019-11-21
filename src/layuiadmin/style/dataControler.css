@@ -86,10 +86,11 @@
 
 
 /* 内容 */
-.content-box{
+/* .content-box{
 	overflow: scroll;
 	padding-bottom: 50px;
-}
+	height: 500px;
+} */
 .data-content{
 	width: 100%;
 	display: flex;
@@ -120,4 +121,8 @@
 	width: 50%;
 	height: 350px;
 	margin: 0 10px;
+}
+
+.dv-border-box-1 .border-box-content{
+	overflow: scroll!important;
 }
