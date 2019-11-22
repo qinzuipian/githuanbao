@@ -285,7 +285,7 @@
                                         position: 'top-center',
                                         message: '授权成功'
                                     });
-                                    vm.enterPriseInit();
+                                    vm.levelChange(vm.levelId);
                                 } else {
                                     vm.$notify.error({
                                         title: '错误',
@@ -322,6 +322,7 @@
                                 }).then(function (res) {
                                     if (res.data.code == 0) {
                                         layer.msg('已删除');
+                                        vm.levelChange(vm.levelId);
 
                                     } else {
                                         vm.$notify.error({
@@ -401,7 +402,7 @@
                                         }]
                                     });
                                 })
-                                console.log(dataList)
+                                // console.log(dataList)
                                 vm.enpriseData = dataList;
                             }
 
@@ -550,7 +551,7 @@
                         })
                         // console.log(vm.monitoridList)
 
-                        console.log(data)
+                        // console.log(data)
                         // this.$refs.tree.setCheckedKeys([])
                         // // console.log(data, node);
                         // var nodeData = node.checkedNodes;
