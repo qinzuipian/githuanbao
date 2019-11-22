@@ -45,7 +45,7 @@
 						<ul class="layui-nav layui-layout-right" lay-filter="layadmin-layout-right">
 							
 							<li class="layui-nav-item layui-anim layui-anim-fadein" lay-unselect style="width: 100px;">
-								<a lay-href="firmAbnormal_qyyc/normalQuery/tfirmabnormal.html" lay-text="企业故障查询">
+								<a lay-href="firmAbnormal_qyyc/normalQuery/tfirmabnormal.html" lay-text="企业告警查询" @click="tofirmabnormal">
 									<i class="layui-icon layui-icon-notice"></i>
 									<!-- 如果有新消息，则显示小圆点 -->
 									<!-- <span class="layui-badge-dot"></span> -->
@@ -373,6 +373,9 @@
 									vm.$message.error(res.data.msg);
 								}
 							})
+					},
+					tofirmabnormal: function(){
+						window.localStorage.setItem("currentStatus", "0");
 					}
 					
 				},

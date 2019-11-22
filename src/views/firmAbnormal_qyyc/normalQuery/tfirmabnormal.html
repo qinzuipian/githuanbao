@@ -129,16 +129,28 @@
 					elem: '#endDate',
 					format: 'yyyy-MM-dd'
 				});
-
+				
+				var whereObj = {};
+				var currentStatusLocalStorage = window.localStorage.getItem("currentStatus");
+				if(currentStatusLocalStorage == null){
+					whereObj = {
+						userId: window.localStorage.getItem("userId")
+					}
+				}else{
+					whereObj = {
+						userId: window.localStorage.getItem("userId"),
+						currentStatus: currentStatusLocalStorage
+					};
+					
+				}
+				window.localStorage.removeItem("currentStatus");
 				table.render({
 					elem: '#LAY-app-content-list',
 					height: 555 //容器高度
 						,
 					url: layui.setter.BASEURL + 'environmental_intelligent_monitoring/tfirmabnormal/list' //数据接口
 						,
-					where:{
-						userId: window.localStorage.getItem("userId")
-					},
+					where: whereObj,
 					page: true,
 					parseData: function(res) { // 数据重新处理为layUI的数据格式
 						var msg = {
