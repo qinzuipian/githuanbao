@@ -32,9 +32,9 @@
 			font-size: 20px;
 			font-weight: 800;
 			margin-top: 15px;
-			
+
 		}
-		
+
 
 		.bar span {
 			font-size: 20px;
@@ -60,34 +60,37 @@
 			display: flex;
 			justify-content: center;
 		}
-		p{
+
+		p {
 			margin: 0rem;
 			padding: 0px;
 		}
+
 		.big {
 			animation: rotated 0.2s linear forwards;
 		}
-		
+
 		@keyframes rotated {
 			from {
-				transform: scale(1,1);
+				transform: scale(1, 1);
 			}
-		
+
 			to {
-				transform: scale(2,2);
+				transform: scale(2, 2);
 			}
 		}
+
 		.small {
 			animation: rotated_after 0.2s linear forwards;
 		}
-		
+
 		@keyframes rotated_after {
 			from {
-				transform: scale(2,2);
+				transform: scale(2, 2);
 			}
-		
+
 			to {
-				transform: scale(1,1);
+				transform: scale(1, 1);
 			}
 		}
 	</style>
@@ -113,9 +116,14 @@
 							<p v-text="modifyDate"></p>
 						</div>
 					</div>
-					<div class="data">实时数据</div>
+					<div class="data " style="display: flex;justify-content: space-between;">
+						<p>实时数据</p>
+						<div>
+							<button type="button"  class="layui-btn" @click="refresh">刷新</button>
+						</div>
+					</div>
 					<div class="flex">
-						<div class="bar" >
+						<div class="bar">
 							<div id="flex">
 								<p v-text="ua"></p>
 								<span>V</span>
@@ -244,7 +252,7 @@
 						<div class="bar">
 							<div id="flex">
 								<div id="flex">
-									<p >0</p>
+									<p>0</p>
 									<span>m/s</span>
 								</div>
 							</div>
@@ -271,7 +279,7 @@
 						<div class="bar">
 							<div id="flex">
 								<div id="flex">
-									<p >0</p>
+									<p>0</p>
 									<span>HZ</span>
 								</div>
 							</div>
@@ -280,7 +288,7 @@
 						<div class="bar">
 							<div id="flex">
 								<div id="flex">
-									<p >0</p>
+									<p>0</p>
 									<span>℃</span>
 								</div>
 							</div>
@@ -359,9 +367,7 @@
 							<p>设备异常破坏</p>
 						</div>
 					</div>
-				      <div style="display: flex;justify-content: flex-end;">
-				      	<button type="button" style="margin-top: 10px;" class="layui-btn" @click="refresh">刷新</button>
-				      </div>
+
 				</div>
 			</div>
 		</div>
@@ -387,44 +393,44 @@
 					.then(res => {
 						if (res.data.code == 0) {
 							app.monitorName = res.data.tDeviceRealtime.monitorName;
-							if(res.data.tDeviceRealtime.status == "1"){
+							if (res.data.tDeviceRealtime.status == "1") {
 								app.status = "运行"
-							}else if(res.data.tDeviceRealtime.status == "2"){
+							} else if (res.data.tDeviceRealtime.status == "2") {
 								app.status = "停机"
-							}else if(res.data.tDeviceRealtime.status == "3"){
+							} else if (res.data.tDeviceRealtime.status == "3") {
 								app.status = "失联"
 							}
 							app.modifyDate = res.data.tDeviceRealtime.acttime;
 							app.enterpriseName = res.data.tDeviceRealtime.enterpriseName;
-							
-							res.data.tDeviceRealtime.ia  ==  undefined ? 0:app.ia = res.data.tDeviceRealtime.ia
-							res.data.tDeviceRealtime.ib  ==  undefined ? 0:app.ib = res.data.tDeviceRealtime.ib
-							res.data.tDeviceRealtime.ic  ==  undefined ? 0:app.ic = res.data.tDeviceRealtime.ic
-							res.data.tDeviceRealtime.ua  ==  undefined ? 0:app.ua = res.data.tDeviceRealtime.ua
-							res.data.tDeviceRealtime.ub  ==  undefined ? 0:app.ub = res.data.tDeviceRealtime.ub
-							res.data.tDeviceRealtime.uc  ==  undefined ?0:app.uc = res.data.tDeviceRealtime.uc
-							res.data.tDeviceRealtime.pi  ==  undefined ?0:app.pi = res.data.tDeviceRealtime.pi
-							res.data.tDeviceRealtime.p  ==  undefined ?0:app.p = res.data.tDeviceRealtime.p
-							res.data.tDeviceRealtime.q  ==  undefined ?0:app.q = res.data.tDeviceRealtime.q,
-							res.data.tDeviceRealtime.the  ==  undefined ?0:app.the = res.data.tDeviceRealtime.the,
-							
-							// res.data.tDeviceRealtime.pa  ==  undefined ?0:app.pa = res.data.tDeviceRealtime.pa
-							// res.data.tDeviceRealtime.pb  ==  undefined ?0:app.pb = res.data.tDeviceRealtime.pb
-							// res.data.tDeviceRealtime.pc  ==  undefined ?0:app.pc = res.data.tDeviceRealtime.pc
-							// res.data.tDeviceRealtime.uab  ==  undefined ?0:app.uab = res.data.tDeviceRealtime.uab
-							// res.data.tDeviceRealtime.ubc  ==  undefined ?0:app.ubc = res.data.tDeviceRealtime.ubc
-							// res.data.tDeviceRealtime.uca  ==  undefined ?0:app.uca = res.data.tDeviceRealtime.uca
-							
-							
-							form.val('editIndustry', {
-								"id": list.id,
-								"name": list.name,
-								"remark": list.remark // "name": "value"
-							});
+
+							res.data.tDeviceRealtime.ia == undefined ? 0 : app.ia = res.data.tDeviceRealtime.ia
+							res.data.tDeviceRealtime.ib == undefined ? 0 : app.ib = res.data.tDeviceRealtime.ib
+							res.data.tDeviceRealtime.ic == undefined ? 0 : app.ic = res.data.tDeviceRealtime.ic
+							res.data.tDeviceRealtime.ua == undefined ? 0 : app.ua = res.data.tDeviceRealtime.ua
+							res.data.tDeviceRealtime.ub == undefined ? 0 : app.ub = res.data.tDeviceRealtime.ub
+							res.data.tDeviceRealtime.uc == undefined ? 0 : app.uc = res.data.tDeviceRealtime.uc
+							res.data.tDeviceRealtime.pi == undefined ? 0 : app.pi = res.data.tDeviceRealtime.pi
+							res.data.tDeviceRealtime.p == undefined ? 0 : app.p = res.data.tDeviceRealtime.p
+							res.data.tDeviceRealtime.q == undefined ? 0 : app.q = res.data.tDeviceRealtime.q,
+								res.data.tDeviceRealtime.the == undefined ? 0 : app.the = res.data.tDeviceRealtime.the,
+
+								// res.data.tDeviceRealtime.pa  ==  undefined ?0:app.pa = res.data.tDeviceRealtime.pa
+								// res.data.tDeviceRealtime.pb  ==  undefined ?0:app.pb = res.data.tDeviceRealtime.pb
+								// res.data.tDeviceRealtime.pc  ==  undefined ?0:app.pc = res.data.tDeviceRealtime.pc
+								// res.data.tDeviceRealtime.uab  ==  undefined ?0:app.uab = res.data.tDeviceRealtime.uab
+								// res.data.tDeviceRealtime.ubc  ==  undefined ?0:app.ubc = res.data.tDeviceRealtime.ubc
+								// res.data.tDeviceRealtime.uca  ==  undefined ?0:app.uca = res.data.tDeviceRealtime.uca
+
+
+								form.val('editIndustry', {
+									"id": list.id,
+									"name": list.name,
+									"remark": list.remark // "name": "value"
+								});
 						} else {
 							vm.$notify.error({
-							    title: '错误',
-							    message: res.data.msg
+								title: '错误',
+								message: res.data.msg
 							});
 
 						}
@@ -437,34 +443,34 @@
 			var app = new Vue({
 				el: "#app",
 				data: {
-					ia:0,
-					ib:0,
-					ic:0,
-					ua:0,
-					ub:0,
-					uc:0,
-					pi:0,
-					w:0,
-					q:0,
-					the:0,
-					p:0,
-					pa:0,
-					pb:0,
-					pc:0,
-					uab:0,
-					ubc:0,
-					uca:0,
-					modifyDate:'',
-					enterpriseName:"",
-					monitorName:'',
-					status:"",
-					isbig:false
+					ia: 0,
+					ib: 0,
+					ic: 0,
+					ua: 0,
+					ub: 0,
+					uc: 0,
+					pi: 0,
+					w: 0,
+					q: 0,
+					the: 0,
+					p: 0,
+					pa: 0,
+					pb: 0,
+					pc: 0,
+					uab: 0,
+					ubc: 0,
+					uca: 0,
+					modifyDate: '',
+					enterpriseName: "",
+					monitorName: '',
+					status: "",
+					isbig: false
 				},
-				methods:{
-					appear:function  () {
+				methods: {
+					appear: function() {
 						app.isbig = !app.isbig
 					},
-					refresh:function(){
+					refresh: function() {
 						// location.reload();//会闪动的刷新
 						// console.log(1);
 						axios({
@@ -474,44 +480,44 @@
 							.then(res => {
 								if (res.data.code == 0) {
 									app.monitorName = res.data.tDeviceRealtime.monitorName;
-									if(res.data.tDeviceRealtime.status == "1"){
+									if (res.data.tDeviceRealtime.status == "1") {
 										app.status = "运行"
-									}else if(res.data.tDeviceRealtime.status == "2"){
+									} else if (res.data.tDeviceRealtime.status == "2") {
 										app.status = "停机"
-									}else if(res.data.tDeviceRealtime.status == "3"){
+									} else if (res.data.tDeviceRealtime.status == "3") {
 										app.status = "失联"
 									}
 									app.modifyDate = res.data.tDeviceRealtime.acttime;
 									app.enterpriseName = res.data.tDeviceRealtime.enterpriseName;
-									
-									res.data.tDeviceRealtime.ia  ==  undefined ? 0:app.ia = res.data.tDeviceRealtime.ia
-									res.data.tDeviceRealtime.ib  ==  undefined ? 0:app.ib = res.data.tDeviceRealtime.ib
-									res.data.tDeviceRealtime.ic  ==  undefined ? 0:app.ic = res.data.tDeviceRealtime.ic
-									res.data.tDeviceRealtime.ua  ==  undefined ? 0:app.ua = res.data.tDeviceRealtime.ua
-									res.data.tDeviceRealtime.ub  ==  undefined ? 0:app.ub = res.data.tDeviceRealtime.ub
-									res.data.tDeviceRealtime.uc  ==  undefined ?0:app.uc = res.data.tDeviceRealtime.uc
-									res.data.tDeviceRealtime.pi  ==  undefined ?0:app.pi = res.data.tDeviceRealtime.pi
-									res.data.tDeviceRealtime.p  ==  undefined ?0:app.p = res.data.tDeviceRealtime.p
-									res.data.tDeviceRealtime.q  ==  undefined ?0:app.q = res.data.tDeviceRealtime.q,
-									res.data.tDeviceRealtime.the  ==  undefined ?0:app.the = res.data.tDeviceRealtime.the,
-									
-									
-									
-									form.val('editIndustry', {
-										"id": list.id,
-										"name": list.name,
-										"remark": list.remark // "name": "value"
-									});
+
+									res.data.tDeviceRealtime.ia == undefined ? 0 : app.ia = res.data.tDeviceRealtime.ia
+									res.data.tDeviceRealtime.ib == undefined ? 0 : app.ib = res.data.tDeviceRealtime.ib
+									res.data.tDeviceRealtime.ic == undefined ? 0 : app.ic = res.data.tDeviceRealtime.ic
+									res.data.tDeviceRealtime.ua == undefined ? 0 : app.ua = res.data.tDeviceRealtime.ua
+									res.data.tDeviceRealtime.ub == undefined ? 0 : app.ub = res.data.tDeviceRealtime.ub
+									res.data.tDeviceRealtime.uc == undefined ? 0 : app.uc = res.data.tDeviceRealtime.uc
+									res.data.tDeviceRealtime.pi == undefined ? 0 : app.pi = res.data.tDeviceRealtime.pi
+									res.data.tDeviceRealtime.p == undefined ? 0 : app.p = res.data.tDeviceRealtime.p
+									res.data.tDeviceRealtime.q == undefined ? 0 : app.q = res.data.tDeviceRealtime.q,
+										res.data.tDeviceRealtime.the == undefined ? 0 : app.the = res.data.tDeviceRealtime.the,
+
+
+
+										form.val('editIndustry', {
+											"id": list.id,
+											"name": list.name,
+											"remark": list.remark // "name": "value"
+										});
 								} else {
 									vm.$notify.error({
-									    title: '错误',
-									    message: res.data.msg
+										title: '错误',
+										message: res.data.msg
 									});
-						
+
 								}
 							})
 							.catch(error => {
-						
+
 							});
 					}
 				}
