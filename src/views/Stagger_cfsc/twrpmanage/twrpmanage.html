@@ -96,7 +96,8 @@
 
                     <div class="layui-inline layui-form">
                         <div class="layui-input-inline" v-clickoutside="adminDisplay">
-                            <input type="text" name="atraCode" disabled v-model="atraName" placeholder="请选择行政区域" autocomplete="off" class="layui-input" style="width: 176px;">
+                            <input type="text" name="atraCode" disabled v-model="atraName" placeholder="请选择行政区域" autocomplete="off" class="layui-input"
+                                style="width: 176px;">
                             <!-- <i style="font-size: 14px;position: absolute; color: gray; right: 10%;cursor: pointer;" class="layui-icon layui-icon-close"
                                 @click="AdminClear"></i> -->
                             <i class="layui-icon layui-icon-triangle-d" @click="atraClick"></i>
@@ -121,8 +122,8 @@
                 <!-- @check-change="mmmm" -->
                 <!-- :indent="0" -->
                 <div class="l-card-border" style="min-height: 400px;">
-                    <el-tree :data="enpriseData" show-checkbox default-expand-all :default-checked-keys="checkKey" node-key="monitorId" @node-click="manageNode" @check="manageCheck"
-                        ref="tree" highlight-current :props="defaultProps">
+                    <el-tree :data="enpriseData" show-checkbox default-expand-all :default-checked-keys="checkKey" node-key="monitorId" @node-click="manageNode"
+                        @check="manageCheck" ref="tree" highlight-current :props="defaultProps">
                     </el-tree>
                 </div>
             </div>
@@ -351,30 +352,30 @@
                                 treeData.forEach(function (data) {
                                     for (var i = 0; i < dataList.length; i++) {
                                         if (dataList[i].enterpriseId === data.enterpriseId) {
-                                            // for (var j = 0; j< dataList[i].children.length; j++){
-                                            //     if(dataList[i].children[j].shopId === data.shopId) {
+                                            for (var j = 0; j < dataList[i].children.length; j++) {
+                                                if (dataList[i].children[j].shopId === data.shopId) {
 
-                                            //             for (var k = 0; k < dataList[i].children[j].children.length; k++) {
-                                            //                     if(dataList[i].children[j].children[k].id === data.codeType) {
-                                            //                         dataList[i].children[j].children[k].children.push({
-                                            //                             label: data.monitorName, id: data.id
-                                            //                         })
-                                            //                         return;
-                                            //                     }
-                                            //             }
-                                            //             dataList[i].children[j].children.push({
-                                            //                     label: data.codeType === "0" ? '生产设备' : data.codeType === "1" ? '治污设备' : '总进线',
-                                            //                     id: data.codeType,
-                                            //                     children: [{ label: data.monitorName, id: data.id }]
+                                                    for (var k = 0; k < dataList[i].children[j].children.length; k++) {
+                                                        if (dataList[i].children[j].children[k].id === data.codeType) {
+                                                            dataList[i].children[j].children[k].children.push({
+                                                                label: data.monitorName, monitorId: data.id
+                                                            })
+                                                            return;
+                                                        }
+                                                    }
+                                                    dataList[i].children[j].children.push({
+                                                        label: data.codeType === "0" ? '生产设备' : data.codeType === "1" ? '治污设备' : '总进线',
+                                                        id: data.codeType,
+                                                        children: [{ label: data.monitorName, monitorId: data.id }]
 
-                                            //             })
-                                            //             return;
-                                            //     }
-                                    
-                                            // }
+                                                    })
+                                                    return;
+                                                }
+
+                                            }
                                             dataList[i].children.push({
                                                 label: data.shopName,
-                                                shopId:data.shopId,
+                                                shopId: data.shopId,
                                                 children: [{
                                                     label: data.codeType === "0" ? '生产设备' : data.codeType === "1" ? '治污设备' : '总进线',
                                                     id: data.codeType,
@@ -391,7 +392,7 @@
                                         num: 1,
                                         children: [{
                                             label: data.shopName,
-                                            shopId:data.shopId,
+                                            shopId: data.shopId,
                                             children: [{
                                                 label: data.codeType === "0" ? '生产设备' : data.codeType === "1" ? '治污设备' : '总进线',
                                                 id: data.codeType,
@@ -400,7 +401,7 @@
                                         }]
                                     });
                                 })
-                                // // console.log(dataList)
+                                console.log(dataList)
                                 vm.enpriseData = dataList;
                             }
 
@@ -419,7 +420,7 @@
                         vm.atraName = "";
 
                     },
-                    manageNode:function(node) {
+                    manageNode: function (node) {
                         // // console.log(node)
                         vm.atraShow = false;
 
@@ -549,7 +550,7 @@
                         })
                         // console.log(vm.monitoridList)
 
-                        // // console.log(data)
+                        console.log(data)
                         // this.$refs.tree.setCheckedKeys([])
                         // // console.log(data, node);
                         // var nodeData = node.checkedNodes;
@@ -686,33 +687,33 @@
                                 var treeData = res.data.page.list;
                                 var dataList = [];
                                 // vm.enpriseData = res.data.page.list;
-                                 treeData.forEach(function (data) {
+                                treeData.forEach(function (data) {
                                     for (var i = 0; i < dataList.length; i++) {
                                         if (dataList[i].enterpriseId === data.enterpriseId) {
-                                            // for (var j = 0; j< dataList[i].children.length; j++){
-                                            //     if(dataList[i].children[j].shopId === data.shopId) {
+                                            for (var j = 0; j < dataList[i].children.length; j++) {
+                                                if (dataList[i].children[j].shopId === data.shopId) {
 
-                                            //             for (var k = 0; k < dataList[i].children[j].children.length; k++) {
-                                            //                     if(dataList[i].children[j].children[k].id === data.codeType) {
-                                            //                         dataList[i].children[j].children[k].children.push({
-                                            //                             label: data.monitorName, id: data.id
-                                            //                         })
-                                            //                         return;
-                                            //                     }
-                                            //             }
-                                            //             dataList[i].children[j].children.push({
-                                            //                     label: data.codeType === "0" ? '生产设备' : data.codeType === "1" ? '治污设备' : '总进线',
-                                            //                     id: data.codeType,
-                                            //                     children: [{ label: data.monitorName, id: data.id }]
+                                                    for (var k = 0; k < dataList[i].children[j].children.length; k++) {
+                                                        if (dataList[i].children[j].children[k].id === data.codeType) {
+                                                            dataList[i].children[j].children[k].children.push({
+                                                                label: data.monitorName, id: data.id
+                                                            })
+                                                            return;
+                                                        }
+                                                    }
+                                                    dataList[i].children[j].children.push({
+                                                        label: data.codeType === "0" ? '生产设备' : data.codeType === "1" ? '治污设备' : '总进线',
+                                                        id: data.codeType,
+                                                        children: [{ label: data.monitorName, id: data.id }]
 
-                                            //             })
-                                            //             return;
-                                            //     }
-                                    
-                                            // }
+                                                    })
+                                                    return;
+                                                }
+
+                                            }
                                             dataList[i].children.push({
                                                 label: data.shopName,
-                                                shopId:data.shopId,
+                                                shopId: data.shopId,
                                                 children: [{
                                                     label: data.codeType === "0" ? '生产设备' : data.codeType === "1" ? '治污设备' : '总进线',
                                                     id: data.codeType,
@@ -729,7 +730,7 @@
                                         num: 1,
                                         children: [{
                                             label: data.shopName,
-                                            shopId:data.shopId,
+                                            shopId: data.shopId,
                                             children: [{
                                                 label: data.codeType === "0" ? '生产设备' : data.codeType === "1" ? '治污设备' : '总进线',
                                                 id: data.codeType,
