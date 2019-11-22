@@ -141,10 +141,9 @@
 				$("select[name='currentStatus']").val(0);
 				whereObj = {
 					userId: window.localStorage.getItem("userId"),
-					currentStatus: $("select[name='currentStatus']").val()
+					currentStatus: currentStatusLocalStorage
 				};
 				// console.log($("select[name='currentStatus']").val(0));
-
 			}
 			window.localStorage.removeItem("currentStatus");
 			table.render({
