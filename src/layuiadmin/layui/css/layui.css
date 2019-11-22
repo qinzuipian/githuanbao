@@ -5221,8 +5221,44 @@ body .layui-util-face .layui-layer-content {
 }
 
 .layui-anim-fadein {
-    -webkit-animation-name: layui-fadein;
-    animation-name: layui-fadein
+    /* -webkit-animation-name: layui-fadein;
+    animation-name: layui-fadein */
+	
+	
+	/* -webkit-animation: layui-fadein 3s ease 0 infinite alternate running forwards;
+	animation: layui-fadein 3s ease 0 infinite al */ternate running forwards;
+	
+	animation-name: layui-fadein;
+	animation-duration: 0.5s;
+	animation-timing-function: ease;
+	animation-delay: 2.5s;
+	animation-iteration-count: infinite;
+	animation-direction: alternate;
+	animation-play-state: running;
+	/* Firefox: */
+	-moz-animation-name: layui-fadein;
+	-moz-animation-duration: 0.5s;
+	-moz-animation-timing-function: ease;
+	-moz-animation-delay: 2.5s;
+	-moz-animation-iteration-count: infinite;
+	-moz-animation-direction: alternate;
+	-moz-animation-play-state: running;
+	/* Safari 和 Chrome: */
+	-webkit-animation-name: layui-fadein;
+	-webkit-animation-duration: 0.5s;
+	-webkit-animation-timing-function: ease;
+	-webkit-animation-delay: 2.5s;
+	-webkit-animation-iteration-count: infinite;
+	-webkit-animation-direction: alternate;
+	-webkit-animation-play-state: running;
+	/* Opera: */
+	-o-animation-name: layui-fadein;
+	-o-animation-duration: 0.5s;
+	-o-animation-timing-function: ease;
+	-o-animation-delay: 2.5s;
+	-o-animation-iteration-count: infinite;
+	-o-animation-direction: alternate;
+	-o-animation-play-state: running;
 }
 
 @-webkit-keyframes layui-fadeout {
