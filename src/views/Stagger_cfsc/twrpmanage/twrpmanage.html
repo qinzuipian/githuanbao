@@ -86,7 +86,8 @@
 
             </div>
             <div class="layui-card layui-col-md7 layui-col-lg7" style="min-height: 800px; overflow-y:auto;">
-                <div class="layui-card-header card-title">企业列表&nbsp;&nbsp;
+                <!-- 企业列表&nbsp;&nbsp; -->
+                <div class="layui-card-header card-title">
                     <div class="layui-inline layui-form">
                         <div class="layui-input-inline">
                             <input type="text" name="title" placeholder="请输入企业名称" v-model="enterpriseName" autocomplete="off" class="layui-input">
@@ -95,7 +96,8 @@
 
                     <div class="layui-inline layui-form">
                         <div class="layui-input-inline" v-clickoutside="adminDisplay">
-                            <input type="text" name="atraCode" disabled v-model="atraName" placeholder="请选择行政区域" autocomplete="off" class="layui-input">
+                            <input type="text" name="atraCode" disabled v-model="atraName" placeholder="请选择行政区域" autocomplete="off" class="layui-input"
+                                style="width: 176px;">
                             <!-- <i style="font-size: 14px;position: absolute; color: gray; right: 10%;cursor: pointer;" class="layui-icon layui-icon-close"
                                 @click="AdminClear"></i> -->
                             <i class="layui-icon layui-icon-triangle-d" @click="atraClick"></i>
@@ -120,8 +122,8 @@
                 <!-- @check-change="mmmm" -->
                 <!-- :indent="0" -->
                 <div class="l-card-border" style="min-height: 400px;">
-                    <el-tree :data="enpriseData" show-checkbox default-expand-all :default-checked-keys="checkKey" node-key="monitorId" @node-click="manageNode" @check="manageCheck"
-                        ref="tree" highlight-current :props="defaultProps">
+                    <el-tree :data="enpriseData" show-checkbox default-expand-all :default-checked-keys="checkKey" node-key="monitorId" @node-click="manageNode"
+                        @check="manageCheck" ref="tree" highlight-current :props="defaultProps">
                     </el-tree>
                 </div>
             </div>
@@ -283,7 +285,7 @@
                                         position: 'top-center',
                                         message: '授权成功'
                                     });
-                                    vm.enterPriseInit();
+                                    vm.levelChange(vm.levelId);
                                 } else {
                                     vm.$notify.error({
                                         title: '错误',
@@ -320,6 +322,7 @@
                                 }).then(function (res) {
                                     if (res.data.code == 0) {
                                         layer.msg('已删除');
+                                        vm.levelChange(vm.levelId);
 
                                     } else {
                                         vm.$notify.error({
@@ -340,7 +343,8 @@
                             method: "post",
                             url: BASEURL + 'environmental_intelligent_monitoring/tdevicemonitor/list?limit=10000',
                             params: {
-                                userId: window.localStorage.getItem("userId")
+                                userId: window.localStorage.getItem("userId"),
+                                codeType: 0
                             }
                         }).then(function (res) {
                             if (res.data.code == 0) {
@@ -350,8 +354,30 @@
                                 treeData.forEach(function (data) {
                                     for (var i = 0; i < dataList.length; i++) {
                                         if (dataList[i].enterpriseId === data.enterpriseId) {
+                                            for (var j = 0; j < dataList[i].children.length; j++) {
+                                                if (dataList[i].children[j].shopId === data.shopId) {
+
+                                                    for (var k = 0; k < dataList[i].children[j].children.length; k++) {
+                                                        if (dataList[i].children[j].children[k].id === data.codeType) {
+                                                            dataList[i].children[j].children[k].children.push({
+                                                                label: data.monitorName, monitorId: data.id
+                                                            })
+                                                            return;
+                                                        }
+                                                    }
+                                                    dataList[i].children[j].children.push({
+                                                        label: data.codeType === "0" ? '生产设备' : data.codeType === "1" ? '治污设备' : '总进线',
+                                                        id: data.codeType,
+                                                        children: [{ label: data.monitorName, monitorId: data.id }]
+
+                                                    })
+                                                    return;
+                                                }
+
+                                            }
                                             dataList[i].children.push({
                                                 label: data.shopName,
+                                                shopId: data.shopId,
                                                 children: [{
                                                     label: data.codeType === "0" ? '生产设备' : data.codeType === "1" ? '治污设备' : '总进线',
                                                     id: data.codeType,
@@ -368,6 +394,7 @@
                                         num: 1,
                                         children: [{
                                             label: data.shopName,
+                                            shopId: data.shopId,
                                             children: [{
                                                 label: data.codeType === "0" ? '生产设备' : data.codeType === "1" ? '治污设备' : '总进线',
                                                 id: data.codeType,
@@ -376,7 +403,7 @@
                                         }]
                                     });
                                 })
-                                // // console.log(dataList)
+                                // console.log(dataList)
                                 vm.enpriseData = dataList;
                             }
 
@@ -395,7 +422,7 @@
                         vm.atraName = "";
 
                     },
-                    manageNode:function(node) {
+                    manageNode: function (node) {
                         // // console.log(node)
                         vm.atraShow = false;
 
@@ -525,7 +552,7 @@
                         })
                         // console.log(vm.monitoridList)
 
-                        // // console.log(data)
+                        // console.log(data)
                         // this.$refs.tree.setCheckedKeys([])
                         // // console.log(data, node);
                         // var nodeData = node.checkedNodes;
@@ -654,6 +681,7 @@
                                 organizeName: vm.atraName,
                                 enterpriseName: vm.enterpriseName,
                                 tradeId: vm.trade,
+                                // id: vm.levelId,
                                 userId: window.localStorage.getItem("userId")
                             }
                         }).then(function (res) {
@@ -663,31 +691,52 @@
                                 // vm.enpriseData = res.data.page.list;
                                 treeData.forEach(function (data) {
                                     for (var i = 0; i < dataList.length; i++) {
-                                        if (dataList[i].id === data.enterpriseId) {
+                                        if (dataList[i].enterpriseId === data.enterpriseId) {
+                                            for (var j = 0; j < dataList[i].children.length; j++) {
+                                                if (dataList[i].children[j].shopId === data.shopId) {
+
+                                                    for (var k = 0; k < dataList[i].children[j].children.length; k++) {
+                                                        if (dataList[i].children[j].children[k].id === data.codeType) {
+                                                            dataList[i].children[j].children[k].children.push({
+                                                                label: data.monitorName, id: data.id
+                                                            })
+                                                            return;
+                                                        }
+                                                    }
+                                                    dataList[i].children[j].children.push({
+                                                        label: data.codeType === "0" ? '生产设备' : data.codeType === "1" ? '治污设备' : '总进线',
+                                                        id: data.codeType,
+                                                        children: [{ label: data.monitorName, id: data.id }]
+
+                                                    })
+                                                    return;
+                                                }
+
+                                            }
                                             dataList[i].children.push({
                                                 label: data.shopName,
+                                                shopId: data.shopId,
                                                 children: [{
                                                     label: data.codeType === "0" ? '生产设备' : data.codeType === "1" ? '治污设备' : '总进线',
                                                     id: data.codeType,
-                                                    children: [{ label: data.monitorName, id: data.id }]
+                                                    children: [{ label: data.monitorName, monitorId: data.id }]
                                                 }]
                                             });
                                             dataList[i].num++;
                                             return;
                                         }
                                     }
-
-
                                     dataList.push({
                                         label: data.enterpriseName,
-                                        id: data.enterpriseId,
+                                        enterpriseId: data.enterpriseId,
                                         num: 1,
                                         children: [{
                                             label: data.shopName,
+                                            shopId: data.shopId,
                                             children: [{
                                                 label: data.codeType === "0" ? '生产设备' : data.codeType === "1" ? '治污设备' : '总进线',
                                                 id: data.codeType,
-                                                children: [{ label: data.monitorName, id: data.id }]
+                                                children: [{ label: data.monitorName, monitorId: data.id }]
                                             }]
                                         }]
                                     });
