@@ -343,7 +343,8 @@
                             method: "post",
                             url: BASEURL + 'environmental_intelligent_monitoring/tdevicemonitor/list?limit=10000',
                             params: {
-                                userId: window.localStorage.getItem("userId")
+                                userId: window.localStorage.getItem("userId"),
+                                codeType: 0
                             }
                         }).then(function (res) {
                             if (res.data.code == 0) {
