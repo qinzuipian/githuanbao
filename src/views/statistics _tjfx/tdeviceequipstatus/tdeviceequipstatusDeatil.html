@@ -204,19 +204,10 @@
 							</div>
 							<p>单相电流</p>
 						</div>
-						<!-- <div class="bar">
-							<div id="flex">
-								<div id="flex">
-									<p>0</p>
-									<span>A</span>
-								</div>
-							</div>
-							<p>总有功电量示值</p>
-						</div> -->
 						<div class="bar">
 							<div id="flex">
 								<div id="flex">
-									<p>0</p>
+									<p v-text="qi"></p>
 									<span>A</span>
 								</div>
 							</div>
@@ -225,7 +216,7 @@
 						<div class="bar">
 							<div id="flex">
 								<div id="flex">
-									<p>停电</p>
+									<p v-text="Status"></p>
 									<span></span>
 								</div>
 							</div>
@@ -234,7 +225,7 @@
 						<div class="bar">
 							<div id="flex">
 								<div id="flex">
-									<p>0</p>
+									<p v-text="xAccelerat"></p>
 									<span>m/s</span>
 								</div>
 							</div>
@@ -243,7 +234,7 @@
 						<div class="bar">
 							<div id="flex">
 								<div id="flex">
-									<p>0</p>
+									<p v-text="yAccelerat"></p>
 									<span>m/s</span>
 								</div>
 							</div>
@@ -252,7 +243,7 @@
 						<div class="bar">
 							<div id="flex">
 								<div id="flex">
-									<p>0</p>
+									<p v-text="zAccelerat"></p>
 									<span>m/s</span>
 								</div>
 							</div>
@@ -261,7 +252,7 @@
 						<div class="bar">
 							<div id="flex">
 								<div id="flex">
-									<p>0</p>
+									<p v-text="xFrequen"></p>
 									<span>Hz</span>
 								</div>
 							</div>
@@ -270,7 +261,7 @@
 						<div class="bar">
 							<div id="flex">
 								<div id="flex">
-									<p>0</p>
+									<p v-text="yFrequen"></p>
 									<span>Hz</span>
 								</div>
 							</div>
@@ -279,7 +270,7 @@
 						<div class="bar">
 							<div id="flex">
 								<div id="flex">
-									<p>0</p>
+									<p v-text="zFrequen"></p>
 									<span>Hz</span>
 								</div>
 							</div>
@@ -288,7 +279,7 @@
 						<div class="bar">
 							<div id="flex">
 								<div id="flex">
-									<p>0</p>
+									<p v-text="temperature"></p>
 									<span>℃</span>
 								</div>
 							</div>
@@ -297,7 +288,7 @@
 						<div class="bar">
 							<div id="flex">
 								<div id="flex">
-									<p>0</p>
+									<p v-text="radarProport"></p>
 									<span>%</span>
 								</div>
 							</div>
@@ -306,7 +297,7 @@
 						<div class="bar">
 							<div id="flex">
 								<div id="flex">
-									<p>0</p>
+									<p v-text="radarCount"></p>
 									<span>次/分</span>
 								</div>
 							</div>
@@ -315,7 +306,7 @@
 						<div class="bar">
 							<div id="flex">
 								<div id="flex">
-									<p>0</p>
+									<p v-text="currentSpeed"></p>
 									<span>m³/h</span>
 								</div>
 							</div>
@@ -324,13 +315,13 @@
 						<div class="bar">
 							<div id="flex">
 								<div id="flex">
-									<p>0</p>
+									<p v-text="flow"></p>
 									<span>m³</span>
 								</div>
 							</div>
 							<p>流量</p>
 						</div>
-						<div class="bar">
+						<!-- <div class="bar">
 							<div id="flex">
 								<div id="flex">
 									<p>正常</p>
@@ -338,7 +329,7 @@
 								</div>
 							</div>
 							<p>设备状态</p>
-						</div>
+						</div> -->
 						<div class="bar">
 							<div id="flex">
 								<div id="flex">
@@ -400,6 +391,12 @@
 							} else if (res.data.tDeviceRealtime.status == "3") {
 								app.status = "失联"
 							}
+							if (res.data.tDeviceRealtime.status == "1") {
+								app.Status = "上电"
+							} else if (res.data.tDeviceRealtime.status == "2" || res.data.tDeviceRealtime.status == "3") {
+								app.Status = "停电"
+							}
+							
 							app.modifyDate = res.data.tDeviceRealtime.acttime;
 							app.enterpriseName = res.data.tDeviceRealtime.enterpriseName;
 
@@ -412,10 +409,24 @@
 							res.data.tDeviceRealtime.pi == undefined ? 0 : app.pi = res.data.tDeviceRealtime.pi
 							res.data.tDeviceRealtime.p == undefined ? 0 : app.p = res.data.tDeviceRealtime.p
 							res.data.tDeviceRealtime.q == undefined ? 0 : app.q = res.data.tDeviceRealtime.q,
-								res.data.tDeviceRealtime.the == undefined ? 0 : app.the = res.data.tDeviceRealtime.the,
+							res.data.tDeviceRealtime.the == undefined ? 0 : app.the = res.data.tDeviceRealtime.the,
+							res.data.tDeviceRealtime.qi == undefined ? 0 : app.qi = res.data.tDeviceRealtime.qi,
+							res.data.tDeviceRealtime.radarCount == undefined ? 0 : app.radarCount = res.data.tDeviceRealtime.radarCount,
+							res.data.tDeviceRealtime.status == undefined ? "停电" : app.Status = app.Status,
+							res.data.tDeviceRealtime.xAccelerat == undefined ? 0 : app.xAccelerat = res.data.tDeviceRealtime.xAccelerat,
+							res.data.tDeviceRealtime.yAccelerat == undefined ? 0 : app.yAccelerat = res.data.tDeviceRealtime.yAccelerat,
+							res.data.tDeviceRealtime.zAccelerat == undefined ? 0 : app.zAccelerat = res.data.tDeviceRealtime.zAccelerat,
+							
+							res.data.tDeviceRealtime.xFrequen == undefined ? 0 : app.xFrequen = res.data.tDeviceRealtime.xFrequen,
+							res.data.tDeviceRealtime.yFrequen == undefined ? 0 : app.yFrequen = res.data.tDeviceRealtime.yFrequen,
+							res.data.tDeviceRealtime.zFrequen == undefined ? 0 : app.zFrequen = res.data.tDeviceRealtime.zFrequen,
+							
+							res.data.tDeviceRealtime.radarProport == undefined ? 0 : app.radarProport = res.data.tDeviceRealtime.radarProport,
+							
+							res.data.tDeviceRealtime.currentSpeed == undefined ? 0 : app.currentSpeed = res.data.tDeviceRealtime.currentSpeed,
 
-								// res.data.tDeviceRealtime.pa  ==  undefined ?0:app.pa = res.data.tDeviceRealtime.pa
-								// res.data.tDeviceRealtime.pb  ==  undefined ?0:app.pb = res.data.tDeviceRealtime.pb
+							res.data.tDeviceRealtime.flow  ==  undefined ? 0 : app.flow = res.data.tDeviceRealtime.flow,
+								res.data.tDeviceRealtime.temperature  ==  undefined ?0:app.temperature = res.data.tDeviceRealtime.temperature
 								// res.data.tDeviceRealtime.pc  ==  undefined ?0:app.pc = res.data.tDeviceRealtime.pc
 								// res.data.tDeviceRealtime.uab  ==  undefined ?0:app.uab = res.data.tDeviceRealtime.uab
 								// res.data.tDeviceRealtime.ubc  ==  undefined ?0:app.ubc = res.data.tDeviceRealtime.ubc
@@ -460,6 +471,19 @@
 					uab: 0,
 					ubc: 0,
 					uca: 0,
+					qi: 0,
+					xAccelerat: 0,
+					yAccelerat:0,
+					zAccelerat:0,
+					xFrequen:0,
+					yFrequen:0,
+					zFrequen:0,
+					flow:0,
+					temperature:0,
+					radarProport:0,
+					currentSpeed:0,
+					radarCount:0,
+					Status:"",
 					modifyDate: '',
 					enterpriseName: "",
 					monitorName: '',
@@ -499,7 +523,7 @@
 									res.data.tDeviceRealtime.pi == undefined ? 0 : app.pi = res.data.tDeviceRealtime.pi
 									res.data.tDeviceRealtime.p == undefined ? 0 : app.p = res.data.tDeviceRealtime.p
 									res.data.tDeviceRealtime.q == undefined ? 0 : app.q = res.data.tDeviceRealtime.q,
-										res.data.tDeviceRealtime.the == undefined ? 0 : app.the = res.data.tDeviceRealtime.the,
+									res.data.tDeviceRealtime.the == undefined ? 0 : app.the = res.data.tDeviceRealtime.the,
 
 
 
