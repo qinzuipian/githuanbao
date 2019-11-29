@@ -382,6 +382,9 @@
 				mounted: function() {
 					this.pageInit();
 					this.getUntreatedError();
+					setInterval(function(){
+						vm.getUntreatedError()
+					},60000)
 				}
 			})
 		</script>
