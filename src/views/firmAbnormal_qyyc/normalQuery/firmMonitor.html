@@ -81,8 +81,9 @@
 
 						<div class="rightContent">
 							<div v-show="firmShow==1">
-								<div class="layui-inline layui-form">
-									<div class="layui-input-inline">
+								<div class="layui-inline layui-form" style="display: flex;">
+									<p style="line-height: 40px;margin-right: 10px;">选择日期：</p>
+									<div class="layui-input-inline" >
 										<input type="text" v-model="indextime" id="indexTime" class="layui-input" onblur="monitorsearch()"
 										 placeholder="请输入日期">
 									</div>
@@ -373,6 +374,7 @@
 				laydate.render({
 					elem: '#indexTime',
 					done: function(value) {
+						console.log(vm.indextime);
 						vm.indextime = value;
 					}
 				});
@@ -381,7 +383,7 @@
 
 				// 从上一个页面获取到的企业id
 				vm.companyId = window.localStorage.getItem("enterpriseId");
-				window.localStorage.removeItem("enterpriseId") //获取上个页面传来的企业id
+				// window.localStorage.removeItem("enterpriseId") //获取上个页面传来的企业id
 
 
 
@@ -757,7 +759,12 @@
 				// 实时数据      企业的   功率曲线
 				setTimeout(function() {
 					var data = new Date();
-					var date = data.getFullYear() + "-" + (data.getMonth() + 1) + "-" + data.getDate();
+					// var date = data.getFullYear() + "-" + (data.getMonth() + 1) + "-" + data.getDate();
+					if(data.getDate() < 9){
+						var date = data.getFullYear() + "-" + (data.getMonth() + 1) + "-" + "0" + data.getDate();
+					}else{
+						var date = data.getFullYear() + "-" + (data.getMonth() + 1) + "-" + data.getDate();
+					}
 					vm.timeDate = date
 					axios({
 						method: "post",
@@ -1324,7 +1331,12 @@
 				vm.monitorId = ids;
 				vm.flag = flag;
 				var data = new Date();
-				var date = data.getFullYear() + "-" + (data.getMonth() + 1) + "-" + data.getDate();
+				// var date = data.getFullYear() + "-" + (data.getMonth() + 1) + "-" + data.getDate();
+				if(data.getDate() < 9){
+					var date = data.getFullYear() + "-" + (data.getMonth() + 1) + "-" + "0" + data.getDate();
+				}else{
+					var date = data.getFullYear() + "-" + (data.getMonth() + 1) + "-" + data.getDate();
+				}
 				vm.indextime = date
 				setTimeout(function() {
 					axios({

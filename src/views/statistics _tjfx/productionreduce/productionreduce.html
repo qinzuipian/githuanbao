@@ -293,7 +293,12 @@
 					elem: '#startDate',
 					btns: ['confirm']
 				});
-				vm.today = data.getFullYear() + "-" + (data.getMonth() + 1) + "-" + data.getDate();
+				// vm.today = data.getFullYear() + "-" + (data.getMonth() + 1) + "-" + data.getDate();
+				if(data.getDate() < 9){
+					vm.today = data.getFullYear() + "-" + (data.getMonth() + 1) + "-" + "0" + data.getDate();
+				}else{
+					vm.today = data.getFullYear() + "-" + (data.getMonth() + 1) + "-" + data.getDate();
+				}
 
 
 				//下拉菜单里面的选项
