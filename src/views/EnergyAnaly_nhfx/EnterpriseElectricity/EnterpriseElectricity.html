@@ -252,9 +252,8 @@
                 flag: ""
             },
             watch: {
+                // 监听时间变化调用接口
                 startDate: function (val) {
-                    // console.log(val);
-                    // console.log(this.enterpriseId)
                     if (this.enterpriseId === "") {
                         vm.$message.warning('请选择企业');
                         // this.$notify({
@@ -330,7 +329,6 @@
                     }
 
                 }
-
             },
             methods: {
                 // 为时间添加默认时间
@@ -364,8 +362,11 @@
                         vm.timeShow = 1;
                     }
                     this.timePicker();
-                    this.enterpriseInit();
-                    
+                    if (this.enterpriseName != "") {
+                        this.enterpriseInit();
+                    }
+
+
                 },
                 energyTreeInit: function () {
                     this.loading = true;
