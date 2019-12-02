@@ -252,9 +252,35 @@
                 flag: ""
             },
             watch: {
+                startDate: function (val) {
+                    // console.log(val);
+                    // console.log(this.enterpriseId)
+                    if (this.enterpriseId === "") {
+                        vm.$message.warning('请选择企业');
+                        // this.$notify({
+                        //     title: '提示',
+                        //     message: '请选择企业',
+                        //     type: 'warning'
+                        // });
+                    } else {
+                        this.enterpriseInit();
+                    }
+                },
                 endDate: function (val) {
                     // console.log(val);
                     // console.log(this.enterpriseId)
+                    if (this.enterpriseId === "") {
+                        vm.$message.warning('请选择企业');
+                        // this.$notify({
+                        //     title: '提示',
+                        //     message: '请选择企业',
+                        //     type: 'warning'
+                        // });
+                    } else {
+                        this.enterpriseInit();
+                    }
+                },
+                startYearDate: function (val) {
                     if (this.enterpriseId === "") {
                         vm.$message.warning('请选择企业');
                         // this.$notify({
@@ -277,6 +303,19 @@
                     } else {
                         this.enterpriseInit();
                     }
+                },
+                startMonthDate: function (val) {
+                    if (this.enterpriseId === "") {
+                        vm.$message.warning('请选择企业');
+                        // this.$notify({
+                        //     title: '提示',
+                        //     message: '请选择企业',
+                        //     type: 'warning'
+                        // });
+                    } else {
+                        this.enterpriseInit();
+                    }
+
                 },
                 endMonthDate: function (val) {
                     if (this.enterpriseId === "") {
@@ -324,8 +363,9 @@
                     } else {
                         vm.timeShow = 1;
                     }
-                    this.enterpriseInit();
                     this.timePicker();
+                    this.enterpriseInit();
+                    
                 },
                 energyTreeInit: function () {
                     this.loading = true;
