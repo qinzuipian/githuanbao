@@ -129,20 +129,20 @@
 									minWidth: 135,
 
 								},
-								{
-									field: 'productNum',
-									align: 'center',
-									title: '产污设施阀值',
-									minWidth: 135,
+								// {
+								// 	field: 'productNum',
+								// 	align: 'center',
+								// 	title: '产污设施阀值',
+								// 	minWidth: 135,
 
-								},
-								{
-									field: 'productAcquisit',
-									align: 'center',
-									title: '产污设施采集值',
-									minWidth: 135,
+								// },
+								// {
+								// 	field: 'productAcquisit',
+								// 	align: 'center',
+								// 	title: '产污设施采集值',
+								// 	minWidth: 135,
 
-								},
+								// },
 								{
 									field: 'treatName',
 									align: 'center',
@@ -150,20 +150,20 @@
 									minWidth: 80,
 
 								},
-								{
-									field: 'treatNum',
-									align: 'center',
-									title: '治污设施阀值',
-									minWidth: 80,
+								// {
+								// 	field: 'treatNum',
+								// 	align: 'center',
+								// 	title: '治污设施阀值',
+								// 	minWidth: 80,
 
-								},
-								{
-									field: 'treatAcquisit',
-									align: 'center',
-									title: '治污设施采集值',
-									minWidth: 80,
+								// },
+								// {
+								// 	field: 'treatAcquisit',
+								// 	align: 'center',
+								// 	title: '治污设施采集值',
+								// 	minWidth: 80,
 
-								},
+								// },
 								{
 									field: 'produceType',
 									align: 'center',
@@ -181,7 +181,7 @@
 									$(this).text("限产")
 								} else if ($(this).text() == 1) {
 									$(this).text("停产")
-								} else {
+								} else if ($(this).text() == 2){
 									$(this).text("生产")
 								}
 							});

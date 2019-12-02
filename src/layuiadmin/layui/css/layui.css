@@ -5261,6 +5261,31 @@ body .layui-util-face .layui-layer-content {
 	-o-animation-play-state: running;
 }
 
+@-webkit-keyframes l-layui-fadein {
+    0% {
+        opacity: 0
+    }
+    100% {
+        opacity: 1
+    }
+}
+
+@keyframes l-layui-fadein {
+    0% {
+        opacity: 0
+    }
+    100% {
+        opacity: 1
+    }
+}
+
+.l-layui-anim-fadein {
+    -webkit-animation-name: l-layui-fadein;
+    animation-name: layui-fadein
+}
+
+
+
 @-webkit-keyframes layui-fadeout {
     0% {
         opacity: 1
