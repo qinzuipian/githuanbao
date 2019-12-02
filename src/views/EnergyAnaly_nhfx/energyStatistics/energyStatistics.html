@@ -498,7 +498,7 @@
                 atraId: "",
                 // 用电排名
                 threeShow: 1,
-                tongbiShow: true
+                tongbiShow: true,
 
             },
             // 实现行政区域下拉框点击外部下拉框消失
@@ -1167,9 +1167,6 @@
                             powerbot = today - yestoday < 0 ? (today - yestoday) : '+' + (today - yestoday);
                             powertop = isNaN((today - yestoday) / today) === true ? 0 :((today - yestoday) / today).toFixed(2)*100;
                             // powertop = isNaN(today - yestoday / today) === true ? 0 : ((powerbot / today).toFixed(2)) * 100;
-                            if (powertop === NaN) {
-                                powertop = 0;
-                            }
                             month.push({
                                 flag: 'n',
                                 kwh: today
@@ -1196,9 +1193,6 @@
                             powerbot = today - yestoday < 0 ? (today - yestoday) : '+' + (today - yestoday);
                             powertop = isNaN((today - yestoday) / today) === true ? 0 :((today - yestoday) / today).toFixed(2)*100;
                             // powertop = isNaN(powerbot / today) === true ? 0 : ((powerbot / today).toFixed(2)) * 100;
-                            if (powertop === NaN) {
-                                powertop = 0;
-                            }
                             year.push({
                                 flag: 'n',
                                 kwh: today
@@ -1367,6 +1361,7 @@
                 }
                 // 电能趋势按月统计
                 , electricityMonth: function (enterpriseId, monitorId, industryId, atraId) {
+                    this.tongbiShow = true;
                     var type;
                     if (this.radiusShow == 1) {
                         type = 'same';
@@ -1648,6 +1643,7 @@
                 }
                 // 用电排名按日统计
                 , electricitySortDay: function (enterpriseId, industryId, atraId) {
+                    this.tongbiShow = true;
                     var type;
                     if (this.shopShow == 1) {
                         type = "shop";
