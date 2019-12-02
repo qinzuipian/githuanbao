@@ -411,12 +411,12 @@
     <script src="./../../../layuiadmin/plugin/axios.js"></script>
     <script src="./../../../layuiadmin/plugin/echarts.min.js"></script>
     <script src="./../../../layuiadmin/js/baseUrlConfig.js"></script>
-    <script type="text/babel">
-     
+    <script>
+
         var vm = new Vue({
             el: "#vm",
             data: {
-                mainLoading:true,
+                mainLoading: true,
                 energyShow: 1,
                 electricShow: 1,
                 radiusShow: 1,
@@ -498,11 +498,11 @@
                 atraId: "",
                 // 用电排名
                 threeShow: 1,
-                tongbiShow:true
+                tongbiShow: true
 
             },
-             // 实现行政区域下拉框点击外部下拉框消失
-             directives: {
+            // 实现行政区域下拉框点击外部下拉框消失
+            directives: {
                 clickoutside: {
                     bind(el, binding, vnode) {
                         function documentHandler(e) {
@@ -537,18 +537,18 @@
                 }
             },
             methods: {
-                AdminFocus:function() {
+                AdminFocus: function () {
                     vm.Areashow = !vm.Areashow;
                 },
                 adminDisplay: function () {
                     vm.Areashow = false;
                 },
-                AdminClear:function() {
+                AdminClear: function () {
                     vm.atraName = "";
 
                 },
                 // 行政区域列表数据的获取
-                treeDataInit:function() {
+                treeDataInit: function () {
                     axios({
                         method: "post",
                         url: BASEURL + 'environmental_intelligent_monitoring/tbasorganize/dendrogramList',
@@ -563,9 +563,9 @@
                             // vm.treeData = res.data.page.list;
                             var data = res.data.data;
                             var obj = {
-								title: '请选择'
-							}
-							data.unshift(obj);
+                                title: '请选择'
+                            }
+                            data.unshift(obj);
                             vm.treeData = data;
                         } else {
 
@@ -574,15 +574,15 @@
                         // console.log(err);
                     });
                 },
-                handleNodeClick:function(data, node) {
+                handleNodeClick: function (data, node) {
                     // // console.log(data, node)
                     vm.atraName = data.title;
                     vm.atraId = data.id;
                     vm.treeHign = true;
                     vm.Areashow = false;
-                    if(data.title == "请选择"){
-						vm.atraName = ""
-					}
+                    if (data.title == "请选择") {
+                        vm.atraName = ""
+                    }
                     this.electricyRadius(-1, -1, -1, vm.atraId);
                     if (this.electricShow == 1) {
                         // 电能趋势按日统计
@@ -602,7 +602,7 @@
 
                 },
                 // 大页面的按钮切换
-                energyShowClick:function(val) {
+                energyShowClick: function (val) {
                     if (val == 1) {
                         this.energyShow = 1;
 
@@ -685,7 +685,7 @@
                     }
                     vm.EleRadius = [];
                 },
-                electriClick:function(value) {
+                electriClick: function (value) {
                     // // console.log(value);
                     if (value == 1) {
                         this.electricShow = 1;
@@ -701,7 +701,7 @@
                     }
 
                 },
-                radiusClick:function(value) {
+                radiusClick: function (value) {
                     if (value == 1) {
                         this.radiusShow = 1;
                     } else {
@@ -741,7 +741,7 @@
 
 
                 },
-                shopClick:function(value) {
+                shopClick: function (value) {
                     if (value == 1) {
                         this.shopShow = 1;
                     } else {
@@ -781,7 +781,7 @@
 
                 },
                 // 用电排名
-                threeClick:function(val) {
+                threeClick: function (val) {
                     if (val == 1) {
                         this.threeShow = 1;
                         this.electricitySortDay(vm.enterpriseId)
@@ -794,7 +794,7 @@
                     }
                 },
                 // 企业列表填充
-                enterpriseInit:function() {
+                enterpriseInit: function () {
                     axios({
                         method: "post",
                         url: BASEURL + 'environmental_intelligent_monitoring/tbasenterprise/list?limit=10000',
@@ -815,7 +815,7 @@
                     });
 
                 }
-                , enterSelect:function(val) {
+                , enterSelect: function (val) {
                     // 监测点
                     this.monitorNameInit(val)
                     // // console.log(val)
@@ -841,12 +841,12 @@
                     }
                 }
                 // 监测点列表展示
-                , monitorNameInit:function(val) {
+                , monitorNameInit: function (val) {
                     axios({
                         method: "post",
                         url: BASEURL + 'environmental_intelligent_monitoring/tdevicemonitor/list?limit=10000',
                         params: {
-                            enterpriseId:val,
+                            enterpriseId: val,
                             userId: window.localStorage.getItem("userId")
                         }
                     }).then(function (res) {
@@ -859,7 +859,7 @@
                         // console.log(err);
                     });
                 }
-                , monitorSelect:function(val) {
+                , monitorSelect: function (val) {
                     // // console.log(val);
                     vm.monitorId = val;
                     this.electricityTop(vm.enterpriseId, vm.monitorId)
@@ -877,7 +877,7 @@
                     }
                 }
                 // 用电量峰值展示
-                , electricityTop:function(enterpriseId, monitorId) {
+                , electricityTop: function (enterpriseId, monitorId) {
                     // // console.log(enterpriseId, monitorId)
                     axios({
                         method: "post",
@@ -918,7 +918,7 @@
                     });
                 }
                 // 功率峰值展示
-                , powerInit:function(enterpriseId, monitorId) {
+                , powerInit: function (enterpriseId, monitorId) {
                     axios({
                         method: "post",
                         url: BASEURL + 'environmental_intelligent_monitoring/tdevicehistory/queryPowerPeak',
@@ -958,7 +958,7 @@
                     });
                 }
                 // 功率曲线展示
-                , powerEcharts:function(enterpriseId, monitorId) {
+                , powerEcharts: function (enterpriseId, monitorId) {
                     var myCharts = echarts.init(document.getElementById('energyId'));
                     myCharts.showLoading({
                         text: "加载中"
@@ -1099,7 +1099,7 @@
                     });
                 }
                 // 电能环比展示
-                , electricyRadius:function(enterpriseId, monitorId, industryId, atraId) {
+                , electricyRadius: function (enterpriseId, monitorId, industryId, atraId) {
                     var data = {};
                     if (enterpriseId == 0 && monitorId == 0) {
                         data.tradeId = industryId;
@@ -1109,7 +1109,7 @@
                         data.enterpriseId = enterpriseId;
                         data.monitorId = monitorId;
                     }
-                    data.userId= window.localStorage.getItem("userId")
+                    data.userId = window.localStorage.getItem("userId")
                     vm.EleRadius = [];
                     axios({
                         method: "post",
@@ -1128,19 +1128,21 @@
                             var daily = [];
                             var month = [];
                             var year = [];
+                            var today, yestoday, powerbot, powertop;
                             for (var i = 0; i < data.daily.length; i++) {
-                                var today, yestoday, powerbot, powertop;
-
+                                // var today, yestoday, powerbot, powertop;
                                 if (data.daily[i].flag == 'n') {
                                     today = data.daily[i].kwh === undefined ? 0 : data.daily[i].kwh;
                                 } else {
                                     yestoday = data.daily[i].kwh === undefined ? 0 : data.daily[i].kwh;
                                 }
-                                powerbot = today - yestoday < 0 ? '-' + (today - yestoday) : '+' + (today - yestoday);
-                                powertop = isNaN(powerbot / today) === true ? 0 : ((powerbot / today).toFixed(2)) * 100;
-                                // // console.log(powerbot, powertop, today, yestoday)
+
 
                             }
+                            powerbot = today - yestoday < 0 ? '-' + (today - yestoday) : '+' + (today - yestoday);
+                            powertop = ((today - yestoday) / today).toFixed(2)*100;
+                            // powertop = isNaN(powerbot / today) === true ? 0 : ((powerbot / today).toFixed(2)) * 100;
+                            // console.log(powerbot, powertop, today, yestoday)
                             daily.push({
                                 flag: 'n',
                                 kwh: today
@@ -1153,24 +1155,21 @@
                                     pt: powertop,
                                     pb: powerbot
                                 })
-
                             for (var i = 0; i < data.month.length; i++) {
-                                var today, yestoday, powerbot, powertop;
-
+                                // var today, yestoday, powerbot, powertop;
                                 if (data.month[i].flag == 'n') {
                                     today = data.month[i].kwh === undefined ? 0 : data.month[i].kwh;
                                 } else {
                                     yestoday = data.month[i].kwh === undefined ? 0 : data.month[i].kwh;
                                 }
-                                powerbot = today - yestoday < 0 ? '-' + (today - yestoday) : '+' + (today - yestoday);
-                                powertop = isNaN(powerbot / today) === true ? 0 : ((powerbot / today).toFixed(2)) * 100;
-                                if (powertop === NaN) {
-                                    powertop = 0;
-                                }
 
                             }
-                            // // console.log(vm.EleRadius.daily)
-
+                            powerbot = today - yestoday < 0 ? '-' + (today - yestoday) : '+' + (today - yestoday);
+                            powertop = ((today - yestoday) / today).toFixed(2)*100;
+                            // powertop = isNaN(today - yestoday / today) === true ? 0 : ((powerbot / today).toFixed(2)) * 100;
+                            if (powertop === NaN) {
+                                powertop = 0;
+                            }
                             month.push({
                                 flag: 'n',
                                 kwh: today
@@ -1183,20 +1182,22 @@
                                     pt: powertop,
                                     pb: powerbot
                                 })
+                            // console.log(month)
                             for (var i = 0; i < data.year.length; i++) {
-                                var today, yestoday, powerbot, powertop;
-
+                                // var today, yestoday, powerbot, powertop;
                                 if (data.year[i].flag == 'n') {
                                     today = data.year[i].kwh === undefined ? 0 : data.year[i].kwh;
                                 } else {
                                     yestoday = data.year[i].kwh === undefined ? 0 : data.year[i].kwh;
                                 }
-                                powerbot = today - yestoday < 0 ? '-' + (today - yestoday) : '+' + (today - yestoday);
-                                powertop = isNaN(powerbot / today) === true ? 0 : ((powerbot / today).toFixed(2)) * 100;
-                                if (powertop === NaN) {
-                                    powertop = 0;
-                                }
 
+
+                            }
+                            powerbot = today - yestoday < 0 ? '-' + (today - yestoday) : '+' + (today - yestoday);
+                            powertop = ((today - yestoday) / today).toFixed(2)*100;
+                            // powertop = isNaN(powerbot / today) === true ? 0 : ((powerbot / today).toFixed(2)) * 100;
+                            if (powertop === NaN) {
+                                powertop = 0;
                             }
                             year.push({
                                 flag: 'n',
@@ -1211,7 +1212,7 @@
                                     pb: powerbot
                                 })
                             vm.EleRadius.push(daily, month, year)
-                            // // console.log(vm.EleRadius)
+                            // console.log(vm.EleRadius)
 
 
                         } else {
@@ -1223,7 +1224,7 @@
 
                 }
                 // 电能趋势按日统计
-                , electricityDay:function(enterpriseId, monitorId, industryId, atraId) {
+                , electricityDay: function (enterpriseId, monitorId, industryId, atraId) {
                     var type;
                     if (this.radiusShow == 1) {
                         type = 'same';
@@ -1243,7 +1244,7 @@
                         data.monitorId = monitorId;
                         data.ratioType = type;
                     }
-                    data.userId= window.localStorage.getItem("userId")
+                    data.userId = window.localStorage.getItem("userId")
                     axios({
                         method: "post",
                         url: BASEURL + 'environmental_intelligent_monitoring/tkwhhour/queryEleTrendByDaily',
@@ -1365,7 +1366,7 @@
 
                 }
                 // 电能趋势按月统计
-                , electricityMonth:function(enterpriseId, monitorId, industryId, atraId) {
+                , electricityMonth: function (enterpriseId, monitorId, industryId, atraId) {
                     var type;
                     if (this.radiusShow == 1) {
                         type = 'same';
@@ -1384,7 +1385,7 @@
                         data.monitorId = monitorId;
                         data.ratioType = type;
                     }
-                    data.userId= window.localStorage.getItem("userId")
+                    data.userId = window.localStorage.getItem("userId")
                     axios({
                         method: "post",
                         url: BASEURL + 'environmental_intelligent_monitoring/tkwhdaily/queryEleTrendByMonth',
@@ -1505,10 +1506,10 @@
 
                 }
                 // 电能趋势按年统计
-                , electricityYear:function(enterpriseId, monitorId, industryId, atraId) {             
+                , electricityYear: function (enterpriseId, monitorId, industryId, atraId) {
                     this.tongbiShow = false;
                     this.radiusShow = 2;
-                    var type = 'ring' ;
+                    var type = 'ring';
                     // if (this.radiusShow == 1) {
                     //     type = 'same';
                     // } else {
@@ -1526,7 +1527,7 @@
                         data.monitorId = monitorId;
                         data.ratioType = type;
                     }
-                    data.userId= window.localStorage.getItem("userId")
+                    data.userId = window.localStorage.getItem("userId")
                     axios({
                         method: "post",
                         url: BASEURL + 'environmental_intelligent_monitoring/tkwhmonthly/queryEleTrendByYear',
@@ -1646,7 +1647,7 @@
                         });
                 }
                 // 用电排名按日统计
-                , electricitySortDay:function(enterpriseId, industryId, atraId) {
+                , electricitySortDay: function (enterpriseId, industryId, atraId) {
                     var type;
                     if (this.shopShow == 1) {
                         type = "shop";
@@ -1667,7 +1668,7 @@
                         data.flag = type;
                         data.type = 'company';
                     }
-                    data.userId= window.localStorage.getItem("userId")
+                    data.userId = window.localStorage.getItem("userId")
                     var myCharts = echarts.init(document.getElementById('electricNum'));
                     myCharts.showLoading({
                         text: "加载中"
@@ -1750,7 +1751,7 @@
 
                 }
                 // 用电排名按月统计
-                , electricitySortMonth:function(enterpriseId, industryId, atraId) {
+                , electricitySortMonth: function (enterpriseId, industryId, atraId) {
                     var type;
                     if (this.shopShow == 1) {
                         type = "shop";
@@ -1772,7 +1773,7 @@
                         data.flag = type;
                         data.type = 'company';
                     }
-                    data.userId=window.localStorage.getItem("userId")
+                    data.userId = window.localStorage.getItem("userId")
                     var myCharts = echarts.init(document.getElementById('electricNum'));
                     myCharts.showLoading({
                         text: "加载中"
@@ -1859,7 +1860,7 @@
 
                 }
                 // 用电排名按年统计
-                , electricitySortYear:function(enterpriseId, industryId, atraId) {
+                , electricitySortYear: function (enterpriseId, industryId, atraId) {
                     var type;
                     if (this.shopShow == 1) {
                         type = "shop";
@@ -1881,7 +1882,7 @@
                         data.flag = type;
                         data.type = 'company';
                     }
-                    data.userId= window.localStorage.getItem("userId")
+                    data.userId = window.localStorage.getItem("userId")
                     var myCharts = echarts.init(document.getElementById('electricNum'));
                     myCharts.showLoading({
                         text: "加载中"
@@ -1966,7 +1967,7 @@
 
                 }
                 // 行业列表选择框填充
-                , industryInit:function() {
+                , industryInit: function () {
                     axios({
                         method: "post",
                         url: BASEURL + 'environmental_intelligent_monitoring/tbastrade/list?limit=10000',
@@ -1985,7 +1986,7 @@
                         // console.log(err);
                     });
                 },
-                industrySelect:function(val) {
+                industrySelect: function (val) {
                     vm.industryId = val;
                     this.electricyRadius(0, 0, vm.industryId);
                     if (this.electricShow == 1) {
@@ -2004,18 +2005,18 @@
                     }
                 }
             },
-            mounted:function() {
+            mounted: function () {
                 this.powerEcharts(-1, 0);
                 // 电能趋势按日统计
                 this.electricityDay(-1, 0);
                 // 用电排名按日统计
                 // this.electricitySortDay(-2)
             }
-            , created:function() {      
+            , created: function () {
                 this.enterpriseInit();
                 // this.monitorNameInit();
                 this.industryInit();
-                this.treeDataInit();     
+                this.treeDataInit();
             }
         })
 
