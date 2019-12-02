@@ -9,6 +9,11 @@
 		<link rel="stylesheet" media="all" href="../../../layuiadmin/layui/css/layui.css" />
 		<link rel="stylesheet" media="all" href="../../../layuiadmin/style/admin.css" />
 	</head>
+	<style type="text/css">
+		/* .layui-hide{
+			display: block !important;
+		} */
+	</style>
 
 	<body>
 		<div class="layui-fluid">
@@ -51,10 +56,10 @@
 						</div>
 					</div>
 				</div>
-				<div class="layui-card-body">
-					<table id="LAY-app-content-list" lay-filter="LAY-app-content-list"></table>
-				</div>
 			</div>
+		</div>
+		<div class="layui-card-body">
+			<table id="LAY-app-content-list" lay-filter="LAY-app-content-list"></table>
 		</div>
 
 		<script src="../../../layuiadmin/layui/layui.js" type="text/javascript" charset="utf-8"></script>
@@ -78,10 +83,10 @@
 						,
 					url: layui.setter.BASEURL + 'environmental_intelligent_monitoring/tdeviceequipstatus/queryAllList' //数据接口
 						,
+					page: true,
 					where: {
 						userId: window.localStorage.getItem("userId")
 					},
-					page: true,
 					parseData: function(res) { // 数据重新处理为layUI的数据格式
 						var msg = {
 							"code": res.code, //解析接口状态
@@ -192,7 +197,7 @@
 					table.reload('LAY-app-content-list', {
 						where: field,
 						page: {
-							curr: 1 //重新从第 1 页开始
+							curr: 1//重新从第 1 页开始
 						}
 					});
 				});
