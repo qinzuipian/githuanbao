@@ -182,7 +182,11 @@
 						$('input[type=checkbox]:checked').each(function() {
 							vm.selectRoleList.push($(this).val());
 						});
-						if (vm.selectRoleList.length == 0) {
+						var reg =  /^[0-9a-zA-Z]*$/g;
+						
+						if(!reg.test(vm.username)){
+							layer.msg("账号为数字、字母或者两者的组合");
+						}else if (vm.selectRoleList.length == 0) {
 							layer.msg("至少需要选择一个角色");
 						} else if (vm.mobile.length > 11 || vm.mobile.length < 7 && vm.mobile.length != 0) {
 							layer.msg("请输入正确的电话号码或者手机号")

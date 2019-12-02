@@ -12,7 +12,7 @@
 
 	</head>
 	<body>
-		<div id="vm">
+		<div id="vm" class="layui-fluid">
 			<div class="layui-card" style="margin: 0; border: 1px solid rgb(230, 230, 230);">
 				<div class="layui-form layui-card-header layuiadmin-card-header-auto">
 					<div class="layui-form-item">
@@ -54,8 +54,10 @@
 
 					</div>
 				</div>
+				<div class="layui-card-body">
+					<table class="layui-table" id="runData" lay-filter="runData" style="margin-top: 0;"></table>
+				<div>
 			</div>
-			<table class="layui-table" id="runData" lay-filter="runData" style="margin-top: 0;"></table>
 		</div>
 		<script src="../../../layuiadmin/js/baseUrlConfig.js"></script>
 		<script src="../../../layuiadmin/layui/layui.js"></script>
@@ -74,7 +76,7 @@
 					var $ = layui.$;
 					table.render({
 						elem: '#runData',
-						height: 550, //容器高度
+						height: 555, //容器高度
 						method: 'post',
 						url: layui.setter.BASEURL + 'environmental_intelligent_monitoring/dataMonitor/queryEquipOperatList', //数据接口
 						where: {
