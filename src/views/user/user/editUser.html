@@ -22,16 +22,16 @@
 		<div id="vm" class="layui-fluid">
 			<form class="layui-form">
 				<div class="layui-form-item">
-					<label class="layui-form-label">账号<span class="red">*</span></label>
+					<label class="layui-form-label">账号</label>
 					<div class="layui-input-block">
-						<input type="text" v-model="username" name="username" required lay-verify="required" placeholder="请输入账号"
-						 autocomplete="off" class="layui-input">
+						<input type="text" v-model="username" name="username" disabled placeholder="请输入账号"
+						 autocomplete="off" class="layui-input layui-disabled">
 					</div>
 				</div>
 				<div class="layui-form-item">
-					<label class="layui-form-label">名称<span class="red">*</span></label>
+					<label class="layui-form-label">名称</label>
 					<div class="layui-input-block">
-						<input type="text" v-model="nickname" name="nickname" required lay-verify="required" placeholder="请输入名称"
+						<input type="text" v-model="nickname" name="nickname" placeholder="请输入名称"
 						 autocomplete="off" class="layui-input">
 					</div>
 				</div>
@@ -218,6 +218,7 @@
 						$('input[type=checkbox]:checked').each(function() {
 							vm.selectRoleList.push($(this).val());
 						});
+						
 						if (vm.selectRoleList.length == 0) {
 							layer.msg("至少需要选择一个角色");
 						} else if (vm.mobile.length > 11 || vm.mobile.length < 7 && vm.mobile.length != 0) {
