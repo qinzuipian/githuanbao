@@ -99,7 +99,6 @@
                     </el-table-column>
                 </el-table>
                 <!-- <table id="LAY-app-content-list" lay-filter="LAY-app-content-list"></table> -->
-
             </div>
         </div>
     </div>
@@ -257,33 +256,36 @@
                     // console.log(val);
                     // console.log(this.enterpriseId)
                     if (this.enterpriseId === "") {
-                        this.$notify({
-                            title: '提示',
-                            message: '请选择企业',
-                            type: 'warning'
-                        });
+                        vm.$message.warning('请选择企业');
+                        // this.$notify({
+                        //     title: '提示',
+                        //     message: '请选择企业',
+                        //     type: 'warning'
+                        // });
                     } else {
                         this.enterpriseInit();
                     }
                 },
                 endYearDate: function (val) {
                     if (this.enterpriseId === "") {
-                        this.$notify({
-                            title: '提示',
-                            message: '请选择企业',
-                            type: 'warning'
-                        });
+                        vm.$message.warning('请选择企业');
+                        // this.$notify({
+                        //     title: '提示',
+                        //     message: '请选择企业',
+                        //     type: 'warning'
+                        // });
                     } else {
                         this.enterpriseInit();
                     }
                 },
                 endMonthDate: function (val) {
                     if (this.enterpriseId === "") {
-                        this.$notify({
-                            title: '提示',
-                            message: '请选择企业',
-                            type: 'warning'
-                        });
+                        vm.$message.warning('请选择企业');
+                        // this.$notify({
+                        //     title: '提示',
+                        //     message: '请选择企业',
+                        //     type: 'warning'
+                        // });
                     } else {
                         this.enterpriseInit();
                     }
@@ -292,9 +294,29 @@
 
             },
             methods: {
-
+                // 为时间添加默认时间
+                timePicker: function () {
+                    // // console.log(this.timeShow)
+                    var now = new Date();
+                    var year = now.getFullYear(); //得到年份
+                    var month = now.getMonth() + 1 < 9 ? ('0' + now.getMonth() + 1) : now.getMonth() + 1; //得到月份
+                    var date = now.getDate() < 9 ? ('0' + now.getDate()) : now.getDate(); //得到日期
+                    if (this.timeShow == 1) {
+                        var defaultDate = year + '-' + month + '-' + date;
+                        this.startDate = defaultDate;
+                        this.endDate = defaultDate;
+                    } else if (this.timeShow == 2) {
+                        var defaultDate = year + "";
+                        this.startYearDate = defaultDate;
+                        this.endYearDate = defaultDate;
+                    } else if (this.timeShow == 3) {
+                        var defaultDate = year + "-" + month;
+                        this.startMonthDate = defaultDate;
+                        this.endMonthDate = defaultDate;
+                    }
+                },
                 timeSelect: function (val) {
-                    // // console.log(val)
+                    console.log(val)
                     if (val == 'year') {
                         vm.timeShow = 2;
                     } else if (val == 'month') {
@@ -302,7 +324,8 @@
                     } else {
                         vm.timeShow = 1;
                     }
-
+                    this.enterpriseInit();
+                    this.timePicker();
                 },
                 energyTreeInit: function () {
                     this.loading = true;
@@ -467,35 +490,41 @@
                     if (vm.flag == 'noData') {
                         vm.$message.warning('无数据导出');
                     } else {
-                        var type, startTime, endTime;
-                        if (this.timeType == 'year') {
-                            type = 'year';
-                            startTime = this.startYearDate;
-                            endTime = this.endYearDate;
-                        } else if (this.timeType == 'month') {
-                            type = 'month';
-                            startTime = this.startMonthDate;
-                            endTime = this.endMonthDate;
+                        // console.log(this.enterpriseId,this.organizeId)
+                        if (this.enterpriseId != "" || this.organizeId != "") {
+                            var type, startTime, endTime;
+                            if (this.timeType == 'year') {
+                                type = 'year';
+                                startTime = this.startYearDate;
+                                endTime = this.endYearDate;
+                            } else if (this.timeType == 'month') {
+                                type = 'month';
+                                startTime = this.startMonthDate;
+                                endTime = this.endMonthDate;
+                            } else {
+                                type = 'daily';
+                                startTime = this.startDate;
+                                endTime = this.endDate;
+                            }
+                            // console.log(this.enterpriseName)
+                            if (this.enterpriseId == 0) {
+                                location = BASEURL + 'environmental_intelligent_monitoring/tdevicehistory/exportExcel?'
+                                    + "organizeId=" + this.organizeId + "&"
+                                    + "actStartTime=" + startTime + "&"
+                                    + "actEndTime=" + endTime + "&"
+                                    + "flag=" + type + "&"
+                                    + "title=" + this.enterpriseName
+                            } else {
+                                location = BASEURL + 'environmental_intelligent_monitoring/tdevicehistory/exportExcel?'
+                                    + "enterpriseId=" + this.enterpriseId + "&"
+                                    + "actStartTime=" + startTime + "&"
+                                    + "actEndTime=" + endTime + "&"
+                                    + "flag=" + type + "&"
+                                    + "title=" + this.enterpriseName
+                            }
                         } else {
-                            type = 'daily';
-                            startTime = this.startDate;
-                            endTime = this.endDate;
-                        }
-                        // console.log(this.enterpriseName)
-                        if (this.enterpriseId == 0) {
-                            location = BASEURL + 'environmental_intelligent_monitoring/tdevicehistory/exportExcel?'
-                                + "organizeId=" + this.organizeId + "&"
-                                + "actStartTime=" + startTime + "&"
-                                + "actEndTime=" + endTime + "&"
-                                + "flag=" + type + "&"
-                                + "title=" + this.enterpriseName
-                        } else {
-                            location = BASEURL + 'environmental_intelligent_monitoring/tdevicehistory/exportExcel?'
-                                + "enterpriseId=" + this.enterpriseId + "&"
-                                + "actStartTime=" + startTime + "&"
-                                + "actEndTime=" + endTime + "&"
-                                + "flag=" + type + "&"
-                                + "title=" + this.enterpriseName
+                            vm.$message.warning('请选择企业');
+
                         }
 
                     }
@@ -503,6 +532,8 @@
             },
             created: function () {
                 this.energyTreeInit();
+                // 设置时间默认值
+                this.timePicker();
             }
         })
     </script>
