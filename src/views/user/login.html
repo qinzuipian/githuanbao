@@ -69,6 +69,8 @@
 								window.localStorage.setItem("email", res.data.user.email);
 								window.localStorage.setItem("mobile", res.data.user.mobile);
 								window.localStorage.setItem("nickName", res.data.user.nickName);
+								window.localStorage.setItem("userAreaCode", res.data.user.areaCode);
+								window.localStorage.setItem("userEnterpriseId", res.data.user.enterpriseId);
 								window.location.href = "../index.html"
 							} else {
 								vm.$message.error(res.data.msg);
