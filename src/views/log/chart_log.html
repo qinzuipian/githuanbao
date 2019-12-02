@@ -93,6 +93,17 @@
 					}
 				}
 			});
+			
+			var areaCode = window.localStorage.getItem("userAreaCode");
+			var enterpriseId = window.localStorage.getItem("userEnterpriseId");
+			
+			if(areaCode == "undefined"){
+				areaCode = ""
+			}
+			if(enterpriseId == "undefined"){
+				enterpriseId = ""
+			}
+			
 
 
 			//获取登录七天的数据
@@ -100,8 +111,8 @@
 				method: "post",
 				url: BASEURL + '/sys-mgr/sys/log/queryViews',
 				params: {
-					areaCode: '610102',
-					enterpriseId: "89"
+					areaCode: areaCode,
+					enterpriseId: enterpriseId
 				}
 			}).then(function(res) {
 				if (res.data.code == 0) {

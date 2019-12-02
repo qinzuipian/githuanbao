@@ -67,7 +67,15 @@
 			laydate.render({
 				elem: '#endDate'
 			});
-			
+		
+			var areaCode = window.localStorage.getItem("userAreaCode");
+			var enterpriseId = window.localStorage.getItem("userEnterpriseId");
+			if(areaCode == "undefined"){
+				areaCode = ""
+			}
+			if(enterpriseId == "undefined"){
+				enterpriseId = ""
+			}
 
 
 
@@ -79,9 +87,9 @@
 					,
 				page: true,
 				where: {
-					areaCode: '610102',
+					areaCode: areaCode,
 					endTime: "",
-					enterpriseId: "89",
+					enterpriseId: enterpriseId,
 					key: '',
 					operation: 'login',
 					startTime: ""
