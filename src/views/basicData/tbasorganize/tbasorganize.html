@@ -131,7 +131,7 @@
 			}, 500)
 
 			// // console.log(vm.treeData)
-		
+
 
 			var $ = layui.$,
 				active = {
@@ -152,7 +152,7 @@
 								url: layui.setter.BASEURL + 'environmental_intelligent_monitoring/tbasorganize/delete',
 								data: {
 									ids: idList,
-									userId: window.localStorage.getItem("userId")
+									// userId: window.localStorage.getItem("userId")
 								},
 								headers: {
 									"Content-Type": "application/json;charset=UTF-8"
@@ -214,6 +214,10 @@
 					},
 					batCancel: function () {
 						vm.treeHign = false;
+						vm.btnDisable = false;
+						document.getElementById("addOrgan").classList.remove("layui-btn-disabled");
+						document.getElementById("deleteOrgan").classList.remove("layui-btn-disabled");
+						vm.btnDelete = false;
 						vm.nodedata = [];
 					}
 				};
@@ -249,9 +253,9 @@
 					vm.nodedata = data;
 					// console.log(node.childNodes.length)
 					if (node.level === 3) {
-							document.getElementById("addOrgan").classList.add("layui-btn-disabled");
-							vm.btnDisable = true;
-					} else if (node.level === 1&&node.childNodes.length!=0) {
+						document.getElementById("addOrgan").classList.add("layui-btn-disabled");
+						vm.btnDisable = true;
+					} else if (node.level === 1 && node.childNodes.length != 0) {
 						document.getElementById("deleteOrgan").classList.add("layui-btn-disabled");
 						vm.btnDelete = true;
 					} else {
@@ -312,7 +316,7 @@
 						url: BASEURL + 'environmental_intelligent_monitoring/tbasorganize/dendrogramList',
 						params: {
 							type: "2",
-							userId: window.localStorage.getItem("userId")
+							// userId: window.localStorage.getItem("userId")
 
 						}
 					}).then(function (res) {

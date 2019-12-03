@@ -1139,7 +1139,7 @@
 
 
                             }
-                            powerbot = today - yestoday < 0 ? (today - yestoday) : '+' + (today - yestoday);
+                            powerbot = today - yestoday < 0 ? (today - yestoday).toFixed(2) : '+' + (today - yestoday).toFixed(2);
                             powertop = isNaN((today - yestoday) / today) === true ? 0 :((today - yestoday) / today).toFixed(2)*100;
                             // powertop = isNaN(powerbot / today) === true ? 0 : ((powerbot / today).toFixed(2)) * 100;
                             // console.log(powerbot, powertop, today, yestoday)
@@ -1164,7 +1164,7 @@
                                 }
 
                             }
-                            powerbot = today - yestoday < 0 ? (today - yestoday) : '+' + (today - yestoday);
+                            powerbot = today - yestoday < 0 ? (today - yestoday).toFixed(2) : '+' + (today - yestoday).toFixed(2);
                             powertop = isNaN((today - yestoday) / today) === true ? 0 :((today - yestoday) / today).toFixed(2)*100;
                             // powertop = isNaN(today - yestoday / today) === true ? 0 : ((powerbot / today).toFixed(2)) * 100;
                             month.push({
@@ -1190,7 +1190,7 @@
 
 
                             }
-                            powerbot = today - yestoday < 0 ? (today - yestoday) : '+' + (today - yestoday);
+                            powerbot = today - yestoday < 0 ? (today - yestoday).toFixed(2) : '+' + (today - yestoday).toFixed(2);
                             powertop = isNaN((today - yestoday) / today) === true ? 0 :((today - yestoday) / today).toFixed(2)*100;
                             // powertop = isNaN(powerbot / today) === true ? 0 : ((powerbot / today).toFixed(2)) * 100;
                             year.push({
