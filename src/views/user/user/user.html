@@ -83,40 +83,50 @@
 						}
 					},
 					removeUser: function() {
-						var selectUser = layui.table.checkStatus('usertab').data;
-						var selectUserIdList = [];
-						for (var i = 0; i < selectUser.length; i++) {
-							selectUserIdList.push(selectUser[i].userId);
-						}
-						var data = JSON.stringify({
-							userIds: selectUserIdList,
-							userId: window.localStorage.getItem("userId")
-						})
-						axios({
-								method: "POST",
-								url: BASEURL + "sys-mgr/sys/user/delete",
-								headers: {
-									"Content-Type": "application/json;charset=UTF-8"
-								},
-								data: data
+
+						layer.confirm('确认删除？', {
+							btn: ['确定', '取消'] //按钮
+						}, function() {
+							var selectUser = layui.table.checkStatus('usertab').data;
+							var selectUserIdList = [];
+							for (var i = 0; i < selectUser.length; i++) {
+								selectUserIdList.push(selectUser[i].userId);
+							}
+							var data = JSON.stringify({
+								userIds: selectUserIdList,
+								userId: window.localStorage.getItem("userId")
 							})
-							.then(function(res) {
-								if (res.data.code == 0) {
-									layui.layer.alert("删除成功", function(index) {
-										layui.table.reload('usertab', {
-											page: {
-												curr: 1 //重新从第 1 页开始
-											}
+							axios({
+									method: "POST",
+									url: BASEURL + "sys-mgr/sys/user/delete",
+									headers: {
+										"Content-Type": "application/json;charset=UTF-8"
+									},
+									data: data
+								})
+								.then(function(res) {
+									if (res.data.code == 0) {
+										layui.layer.alert("删除成功", function(index) {
+											layui.table.reload('usertab', {
+												page: {
+													curr: 1 //重新从第 1 页开始
+												}
+											});
+											layer.close(index)
+										})
+									} else {
+										vm.$notify.error({
+											title: '错误',
+											message: res.data.msg
 										});
-										layer.close(index)
-									})
-								} else {
-									vm.$notify.error({
-										title: '错误',
-										message: res.data.msg
-									});
-								}
-							})
+									}
+								})
+						}, function() {
+							layer.close(layer.index);
+						});
+
+
+
 					}
 				},
 				mounted: function() {

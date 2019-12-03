@@ -37,149 +37,157 @@
 
 		<script>
 			var vm = new Vue({
-				el: "#vm",
-				data: {
-					buttonList: []
-				},
-				methods: {
-					pageInit: function() {
-						this.buttonList = JSON.parse(window.localStorage.getItem("buttonList"));
-					},
-					doesItContain: function(v, l) {
-						for (var i = 0; i < l.length; i++) {
-							if (v === l[i]) {
-								return true
-							}
-						}
-						return false;
-					},
-					// 新增角色
-					addRole: function() {
-						layui.layer.open({
-							type: 2,
-							title: "新增角色",
-							maxmin: true,
-							shadeClose: true,
-							area: ['800px', '520px'],
-							content: './addRole.html'
-						})
-					},
-					// 编辑角色
-					editRole: function() {
-						// // console.log(layui.table.checkStatus('roletab'));
-						var selectRole = layui.table.checkStatus('roletab').data;
-						// 判断是否只选中了一个
-						var isOne = checkOne(selectRole);
-
-						if (isOne) {
-							window.localStorage.setItem("roleId", selectRole[0].roleId)
-							layui.layer.open({
-								type: 2,
-								title: "编辑角色",
-								maxmin: true,
-								shadeClose: true,
-								area: ['800px', '520px'],
-								content: './editRole.html'
-							})
-						}
-					},
-					removeRole: function() {
-						var selectRole = layui.table.checkStatus('roletab').data;
-						var selectRoleIdList = [];
-						for (var i = 0; i < selectRole.length; i++) {
-							selectRoleIdList.push(selectRole[i].roleId);
-						}
-						var data = JSON.stringify({
-							roleIds: selectRoleIdList,
-							userId: window.localStorage.getItem("userId")
-						})
-						axios({
-								method: "POST",
-								url: BASEURL + "sys-mgr/sys/role/delete",
-								headers: {
-									"Content-Type": "application/json;charset=UTF-8"
-								},
-								data: data
-							})
-							.then(function(res) {
-								if (res.data.code == 0) {
-									layui.layer.alert("删除成功", function(index) {
-										layui.table.reload('roletab', {
-											page: {
-												curr: 1 //重新从第 1 页开始
-											}
-										});
-										layer.close(index)
-									})
-								} else {
-									vm.$notify.error({
-										title: '错误',
-										message: res.data.msg
-									});
+						el: "#vm",
+						data: {
+							buttonList: []
+						},
+						methods: {
+							pageInit: function() {
+								this.buttonList = JSON.parse(window.localStorage.getItem("buttonList"));
+							},
+							doesItContain: function(v, l) {
+								for (var i = 0; i < l.length; i++) {
+									if (v === l[i]) {
+										return true
+									}
 								}
-							})
-					}
-				},
-				mounted: function() {
-					this.pageInit();
-				}
-			});
+								return false;
+							},
+							// 新增角色
+							addRole: function() {
+								layui.layer.open({
+									type: 2,
+									title: "新增角色",
+									maxmin: true,
+									shadeClose: true,
+									area: ['800px', '520px'],
+									content: './addRole.html'
+								})
+							},
+							// 编辑角色
+							editRole: function() {
+								// // console.log(layui.table.checkStatus('roletab'));
+								var selectRole = layui.table.checkStatus('roletab').data;
+								// 判断是否只选中了一个
+								var isOne = checkOne(selectRole);
 
-			layui.config({
-				base: '../../../layuiadmin/' //静态资源所在路径
-			}).extend({
-				index: 'lib/index' //主入口模块
-			}).use(['table', 'index', 'layer'], function() {
-				var table = layui.table;
-				var layer = layui.layer;
-				//第一个实例
-				table.render({
-					elem: '#roleTab',
-					id: "roletab",
-					height: 450,
-					url: layui.setter.BASEURL + 'sys-mgr/sys/role/list', //数据接口
-					page: true, //开启分页
-					limit: 15,
-					where: {
-						userId: window.localStorage.getItem("userId")
-					},
-					limits: [15, 30, 50, 100, 200],
-					cols: [
-						[{
-								type: 'checkbox',
-								fixed: 'left'
+								if (isOne) {
+									window.localStorage.setItem("roleId", selectRole[0].roleId)
+									layui.layer.open({
+										type: 2,
+										title: "编辑角色",
+										maxmin: true,
+										shadeClose: true,
+										area: ['800px', '520px'],
+										content: './editRole.html'
+									})
+								}
 							},
-							// {
-							// 	field: 'roleId',
-							// 	title: 'ID',
-							// 	width: 80,
-							// 	ixed: 'left'
-							// },
-							{
-								field: 'roleName',
-								title: '角色名',
+							removeRole: function() {
+								layer.confirm('确认删除？', {
+										btn: ['确定', '取消'] //按钮
+									}, function() {
+										var selectRole = layui.table.checkStatus('roletab').data;
+										var selectRoleIdList = [];
+										for (var i = 0; i < selectRole.length; i++) {
+											selectRoleIdList.push(selectRole[i].roleId);
+										}
+										var data = JSON.stringify({
+											roleIds: selectRoleIdList,
+											userId: window.localStorage.getItem("userId")
+										})
+										axios({
+												method: "POST",
+												url: BASEURL + "sys-mgr/sys/role/delete",
+												headers: {
+													"Content-Type": "application/json;charset=UTF-8"
+												},
+												data: data
+											})
+											.then(function(res) {
+												if (res.data.code == 0) {
+													layui.layer.alert("删除成功", function(index) {
+														layui.table.reload('roletab', {
+															page: {
+																curr: 1 //重新从第 1 页开始
+															}
+														});
+														layer.close(index)
+													})
+												} else {
+													vm.$notify.error({
+														title: '错误',
+														message: res.data.msg
+													});
+												}
+											})
+									}, function() {
+										layer.close(layer.index);
+									});
+
+
+								}
 							},
-							{
-								field: 'createTime',
-								title: '创建时间',
-							},
-							{
-								field: 'remark',
-								title: '备注',
+							mounted: function() {
+								this.pageInit();
 							}
-						]
-					],
-					parseData: function(res) { // 数据重新处理为layUI的数据格式
-						var msg = {
-							"code": res.code, //解析接口状态
-							"msg": res.msg, //解析提示文本
-							"count": res.page.totalCount, //解析数据长度
-							"data": res.page.list //解析数据列表
-						};
-						return msg;
-					}
-				});
-			});
+						});
+
+					layui.config({
+						base: '../../../layuiadmin/' //静态资源所在路径
+					}).extend({
+						index: 'lib/index' //主入口模块
+					}).use(['table', 'index', 'layer'], function() {
+						var table = layui.table;
+						var layer = layui.layer;
+						//第一个实例
+						table.render({
+							elem: '#roleTab',
+							id: "roletab",
+							height: 450,
+							url: layui.setter.BASEURL + 'sys-mgr/sys/role/list', //数据接口
+							page: true, //开启分页
+							limit: 15,
+							where: {
+								userId: window.localStorage.getItem("userId")
+							},
+							limits: [15, 30, 50, 100, 200],
+							cols: [
+								[{
+										type: 'checkbox',
+										fixed: 'left'
+									},
+									// {
+									// 	field: 'roleId',
+									// 	title: 'ID',
+									// 	width: 80,
+									// 	ixed: 'left'
+									// },
+									{
+										field: 'roleName',
+										title: '角色名',
+									},
+									{
+										field: 'createTime',
+										title: '创建时间',
+									},
+									{
+										field: 'remark',
+										title: '备注',
+									}
+								]
+							],
+							parseData: function(res) { // 数据重新处理为layUI的数据格式
+								var msg = {
+									"code": res.code, //解析接口状态
+									"msg": res.msg, //解析提示文本
+									"count": res.page.totalCount, //解析数据长度
+									"data": res.page.list //解析数据列表
+								};
+								return msg;
+							}
+						});
+					});
 		</script>
 	</body>
 </html>

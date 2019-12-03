@@ -15,10 +15,12 @@
 				padding: 20px;
 				min-height: 435px;
 			}
+
 			.treeCss {
-			    width: 50%;
-			
+				width: 50%;
+
 			}
+
 			.tree {
 				z-index: 999;
 				background: white;
@@ -27,27 +29,28 @@
 				position: relative;
 				padding: 0px 8px;
 			}
+
 			.AdminArea {
-			    position: relative;
+				position: relative;
 			}
-			
+
 			.AdminArea .Areashow {
-			    position: absolute;
-			    width: 100%;
-			    border: 1px solid #e6e6e6;
-			    /* border-radius: 4px; */
-			    z-index: 999;
-			    /* height: 200px; */
-			    background-color: #fff;
-			
+				position: absolute;
+				width: 100%;
+				border: 1px solid #e6e6e6;
+				/* border-radius: 4px; */
+				z-index: 999;
+				/* height: 200px; */
+				background-color: #fff;
+
 			}
-			
+
 			.AdminArea .layui-icon {
-			    cursor: pointer;
+				cursor: pointer;
 				position: absolute;
 				top: 10px;
 				right: 10px;
-			    color: #c2c2c2;
+				color: #c2c2c2;
 				z-index: 111;
 			}
 		</style>
@@ -73,7 +76,7 @@
 				<div class="layui-form-item">
 					<label class="layui-form-label">密码<span class="red">*</span></label>
 					<div class="layui-input-block">
-						<input type="password" v-model="password" name="password" required lay-verify="required" placeholder="请输入密码"
+						<input type="password" v-model="password" name="password" required lay-verify="required" placeholder="密码至少6位字符"
 						 autocomplete="off" class="layui-input">
 					</div>
 				</div>
@@ -97,29 +100,31 @@
 						<input type="radio" name="userType" lay-filter="userType" value="2" title="企业">
 					</div>
 				</div>
-				
+
 				<div class="layui-form-item" v-show="userType == '1' ">
 					<label class="layui-form-label">行政区域
-					<span class="red">*</span></label>
+						<span class="red">*</span></label>
 					<div class="layui-input-inline AdminArea">
-					    <input type="text" readonly="readonly" name="organizeName" v-model="atraName" placeholder="请选择行政区域" autocomplete="off" class="layui-input">
+						<input type="text" readonly="readonly" name="organizeName" v-model="atraName" placeholder="请选择行政区域" autocomplete="off"
+						 class="layui-input">
 						<i class="layui-icon layui-icon-triangle-d" @click="AdminFocus"></i>
 						<div class="Areashow layui-anim layui-anim-upbit" v-show="Areashow">
-					        <el-tree :highlight-current="treeHign" default-expand-all :expand-on-click-node="false" :data="treeData" :props="defaultProps" @node-click="handleNodeClick"></el-tree>
-				        </div>
-				    </div>
+							<el-tree :highlight-current="treeHign" default-expand-all :expand-on-click-node="false" :data="treeData" :props="defaultProps"
+							 @node-click="handleNodeClick"></el-tree>
+						</div>
+					</div>
 				</div>
-								
+
 				<div class="layui-form-item" v-show="userType == '2' ">
 					<label for="bitian" class="layui-form-label">
-					    企业名称
-					    <span class="red">*</span>
+						企业名称
+						<span class="red">*</span>
 					</label>
 					<div class="layui-input-inline">
-					    <select name="enterpriseId" id="enterpriseName" v-model="enterpriseId" lay-filter="enterpriseName">
+						<select name="enterpriseId" id="enterpriseName" v-model="enterpriseId" lay-filter="enterpriseName">
 							<option value="">请选择企业</option>
-					        <option :value="it.id" v-for="it in enterpriseList" v-text="it.name"></option>
-					    </select>
+							<option :value="it.id" v-for="it in enterpriseList" v-text="it.name"></option>
+						</select>
 					</div>
 				</div>
 				<div class="layui-form-item">
@@ -163,7 +168,7 @@
 
 					isDataReady: false, // 数据是否加载进来了
 					userType: "1", // 1 - 环保局  2 - 企业
-					
+
 					// 行政区域
 					areaCode: '',
 					atraName: '',
@@ -171,10 +176,10 @@
 					treeHign: true,
 					treeData: [],
 					defaultProps: {
-					    children: 'children',
-					    label: 'title'
+						children: 'children',
+						label: 'title'
 					},
-					
+
 					// 企业
 					enterpriseList: [],
 					enterpriseId: ''
@@ -199,43 +204,43 @@
 							});
 						// 性质区域列表
 						axios({
-								method: "post",
-								url: BASEURL + 'environmental_intelligent_monitoring/tbasorganize/dendrogramList',
-								params: {
-									type: "2",
-									userId: window.localStorage.getItem("userId") 
-								}
-							}).then(function (res) {
-								if (res.data.code == 0) {
-									vm.treeData = res.data.data;
-								} else {
-									vm.$notify.error({
-										title: '错误',
-										message: res.data.msg
-									});
-								}
-							}).catch(function (err) {
-								// console.loglog(err);
-							});
-							
+							method: "post",
+							url: BASEURL + 'environmental_intelligent_monitoring/tbasorganize/dendrogramList',
+							params: {
+								type: "2",
+								userId: window.localStorage.getItem("userId")
+							}
+						}).then(function(res) {
+							if (res.data.code == 0) {
+								vm.treeData = res.data.data;
+							} else {
+								vm.$notify.error({
+									title: '错误',
+									message: res.data.msg
+								});
+							}
+						}).catch(function(err) {
+							// console.loglog(err);
+						});
+
 						// 企业列表
 						axios({
-								method: "post",
-								url: BASEURL + 'environmental_intelligent_monitoring/tbasenterprise/list?limit=10000',
-								params: {
-									userId: window.localStorage.getItem("userId")
-								}
-							}).then(function (res) {
-								if (res.data.code == 0) {
-									vm.enterpriseList = res.data.page.list;
-									layui.form.render("select");
-							
-								} else {
-							
-								}
-							}).catch(function (err) {
-								// console.log(err);
-							});
+							method: "post",
+							url: BASEURL + 'environmental_intelligent_monitoring/tbasenterprise/list?limit=10000',
+							params: {
+								userId: window.localStorage.getItem("userId")
+							}
+						}).then(function(res) {
+							if (res.data.code == 0) {
+								vm.enterpriseList = res.data.page.list;
+								layui.form.render("select");
+
+							} else {
+
+							}
+						}).catch(function(err) {
+							// console.log(err);
+						});
 					},
 					saveUser: function() {
 						var data = JSON.stringify({
@@ -284,16 +289,16 @@
 							}
 						});
 					},
-					AdminFocus: function(){
+					AdminFocus: function() {
 						vm.Areashow = !vm.Areashow;
 					},
-					handleNodeClick:function(data, node) {
-					    // console.log(data);
-					    vm.atraName = data.title;
-					    vm.areaCode = data.id;
-					    vm.treeHign = true;
-					    vm.Areashow = false;
-					    
+					handleNodeClick: function(data, node) {
+						// console.log(data);
+						vm.atraName = data.title;
+						vm.areaCode = data.id;
+						vm.treeHign = true;
+						vm.Areashow = false;
+
 					},
 				},
 				mounted: function() {
@@ -317,18 +322,22 @@
 						$('input[type=checkbox]:checked').each(function() {
 							vm.selectRoleList.push($(this).val());
 						});
-						var reg =  /^[0-9a-zA-Z]*$/g;
-						
-						if(!reg.test(vm.username)){
+						var reg = /^[0-9a-zA-Z]*$/g;
+
+						if (!reg.test(vm.username)) {
 							layer.msg("账号为数字、字母或者两者的组合");
-						}else if (vm.selectRoleList.length == 0) {
+						} else if (vm.selectRoleList.length == 0) {
 							layer.msg("至少需要选择一个角色");
-						}else if(vm.enterpriseId == '' && vm.userType == '2'){
+						} else if (vm.password.length < 6) {
+							layer.msg("密码至少需要6位字符");
+						} else if (vm.enterpriseId == '' && vm.userType == '2') {
 							layer.msg("企业类型用户至少关联一个企业");
-						}else if(vm.areaCode == '' && vm.userType == '1'){
+						} else if (vm.areaCode == '' && vm.userType == '1') {
 							layer.msg("环保局类型用户至少关联一个环保局");
-						}else if (vm.mobile.length > 11 || vm.mobile.length < 7 && vm.mobile.length != 0) {
+						} else if (vm.mobile.length > 11 || vm.mobile.length < 7 && vm.mobile.length != 0) {
 							layer.msg("请输入正确的电话号码或者手机号")
+						} else if (vm.password !== vm.rePassword) {
+							layer.msg("两次密码输入不一致")
 						} else if (vm.email != 0) {
 							var reg = /^([a-zA-Z]|[0-9])(\w|\-)+@[a-zA-Z0-9]+\.([a-zA-Z]{2,4})$/;
 							if (!reg.test(vm.email)) {
@@ -336,13 +345,11 @@
 							} else {
 								vm.saveUser();
 							}
-						} else if (vm.password !== vm.rePassword) {
-							layer.msg("两次密码输入不一致")
 						} else {
 							vm.saveUser();
 						}
 					});
-					form.on('radio(userType)', function(data){
+					form.on('radio(userType)', function(data) {
 						// console.log(data.value); //被点击的radio的value值
 						vm.userType = data.value;
 						vm.enterpriseId = '';
@@ -352,11 +359,11 @@
 						layui.form.render("select");
 					});
 					// 监听select框获取选中的text值
-					form.on('select(enterpriseName)', function (data) {
+					form.on('select(enterpriseName)', function(data) {
 						vm.enterpriseId = data.value;
 						console.log(vm.enterpriseId);
-					    form.render();
-					
+						form.render();
+
 					});
 
 
