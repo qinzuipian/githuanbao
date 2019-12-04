@@ -363,18 +363,21 @@
 
 					// 弹出新闻详情
 					newDetail: function(it) {
-						window.localStorage.setItem("newTitle", it.title);
-						window.localStorage.setItem("newContent", it.content);
+						var newsListJSON = JSON.stringify(vm.newsList);
+						window.localStorage.setItem("newId", it.id);
+						window.localStorage.setItem("newsList", newsListJSON);
+						// window.localStorage.setItem("newTitle", it.title);
+						// window.localStorage.setItem("newContent", it.content);
 						layui.layer.open({
 							type: 2,
 							title: '公告详情',
 							maxmin: true,
 							shadeClose: true, //点击遮罩关闭层
-							area: ['650px', '350px'],
+							area: ['850px', '550px'],
 							content: './newDetail.html',
 							end: function() {
-								window.localStorage.removeItem("newTitle");
-								window.localStorage.removeItem("newContent");
+								// window.localStorage.removeItem("newTitle");
+								// window.localStorage.removeItem("newContent");
 							}
 						})
 					}

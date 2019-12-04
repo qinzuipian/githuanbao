@@ -14,7 +14,7 @@
 			}
 
 			.new-title {
-				height: 50px;
+				/* height: 50px; */
 				line-height: 50px;
 				text-align: center;
 				width: calc(100% - 2px);
@@ -32,21 +32,38 @@
 
 	<body>
 		<div id="vm">
-			<p v-text="newTitle" class="new-title"></p>
-			<p v-html="newContent" class="new-content"></p>
+
+			<div class="layui-collapse">
+				<div class="layui-colla-item" v-for="(it, index) in newsList">
+					<h2 class="layui-colla-title" v-text="it.title"></h2>
+					<div class="layui-colla-content" v-bind:class="{'layui-show': it.id==newId}" v-html="it.content">内容区域</div>
+				</div>
+			</div>
+
+
+			<!-- <p v-text="newTitle" class="new-title"></p>
+			<p v-html="newContent" class="new-content"></p> -->
 		</div>
 
 		<script src="../../layuiadmin/plugin/vue.js"></script>
+		<script src="../../layuiadmin/layui/layui.js"></script>
 		<script>
 			var vm = new Vue({
 				el: "#vm",
 				data: {
-					newTitle: window.localStorage.getItem("newTitle"),
-					newContent: window.localStorage.getItem("newContent")
-				},
+					// newTitle: window.localStorage.getItem("newTitle"),
+					// newContent: window.localStorage.getItem("newContent")
+					newId: window.localStorage.getItem("newId"),
+					newsList: JSON.parse(window.localStorage.getItem("newsList")),
+
+				}
 
 			});
+			layui.use('element', function() {
+				var element = layui.element;
 
+				//…
+			});
 		</script>
 	</body>
 
