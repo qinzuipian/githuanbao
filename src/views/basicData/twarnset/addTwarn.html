@@ -211,7 +211,7 @@
                 data.field.eventType = vm.eventType;
                 data.field.monitorName = vm.treeLabel;
                 data.field.monitorId = vm.monitorId;
-                data.field.userId = window.localStorage.getItem("userId");
+                data.field.username = window.localStorage.getItem("username");
                 if (!data.field.active) {
                     vm.$message.warning('请选择是否启用');
                 } else {

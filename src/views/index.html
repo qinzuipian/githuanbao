@@ -306,7 +306,7 @@
 							window.location.href = "./user/login.html"
 						} else {
 							axios({
-									url: BASEURL + '/sys-mgr/sys/user/info/' + userId,
+									url: BASEURL + 'sys-mgr/sys/user/info/' + userId,
 									method: 'post'
 								})
 								.then(function(res) {
