@@ -171,7 +171,8 @@
 							})
 						} else {
 							var data = JSON.stringify({
-								userId: vm.selectUserId,
+								userId: window.localStorage.getItem("userId"),
+								updateUserId: vm.selectUserId,
 								enterpriseIdList: vm.selecterEnterpriseIdList
 							})
 							axios({

@@ -85,6 +85,7 @@
 				el: "#vm",
 				data: {
 					userId: '', // 用户ID,父页面传来的
+					u_userId: '', // 当前账户的userid
 					username: '',
 					nickname: '',
 					password: '',
@@ -99,6 +100,7 @@
 				methods: {
 					pageInit: function() {
 						this.userId = window.localStorage.getItem("editUserid");
+						this.u_userId = window.localStorage.getItem("userId");
 						window.localStorage.removeItem("editUserid");
 						axios({
 								url: BASEURL + 'sys-mgr/sys/role/list',
@@ -154,7 +156,8 @@
 					},
 					saveUser: function() {
 						var data = JSON.stringify({
-							userId: vm.userId,
+							userId: vm.u_userId,
+							updateUserId: vm.userId,
 							username: vm.username,
 							nickName: vm.nickname,
 							password: vm.password,
