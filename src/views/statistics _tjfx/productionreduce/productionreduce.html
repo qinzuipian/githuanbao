@@ -183,7 +183,18 @@
 
 
 
-
+				// 获取当前的时间
+				var data = new Date();
+				laydate.render({
+					elem: '#startDate',
+					btns: ['confirm']
+				});
+				// vm.today = data.getFullYear() + "-" + (data.getMonth() + 1) + "-" + data.getDate();
+				if (data.getDate() < 9) {
+					vm.today = data.getFullYear() + "-" + (data.getMonth() + 1) + "-" + "0" + data.getDate();
+				} else {
+					vm.today = data.getFullYear() + "-" + (data.getMonth() + 1) + "-" + data.getDate();
+				}
 
 
 				tables = table.render({
@@ -193,6 +204,7 @@
 					url: layui.setter.BASEURL + 'environmental_intelligent_monitoring/dataMonitor/queryEnterpriseReduceList' //数据接口
 						,
 					where: {
+						createDate: vm.today,
 						userId: window.localStorage.getItem("userId")
 					},
 					cols: [
@@ -285,18 +297,7 @@
 
 
 
-				// 获取当前的时间
-				var data = new Date();
-				laydate.render({
-					elem: '#startDate',
-					btns: ['confirm']
-				});
-				// vm.today = data.getFullYear() + "-" + (data.getMonth() + 1) + "-" + data.getDate();
-				if(data.getDate() < 9){
-					vm.today = data.getFullYear() + "-" + (data.getMonth() + 1) + "-" + "0" + data.getDate();
-				}else{
-					vm.today = data.getFullYear() + "-" + (data.getMonth() + 1) + "-" + data.getDate();
-				}
+
 
 
 				//下拉菜单里面的选项
@@ -304,7 +305,7 @@
 					method: "post",
 					url: BASEURL + 'environmental_intelligent_monitoring/tbastrade/list?limit=10000',
 					params: {
-						userId: window.localStorage.getItem("userId")    
+						userId: window.localStorage.getItem("userId")
 					}
 				}).then(function(res) {
 					if (res.data.code == 0) {
@@ -426,7 +427,7 @@
 							url: BASEURL + 'environmental_intelligent_monitoring/tbasorganize/dendrogramList',
 							params: {
 								type: "2",
-								userId: window.localStorage.getItem("userId")    
+								userId: window.localStorage.getItem("userId")
 							}
 						}).then(function(res) {
 							if (res.data.code == 0) {

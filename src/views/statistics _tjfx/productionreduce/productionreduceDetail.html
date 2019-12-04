@@ -31,9 +31,9 @@
 						<div class="layui-btn-container flex">
 							<button type="button" class="layui-btn" @click="power">用电量</button>
 							<button type="button" class="layui-btn" @click="dust">烟尘</button>
-							<button type="button" class="layui-btn" @click="voc">VOC</button>
+							<!-- <button type="button" class="layui-btn" @click="voc">VOC</button> -->
 						</div>
-						<div  @click="change">
+						<div @click="change">
 							<!-- <p style="margin-left: 90%;color: #3492ED;font-size: 16px;">查看企业监控</p> -->
 						</div>
 						<div v-show="item_power == 1">
@@ -67,6 +67,14 @@
 					form = layui.form,
 					laydate = layui.laydate,
 					echarts = layui.echarts;
+
+				// 获取当前的时间
+				var data = new Date();
+				if (data.getDate() < 9) {
+					vm.today = data.getFullYear() + "-" + (data.getMonth() + 1) + "-" + "0" + data.getDate();
+				} else {
+					vm.today = data.getFullYear() + "-" + (data.getMonth() + 1) + "-" + data.getDate();
+				}
 
 				pow_chart = echarts.init(document.getElementById('pow_chart'), {
 					noDataLoadingOption: {
@@ -108,12 +116,13 @@
 					url: BASEURL + 'environmental_intelligent_monitoring/dataMonitor/queryEnterpriseReduceReport',
 					params: {
 						enterpriseId: parent.id,
-						userId: window.localStorage.getItem("userId")    
+						createDate:vm.today,
+						userId: window.localStorage.getItem("userId")
 					}
 				}).then(function(res) {
-					vm.ptotal_list =[];
-					vm.w_list =[];
-					vm.aqi_lis =[];
+					vm.ptotal_list = [];
+					vm.w_list = [];
+					vm.aqi_lis = [];
 					// // console.log(res);
 					pow_chart.hideLoading();
 					if (res.data.code == 0) {
@@ -174,8 +183,8 @@
 						}, true);
 					} else {
 						vm.$notify.error({
-						    title: '错误',
-						    message: res.data.msg
+							title: '错误',
+							message: res.data.msg
 						});
 
 					}
@@ -243,12 +252,13 @@
 					item_voc: 0,
 					w_list: [],
 					aqi_list: [],
-					voc_list:[],
+					voc_list: [],
 					ptotal_list: [],
 					dtotal_list: [],
 					vtotal_list: [],
 					p2_list: [],
-					p10_list: []
+					p10_list: [],
+					today:""
 				},
 				methods: {
 					power: function() {
@@ -256,13 +266,12 @@
 						this.item_dust = 0
 						this.item_voc = 0
 					},
-					change:function(){
-					},
+					change: function() {},
 					dust: function() {
 						vm.aqi_list = [];
 						vm.p10_list = [];
 						vm.p2_lis = [];
-						vm.dtotal_list =[]
+						vm.dtotal_list = []
 						this.item_power = 0;
 						this.item_dust = 1;
 						this.item_voc = 0;
@@ -271,12 +280,13 @@
 							url: BASEURL + 'environmental_intelligent_monitoring/dataMonitor/queryEnterpriseReduceReport',
 							params: {
 								enterpriseId: parent.id,
-								userId: window.localStorage.getItem("userId")    
+								createDate:vm.today,
+								userId: window.localStorage.getItem("userId")
 							}
 						}).then(function(res) {
 							dus_chart.hideLoading();
 							if (res.data.code == 0) {
-								
+
 								for (var i = 0; i < res.data.data.length; i++) {
 
 									vm.dtotal_list.push(res.data.data[i].hour);
@@ -345,8 +355,8 @@
 								}, true);
 							} else {
 								vm.$notify.error({
-								    title: '错误',
-								    message: res.data.msg
+									title: '错误',
+									message: res.data.msg
 								});
 
 							}
@@ -358,8 +368,8 @@
 					},
 					voc: function() {
 						vm.voc_list = [];
-						vm.aqi_list=[];
-						vm.vtotal_list=[]
+						vm.aqi_list = [];
+						vm.vtotal_list = []
 						this.item_power = 0;
 						this.item_dust = 0;
 						this.item_voc = 1;
@@ -368,7 +378,7 @@
 							url: BASEURL + 'environmental_intelligent_monitoring/dataMonitor/queryEnterpriseReduceReport',
 							params: {
 								enterpriseId: parent.id,
-								userId: window.localStorage.getItem("userId")    
+								userId: window.localStorage.getItem("userId")
 							}
 						}).then(function(res) {
 							voc_chart.hideLoading();
@@ -430,8 +440,8 @@
 								}, true);
 							} else {
 								vm.$notify.error({
-								    title: '错误',
-								    message: res.data.msg
+									title: '错误',
+									message: res.data.msg
 								});
 
 							}
