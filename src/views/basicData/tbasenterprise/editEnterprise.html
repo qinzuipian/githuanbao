@@ -676,7 +676,7 @@
 					data.field.concern = vm.concern;
 					data.field.organizeName = vm.atraName;
 					data.field.organizeId = vm.treeId;
-					data.field.userId = window.localStorage.getItem("userId") 
+					data.field.username = window.localStorage.getItem("username") 
 					axios({
 						method: "post",
 						url: BASEURL + 'environmental_intelligent_monitoring/tbasenterprise/update',

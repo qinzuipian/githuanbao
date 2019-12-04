@@ -120,7 +120,7 @@
 			form.on('submit(save)', function (data) {
 				var content = layedit.getContent(index);
 				data.field.content = content;
-				data.field.userId = window.localStorage.getItem("userId");
+				data.field.username = window.localStorage.getItem("username");
 				axios({
 					method: "post",
 					url: layui.setter.BASEURL + 'environmental_intelligent_monitoring/tbasnews/save',
