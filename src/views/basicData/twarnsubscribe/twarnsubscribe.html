@@ -195,7 +195,7 @@
 							var obj = {};
 							obj.enterpriseId = checkData[i].enterpriseId;
 							obj.userType = checkData[i].userType;
-							obj.SendType = checkData[i].sendType;
+							obj.sendType = checkData[i].sendType;
 							idList.push(obj)
 						}
 
@@ -211,7 +211,7 @@
 								url: layui.setter.BASEURL + 'environmental_intelligent_monitoring/twarnsubscribe/deleteByEnterpriseId',
 								data: {
 									enterpriselist: idList,
-									userId: window.localStorage.getItem("userId")
+									username: window.localStorage.getItem("username")
 								},
 								headers: {
 									"Content-Type": "application/json;charset=UTF-8"

@@ -180,7 +180,7 @@
 				method: "post",
 				url: layui.setter.BASEURL + 'environmental_intelligent_monitoring/twarnset/queryEventTypeList',
 				params: {
-					userId: window.localStorage.getItem("userId")
+					username: window.localStorage.getItem("username")
 				}
 			}).then(function (res) {
 				if (res.data.code == 0) {
@@ -198,7 +198,7 @@
 			});
 			//监听搜索
 			form.on('submit(LAY-app-contlist-search)', function (data) {
-				data.field.userId = window.localStorage.getItem("userId")
+				data.field.username = window.localStorage.getItem("username")
 				var field = data.field;
 				// console.log(field);
 
@@ -235,7 +235,7 @@
 								url: layui.setter.BASEURL + 'environmental_intelligent_monitoring/twarnset/delete',
 								data: {
 									ids: idList,
-									userId: window.localStorage.getItem("userId")
+									username: window.localStorage.getItem("username")
 								},
 								headers: {
 									"Content-Type": "application/json;charset=UTF-8"

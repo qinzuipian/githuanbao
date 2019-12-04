@@ -239,7 +239,7 @@
                 data.field.enterpriseName = vm.enterpriseName;
                 data.field.eventTypeListStr = vm.eventTypeList.join();
                 data.field.eventTypeIdListStr = vm.eventTypeIdList.join();
-                data.field.userId= window.localStorage.getItem("userId");
+                data.field.username= window.localStorage.getItem("username");
                 // console.log(data.field);
                 axios({
                     method: "post",

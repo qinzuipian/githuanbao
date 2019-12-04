@@ -195,7 +195,7 @@
             // form表单的提交
             form.on('submit(editFormDemo)', function (data) {
                 // console.log(data.field)
-                data.field.userId= window.localStorage.getItem("userId")
+                data.field.username= window.localStorage.getItem("username")
                 if (!data.field.active) {
                     vm.$message.warning('请选择是否启用');
                 } else {
