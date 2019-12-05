@@ -20,14 +20,13 @@
             white-space: nowrap;
             overflow-x: auto;
             width: auto;
-            /* height: 500px; */
+            height: 400px;
         }
 
         .tableList {
             width: 100%;
             /* position: absolute; */
             background-color: #fff;
-
         }
 
         .tableList tr {
@@ -94,16 +93,46 @@
                 </div>
                 <div class="allTable">
                     <table class="tableList" v-show="reportDataDay.length!=0">
-                        <tr>
-                            <th v-for="(item,index) in dataTime" v-text="item"></th>
-                        </tr>
-                        <tr v-for="(it,index) in reportDataDay" v-show="reportDataDay.length!=0">
-                            <td v-for="(item,index) in it" v-cloak>{{item}}</td>
-                        </tr>
-                        <!-- <tr v-show="reportDataDay.length==0">
-                            <td :colspan="dataTime.length">暂无数据</td>
-                        </tr> -->
+                        <thead>
+                            <tr>
+                                <th v-for="(item,index) in dataTime" v-text="item"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr v-for="(it,index) in reportDataDay" v-show="reportDataDay.length!=0">
+                                <td v-for="(item,index) in it" v-cloak>{{item}}</td>
+                            </tr>
+                        </tbody>
                     </table>
+                    <!--  <div class="layui-form layui-border-box layui-table-view" v-show="reportDataDay.length!=0">
+                        <div class="layui-table-box">
+                            <div class="layui-table-header">
+                                <table cellspacing="0" cellpadding="0" border="0" class="layui-table">
+                                    <thead>
+                                        <tr>
+                                            <th data-field="username" data-key="1-0-1" data-minwidth="100" class="" v-for="(item,index) in dataTime">
+                                                <div class="layui-table-cell laytable-cell-1-0-1">
+                                                    <span v-text="item"></span>
+                                                </div>
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                </table>
+                            </div>
+                            <div class="layui-table-body layui-table-main" style="height: 300px;">
+                                <table cellspacing="0" cellpadding="0" border="0" class="layui-table">
+                                    <tbody>
+                                        <tr data-index="0" v-for="(it,index) in reportDataDay" v-show="reportDataDay.length!=0">
+                                            <td data-field="operation" data-key="1-0-2" data-minwidth="100" v-for="(item,index) in it">
+                                                <div class="layui-table-cell laytable-cell-1-0-2" v-text="item">
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div> -->
                     <div v-show="reportDataDay.length==0">
                         暂无数据
                     </div>
