@@ -123,7 +123,7 @@
 						<div class="layui-inline">
 							<label class="layui-form-label">行政区域</label>
 							<div class="layui-input-inline AdminArea">
-								<input type="text" name="organizeName" readonly="readonly" id="div_" v-model="atraName" placeholder="请选择行政区域"
+								<input type="text" name="organizeId" readonly="readonly" id="div_" v-model="atraName" placeholder="请选择行政区域"
 								 autocomplete="off" class="layui-input">
 								<!-- <el-input type="text" name="organizeName" readonly="readonly"  id= "div_" v-model="atraName" placeholder="请选择行政区域" ></el-input> -->
 								<i class="layui-icon-triangle-d layui-icon" v-bind:class="[{ actived: isActive },{ actived_after: !isActive }]"
@@ -187,9 +187,11 @@
 				var data = new Date();
 				laydate.render({
 					elem: '#startDate',
-					btns: ['confirm']
+					done: function(value) {
+						vm.today = value;
+					}
 				});
-				// vm.today = data.getFullYear() + "-" + (data.getMonth() + 1) + "-" + data.getDate();
+				
 				if (data.getDate() < 9) {
 					vm.today = data.getFullYear() + "-" + (data.getMonth() + 1) + "-" + "0" + data.getDate();
 				} else {
@@ -282,9 +284,10 @@
 				});
 				table.on('tool(LAY-app-content-list)', function(obj) {
 					var data = obj.data;
-					// // console.log(data.enterpriseId);
+					console.log(JSON.stringify(obj));
 					if (obj.event === 'detail') {
 						window.id = data.enterpriseId;
+						window.date = vm.today;
 						layer.open({
 							type: 2,
 							title: '实时数据',
@@ -328,15 +331,14 @@
 
 				// 监听select框获取选中的text值
 				form.on('select(tradeName)', function(data) {
-
 					vm.tradeName = data.elem[data.elem.selectedIndex].text
 					form.render();
-
 				});
-
+				
 
 				//监听搜索
 				form.on('submit(LAY-app-contlist-search)', function(data) {
+					data.field.organizeId = vm.treeId;
 					var field = data.field;
 
 					//执行重载
@@ -406,14 +408,15 @@
 					tree: 0,
 					isActive: false,
 					tradeName: '',
-					today: ""
+					today: "",
+					organizeId:''
 
 
 				},
 				methods: {
 					emptyTree: function() {
 						vm.atraName = "",
-							vm.treeId = ""
+						vm.treeId = ""
 					},
 					appear: function(isActive) {
 						vm.isActive = true

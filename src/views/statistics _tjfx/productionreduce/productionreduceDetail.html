@@ -116,7 +116,7 @@
 					url: BASEURL + 'environmental_intelligent_monitoring/dataMonitor/queryEnterpriseReduceReport',
 					params: {
 						enterpriseId: parent.id,
-						createDate:vm.today,
+						createDate:parent.date,
 						userId: window.localStorage.getItem("userId")
 					}
 				}).then(function(res) {
@@ -280,7 +280,7 @@
 							url: BASEURL + 'environmental_intelligent_monitoring/dataMonitor/queryEnterpriseReduceReport',
 							params: {
 								enterpriseId: parent.id,
-								createDate:vm.today,
+								createDate:parent.date,
 								userId: window.localStorage.getItem("userId")
 							}
 						}).then(function(res) {
