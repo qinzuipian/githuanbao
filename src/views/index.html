@@ -43,7 +43,7 @@
 							</li>
 						</ul>
 						<ul class="layui-nav layui-layout-right" lay-filter="layadmin-layout-right">
-							
+
 							<li class="layui-nav-item layui-anim layui-anim-fadein" lay-unselect style="width: 100px;">
 								<a lay-href="firmAbnormal_qyyc/normalQuery/tfirmabnormal.html" lay-text="企业告警查询" @click="tofirmabnormal">
 									<i class="layui-icon layui-icon-notice"></i>
@@ -51,6 +51,15 @@
 									<!-- <span class="layui-badge-dot"></span> -->
 									<span class="layui-badge" v-text="untreatedNum"></span>
 								</a>
+							</li>
+							<li class="layui-nav-item" lay-unselect style="width: 100px;">
+								<!-- <a lay-href="firmAbnormal_qyyc/normalQuery/tfirmabnormal.html" lay-text="企业告警查询" @click="tofirmabnormal">
+									<i class="layui-icon layui-icon-notice"></i>
+									<!-- 如果有新消息，则显示小圆点 -->
+								<!-- <span class="layui-badge-dot"></span> -->
+								<!-- <span class="layui-badge" v-text="untreatedNum"></span> -->
+								<!-- </a> -->
+								<div id="tp-weather-widget"></div>
 							</li>
 							<li class="layui-nav-item layui-hide-xs" lay-unselect>
 								<a href="javascript:;" layadmin-event="theme">
@@ -272,7 +281,6 @@
 							<iframe src="home/homepage.html" frameborder="0" class="layadmin-iframe"></iframe>
 						</div>
 					</div>
-
 					<!-- 辅助元素，一般用于移动设备下遮罩 -->
 					<div class="layadmin-body-shade" layadmin-event="shade"></div>
 				</div>
@@ -283,6 +291,40 @@
 		<script src="../layuiadmin/plugin/vue.min.js"></script>
 		<script src="../layuiadmin/plugin/axios.js"></script>
 		<script src="../layuiadmin/plugin/element.js"></script>
+		<script>
+			(function(a, h, g, f, e, d, c, b) {
+				b = function() {
+					d = h.createElement(g);
+					c = h.getElementsByTagName(g)[0];
+					d.src = e;
+					d.charset = "utf-8";
+					d.async = 1;
+					c.parentNode.insertBefore(d, c)
+				};
+				a["SeniverseWeatherWidgetObject"] = f;
+				a[f] || (a[f] = function() {
+					(a[f].q = a[f].q || []).push(arguments)
+				});
+				a[f].l = +new Date();
+				if (a.attachEvent) {
+					a.attachEvent("onload", b)
+				} else {
+					a.addEventListener("load", b, false)
+				}
+			}(window, document, "script", "SeniverseWeatherWidget", "//cdn.sencdn.com/widget2/static/js/bundle.js?t=" +
+				parseInt((new Date().getTime() / 100000000).toString(), 10)));
+			window.SeniverseWeatherWidget('show', {
+				flavor: "slim",
+				location: "WW96VH3U3KG5",
+				geolocation: true,
+				language: "zh-Hans",
+				unit: "c",
+				theme: "auto",
+				token: "57789e3d-f458-453c-8bb5-115c3186b329",
+				hover: "enabled",
+				container: "tp-weather-widget"
+			})
+		</script>
 		<script>
 			layui.config({
 				base: '../layuiadmin/' //静态资源所在路径
@@ -357,8 +399,8 @@
 								}
 							})
 					},
-					
-					getUntreatedError: function(){
+
+					getUntreatedError: function() {
 						axios({
 								method: "POST",
 								url: BASEURL + "environmental_intelligent_monitoring/tfirmabnormal/queryUntreatedNum",
@@ -374,17 +416,18 @@
 								}
 							})
 					},
-					tofirmabnormal: function(){
+
+					tofirmabnormal: function() {
 						window.localStorage.setItem("currentStatus", "0");
 					}
-					
+
 				},
 				mounted: function() {
 					this.pageInit();
 					this.getUntreatedError();
-					setInterval(function(){
+					setInterval(function() {
 						vm.getUntreatedError()
-					},60000)
+					}, 60000)
 				}
 			})
 		</script>
