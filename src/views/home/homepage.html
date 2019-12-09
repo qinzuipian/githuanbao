@@ -260,9 +260,25 @@
 												'16', '17', '18', '19', '20', '21', '22', '23'
 											]
 										},
-										yAxis: {
-											type: 'value'
-										},
+										yAxis: [{
+												name: '(kW·h)',
+												type: 'value',
+												// splitArea: {
+												// 	"show": true
+												// },
+												position: 'left',
+											},
+											{
+												type: 'value',
+												// splitArea: {
+												// 	"show": true
+												// },
+												position: 'right',
+											},
+										],
+										// yAxis: {
+										// 	type: 'value'
+										// },
 										tooltip: {
 											trigger: 'axis'
 										},
@@ -270,13 +286,15 @@
 												name: '用电量',
 												// stack: '总量',
 												data: effortsNumY,
-												type: 'line'
+												type: 'line',
+												yAxisIndex: 0
 											},
 											{
 												name: 'AQI',
 												type: 'line',
 												// stack: '总量',
-												data: effortsNumY2
+												data: effortsNumY2,
+												yAxisIndex: 1,
 											}
 										]
 									};

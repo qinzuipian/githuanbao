@@ -4,8 +4,6 @@ layui.define(['laytpl', 'layer', 'element', 'util'], function (exports) {
     exports('setter', {
         container: 'LAY_app' //容器ID
         , base: layui.cache.base //记录静态资源所在路径
-        // , BASEURL: "http://192.168.1.188:9091/" //todo 接口路径
-        // , BASEURL: "http://132.232.11.63:9091/" //todo 接口路径
         // , BASEURL: "http://192.168.1.166:9091/" //todo 接口路径
         // , BASEURL: "http://192.168.1.13:9091/" //todo 接口路径
         // , BASEURL: "http://106.54.92.42:9091/" //todo 接口路径
