@@ -228,7 +228,7 @@
 							method: "post",
 							url: BASEURL + 'environmental_intelligent_monitoring/tbasenterprise/list?limit=10000',
 							params: {
-								userId: window.localStorage.getItem("userId")
+								// userId: window.localStorage.getItem("userId")
 							}
 						}).then(function(res) {
 							if (res.data.code == 0) {
