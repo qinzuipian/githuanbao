@@ -232,6 +232,9 @@
 											type: 'category',
 											data: tradeX
 										},
+										tooltip: {
+											trigger: 'axis'
+										},
 										yAxis: {
 											type: 'value'
 										},
@@ -260,8 +263,10 @@
 										yAxis: {
 											type: 'value'
 										},
-										series: [
-											{
+										tooltip: {
+											trigger: 'axis'
+										},
+										series: [{
 												name: '用电量',
 												// stack: '总量',
 												data: effortsNumY,
@@ -292,6 +297,9 @@
 										},
 										yAxis: {
 											type: 'value'
+										},
+										tooltip: {
+											trigger: 'axis'
 										},
 										series: [{
 											data: organizeY,
@@ -326,6 +334,9 @@
 										yAxis: [{
 											type: 'value'
 										}],
+										tooltip: {
+											trigger: 'axis'
+										},
 										series: [{
 												name: '产污',
 												type: 'bar',
