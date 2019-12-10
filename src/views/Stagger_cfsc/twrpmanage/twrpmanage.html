@@ -243,6 +243,7 @@
                                 vm.checkKey = keyData
                                 // console.log(vm.checkKey);
                                 vm.$refs.tree.setCheckedKeys(vm.checkKey);
+                                vm.monitorIdData = treeData;
                             } else {
                                 vm.$notify.error({
                                     title: '错误',
@@ -546,6 +547,7 @@
                             })
                         }
                         vm.monitorIdData = data;
+                        console.log(vm.monitorIdData)
                         vm.monitorIdData.forEach(function (item, index) {
                             // console.log(item);
                             vm.monitoridList.push(item.monitorId);
