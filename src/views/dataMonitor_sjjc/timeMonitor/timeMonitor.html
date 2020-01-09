@@ -2,7 +2,7 @@
 <html>
 	<head>
 		<meta charset="utf-8">
-		<title>总体检测</title>
+		<title>总体监控</title>
 		<meta name="renderer" content="webkit">
 		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
@@ -571,14 +571,17 @@
 				// 先把企业ID保存到本地
 				window.localStorage.setItem("enterpriseId", someT);
 				// 搜索 企业监控 页面是否打开,如果打开就先关闭 企业监控 页面,然后再打开传值,相当于重新刷新一遍企业页面
-				var tabsheaderDomList = window.parent.document.getElementById("LAY_app_tabsheader").getElementsByTagName("li")
+				var tabsheaderDomList = window.parent.document.getElementById("LAY_app_tabsheader").getElementsByTagName("li");
+				// console.log(tabsheaderDomList);
 				for (var i = 0; i < tabsheaderDomList.length; i++) {
 					if (tabsheaderDomList[i].attributes[0].value == "firmAbnormal_qyyc/normalQuery/firmMonitor.html") {
-						// console.log("已经打开该页面了");
+						console.log("已经打开该页面了");
 						parent.layui.index.refreshTab(i);
+						break;
 					} else {
 						// 没有打开的情况下直接新增tab
 						window.parent.document.getElementById("yincang").click();
+						break;
 					}
 				}
 			}
