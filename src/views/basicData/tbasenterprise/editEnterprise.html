@@ -187,7 +187,7 @@
 										<!-- <span class="red">*</span> -->
 										</label>
 									<div class="layui-input-inline">
-										<input type="text" name="longitude" lay-verify="required" class="layui-input"  />
+										<input type="text" name="longitude" v-model="longitude"  class="layui-input"  />
 									</div>
 								</div>
 								<div class="layui-form-item">
@@ -195,7 +195,7 @@
 										<!-- <span class="red">*</span> -->
 										</label>
 									<div class="layui-input-inline">
-										<input type="text" name="latitude" lay-verify="required" class="layui-input"  />
+										<input type="text" name="latitude" v-model="latitude"  class="layui-input"  />
 									</div>
 								</div>
 								<div class="layui-form-item">
@@ -560,6 +560,8 @@
 									vm.atraName = res.data.tBasEnterprise.organizeName
 									vm.tradeName = res.data.tBasEnterprise.tradeName
 									vm.concern = res.data.tBasEnterprise.concern
+									vm.longitude = res.data.tBasEnterprise.longitude
+									vm.latitude = res.data.tBasEnterprise.latitude
 									form.val('editEnterprise', {
 										"id": list.id,
 										"address": list.address,
@@ -676,6 +678,8 @@
 					data.field.concern = vm.concern;
 					data.field.organizeName = vm.atraName;
 					data.field.organizeId = vm.treeId;
+					data.field.latitude = vm.latitude;
+					data.field.longitude = vm.longitude;
 					data.field.username = window.localStorage.getItem("username") 
 					axios({
 						method: "post",
@@ -760,7 +764,10 @@
 					treeValue: "",
 					treeId: "",
 					changepic: 0,
-					beforeshop: []
+					beforeshop: [],
+					latitude:"",
+					longitude:""
+					
 				},
 				methods: {
 					cancel: function() {
