@@ -79,24 +79,49 @@
 
 
 				form.on('submit(save)', function(data) {
-					get()
-					var index = parent.layer.getFrameIndex(window.name); //关闭特定的iframe窗口
-					parent.layer.close(index);
+					data.field.id = parent.ids
+					axios({
+						method: "post",
+						url: layui.setter.BASEURL + 'environmental_intelligent_monitoring/tbasshop/update',
+						data: data.field,
+						headers: {
+							"Content-Type": "application/json;charset=UTF-8"
+						}
+					}).then(function(res) {
+						if(res.data.code == 0){
+							window.parent.location.reload();
+							parent.layer.close('iframe');
+						}
+							
+							// var index = parent.layer.getFrameIndex(window.name); //关闭特定的iframe窗口
+							// parent.layer.close(index);
+						
+					}).catch(function(err) {
+						// // console.log(err);
+					});
+					return false;
+							
+					
+					
+					
+					
+				
 
 				})
 
 
 			})
 			//子页面定义的方法,供父页面调用获取数值
-			function get() {
-				var name = document.getElementById("name").value;
-				var remark = document.getElementById("remark").value;
-				var obj = new Object();
-				obj.name = name; //为对象增加属性
-				obj.remark = remark;
-				vm.list.push(obj);
-				return vm.list;
-			}
+			// function get() {
+			// 	console.log("调用了get方法");
+			// 	var name = document.getElementById("name").value;
+			// 	var remark = document.getElementById("remark").value;
+			// 	var obj = new Object();
+			// 	obj.name = name; //为对象增加属性
+			// 	obj.remark = remark;
+			// 	vm.list.push(obj);
+			// 	return vm.list;
+			// }
 
 
 			var vm = new Vue({

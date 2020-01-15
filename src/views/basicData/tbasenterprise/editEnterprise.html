@@ -778,6 +778,7 @@
 						this.isActive = !this.isActive
 					},
 					edit: function(it, index_) {
+						window.ids = it.id;
 						layer.open({
 							type: 2,
 							title: '编辑车间',
@@ -789,29 +790,62 @@
 								var iframeWin = window[layero.find('iframe')[0]['name']]; //得到iframe页的窗口对象，执行iframe页的方法：iframeWin.method();
 								body.find('#name').val(it.name); //将值从父页面传到子页面的方法
 								body.find('#remark').val(it.remark);
-								body.find("#save").click(function() {
-									vm.hasedit = 1;
-									var list = iframeWin.get();
-									for (var i = 0; i < list.length; i++) {
-										it.name = list[i].name;
-										it.remark = list[i].remark;
-										// console.loglog(it.name);
-										// console.loglog(it.remark);
-									}
+								// body.find("#save").click(function() {
+								// 	vm.hasedit = 1;
+								// 	var list = iframeWin.get();
+								// 	for (var i = 0; i < list.length; i++) {
+								// 		it.name = list[i].name;
+								// 		it.remark = list[i].remark;
+								// 		// console.loglog(it.name);
+								// 		// console.loglog(it.remark);
+								// 	}
 
-								})
+								// })
 							}
 						});
 					},
 					delet: function(it, index) {
-						for (var i = 0; i < vm.list.length; i++) {
-							if (index == i) {
-								vm.list.splice(i, 1);
+						var listid = []
+						listid.push(it.id);
+						console.log(listid);
+						axios({
+							method: "post",
+							url: layui.setter.BASEURL + 'environmental_intelligent_monitoring/tbasshop/delete',
+							data:{
+								ids:listid
+							},
+							headers: {
+								"Content-Type": "application/json;charset=UTF-8"
 							}
-						}
-						if (vm.list.length == 0) {
-							vm.hasedit = 0;
-						}
+						}).then(function(res) {
+							console.log(res);
+							if(res.data.code == 203){
+								layer.msg('删除失败,清先清空下级监测点');
+							}else if(res.data.code == 0){
+								location.reload();
+								layer.msg('删除成功');
+							}
+							
+							
+						}).catch(function(err) {
+							// // console.log(err);
+						});
+						
+						
+						
+						
+						
+						
+						
+						
+						// for (var i = 0; i < vm.list.length; i++) {
+						// 	if (index == i) {
+						// 		vm.list.splice(i, 1);
+						// 	}
+						// }
+						// if (vm.list.length == 0) {
+						// 	vm.hasedit = 0;
+						// }
 					},
 					AdminFocus: function() {
 						vm.Areashow = !vm.Areashow;
