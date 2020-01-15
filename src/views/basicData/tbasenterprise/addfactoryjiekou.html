@@ -3,7 +3,7 @@
 
 	<head>
 		<meta charset="UTF-8">
-		<title>编辑车间</title>
+		<title>新增车间</title>
 		<meta name="renderer" content="webkit">
 		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 		<meta name="viewport" content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi" />
@@ -77,52 +77,27 @@
 
 
 
-
+				
 				form.on('submit(save)', function(data) {
-					data.field.id = parent.ids
-					axios({
-						method: "post",
-						url: layui.setter.BASEURL + 'environmental_intelligent_monitoring/tbasshop/update',
-						data: data.field,
-						headers: {
-							"Content-Type": "application/json;charset=UTF-8"
-						}
-					}).then(function(res) {
-						if(res.data.code == 0){
-							window.parent.location.reload();
-							parent.layer.close('iframe');
-						}
-							
-						
-					}).catch(function(err) {
-						// // console.log(err);
-					});
-					return false;
+					var index = parent.layer.getFrameIndex(window.name); //关闭特定的iframe窗口
+					parent.layer.close(index);
+
 				})
-			})
-			//子页面定义的方法,供父页面调用获取数值
-			// function get() {
-			// 	console.log("调用了get方法");
-			// 	var name = document.getElementById("name").value;
-			// 	var remark = document.getElementById("remark").value;
-			// 	var obj = new Object();
-			// 	obj.name = name; //为对象增加属性
-			// 	obj.remark = remark;
-			// 	vm.list.push(obj);
-			// 	return vm.list;
-			// }
+
+
+			});
+
+
+
 
 
 			var vm = new Vue({
 				el: "#vm",
 				data: {
 					list: []
-
 				},
 				methods: {
 					addData: function() {
-
-
 
 					},
 					cancel: function() {

@@ -354,7 +354,7 @@
 												<i class="layui-icon layui-icon-edit" @click="edit(it,index)"></i>
 												<i class="layui-icon layui-icon-close  close" @click="delet(it,index)"></i>
 											</div>
-											<p style="text-align: left;margin: 5px;color: red;">注：车间删除时,请确认车间下无检测点存在</p>
+											<p style="text-align: left;margin: 5px;color: red;">注：车间删除时,请确认车间下无监测点存在</p>
 										</div>
 									</div>
 								</div>
@@ -459,6 +459,8 @@
 				var $ = layui.$,
 					active = {
 						add: function() {
+							window.ids = parent.id
+							window.names = vm.entername
 							layer.open({
 								type: 2,
 								title: '添加车间',
@@ -466,17 +468,17 @@
 								maxmin: true,
 								area: ['500px', '300px'],
 								success: function(layero, index) {
-									var body = layer.getChildFrame('body', index);
-									var iframeWin = window[layero.find('iframe')[0]['name']]; //得到iframe页的窗口对象，执行iframe页的方法：iframeWin.method();
-									body.find("#save").click(function() {
-										vm.hasedit = 1;
-										vm.name = $(window.frames[0].document).find("#name").val();
-										vm.remark = $(window.frames[0].document).find("#remark").val();
-										var obj = new Object();
-										obj.name = vm.name; //为对象增加属性
-										obj.remark = vm.remark;
-										vm.list.push(obj);
-									})
+									// var body = layer.getChildFrame('body', index);
+									// var iframeWin = window[layero.find('iframe')[0]['name']]; //得到iframe页的窗口对象，执行iframe页的方法：iframeWin.method();
+									// body.find("#save").click(function() {
+									// 	vm.hasedit = 1;
+									// 	vm.name = $(window.frames[0].document).find("#name").val();
+									// 	vm.remark = $(window.frames[0].document).find("#remark").val();
+									// 	var obj = new Object();
+									// 	obj.name = vm.name; //为对象增加属性
+									// 	obj.remark = vm.remark;
+									// 	vm.list.push(obj);
+									// })
 
 								}
 							});
@@ -562,6 +564,8 @@
 									vm.concern = res.data.tBasEnterprise.concern
 									vm.longitude = res.data.tBasEnterprise.longitude
 									vm.latitude = res.data.tBasEnterprise.latitude
+									vm.entername = res.data.tBasEnterprise.name
+									
 									form.val('editEnterprise', {
 										"id": list.id,
 										"address": list.address,
@@ -758,7 +762,6 @@
 					address: "",
 					trustCode: "",
 					endCreateDate: "",
-					name: '',
 					tree: 0,
 					isActive: 0,
 					treeValue: "",
@@ -766,7 +769,8 @@
 					changepic: 0,
 					beforeshop: [],
 					latitude:"",
-					longitude:""
+					longitude:"",
+					entername:""
 					
 				},
 				methods: {
@@ -807,7 +811,6 @@
 					delet: function(it, index) {
 						var listid = []
 						listid.push(it.id);
-						console.log(listid);
 						axios({
 							method: "post",
 							url: layui.setter.BASEURL + 'environmental_intelligent_monitoring/tbasshop/delete',
