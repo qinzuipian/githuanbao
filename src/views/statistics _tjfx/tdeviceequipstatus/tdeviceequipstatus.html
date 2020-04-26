@@ -43,9 +43,9 @@
 							<div class="layui-input-block">
 								<select name="status">
 									<option value="">请选择</option>
-									<option value="1">运行</option>
-									<option value="2">停机</option>
-									<option value="3">失联</option>
+									<option value="1">开启</option>
+									<option value="2">关闭</option>
+									<option value="3">离线</option>
 								</select>
 							</div>
 						</div>
@@ -113,7 +113,7 @@
 									minWidth: 100
 
 								}, {
-									title: '设备名称',
+									title: '设备类型',
 									field: 'codename',
 									minWidth: 100
 
@@ -151,11 +151,11 @@
 					done: function(res, page, count) {
 						$("[data-field='status']").children().each(function() {
 							if ($(this).text() == '1') {
-								$(this).text("运行")
+								$(this).text("开启")
 							} else if ($(this).text() == '2') {
-								$(this).text("停机")
+								$(this).text("关闭")
 							} else if ($(this).text() == '3') {
-								$(this).text("失联")
+								$(this).text("离线")
 							}
 						})
 					}

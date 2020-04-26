@@ -50,7 +50,7 @@
 										<span v-text="treatMonitorNum" class="card-num"></span> 个</span>
 								</div>
 								<div class="layui-row left-row">
-									<p class="layui-col-sm6">总表:</p>
+									<p class="layui-col-sm6">总进线:</p>
 									<span>
 										<span v-text="monitorNum" class="card-num"></span> 个</span>
 								</div>
@@ -123,8 +123,8 @@
 						</el-card>
 					</div>
 				</div>
-
-				<div class="layui-row layui-col-space10" style="margin-top: 10px;">
+				<!-- 取掉下面三个echarts图表 -->
+				<!-- <div class="layui-row layui-col-space10" style="margin-top: 10px;">
 					<div class="layui-col-sm6 layui-col-xs12">
 						<el-card class="box-card" style="height: 400px;">
 							<div slot="header" class="clearfix">
@@ -145,8 +145,8 @@
 							</div>
 						</el-card>
 					</div>
-				</div>
-				<div class="layui-row layui-col-space10" style="margin-top: 10px;">
+				</div> -->
+				<!-- <div class="layui-row layui-col-space10" style="margin-top: 10px;">
 					<div class="layui-col-sm12 layui-col-xs12">
 						<el-card class="box-card" style="height: 400px;">
 							<div slot="header" class="clearfix">
@@ -157,7 +157,7 @@
 							</div>
 						</el-card>
 					</div>
-				</div>
+				</div> -->
 			</div>
 		</div>
 
@@ -441,9 +441,9 @@
 					var echart = layui.echarts;
 					var layer = layui.layer;
 
-					var tradeAbnormal = echart.init(document.getElementById("tradeAbnormal"));
-					var organizeAbnormal = echart.init(document.getElementById("organizeAbnormal"));
-					var startMonitor = echart.init(document.getElementById("startMonitor"));
+					// var tradeAbnormal = echart.init(document.getElementById("tradeAbnormal"));
+					// var organizeAbnormal = echart.init(document.getElementById("organizeAbnormal"));
+					// var startMonitor = echart.init(document.getElementById("startMonitor"));
 					var efforts = echart.init(document.getElementById("efforts"));
 					var carousel = layui.carousel;
 
@@ -469,7 +469,7 @@
 								{
 									field: 'enterpriseName',
 									title: '企业名称',
-									width: '20%'
+									// width: '20%'
 
 								}, {
 									field: 'MonitorName',
@@ -489,9 +489,9 @@
 					});
 
 
-					tradeAbnormal.setOption(abnormalTradeNum); //各行业异常企业占比 表格
-					organizeAbnormal.setOption(abnormalOrganizeNum); //各行业异常企业占比 表格
-					startMonitor.setOption(startMonitorNum); //各行业异常企业占比 表格
+					// tradeAbnormal.setOption(abnormalTradeNum); //各行业异常企业占比 表格
+					// organizeAbnormal.setOption(abnormalOrganizeNum); //各行业异常企业占比 表格
+					// startMonitor.setOption(startMonitorNum); //各行业异常企业占比 表格
 					efforts.setOption(effortsNum)
 
 				});

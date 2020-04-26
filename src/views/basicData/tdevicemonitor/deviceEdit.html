@@ -130,7 +130,7 @@
                         <div class="layui-input-inline">
 
                             <!-- <input type="text" v-model="tDeviceMonitor.type" class="layui-input" placeholder="设备类型:1、生产设备 2、治污设备" /> -->
-                            <select name="ecType" id="ecType" lay-filter="ecType" lay-verify="">
+                            <select name="ecType" id="ecType" v-model="ecType" lay-filter="ecType" lay-verify="">
                                 <option value=""></option>
                             </select>
 
@@ -150,7 +150,7 @@
                             <!-- <span class="red">*</span> -->
                         </label>
                         <div class="layui-input-inline">
-                            <select name="route" id="route" lay-filter="route" lay-verify="">
+                            <select name="route" id="route" v-model="route" lay-filter="route" lay-verify="">
                                 <option value=""></option>
                             </select>
                             <!-- <input type="text" name="route" class="layui-input" placeholder="" /> -->
@@ -504,10 +504,7 @@
             var form = layui.form,
                 $ = layui.jquery;
 
-
             // select框动态填充联动
-
-
             // 第一层填充
             axios({
                 method: "post",
@@ -771,10 +768,9 @@
                 .then(res => {
                     if (res.data.code == 0) {
                         // console.log(res.data.tDeviceMonitor);
-
                         var Devicedata = res.data.tDeviceMonitor;
-                        // // console.log(Devicedata.isShow)
-                        // // console.log(Devicedata.collectType,vm.shopname)
+                        // console.log(Devicedata.isShow)
+                        // console.log(Devicedata.ecPolluteType,Devicedata.ecType,Devicedata.route)
                         form.val('editDevice', {
                             "id": Devicedata.id
                             , "monitorName": Devicedata.monitorName// "name": "value"
@@ -940,11 +936,12 @@
                             }
                         }).then(function (res) {
                             if (res.data.code == 0) {
-                                // // console.log(res)
+                                console.log(res)
                                 $.each(res.data.data, function (index, item) {
-                                    // // console.log(index, item)
+                                    // console.log(index, item)
                                     $('#ecType').append(new Option(item.text, item.id));// 下拉菜单里添加元素
                                 });
+                                vm.ecType = Devicedata.ecType;            
                                 layui.form.render("select");
                                 // 第三层获取
                                 $("#route").empty();
@@ -952,7 +949,8 @@
                                     method: "post",
                                     url: BASEURL + 'environmental_intelligent_monitoring/tdevicemonitor/queryPolluteType',
                                     params: {
-                                        id: $("#ecType").val(),
+                                        id: vm.ecType,
+                                        // id: $("#ecType").val(),
                                         userId: window.localStorage.getItem("userId")
                                     }
                                     /* headers: {
@@ -962,9 +960,10 @@
                                     if (res.data.code == 0) {
                                         // // console.log(res)
                                         $.each(res.data.data, function (index, item) {
-                                            // console.log(index, item);
+                                            console.log(index, item);
                                             $('#route').append(new Option(item.text, item.id));// 下拉菜单里添加元素
                                         });
+                                        vm.route = Devicedata.route;
                                         layui.form.render("select");
 
                                     } else {
@@ -1056,6 +1055,8 @@
         var vm = new Vue({
             el: "#vm",
             data: {
+                ecType:"",
+                route:"",
                 tDeviceMonitor: {},
                 treeData: [],
                 treeItemShow: 0,

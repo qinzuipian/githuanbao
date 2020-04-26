@@ -270,7 +270,21 @@
 				} else if (layEvent === 'dataRun') {
 					// location.href = "firmMonitor.html";
 					localStorage.setItem("enterpriseId", data.enterpriseId);
-					window.parent.document.getElementById("yincang").click();
+					// 搜索 企业监控 页面是否打开,如果打开就先关闭 企业监控 页面,然后再打开传值,相当于重新刷新一遍企业页面
+					var tabsheaderDomList = window.parent.document.getElementById("LAY_app_tabsheader").getElementsByTagName("li");
+					// console.log(tabsheaderDomList);
+					for (var i = 0; i < tabsheaderDomList.length; i++) {
+						console.log(tabsheaderDomList[i])
+						if (tabsheaderDomList[i].attributes[0].value == "firmAbnormal_qyyc/normalQuery/firmMonitor.html") {
+							console.log("已经打开该页面了");
+							parent.layui.index.refreshTab(i);
+							// break;
+						} else {
+							// 没有打开的情况下直接新增tab
+							window.parent.document.getElementById("yincang").click();
+							// break;
+						}
+					}
 					// layer.msg('暂未开发')
 				}
 			});

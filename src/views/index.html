@@ -111,23 +111,26 @@
 									<dl class="layui-nav-child">
 										<dd v-show="doesItContain(4, menuList)"><a lay-href="dataMonitor_sjjc/enterprisePower/enterprisePower.html">企业用电明细统计</a></dd>
 									</dl>
-									<dl class="layui-nav-child">
+									<!-- <dl class="layui-nav-child">
 										<dd v-show="doesItContain(5, menuList)"><a lay-href="dataMonitor_sjjc/enterpriseRunData/enterpriseRunData.html">企业设施运行统计</a></dd>
-									</dl>
+									</dl> -->
 								</li>
 								<li data-name="industry" class="layui-nav-item" v-show="doesItContain(6, catalogList)">
 									<a href="javascript:;" lay-tips="减产减排管理" lay-direction="2">
 										<i class="layui-icon layui-icon-date"></i>
-										<cite>减产减排管理</cite>
+										<!-- <cite>减产减排管理</cite> -->
+										<cite>限产停产管理</cite>
 									</a>
 									<dl class="layui-nav-child">
-										<dd v-show="doesItContain(7, menuList)"><a lay-href="Stagger_cfsc/twrpimplementation/twrpimplementation.html">企业限产停产状况</a></dd>
+										<!-- 企业限产停产状况 -->
+										<dd v-show="doesItContain(7, menuList)"><a lay-href="Stagger_cfsc/twrpimplementation/twrpimplementation.html">限产停产方案管理</a></dd>
 									</dl>
 									<dl class="layui-nav-child">
 										<dd v-show="doesItContain(8, menuList)"><a lay-href="Stagger_cfsc/twrpmanage/twrpmanage.html">企业限产停产管理</a></dd>
 									</dl>
 									<dl class="layui-nav-child">
-										<dd v-show="doesItContain(9, menuList)"><a lay-href="Stagger_cfsc/tbizreduce/tbizreduce.html">减排方案管理</a></dd>
+										<!-- 减排方案管理 -->
+										<dd v-show="doesItContain(9, menuList)"><a lay-href="Stagger_cfsc/tbizreduce/tbizreduce.html">企业限产停产状况</a></dd>
 									</dl>
 								</li>
 								<li data-name="industry" class="layui-nav-item" v-show="doesItContain(10, catalogList)">
@@ -138,11 +141,12 @@
 									<dl class="layui-nav-child">
 										<dd v-show="doesItContain(11, menuList)"><a lay-href="EnergyAnaly_nhfx/energyReport/energyReport.html">企业能耗明细统计</a></dd>
 									</dl>
-									<dl class="layui-nav-child">
+									<!-- <dl class="layui-nav-child">
 										<dd v-show="doesItContain(12, menuList)"><a lay-href="EnergyAnaly_nhfx/energyStatistics/energyStatistics.html">企业能耗汇总统计</a></dd>
-									</dl>
+									</dl> -->
 									<dl class="layui-nav-child">
-										<dd v-show="doesItContain(13, menuList)"><a lay-href="EnergyAnaly_nhfx/EnterpriseElectricity/EnterpriseElectricity.html">企业用电汇总统计</a></dd>
+										<!-- 企业用电汇总统计 -->
+										<dd v-show="doesItContain(13, menuList)"><a lay-href="EnergyAnaly_nhfx/EnterpriseElectricity/EnterpriseElectricity.html">企业能耗汇总统计</a></dd>
 									</dl>
 								</li>
 								<li data-name="industry" class="layui-nav-item" v-show="doesItContain(14, catalogList)">
@@ -154,13 +158,13 @@
 										<dd v-show="doesItContain(15, menuList)"><a id="toDeviceequipstatus" lay-href="statistics _tjfx/tdeviceequipstatus/tdeviceequipstatus.html">设施状态查询</a></dd>
 									</dl>
 
-									<dl class="layui-nav-child">
+									<!-- <dl class="layui-nav-child">
 										<dd v-show="doesItContain(16, menuList)"><a lay-href="statistics _tjfx/productionreduce/productionreduce.html">减产减排分析</a></dd>
 									</dl>
 
 									<dl class="layui-nav-child">
 										<dd v-show="doesItContain(17, menuList)"><a lay-href="statistics _tjfx/tdeviceequipStatistics/tdeviceequipStatistics.html">企业及产污设施分析</a></dd>
-									</dl>
+									</dl> -->
 								</li>
 								<li data-name="industry" class="layui-nav-item" v-show="doesItContain(18, catalogList)">
 									<a href="javascript:;" lay-tips="企业告警管理" lay-direction="2">
@@ -273,8 +277,6 @@
 							</ul>
 						</div>
 					</div>
-
-
 					<!-- 主体内容 -->
 					<div class="layui-body" id="LAY_app_body">
 						<div class="layadmin-tabsbody-item layui-show">

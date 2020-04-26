@@ -333,11 +333,11 @@
             methods: {
                 // 为时间添加默认时间
                 timePicker: function () {
-                    // // console.log(this.timeShow)
+                    // console.log(this.timeShow)
                     var now = new Date();
                     var year = now.getFullYear(); //得到年份
-                    var month = now.getMonth() + 1 < 9 ? ('0' + now.getMonth() + 1) : now.getMonth() + 1; //得到月份
-                    var date = now.getDate() < 9 ? ('0' + now.getDate()) : now.getDate(); //得到日期
+                    var month = now.getMonth() + 1 < 9 ? '0' + (now.getMonth() + 1) : now.getMonth() + 1; //得到月份
+                    var date = now.getDate() < 9 ? '0' + (now.getDate()) : now.getDate(); //得到日期
                     if (this.timeShow == 1) {
                         var defaultDate = year + '-' + month + '-' + date;
                         this.startDate = defaultDate;
@@ -353,7 +353,7 @@
                     }
                 },
                 timeSelect: function (val) {
-                    console.log(val)
+                    // console.log(val)
                     if (val == 'year') {
                         vm.timeShow = 2;
                     } else if (val == 'month') {

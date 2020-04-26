@@ -7,7 +7,7 @@ layui.define(['laytpl', 'layer', 'element', 'util'], function (exports) {
         // , BASEURL: "http://192.168.1.166:9091/" //todo 接口路径
         // , BASEURL: "http://192.168.1.13:9091/" //todo 接口路径
         // , BASEURL: "http://106.54.92.42:9091/" //todo 接口路径
-        , BASEURL: "http://47.105.183.106:9092/" //todo 接口路径
+        , BASEURL: "http://47.105.183.106:9091/" //todo 接口路径
         , views: layui.cache.base + 'tpl/' //动态模板所在目录
         , entry: 'index' //默认视图文件名
         , engine: '.html' //视图文件后缀名

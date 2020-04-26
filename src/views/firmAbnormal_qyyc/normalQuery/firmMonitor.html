@@ -170,7 +170,7 @@
 									</div>
 									<div id="indexchart" style="width: 100%;height: 300px;"></div>
 									<!-- <p class="nodata"v-show="nodata == 0">暂无数据</p> -->
-									<div id="indexcharts" style="width: 100%;height: 300px;"></div>
+									<!-- <div id="indexcharts" style="width: 100%;height: 300px;"></div> -->
 									<!-- <p class="nodata"v-show="nodata == 0">暂无数据</p> -->
 									<div class="flex">
 										<p>名称</p>
@@ -196,11 +196,6 @@
 											<div id="jcmorechart" style="width: 100%;height: 300px;"></div>
 										</div>
 									</div>
-
-
-
-
-
 								</div>
 								<!-- 第二层折线图展示 -->
 								<!-- 第三层柱状图展示 -->
@@ -244,23 +239,25 @@
 										<td v-text="tradeName"></td>
 									</tr>
 									<tr>
-										<td>企业负责人</td>
+										<td>企业联系人</td>
 										<td v-text="chargePerson"></td>
 										<td>产污监测点</td>
 										<td v-text="productMonitorNum"></td>
 									</tr>
 									<tr>
-										<td>电气负责人</td>
-										<td v-text=""></td>
+										<!-- <td>电气负责人</td>
+										<td v-text=""></td> -->
 										<td>污处监测点</td>
 										<td v-text="treatMonitorNum"></td>
+										<td>监测点</td>
+										<td v-text="total"></td>
 									</tr>
-									<tr>
+									<!-- <tr>
 										<td>安环负责人</td>
 										<td v-text=""></td>
 										<td>监测点</td>
 										<td v-text="total"></td>
-									</tr>
+									</tr> -->
 								</table>
 							</div>
 							<div class="monitorTable">
@@ -347,7 +344,7 @@
 				inchart = echarts.init(document.getElementById('indexchart'));
 
 				//监测点的柱状图
-				incharts = echarts.init(document.getElementById('indexcharts'));
+				// incharts = echarts.init(document.getElementById('indexcharts'));
 				//企业界面的折线图
 				myCharts = echarts.init(document.getElementById('dataEcharts'));
 
@@ -500,6 +497,8 @@
 								$(this).text("产污设备")
 							} else if ($(this).text() == '1') {
 								$(this).text("治污设备")
+							} else if($(this).text() == '2') {
+								$(this).text("总进线")
 							}
 						})
 					}
@@ -1393,7 +1392,7 @@
 					});
 
 					// 监测点     里面的柱状图
-					axios({
+					/* axios({
 						method: "post",
 						url: BASEURL + 'environmental_intelligent_monitoring/tkwhhour/queryCycleEle',
 						params: {
@@ -1449,14 +1448,8 @@
 
 						}
 					}).catch(function(err) {
-						// // console.log(err);
-					});
-
-
-
-
-
-
+						// console.log(err);
+					}); */
 				}, 1000)
 			}
 
@@ -1807,7 +1800,7 @@
 
 			window.onclick = function() {
 				inchart.resize();
-				incharts.resize();
+				// incharts.resize();
 				myCharts.resize();
 				qymorechart.resize();
 				jcmorechart.resize();
