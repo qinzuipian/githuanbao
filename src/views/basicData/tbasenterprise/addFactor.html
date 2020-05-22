@@ -44,7 +44,7 @@
 		<div id="vm">
 			<div class="layui-fluid">
 				<div class="layui-row">
-					<form class="layui-form">
+					<form class="layui-form" style="margin-top: 10px;">
 						<div class="layui-form-item">
 							<label for="bitian" class="layui-form-label">车间名称</label>
 							<div class="layui-input-inline">
@@ -79,12 +79,27 @@
 
 				
 				form.on('submit(save)', function(data) {
-					var index = parent.layer.getFrameIndex(window.name); //关闭特定的iframe窗口
-					parent.layer.close(index);
-
+					data.field.enterpriseId = parent.ids,
+					data.field.enterpriseName = parent.names
+					axios({
+						method: "post",
+						url: layui.setter.BASEURL + 'environmental_intelligent_monitoring/tbasshop/save',
+						data: data.field,
+						headers: {
+							"Content-Type": "application/json;charset=UTF-8"
+						}
+					}).then(function(res) {
+						if(res.data.code == 0){
+							window.parent.location.reload();
+							parent.layer.close('iframe');
+						}
+						
+						
+					}).catch(function(err) {
+						// // console.log(err);
+					});
+					return false;
 				})
-
-
 			});
 
 
