@@ -1,438 +1,485 @@
 <!DOCTYPE html>
 <html>
-	<head>
-		<meta charset="utf-8">
-		<title>环保用电在线监管云平台</title>
-		<meta name="renderer" content="webkit">
-		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-		<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
-		<link rel="stylesheet" href="../layuiadmin/layui/css/layui.css" media="all">
-		<link rel="stylesheet" href="../layuiadmin/style/admin.css" media="all">
-		<link rel="stylesheet" type="text/css" href="../layuiadmin/plugin/element.css" />
-		<style type="text/css">
-			.layui-side-menu .layui-nav .layui-nav-itemed>.layui-nav-child {
-				padding: 0;
-			}
 
-			.layui-nav-child dd {
-				height: 50px;
-			}
+<head>
+	<meta charset="utf-8">
+	<title>环保用电在线监管云平台</title>
+	<meta name="renderer" content="webkit">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<meta name="viewport"
+		content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+	<link rel="stylesheet" href="../layuiadmin/layui/css/layui.css" media="all">
+	<link rel="stylesheet" href="../layuiadmin/style/admin.css" media="all">
+	<link rel="stylesheet" type="text/css" href="../layuiadmin/plugin/element.css" />
+	<style type="text/css">
+		.layui-side-menu .layui-nav .layui-nav-itemed>.layui-nav-child {
+			padding: 0;
+		}
 
-			.layui-nav-child dd a {
-				line-height: 50px !important;
-			}
-		</style>
-	</head>
-	<body class="layui-layout-body">
-		<div id="vm">
-			<div id="LAY_app">
-				<div class="layui-layout layui-layout-admin">
-					<div class="layui-header">
-						<!-- 头部区域 -->
-						<ul class="layui-nav layui-layout-left">
-							<li class="layui-nav-item layadmin-flexible" lay-unselect>
-								<a href="javascript:;" layadmin-event="flexible" title="侧边伸缩">
-									<i class="layui-icon layui-icon-shrink-right" id="LAY_app_flexible"></i>
-								</a>
-							</li>
+		.layui-nav-child dd {
+			height: 50px;
+		}
 
-							<li class="layui-nav-item" lay-unselect>
-								<a href="javascript:;" layadmin-event="refresh" title="刷新">
-									<i class="layui-icon layui-icon-refresh-3"></i>
-								</a>
-							</li>
-						</ul>
-						<ul class="layui-nav layui-layout-right" lay-filter="layadmin-layout-right">
+		.layui-nav-child dd a {
+			line-height: 50px !important;
+		}
+	</style>
+</head>
 
-							<li class="layui-nav-item layui-anim layui-anim-fadein" lay-unselect style="width: 100px;">
-								<a lay-href="firmAbnormal_qyyc/normalQuery/tfirmabnormal.html" lay-text="企业告警查询" @click="tofirmabnormal">
-									<i class="layui-icon layui-icon-notice"></i>
-									<!-- 如果有新消息，则显示小圆点 -->
-									<!-- <span class="layui-badge-dot"></span> -->
-									<span class="layui-badge" v-text="untreatedNum"></span>
-								</a>
-							</li>
-							<li class="layui-nav-item" lay-unselect style="width: 100px;">
-								<!-- <a lay-href="firmAbnormal_qyyc/normalQuery/tfirmabnormal.html" lay-text="企业告警查询" @click="tofirmabnormal">
-									<i class="layui-icon layui-icon-notice"></i>-->
-									<!-- 如果有新消息，则显示小圆点 -->
+<body class="layui-layout-body">
+	<div id="vm">
+		<div id="LAY_app">
+			<div class="layui-layout layui-layout-admin">
+				<div class="layui-header">
+					<!-- 头部区域 -->
+					<ul class="layui-nav layui-layout-left">
+						<li class="layui-nav-item layadmin-flexible" lay-unselect>
+							<a href="javascript:;" layadmin-event="flexible" title="侧边伸缩">
+								<i class="layui-icon layui-icon-shrink-right" id="LAY_app_flexible"></i>
+							</a>
+						</li>
+
+						<li class="layui-nav-item" lay-unselect>
+							<a href="javascript:;" layadmin-event="refresh" title="刷新">
+								<i class="layui-icon layui-icon-refresh-3"></i>
+							</a>
+						</li>
+					</ul>
+					<ul class="layui-nav layui-layout-right" lay-filter="layadmin-layout-right">
+
+						<li class="layui-nav-item layui-anim layui-anim-fadein" lay-unselect style="width: 100px;">
+							<a lay-href="firmAbnormal_qyyc/normalQuery/tfirmabnormal.html" lay-text="企业告警查询"
+								@click="tofirmabnormal">
+								<i class="layui-icon layui-icon-notice"></i>
+								<!-- 如果有新消息，则显示小圆点 -->
 								<!-- <span class="layui-badge-dot"></span> -->
-								<!-- <span class="layui-badge" v-text="untreatedNum"></span> -->
-								<!-- </a> -->
-								<div id="tp-weather-widget"></div>
-							</li>
-							<li class="layui-nav-item layui-hide-xs" lay-unselect>
-								<a href="javascript:;" layadmin-event="theme">
-									<i class="layui-icon layui-icon-theme"></i>
-								</a>
-							</li>
+								<span class="layui-badge" v-text="untreatedNum"></span>
+							</a>
+						</li>
+						<li class="layui-nav-item" lay-unselect style="width: 100px;">
+							<!-- <a lay-href="firmAbnormal_qyyc/normalQuery/tfirmabnormal.html" lay-text="企业告警查询" @click="tofirmabnormal">
+									<i class="layui-icon layui-icon-notice"></i>-->
+							<!-- 如果有新消息，则显示小圆点 -->
+							<!-- <span class="layui-badge-dot"></span> -->
+							<!-- <span class="layui-badge" v-text="untreatedNum"></span> -->
+							<!-- </a> -->
+							<div id="tp-weather-widget"></div>
+						</li>
+						<li class="layui-nav-item layui-hide-xs" lay-unselect>
+							<a href="javascript:;" layadmin-event="theme">
+								<i class="layui-icon layui-icon-theme"></i>
+							</a>
+						</li>
 
-							<li class="layui-nav-item layui-hide-xs" lay-unselect>
-								<a href="./dataControler.html">
+						<li class="layui-nav-item layui-hide-xs" lay-unselect>
+							<a href="./dataControler.html">
+								<i class="layui-icon layui-icon-console"></i>
+							</a>
+						</li>
+
+						<li class="layui-nav-item layui-hide-xs" lay-unselect>
+							<a href="javascript:;" layadmin-event="fullscreen">
+								<i class="layui-icon layui-icon-screen-full"></i>
+							</a>
+						</li>
+						<li class="layui-nav-item" lay-unselect style="margin-right: 20px;">
+							<a href="javascript:;">
+								<cite v-text="username"></cite>
+							</a>
+							<dl class="layui-nav-child">
+								<dd><a lay-href="set/user/info.html">基本资料</a></dd>
+								<dd><a lay-href="set/user/password.html">修改密码</a></dd>
+								<hr>
+								<dd @click="logout" style="text-align: center;cursor: pointer;"><a>退出</a></dd>
+							</dl>
+						</li>
+
+					</ul>
+				</div>
+				<!-- 侧边菜单 -->
+				<div class="layui-side layui-side-menu">
+					<div class="layui-side-scroll">
+						<div class="layui-logo">
+							<p>开发区</p>
+							<span>环保用电在线监管云平台</span>
+						</div>
+
+						<ul class="layui-nav layui-nav-tree" lay-shrink="all" id="LAY-system-side-menu"
+							lay-filter="layadmin-system-side-menu">
+							<li data-name="industry" class="layui-nav-item" v-show="doesItContain(2, catalogList)">
+								<a href="javascript:;" lay-tips="企业监控" lay-direction="2">
 									<i class="layui-icon layui-icon-console"></i>
-								</a>
-							</li>
-
-							<li class="layui-nav-item layui-hide-xs" lay-unselect>
-								<a href="javascript:;" layadmin-event="fullscreen">
-									<i class="layui-icon layui-icon-screen-full"></i>
-								</a>
-							</li>
-							<li class="layui-nav-item" lay-unselect style="margin-right: 20px;">
-								<a href="javascript:;">
-									<cite v-text="username"></cite>
+									<cite>企业监控</cite>
 								</a>
 								<dl class="layui-nav-child">
-									<dd><a lay-href="set/user/info.html">基本资料</a></dd>
-									<dd><a lay-href="set/user/password.html">修改密码</a></dd>
-									<hr>
-									<dd @click="logout" style="text-align: center;cursor: pointer;"><a>退出</a></dd>
+									<dd v-show="doesItContain(3, menuList)"><a
+											lay-href="dataMonitor_sjjc/timeMonitor/timeMonitor.html"
+											id="totalCtrl">总体监控</a></dd>
 								</dl>
-							</li>
-
-						</ul>
-					</div>
-					<!-- 侧边菜单 -->
-					<div class="layui-side layui-side-menu">
-						<div class="layui-side-scroll">
-							<div class="layui-logo">
-								<span>环保用电在线监管云平台</span>
-							</div>
-
-							<ul class="layui-nav layui-nav-tree" lay-shrink="all" id="LAY-system-side-menu" lay-filter="layadmin-system-side-menu">
-								<li data-name="industry" class="layui-nav-item" v-show="doesItContain(2, catalogList)">
-									<a href="javascript:;" lay-tips="企业监控" lay-direction="2">
-										<i class="layui-icon layui-icon-console"></i>
-										<cite>企业监控</cite>
-									</a>
-									<dl class="layui-nav-child">
-										<dd v-show="doesItContain(3, menuList)"><a lay-href="dataMonitor_sjjc/timeMonitor/timeMonitor.html" id="totalCtrl">总体监控</a></dd>
-									</dl>
-									<dl class="layui-nav-child">
-										<dd v-show="doesItContain(4, menuList)"><a lay-href="dataMonitor_sjjc/enterprisePower/enterprisePower.html">企业用电明细统计</a></dd>
-									</dl>
-									<!-- <dl class="layui-nav-child">
+								<dl class="layui-nav-child">
+									<dd v-show="doesItContain(4, menuList)"><a
+											lay-href="dataMonitor_sjjc/enterprisePower/enterprisePower.html">企业用电明细统计</a>
+									</dd>
+								</dl>
+								<!-- <dl class="layui-nav-child">
 										<dd v-show="doesItContain(5, menuList)"><a lay-href="dataMonitor_sjjc/enterpriseRunData/enterpriseRunData.html">企业设施运行统计</a></dd>
 									</dl> -->
-								</li>
-								<li data-name="industry" class="layui-nav-item" v-show="doesItContain(6, catalogList)">
-									<a href="javascript:;" lay-tips="减产减排管理" lay-direction="2">
-										<i class="layui-icon layui-icon-date"></i>
-										<!-- <cite>减产减排管理</cite> -->
-										<cite>限产停产管理</cite>
-									</a>
-									<dl class="layui-nav-child">
-										<!-- 企业限产停产状况 -->
-										<dd v-show="doesItContain(7, menuList)"><a lay-href="Stagger_cfsc/twrpimplementation/twrpimplementation.html">限产停产方案管理</a></dd>
-									</dl>
-									<dl class="layui-nav-child">
-										<dd v-show="doesItContain(8, menuList)"><a lay-href="Stagger_cfsc/twrpmanage/twrpmanage.html">企业限产停产管理</a></dd>
-									</dl>
-									<dl class="layui-nav-child">
-										<!-- 减排方案管理 -->
-										<dd v-show="doesItContain(9, menuList)"><a lay-href="Stagger_cfsc/tbizreduce/tbizreduce.html">企业限产停产状况</a></dd>
-									</dl>
-								</li>
-								<li data-name="industry" class="layui-nav-item" v-show="doesItContain(10, catalogList)">
-									<a href="javascript:;" lay-tips="企业能耗分析" lay-direction="2">
-										<i class="layui-icon layui-icon-fire"></i>
-										<cite>企业能耗分析</cite>
-									</a>
-									<dl class="layui-nav-child">
-										<dd v-show="doesItContain(11, menuList)"><a lay-href="EnergyAnaly_nhfx/energyReport/energyReport.html">企业能耗明细统计</a></dd>
-									</dl>
-									<!-- <dl class="layui-nav-child">
+							</li>
+							<li data-name="industry" class="layui-nav-item" v-show="doesItContain(6, catalogList)">
+								<a href="javascript:;" lay-tips="减产减排管理" lay-direction="2">
+									<i class="layui-icon layui-icon-date"></i>
+									<!-- <cite>减产减排管理</cite> -->
+									<cite>限产停产管理</cite>
+								</a>
+								<dl class="layui-nav-child">
+									<!-- 企业限产停产状况 -->
+									<dd v-show="doesItContain(7, menuList)"><a
+											lay-href="Stagger_cfsc/twrpimplementation/twrpimplementation.html">企业限产停产状况</a>
+									</dd>
+								</dl>
+								<dl class="layui-nav-child">
+									<dd v-show="doesItContain(8, menuList)"><a
+											lay-href="Stagger_cfsc/twrpmanage/twrpmanage.html">企业限产停产管理</a></dd>
+								</dl>
+								<dl class="layui-nav-child">
+									<!-- 减排方案管理 -->
+									<dd v-show="doesItContain(9, menuList)"><a
+											lay-href="Stagger_cfsc/tbizreduce/tbizreduce.html">限产停产方案管理</a></dd>
+								</dl>
+							</li>
+							<li data-name="industry" class="layui-nav-item" v-show="doesItContain(10, catalogList)">
+								<a href="javascript:;" lay-tips="企业能耗分析" lay-direction="2">
+									<i class="layui-icon layui-icon-fire"></i>
+									<cite>企业能耗分析</cite>
+								</a>
+								<dl class="layui-nav-child">
+									<!-- 企业能耗明细统计 -->
+									<dd v-show="doesItContain(11, menuList)"><a
+											lay-href="EnergyAnaly_nhfx/energyReport/energyReport.html">监测点能耗明细统计</a>
+									</dd>
+								</dl>
+								<!-- <dl class="layui-nav-child">
 										<dd v-show="doesItContain(12, menuList)"><a lay-href="EnergyAnaly_nhfx/energyStatistics/energyStatistics.html">企业能耗汇总统计</a></dd>
 									</dl> -->
-									<dl class="layui-nav-child">
-										<!-- 企业用电汇总统计 -->
-										<dd v-show="doesItContain(13, menuList)"><a lay-href="EnergyAnaly_nhfx/EnterpriseElectricity/EnterpriseElectricity.html">企业能耗汇总统计</a></dd>
-									</dl>
-								</li>
-								<li data-name="industry" class="layui-nav-item" v-show="doesItContain(14, catalogList)">
-									<a href="javascript:;" lay-tips="企业设施分析" lay-direction="2">
-										<i class="layui-icon layui-icon-chart-screen"></i>
-										<cite>企业设施分析</cite>
-									</a>
-									<dl class="layui-nav-child">
-										<dd v-show="doesItContain(15, menuList)"><a id="toDeviceequipstatus" lay-href="statistics _tjfx/tdeviceequipstatus/tdeviceequipstatus.html">设施状态查询</a></dd>
-									</dl>
+								<dl class="layui-nav-child">
+									<!-- 企业用电汇总统计 -->
+									<dd v-show="doesItContain(13, menuList)"><a
+											lay-href="EnergyAnaly_nhfx/EnterpriseElectricity/EnterpriseElectricity.html">企业能耗明细统计</a>
+									</dd>
+								</dl>
+							</li>
+							<li data-name="industry" class="layui-nav-item" v-show="doesItContain(14, catalogList)">
+								<a href="javascript:;" lay-tips="企业设施分析" lay-direction="2">
+									<i class="layui-icon layui-icon-chart-screen"></i>
+									<cite>企业设施分析</cite>
+								</a>
+								<dl class="layui-nav-child">
+									<dd v-show="doesItContain(15, menuList)"><a id="toDeviceequipstatus"
+											lay-href="statistics _tjfx/tdeviceequipstatus/tdeviceequipstatus.html">设施状态查询</a>
+									</dd>
+								</dl>
 
-									<!-- <dl class="layui-nav-child">
+								<!-- <dl class="layui-nav-child">
 										<dd v-show="doesItContain(16, menuList)"><a lay-href="statistics _tjfx/productionreduce/productionreduce.html">减产减排分析</a></dd>
-									</dl>
+									</dl>-->
 
-									<dl class="layui-nav-child">
-										<dd v-show="doesItContain(17, menuList)"><a lay-href="statistics _tjfx/tdeviceequipStatistics/tdeviceequipStatistics.html">企业及产污设施分析</a></dd>
-									</dl> -->
-								</li>
-								<li data-name="industry" class="layui-nav-item" v-show="doesItContain(18, catalogList)">
-									<a href="javascript:;" lay-tips="企业告警管理" lay-direction="2">
-										<i class="layui-icon layui-icon-form"></i>
-										<cite>企业告警管理</cite>
-									</a>
-									<dl class="layui-nav-child">
-										<dd v-show="doesItContain(19, menuList)"><a lay-href="firmAbnormal_qyyc/normalQuery/tfirmabnormal.html" id="enterpriseErrQuery">企业告警查询</a></dd>
-										<dd v-show="doesItContain(20, menuList)"><a lay-href="firmAbnormal_qyyc/normalHandle/handleHome.html">企业告警处理</a></dd>
-										<dd v-show="doesItContain(21, menuList)"><a lay-href="firmAbnormal_qyyc/normalDeclare/declareHome.html">企业告警申报</a></dd>
-										<dd v-show="doesItContain(22, menuList)"><a lay-href="firmAbnormal_qyyc/normalExamine/examineHome.html">告警申报审核</a></dd>
-									</dl>
-								</li>
-								<li data-name="industry" class="layui-nav-item" v-show="doesItContain(23, catalogList)">
-									<a href="javascript:;" lay-tips="系统日志" lay-direction="2">
-										<i class="layui-icon layui-icon-log"></i>
-										<cite>系统日志</cite>
-									</a>
-									<dl class="layui-nav-child">
-										<dd v-show="doesItContain(24, menuList)"><a lay-href="log/login_log.html">系统登录日志</a></dd>
-									</dl>
-									<dl class="layui-nav-child">
-										<dd v-show="doesItContain(25, menuList)"><a lay-href="log/visit_log.html">系统访问日志</a></dd>
-									</dl>
-									<dl class="layui-nav-child">
-										<dd v-show="doesItContain(26, menuList)"><a lay-href="log/chart_log.html">系统访问统计</a></dd>
-									</dl>
-								</li>
-								<li data-name="industry" class="layui-nav-item" v-show="doesItContain(27, catalogList)">
-									<a href="javascript:;" lay-tips="系统数据管理" lay-direction="2">
-										<i class="layui-icon layui-icon-template-1"></i>
-										<cite>系统数据管理</cite>
-									</a>
+								<dl class="layui-nav-child">
+									<dd v-show="doesItContain(17, menuList)"><a
+											lay-href="statistics _tjfx/tdeviceequipStatistics/tdeviceequipStatistics.html">企业及产污设施分析</a>
+									</dd>
+								</dl>
+							</li>
+							<li data-name="industry" class="layui-nav-item" v-show="doesItContain(18, catalogList)">
+								<a href="javascript:;" lay-tips="企业告警管理" lay-direction="2">
+									<i class="layui-icon layui-icon-form"></i>
+									<cite>企业告警管理</cite>
+								</a>
+								<dl class="layui-nav-child">
+									<dd v-show="doesItContain(19, menuList)"><a
+											lay-href="firmAbnormal_qyyc/normalQuery/tfirmabnormal.html"
+											id="enterpriseErrQuery">企业告警查询</a></dd>
+									<dd v-show="doesItContain(20, menuList)"><a
+											lay-href="firmAbnormal_qyyc/normalHandle/handleHome.html">企业告警处理</a></dd>
+									<dd v-show="doesItContain(21, menuList)"><a
+											lay-href="firmAbnormal_qyyc/normalDeclare/declareHome.html">企业告警申报</a></dd>
+									<dd v-show="doesItContain(22, menuList)"><a
+											lay-href="firmAbnormal_qyyc/normalExamine/examineHome.html">告警申报审核</a></dd>
+								</dl>
+							</li>
+							<li data-name="industry" class="layui-nav-item" v-show="doesItContain(23, catalogList)">
+								<a href="javascript:;" lay-tips="系统日志" lay-direction="2">
+									<i class="layui-icon layui-icon-log"></i>
+									<cite>系统日志</cite>
+								</a>
+								<dl class="layui-nav-child">
+									<dd v-show="doesItContain(24, menuList)"><a lay-href="log/login_log.html">系统登录日志</a>
+									</dd>
+								</dl>
+								<dl class="layui-nav-child">
+									<dd v-show="doesItContain(25, menuList)"><a lay-href="log/visit_log.html">系统访问日志</a>
+									</dd>
+								</dl>
+								<dl class="layui-nav-child">
+									<dd v-show="doesItContain(26, menuList)"><a lay-href="log/chart_log.html">系统访问统计</a>
+									</dd>
+								</dl>
+							</li>
+							<li data-name="industry" class="layui-nav-item" v-show="doesItContain(27, catalogList)">
+								<a href="javascript:;" lay-tips="系统数据管理" lay-direction="2">
+									<i class="layui-icon layui-icon-template-1"></i>
+									<cite>系统数据管理</cite>
+								</a>
 
-									<dl class="layui-nav-child">
-										<dd v-show="doesItContain(28, menuList)"><a lay-href="basicData/tbasorganize/tbasorganize.html">监管机构管理</a></dd>
-									</dl>
-									<dl class="layui-nav-child">
-										<dd v-show="doesItContain(29, menuList)"><a lay-href="basicData/tbasenterprise/tbasenterprise.html">企业管理</a></dd>
-									</dl>
-									<dl class="layui-nav-child">
-										<dd v-show="doesItContain(30, menuList)"><a lay-href="basicData/industry/industry.html">企业行业管理</a></dd>
-									</dl>
-									<dl class="layui-nav-child">
-										<dd v-show="doesItContain(31, menuList)"><a lay-href="basicData/tdevicemonitor/tdevicemonitor.html">监测点管理</a></dd>
-									</dl>
-									<dl class="layui-nav-child">
-										<dd v-show="doesItContain(32, menuList)"><a lay-href="basicData/Technology/technologyHome.html">信息工艺管理</a></dd>
-									</dl>
-									<dl class="layui-nav-child">
-										<dd v-show="doesItContain(33, menuList)"><a lay-href="basicData/deviceGroup/devicegroup.html">产污治污设备分组</a></dd>
-									</dl>
-									<dl class="layui-nav-child">
-										<dd v-show="doesItContain(34, menuList)"><a lay-href="basicData/tbasenterpriseallocate/tbasenterpriseallocate.html">企业监管分配</a></dd>
-									</dl>
-									<dl class="layui-nav-child">
-										<dd v-show="doesItContain(35, menuList)"><a lay-href="basicData/twarnset/twarnset.html">设备异常设置</a></dd>
-									</dl>
-									<dl class="layui-nav-child">
-										<dd v-show="doesItContain(36, menuList)"><a lay-href="basicData/twarnsubscribe/twarnsubscribe.html">机构异常订阅</a></dd>
-									</dl>
-									<dl class="layui-nav-child">
-										<dd v-show="doesItContain(37, menuList)"><a lay-href="basicData/tbasnews/tbasnews.html">系统公告管理</a></dd>
-									</dl>
-								</li>
-								<li data-name="industry" class="layui-nav-item" v-show="doesItContain(38, catalogList)">
-									<a href="javascript:;" lay-tips="用户角色管理" lay-direction="2">
-										<i class="layui-icon layui-icon-user"></i>
-										<cite>用户角色管理</cite>
-									</a>
-									<dl class="layui-nav-child">
-										<dd v-show="doesItContain(40, menuList)"><a lay-href="user/role/role.html">角色管理</a></dd>
-									</dl>
-									<dl class="layui-nav-child">
-										<dd v-show="doesItContain(39, menuList)"><a lay-href="user/user/user.html">用户管理</a></dd>
-									</dl>
-								</li>
-								<li data-name="industry3" class="layui-nav-item" style="display: none;">
-									<a href="javascript:;" lay-direction="2">
-										<i class="layui-icon layui-icon-date"></i>
-										<cite>隐藏菜单</cite>
-									</a>
-									<dl class="layui-nav-child">
-										<dd><a id="yincang" lay-href="firmAbnormal_qyyc/normalQuery/firmMonitor.html">企业监测</a></dd>
-									</dl>
-								</li>
-							</ul>
-						</div>
+								<dl class="layui-nav-child">
+									<dd v-show="doesItContain(28, menuList)"><a
+											lay-href="basicData/tbasorganize/tbasorganize.html">监管机构管理</a></dd>
+								</dl>
+								<dl class="layui-nav-child">
+									<dd v-show="doesItContain(29, menuList)"><a
+											lay-href="basicData/tbasenterprise/tbasenterprise.html">企业管理</a></dd>
+								</dl>
+								<dl class="layui-nav-child">
+									<dd v-show="doesItContain(30, menuList)"><a
+											lay-href="basicData/industry/industry.html">企业行业管理</a></dd>
+								</dl>
+								<dl class="layui-nav-child">
+									<dd v-show="doesItContain(31, menuList)"><a
+											lay-href="basicData/tdevicemonitor/tdevicemonitor.html">监测点管理</a></dd>
+								</dl>
+								<dl class="layui-nav-child">
+									<dd v-show="doesItContain(32, menuList)"><a
+											lay-href="basicData/Technology/technologyHome.html">信息工艺管理</a></dd>
+								</dl>
+								<dl class="layui-nav-child">
+									<dd v-show="doesItContain(33, menuList)"><a
+											lay-href="basicData/deviceGroup/devicegroup.html">产污治污设备分组</a></dd>
+								</dl>
+								<dl class="layui-nav-child">
+									<dd v-show="doesItContain(34, menuList)"><a
+											lay-href="basicData/tbasenterpriseallocate/tbasenterpriseallocate.html">企业监管分配</a>
+									</dd>
+								</dl>
+								<dl class="layui-nav-child">
+									<dd v-show="doesItContain(35, menuList)"><a
+											lay-href="basicData/twarnset/twarnset.html">设备异常设置</a></dd>
+								</dl>
+								<dl class="layui-nav-child">
+									<dd v-show="doesItContain(36, menuList)"><a
+											lay-href="basicData/twarnsubscribe/twarnsubscribe.html">机构异常订阅</a></dd>
+								</dl>
+								<dl class="layui-nav-child">
+									<dd v-show="doesItContain(37, menuList)"><a
+											lay-href="basicData/tbasnews/tbasnews.html">系统公告管理</a></dd>
+								</dl>
+							</li>
+							<li data-name="industry" class="layui-nav-item" v-show="doesItContain(38, catalogList)">
+								<a href="javascript:;" lay-tips="用户角色管理" lay-direction="2">
+									<i class="layui-icon layui-icon-user"></i>
+									<cite>用户角色管理</cite>
+								</a>
+								<dl class="layui-nav-child">
+									<dd v-show="doesItContain(40, menuList)"><a lay-href="user/role/role.html">角色管理</a>
+									</dd>
+								</dl>
+								<dl class="layui-nav-child">
+									<dd v-show="doesItContain(39, menuList)"><a lay-href="user/user/user.html">用户管理</a>
+									</dd>
+								</dl>
+							</li>
+							<li data-name="industry3" class="layui-nav-item" style="display: none;">
+								<a href="javascript:;" lay-direction="2">
+									<i class="layui-icon layui-icon-date"></i>
+									<cite>隐藏菜单</cite>
+								</a>
+								<dl class="layui-nav-child">
+									<dd><a id="yincang"
+											lay-href="firmAbnormal_qyyc/normalQuery/firmMonitor.html">企业监测</a></dd>
+								</dl>
+							</li>
+						</ul>
 					</div>
-
-					<!-- 页面标签 -->
-					<div class="layadmin-pagetabs" id="LAY_app_tabs">
-						<div class="layui-icon layadmin-tabs-control layui-icon-prev" layadmin-event="leftPage"></div>
-						<div class="layui-icon layadmin-tabs-control layui-icon-next" layadmin-event="rightPage"></div>
-						<div class="layui-icon layadmin-tabs-control layui-icon-down">
-							<ul class="layui-nav layadmin-tabs-select" lay-filter="layadmin-pagetabs-nav">
-								<li class="layui-nav-item" lay-unselect>
-									<a href="javascript:;"></a>
-									<dl class="layui-nav-child l-layui-anim-fadein">
-										<dd layadmin-event="closeThisTabs"><a href="javascript:;">关闭当前标签页</a></dd>
-										<dd layadmin-event="closeOtherTabs"><a href="javascript:;">关闭其它标签页</a></dd>
-										<dd layadmin-event="closeAllTabs"><a href="javascript:;">关闭全部标签页</a></dd>
-									</dl>
-								</li>
-							</ul>
-						</div>
-						<div class="layui-tab" lay-unauto lay-allowClose="true" lay-filter="layadmin-layout-tabs">
-							<ul class="layui-tab-title" id="LAY_app_tabsheader">
-								<li lay-id="home/homepage.html" lay-attr="home/homepage.html" class="layui-this"><i class="layui-icon layui-icon-home"></i></li>
-							</ul>
-						</div>
-					</div>
-					<!-- 主体内容 -->
-					<div class="layui-body" id="LAY_app_body">
-						<div class="layadmin-tabsbody-item layui-show">
-							<iframe src="home/homepage.html" frameborder="0" class="layadmin-iframe"></iframe>
-						</div>
-					</div>
-					<!-- 辅助元素，一般用于移动设备下遮罩 -->
-					<div class="layadmin-body-shade" layadmin-event="shade"></div>
 				</div>
+
+				<!-- 页面标签 -->
+				<div class="layadmin-pagetabs" id="LAY_app_tabs">
+					<div class="layui-icon layadmin-tabs-control layui-icon-prev" layadmin-event="leftPage"></div>
+					<div class="layui-icon layadmin-tabs-control layui-icon-next" layadmin-event="rightPage"></div>
+					<div class="layui-icon layadmin-tabs-control layui-icon-down">
+						<ul class="layui-nav layadmin-tabs-select" lay-filter="layadmin-pagetabs-nav">
+							<li class="layui-nav-item" lay-unselect>
+								<a href="javascript:;"></a>
+								<dl class="layui-nav-child l-layui-anim-fadein">
+									<dd layadmin-event="closeThisTabs"><a href="javascript:;">关闭当前标签页</a></dd>
+									<dd layadmin-event="closeOtherTabs"><a href="javascript:;">关闭其它标签页</a></dd>
+									<dd layadmin-event="closeAllTabs"><a href="javascript:;">关闭全部标签页</a></dd>
+								</dl>
+							</li>
+						</ul>
+					</div>
+					<div class="layui-tab" lay-unauto lay-allowClose="true" lay-filter="layadmin-layout-tabs">
+						<ul class="layui-tab-title" id="LAY_app_tabsheader">
+							<li lay-id="home/homepage.html" lay-attr="home/homepage.html" class="layui-this"><i
+									class="layui-icon layui-icon-home"></i></li>
+						</ul>
+					</div>
+				</div>
+				<!-- 主体内容 -->
+				<div class="layui-body" id="LAY_app_body">
+					<div class="layadmin-tabsbody-item layui-show">
+						<iframe src="home/homepage.html" frameborder="0" class="layadmin-iframe"></iframe>
+					</div>
+				</div>
+				<!-- 辅助元素，一般用于移动设备下遮罩 -->
+				<div class="layadmin-body-shade" layadmin-event="shade"></div>
 			</div>
 		</div>
-		<script src="../layuiadmin/layui/layui.js"></script>
-		<script src="../layuiadmin/js/baseUrlConfig.js"></script>
-		<script src="../layuiadmin/plugin/vue.min.js"></script>
-		<script src="../layuiadmin/plugin/axios.js"></script>
-		<script src="../layuiadmin/plugin/element.js"></script>
-		<script>
-			(function(a, h, g, f, e, d, c, b) {
-				b = function() {
-					d = h.createElement(g);
-					c = h.getElementsByTagName(g)[0];
-					d.src = e;
-					d.charset = "utf-8";
-					d.async = 1;
-					c.parentNode.insertBefore(d, c)
-				};
-				a["SeniverseWeatherWidgetObject"] = f;
-				a[f] || (a[f] = function() {
-					(a[f].q = a[f].q || []).push(arguments)
-				});
-				a[f].l = +new Date();
-				if (a.attachEvent) {
-					a.attachEvent("onload", b)
-				} else {
-					a.addEventListener("load", b, false)
-				}
-			}(window, document, "script", "SeniverseWeatherWidget", "//cdn.sencdn.com/widget2/static/js/bundle.js?t=" +
-				parseInt((new Date().getTime() / 100000000).toString(), 10)));
-			window.SeniverseWeatherWidget('show', {
-				flavor: "slim",
-				location: "WW96VH3U3KG5",
-				geolocation: true,
-				language: "zh-Hans",
-				unit: "c",
-				theme: "auto",
-				token: "57789e3d-f458-453c-8bb5-115c3186b329",
-				hover: "enabled",
-				container: "tp-weather-widget"
-			})
-		</script>
-		<script>
-			layui.config({
-				base: '../layuiadmin/' //静态资源所在路径
-			}).extend({
-				index: 'lib/index' //主入口模块
-			}).use('index');
-			var vm = new Vue({
-				el: "#vm",
-				data: {
-					username: window.localStorage.getItem("nickName"),
-					buttonList: [], // 按钮
-					catalogList: [], // 一级
-					menuList: [], // 二级
-					untreatedNum: '', // 未处理消息数目
+	</div>
+	<script src="../layuiadmin/layui/layui.js"></script>
+	<script src="../layuiadmin/js/baseUrlConfig.js"></script>
+	<script src="../layuiadmin/plugin/vue.min.js"></script>
+	<script src="../layuiadmin/plugin/axios.js"></script>
+	<script src="../layuiadmin/plugin/element.js"></script>
+	<script>
+		(function (a, h, g, f, e, d, c, b) {
+			b = function () {
+				d = h.createElement(g);
+				c = h.getElementsByTagName(g)[0];
+				d.src = e;
+				d.charset = "utf-8";
+				d.async = 1;
+				c.parentNode.insertBefore(d, c)
+			};
+			a["SeniverseWeatherWidgetObject"] = f;
+			a[f] || (a[f] = function () {
+				(a[f].q = a[f].q || []).push(arguments)
+			});
+			a[f].l = +new Date();
+			if (a.attachEvent) {
+				a.attachEvent("onload", b)
+			} else {
+				a.addEventListener("load", b, false)
+			}
+		}(window, document, "script", "SeniverseWeatherWidget", "//cdn.sencdn.com/widget2/static/js/bundle.js?t=" +
+			parseInt((new Date().getTime() / 100000000).toString(), 10)));
+		window.SeniverseWeatherWidget('show', {
+			flavor: "slim",
+			location: "WW96VH3U3KG5",
+			geolocation: true,
+			language: "zh-Hans",
+			unit: "c",
+			theme: "auto",
+			token: "57789e3d-f458-453c-8bb5-115c3186b329",
+			hover: "enabled",
+			container: "tp-weather-widget"
+		})
+	</script>
+	<script>
+		layui.config({
+			base: '../layuiadmin/' //静态资源所在路径
+		}).extend({
+			index: 'lib/index' //主入口模块
+		}).use('index');
+		var vm = new Vue({
+			el: "#vm",
+			data: {
+				username: window.localStorage.getItem("nickName"),
+				buttonList: [], // 按钮
+				catalogList: [], // 一级
+				menuList: [], // 二级
+				untreatedNum: '', // 未处理消息数目
+			},
+			methods: {
+				pageInit: function () {
+					var userId = window.localStorage.getItem("userId");
+					var token = window.localStorage.getItem("token");
+					if (!userId || !token) {
+						window.location.href = "./user/login.html"
+					} else {
+						axios({
+							url: BASEURL + 'sys-mgr/sys/user/info/' + userId,
+							method: 'post'
+						})
+							.then(function (res) {
+								if (res.data.code == 0) {
+									vm.buttonList = res.data.role.buttonList;
+									vm.catalogList = res.data.role.catalogList;
+									vm.menuList = res.data.role.menuList;
+									window.localStorage.setItem("buttonList", JSON.stringify(vm.buttonList));
+								} else {
+									vm.$notify.error({
+										title: '错误',
+										message: res.data.msg
+									});
+								}
+							})
+
+					}
 				},
-				methods: {
-					pageInit: function() {
-						var userId = window.localStorage.getItem("userId");
-						var token = window.localStorage.getItem("token");
-						if (!userId || !token) {
-							window.location.href = "./user/login.html"
-						} else {
-							axios({
-									url: BASEURL + 'sys-mgr/sys/user/info/' + userId,
-									method: 'post'
-								})
-								.then(function(res) {
-									if (res.data.code == 0) {
-										vm.buttonList = res.data.role.buttonList;
-										vm.catalogList = res.data.role.catalogList;
-										vm.menuList = res.data.role.menuList;
-										window.localStorage.setItem("buttonList", JSON.stringify(vm.buttonList));
-									} else {
-										vm.$notify.error({
-											title: '错误',
-											message: res.data.msg
-										});
-									}
-								})
 
+				doesItContain: function (v, l) {
+					for (var i = 0; i < l.length; i++) {
+						if (v === l[i]) {
+							return true
 						}
-					},
-
-					doesItContain: function(v, l) {
-						for (var i = 0; i < l.length; i++) {
-							if (v === l[i]) {
-								return true
-							}
-						}
-
-						return false;
-					},
-
-					logout: function() {
-						axios({
-								method: "POST",
-								url: BASEURL + "/sys-mgr/sys/logout",
-								params: {
-									token: window.localStorage.getItem("token")
-								}
-							})
-							.then(function(res) {
-								if (res.data.code == 0) {
-									window.localStorage.removeItem("userId");
-									window.localStorage.removeItem("token");
-									window.localStorage.removeItem("nickName");
-									window.localStorage.removeItem("mobile");
-									window.localStorage.removeItem("email");
-									window.location.href = "./user/login.html"
-								} else {
-									vm.$message.error(res.data.msg);
-								}
-							})
-					},
-					
-					// 告警数目
-					getUntreatedError: function() {
-						axios({
-								method: "POST",
-								url: BASEURL + "environmental_intelligent_monitoring/tfirmabnormal/queryUntreatedNum",
-								params: {
-									userId: window.localStorage.getItem("userId")
-								}
-							})
-							.then(function(res) {
-								if (res.data.code == 0) {
-									vm.untreatedNum = res.data.untreatedNum
-								} else {
-									vm.$message.error(res.data.msg);
-								}
-							})
-					},
-
-					tofirmabnormal: function() {
-						window.localStorage.setItem("currentStatus", "0");
 					}
 
+					return false;
 				},
-				mounted: function() {
-					this.pageInit();
-					this.getUntreatedError();
-					setInterval(function() {
-						vm.getUntreatedError()
-					}, 60000)
+
+				logout: function () {
+					axios({
+						method: "POST",
+						url: BASEURL + "/sys-mgr/sys/logout",
+						params: {
+							token: window.localStorage.getItem("token")
+						}
+					})
+						.then(function (res) {
+							if (res.data.code == 0) {
+								window.localStorage.removeItem("userId");
+								window.localStorage.removeItem("token");
+								window.localStorage.removeItem("nickName");
+								window.localStorage.removeItem("mobile");
+								window.localStorage.removeItem("email");
+								window.location.href = "./user/login.html"
+							} else {
+								vm.$message.error(res.data.msg);
+							}
+						})
+				},
+
+				// 告警数目
+				getUntreatedError: function () {
+					axios({
+						method: "POST",
+						url: BASEURL + "environmental_intelligent_monitoring/tfirmabnormal/queryUntreatedNum",
+						params: {
+							userId: window.localStorage.getItem("userId")
+						}
+					})
+						.then(function (res) {
+							if (res.data.code == 0) {
+								vm.untreatedNum = res.data.untreatedNum
+							} else {
+								vm.$message.error(res.data.msg);
+							}
+						})
+				},
+
+				tofirmabnormal: function () {
+					window.localStorage.setItem("currentStatus", "0");
 				}
-			})
-		</script>
-	</body>
+
+			},
+			mounted: function () {
+				this.pageInit();
+				this.getUntreatedError();
+				setInterval(function () {
+					vm.getUntreatedError()
+				}, 60000)
+			}
+		})
+	</script>
+</body>
+
 </html>

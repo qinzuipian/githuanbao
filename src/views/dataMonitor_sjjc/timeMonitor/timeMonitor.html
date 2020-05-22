@@ -1,592 +1,619 @@
 <!DOCTYPE html>
 <html>
-	<head>
-		<meta charset="utf-8">
-		<title>总体监控</title>
-		<meta name="renderer" content="webkit">
-		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-		<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
-		<link rel="stylesheet" href="../../../layuiadmin/layui/css/layui.css" media="all">
-		<link rel="stylesheet" href="../../../layuiadmin/style/admin.css" media="all">
-		<link rel="stylesheet" type="text/css" href="../../../layuiadmin/style/timeMonitor.css" />
-		<link rel="stylesheet" type="text/css" href="../../../layuiadmin/plugin/element.css" />
-		<style type="text/css">
-			html {
-				height: 100%
-			}
 
-			body {
-				height: 100%;
-				margin: 0px;
-				padding: 0px
-			}
-			.nowData span {
-				color: #f00;
-			}
+<head>
+	<meta charset="utf-8">
+	<title>总体监控</title>
+	<meta name="renderer" content="webkit">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<meta name="viewport"
+		content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+	<link rel="stylesheet" href="../../../layuiadmin/layui/css/layui.css" media="all">
+	<link rel="stylesheet" href="../../../layuiadmin/style/admin.css" media="all">
+	<link rel="stylesheet" type="text/css" href="../../../layuiadmin/style/timeMonitor.css" />
+	<link rel="stylesheet" type="text/css" href="../../../layuiadmin/plugin/element.css" />
+	<style type="text/css">
+		html {
+			height: 100%
+		}
 
-			#container {
-				height: 100%
-			}
+		body {
+			height: 100%;
+			margin: 0px;
+			padding: 0px
+		}
 
-			.anchorBL {
-				display: none;
-			}
+		.nowData span {
+			color: #f00;
+		}
 
-			/* 地图信息窗口 */
-			/*地图弹框*/
-			.myMapInfo {
-				width: 310px;
-				min-height: 250px;
-				margin-left: 20px;
-				/*让阴影有空间显示*/
-			}
+		#container {
+			height: 100%
+		}
 
-			.shang {
-				height: calc(100% - 31px);
-				background: #fff;
-				border-radius: 12px;
-				box-shadow: 0px 10px 15px rgba(72, 130, 202, 0.4);
-				color: #4b565d;
-			}
+		.anchorBL {
+			display: none;
+		}
 
-			.qybt {
-				height: 44px;
-				background-color: #0090e9;
-				/* background-image: url('../../../layuiadmin/img/myMapInfobg.png'); */
-				background-repeat: no-repeat;
-				border-top-left-radius: 12px;
-				border-top-right-radius: 12px;
-				padding: 15px 20px 0;
-				font-weight: 900;
-				color: #fff;
-				overflow: hidden;
-				text-overflow: ellipsis;
-				white-space: nowrap;
-			}
+		/* 地图信息窗口 */
+		/*地图弹框*/
+		.myMapInfo {
+			width: 310px;
+			min-height: 250px;
+			margin-left: 20px;
+			/*让阴影有空间显示*/
+		}
 
-			.qybt a {
-				color: #fff;
-				font-size: 16px;
-			}
+		.shang {
+			height: calc(100% - 31px);
+			background: #fff;
+			border-radius: 12px;
+			box-shadow: 0px 10px 15px rgba(72, 130, 202, 0.4);
+			color: #4b565d;
+		}
 
-			.xia {
-				height: 31px;
-				/* background: url('../../../layuiadmin/img/myMapInfobg.png') center bottom no-repeat; */
-			}
+		.qybt {
+			height: 44px;
+			background-color: #0090e9;
+			/* background-image: url('../../../layuiadmin/img/myMapInfobg.png'); */
+			background-repeat: no-repeat;
+			border-top-left-radius: 12px;
+			border-top-right-radius: 12px;
+			padding: 15px 20px 0;
+			font-weight: 900;
+			color: #fff;
+			overflow: hidden;
+			text-overflow: ellipsis;
+			white-space: nowrap;
+		}
 
-			.daTa {
-				display: flex;
-				justify-content: center;
-				height: 74px;
-				padding: 0 20px 20px;
-			}
+		.qybt a {
+			color: #fff;
+			font-size: 16px;
+		}
 
-			.xm {
-				background: #f0f0f0;
-				flex: 1;
-				padding-top: 8px;
-				text-align: center;
-			}
+		.xia {
+			height: 31px;
+			/* background: url('../../../layuiadmin/img/myMapInfobg.png') center bottom no-repeat; */
+		}
 
-			.xm1,
-			.xm2 {
-				margin-right: 5px;
-			}
+		.daTa {
+			display: flex;
+			justify-content: center;
+			height: 74px;
+			padding: 0 20px 20px;
+		}
 
-			.shuJu {
-				font: 18px Arial;
-			}
+		.xm {
+			background: #f0f0f0;
+			flex: 1;
+			padding-top: 8px;
+			text-align: center;
+		}
 
-			.biaoti {
-				color: #8d9ba4;
-			}
+		.xm1,
+		.xm2 {
+			margin-right: 5px;
+		}
 
-			/*地图信息弹框去原样式*/
-			.BMap_pop .BMap_top,
-			.BMap_pop>div>div,
-			.BMap_pop .BMap_center,
-			.BMap_pop .BMap_bottom {
-				background: none !important;
-				border: none !important;
-			}
+		.shuJu {
+			font: 18px Arial;
+		}
 
-			.BMap_pop div:nth-child(8) {
-				display: none !important;
-			}
+		.biaoti {
+			color: #8d9ba4;
+		}
 
-			.BMap_pop div:nth-child(9) {
-				left: 0px !important;
-				top: 0px !important;
-				width: 350px !important;
-			}
+		/*地图信息弹框去原样式*/
+		.BMap_pop .BMap_top,
+		.BMap_pop>div>div,
+		.BMap_pop .BMap_center,
+		.BMap_pop .BMap_bottom {
+			background: none !important;
+			border: none !important;
+		}
 
-			.BMap_pop img:nth-child(10) {
-				display: none;
-				top: 45px !important;
-				left: 315px !important;
-			}
+		.BMap_pop div:nth-child(8) {
+			display: none !important;
+		}
 
-			.BMap_shadow {
-				display: none !important;
-			}
+		.BMap_pop div:nth-child(9) {
+			left: 0px !important;
+			top: 0px !important;
+			width: 350px !important;
+		}
 
-			/*地图信息弹框去原样式*/
-			/*地图弹框*/
-			.ui-jqgrid .ui-jqgrid-htable thead th div {
-				white-space: normal;
-				text-align: left
-			}
+		.BMap_pop img:nth-child(10) {
+			display: none;
+			top: 45px !important;
+			left: 315px !important;
+		}
 
-			.tbsl {
-				background-color: red
-			}
+		.BMap_shadow {
+			display: none !important;
+		}
 
-			.st {
-				background: #C5D0DA;
-				padding: 10px;
-				text-align: right;
-				cursor: pointer;
-				display: inline-block;
-				position: absolute;
-				left: -0.5%;
-				z-index: 999999;
-				top: calc(50% - 20px);
-			}
+		/*地图信息弹框去原样式*/
+		/*地图弹框*/
+		.ui-jqgrid .ui-jqgrid-htable thead th div {
+			white-space: normal;
+			text-align: left
+		}
 
-			.st i {
-				font-size: 18px;
-				color: #333;
-			}
+		.tbsl {
+			background-color: red
+		}
 
-			.ui-jqgrid .ui-jqgrid-hbox {
-				padding-right: 0px;
-			}
+		.st {
+			background: #C5D0DA;
+			padding: 10px;
+			text-align: right;
+			cursor: pointer;
+			display: inline-block;
+			position: absolute;
+			left: -0.5%;
+			z-index: 999999;
+			top: calc(50% - 20px);
+		}
 
-			.ui-jqgrid-hbox table {
-				width: 100% !important
-			}
+		.st i {
+			font-size: 18px;
+			color: #333;
+		}
 
-			.ui-jqgrid-bdiv table {
-				width: 100% !important
-			}
+		.ui-jqgrid .ui-jqgrid-hbox {
+			padding-right: 0px;
+		}
 
-			.u-paddingLeft20 {
-				padding-left: 20px !important
-			}
+		.ui-jqgrid-hbox table {
+			width: 100% !important
+		}
 
-			.u-paddingRight20 {
-				padding-right: 20px !important
-			}
+		.ui-jqgrid-bdiv table {
+			width: 100% !important
+		}
 
-			.u-paddingTop10 {
-				padding-top: 10px !important
-			}
+		.u-paddingLeft20 {
+			padding-left: 20px !important
+		}
 
-			.u-paddingBottom15 {
-				padding-bottom: 15px !important
-			}
+		.u-paddingRight20 {
+			padding-right: 20px !important
+		}
 
-			.u-paddingRight0 {
-				padding-right: 0 !important
-			}
+		.u-paddingTop10 {
+			padding-top: 10px !important
+		}
 
-			.u-paddingBottom0 {
-				padding-bottom: 0 !important
-			}
-		</style>
-	</head>
-	<body>
+		.u-paddingBottom15 {
+			padding-bottom: 15px !important
+		}
 
-		<div id="vm">
-			<p class="nowData" @click="toDeviceStatus">
-				<span>当前监控企业: <span v-text="onlineEnterprise"></span></span>
-				<span>当前开启设备: <span v-text="onlineCount"></span></span>
-				<span>当前离线设备: <span v-text="offlineCount"></span></span>
-				<span>当前关闭设备: <span v-text="offContactCount"></span></span>
-			</p>
-			<div class="layui-fluid">
-				<div class="layui-col-md4 layui-col-lg4" style="height: 687px;border: 1px solid rgb(230, 230, 230);">
-					<div id="container"></div>
-				</div>
-				<div class="layui-col-md8 layui-col-lg8" style="padding-left: 20px;">
-					<div class="layui-card" style="margin: 0; border: 1px solid rgb(230, 230, 230);">
-						<div class="layui-form layui-card-header layuiadmin-card-header-auto">
-							<div class="layui-form-item">
-								<div class="layui-inline">
-									<label class="layui-form-label" style="width: 65px;">企业名称</label>
-									<div class="layui-input-inline" style="width: 185px;">
-										<input type="text" name="startCreateDate" class="layui-input" v-model="enterpriseName" placeholder="请输入企业名称">
-									</div>
+		.u-paddingRight0 {
+			padding-right: 0 !important
+		}
+
+		.u-paddingBottom0 {
+			padding-bottom: 0 !important
+		}
+	</style>
+</head>
+
+<body>
+
+	<div id="vm">
+		<p class="nowData" @click="toDeviceStatus">
+			<span>当前监控企业: <span v-text="onlineEnterprise"></span></span>
+			<span>当前开启设备: <span v-text="onlineCount"></span></span>
+			<span>当前离线设备: <span v-text="offlineCount"></span></span>
+			<span>当前关闭设备: <span v-text="offContactCount"></span></span>
+		</p>
+		<div class="layui-fluid">
+			<div class="layui-col-md4 layui-col-lg4" style="height: 687px;border: 1px solid rgb(230, 230, 230);">
+				<div id="container"></div>
+			</div>
+			<div class="layui-col-md8 layui-col-lg8" style="padding-left: 20px;">
+				<div class="layui-card" style="margin: 0; border: 1px solid rgb(230, 230, 230);">
+					<div class="layui-form layui-card-header layuiadmin-card-header-auto">
+						<div class="layui-form-item">
+							<div class="layui-inline">
+								<label class="layui-form-label" style="width: 65px;">企业名称</label>
+								<div class="layui-input-inline" style="width: 185px;">
+									<input type="text" name="startCreateDate" class="layui-input"
+										v-model="enterpriseName" placeholder="请输入企业名称">
 								</div>
-								<div class="layui-inline">
-									<label class="layui-form-label" style="width: 65px;">行业名称</label>
-									<el-select v-model="selectIndustry" placeholder="请选择行业" style="width: 185px;">
-										<el-option v-for="item in industryList" :key="item.id" :label="item.name" :value="item.id">
-										</el-option>
-									</el-select>
-								</div>
-								<div class="layui-inline">
-									<label class="layui-form-label" style="width: 65px;">生产状态</label>
-									<el-select v-model="selectStatus" placeholder="请选择生产状态" style="width: 185px;">
-										<el-option v-for="item in statusList" :key="item.value" :label="item.name" :value="item.value">
-										</el-option>
-									</el-select>
-								</div>
+							</div>
+							<div class="layui-inline">
+								<label class="layui-form-label" style="width: 65px;">行业名称</label>
+								<el-select v-model="selectIndustry" placeholder="请选择行业" style="width: 185px;">
+									<el-option v-for="item in industryList" :key="item.id" :label="item.name"
+										:value="item.id">
+									</el-option>
+								</el-select>
+							</div>
+							<div class="layui-inline">
+								<label class="layui-form-label" style="width: 65px;">生产状态</label>
+								<el-select v-model="selectStatus" placeholder="请选择生产状态" style="width: 185px;">
+									<el-option v-for="item in statusList" :key="item.value" :label="item.name"
+										:value="item.value">
+									</el-option>
+								</el-select>
 							</div>
 						</div>
 					</div>
-
-					<table class="layui-table" id="timeMonitor" lay-filter="timeMonitor" style="margin-top: 0;"></table>
 				</div>
+
+				<table class="layui-table" id="timeMonitor" lay-filter="timeMonitor" style="margin-top: 0;"></table>
 			</div>
 		</div>
-		<script src="../../../layuiadmin/js/baseUrlConfig.js"></script>
-		<script src="../../../layuiadmin/layui/layui.js"></script>
-		<script src="../../../layuiadmin/plugin/vue.min.js"></script>
-		<script src="../../../layuiadmin/plugin/element.js"></script>
-		<script type="text/javascript" src="http://api.map.baidu.com/api?v=3.0&ak=xq2PQs4sG3sHfuHHwtqaFBcErq9uUyND"></script>
-		<script src="../../../layuiadmin/plugin/axios.js"></script>
-		<script type="text/javascript">
-			var vm = new Vue({
-				el: "#vm",
-				data: {
-					onlineEnterprise: '', // 当前在线企业
-					onlineCount: '', // 当前在线设备
-					offlineCount: '', // 当前停机设备
-					offContactCount: '', // 当前失联设备
+	</div>
+	<script src="../../../layuiadmin/js/baseUrlConfig.js"></script>
+	<script src="../../../layuiadmin/layui/layui.js"></script>
+	<script src="../../../layuiadmin/plugin/vue.min.js"></script>
+	<script src="../../../layuiadmin/plugin/element.js"></script>
+	<script type="text/javascript"
+		src="http://api.map.baidu.com/api?v=3.0&ak=xq2PQs4sG3sHfuHHwtqaFBcErq9uUyND"></script>
+	<script src="../../../layuiadmin/plugin/axios.js"></script>
+	<script type="text/javascript">
+		var vm = new Vue({
+			el: "#vm",
+			data: {
+				onlineEnterprise: '', // 当前在线企业
+				onlineCount: '', // 当前在线设备
+				offlineCount: '', // 当前停机设备
+				offContactCount: '', // 当前失联设备
 
-					enterpriseName: '', // 企业名称
-					selectIndustry: '', // 选择的行业
-					industryList: [], // 行业数组
-					selectStatus: '', // 选择的生产状态
-					statusList: [ // 生产状态的数组
-						{
-							name: '所有状态',
-							value: ''
-						},
-						{
-							name: '限产',
-							value: 0
-						},
-						{
-							name: '停产',
-							value: 1
-						},
-						{
-							name: '生产',
-							value: 2
+				enterpriseName: '', // 企业名称
+				selectIndustry: '', // 选择的行业
+				industryList: [], // 行业数组
+				selectStatus: '', // 选择的生产状态
+				statusList: [ // 生产状态的数组
+					{
+						name: '所有状态',
+						value: ''
+					},
+					{
+						name: '限产',
+						value: 0
+					},
+					{
+						name: '停产',
+						value: 1
+					},
+					{
+						name: '生产',
+						value: 2
+					}
+				],
+			},
+			methods: {
+				pageInit: function () {
+					axios({
+						method: "POST",
+						url: BASEURL + 'environmental_intelligent_monitoring/tbastrade/list',
+						params: {
+							userId: window.localStorage.getItem("userId")
 						}
-					],
-				},
-				methods: {
-					pageInit: function() {
-						axios({
-								method: "POST",
-								url: BASEURL + 'environmental_intelligent_monitoring/tbastrade/list',
-								params: {
-									userId: window.localStorage.getItem("userId")
-								}
-							})
-							.then(function(res) {
-								if (res.data.code == 0) {
-									vm.industryList = res.data.page.list;
-									vm.industryList.unshift({
-										name: '所有行业',
-										id: ''
-									})
-								} else {
-									vm.$notify.error({
-										title: '错误',
-										message: res.data.msg
-									})
-								}
-							});
-
-						axios({
-								method: "POST",
-								url: BASEURL + 'environmental_intelligent_monitoring/dataMonitor/queryALLEnterpriseReport',
-								params: {
-									userId: window.localStorage.getItem("userId")
-								}
-							})
-							.then(function(res) {
-								if (res.data.code == 0) {
-									vm.onlineEnterprise = res.data.data.onlineEnterprise;
-									vm.onlineCount = res.data.data.onlineCount;
-									vm.offlineCount = res.data.data.offlineCount;
-									vm.offContactCount = res.data.data.offContactCount;
-
-								} else {
-									vm.$notify.error({
-										title: '错误',
-										message: res.data.msg
-									})
-								}
-							})
-					},
-					toDeviceStatus: function() {
-						// 跳转到设备状态列表
-						window.parent.document.getElementById("toDeviceequipstatus").click();
-
-					},
-					tableReloadFunc() { // 搜索重载表格
-						layui.table.reload('timeMonitor', {
-							where: {
-								enterpriseName: vm.enterpriseName,
-								produceType: vm.selectStatus,
-								tradeId: vm.selectIndustry
-							},
-							page: {
-								curr: 1 //重新从第 1 页开始
-							}
-						});
-					}
-				},
-				mounted: function() {
-					this.pageInit();
-				},
-				watch: {
-					enterpriseName: function() {
-						vm.tableReloadFunc();
-					},
-					selectIndustry: function() {
-						vm.tableReloadFunc();
-					},
-					selectStatus: function() {
-						vm.tableReloadFunc();
-					}
-				}
-			});
-
-			layui.config({
-				base: '../../../layuiadmin/' //静态资源所在路径
-			}).extend({
-				index: 'lib/index' //主入口模块
-			}).use(['index', 'table', 'laydate', 'layer', 'admin'], function() {
-				var table = layui.table,
-					layer = layui.layer,
-					admin = layui.admin;
-				var $ = layui.$;
-
-				table.render({
-					elem: '#timeMonitor',
-					height: 599, //容器高度
-					method: 'post',
-					url: layui.setter.BASEURL + 'environmental_intelligent_monitoring/dataMonitor/queryEnterpriseReportList', //数据接口
-					page: true,
-					where: {
-						userId: window.localStorage.getItem("userId")
-					},
-					parseData: function(res) { // 数据重新处理为layUI的数据格式
-						var msg = {
-							"code": res.code, //解析接口状态
-							"msg": res.msg, //解析提示文本
-							"count": res.page.totalCount, //解析数据长度
-							"data": res.page.list //解析数据列表
-						};
-						return msg;
-					},
-					cols: [
-						[{
-								type: 'numbers',
-								width: '70',
-								rowspan: 2
-							},
-							{
-								field: 'enterpriseName',
-								title: '企业',
-								minWidth: 180,
-
-								rowspan: 2,
-								align: 'center'
-							},
-							{
-								field: 'tradeName',
-								align: 'center',
-								title: '行业',
-								minWidth: 120,
-								rowspan: 2
-							},
-							{
-								field: 'produceType',
-								align: 'center',
-								title: '停限产计划',
-								minWidth: 120,
-								rowspan: 2
-							},
-							{
-								field: 'isAbnormal',
-								align: 'center',
-								title: '企业状态',
-								minWidth: 115,
-								rowspan: 2
-							},
-							{
-								field: 'productMonitorNum',
-								align: 'center',
-								title: '产污监测点数量',
-								minWidth: 155,
-
-								rowspan: 2
-							},
-							{
-								field: 'treatMonitorNum',
-								align: 'center',
-								title: '治污监测点数量',
-								minWidth: 155,
-
-								rowspan: 2
-							},
-							{
-								align: 'center',
-								title: '监测点数量(个)',
-								colspan: 3
-							}
-						],
-						[{
-								field: 'startStatusNum',
-								title: '开启',
-								minWidth: 80,
-
-							},
-							{
-								field: 'endStatusNum',
-								title: '关闭',
-								minWidth: 80,
-
-							},
-							{
-								field: 'unknownStatusNum',
-								title: '离线',
-								minWidth: 80,
-
-							},
-						]
-					], //设置表头
-					limit: 15,
-					limits: [15, 30, 50, 100, 200],
-					done: function(res, page, count) {
-						addMarkerFunc(res.data);
-						$("[data-field='produceType']").children().each(function() {
-							if ($(this).text() == 0) {
-								$(this).text("限产")
-							} else if ($(this).text() == 1) {
-								$(this).text("停产")
-							} else if ($(this).text() == 2){
-								$(this).text("生产")
+					})
+						.then(function (res) {
+							if (res.data.code == 0) {
+								vm.industryList = res.data.page.list;
+								vm.industryList.unshift({
+									name: '所有行业',
+									id: ''
+								})
+							} else {
+								vm.$notify.error({
+									title: '错误',
+									message: res.data.msg
+								})
 							}
 						});
 
-						$("[data-field='isAbnormal']").children().each(function() {
-							if ($(this).text() == 0) {
-								$(this).text("正常")
-							} else if ($(this).text() == 1) {
-								$(this).text("报警")
+					axios({
+						method: "POST",
+						url: BASEURL + 'environmental_intelligent_monitoring/dataMonitor/queryALLEnterpriseReport',
+						params: {
+							userId: window.localStorage.getItem("userId")
+						}
+					})
+						.then(function (res) {
+							if (res.data.code == 0) {
+								vm.onlineEnterprise = res.data.data.onlineEnterprise;
+								vm.onlineCount = res.data.data.onlineCount;
+								vm.offlineCount = res.data.data.offlineCount;
+								vm.offContactCount = res.data.data.offContactCount;
+
+							} else {
+								vm.$notify.error({
+									title: '错误',
+									message: res.data.msg
+								})
 							}
 						})
-					}
-				});
-				//监听行单击事件
-				table.on('row(timeMonitor)', function(obj) {
-					var data = obj.data;
-					//标注选中样式
-					obj.tr.addClass('layui-table-click').siblings().removeClass('layui-table-click');
-					NewTab(obj.data.id);
-				});
-			});
+				},
+				toDeviceStatus: function () {
+					// 跳转到设备状态列表
+					window.parent.document.getElementById("toDeviceequipstatus").click();
 
-			// 循环添加企业位置标记
-			function addMarkerFunc(enterpriseData) {
-				var centerPoint;
-				if (enterpriseData.length == 0) {
-					centerPoint = [114.504434, 37.069162]
-				} else {
-					centerPoint = [enterpriseData[0].longitude, enterpriseData[0].latitude]
-				}
-				// 加载地图
-				var map = new BMap.Map("container", {
-					enableMapClick: false
-				}); // 创建地图实例  
-				var point = new BMap.Point(centerPoint[0], centerPoint[1]); // 创建点坐标  
-				map.centerAndZoom(point, 12);
-				map.enableScrollWheelZoom(true); //开启鼠标滚轮缩放
-
-				// 编写自定义函数,创建标注
-				function addMarker(_point) {
-					var marker = new BMap.Marker(_point);
-					map.addOverlay(marker);
-					// 给标注上添加点击事件
-					marker.addEventListener("click", function(e) {
-						for (var i = 0; i < enterpriseData.length; i++) {
-							if (enterpriseData[i].longitude == _point.lng) {
-								createInfoWindow(enterpriseData[i]);
-							}
+				},
+				tableReloadFunc() { // 搜索重载表格
+					layui.table.reload('timeMonitor', {
+						where: {
+							enterpriseName: vm.enterpriseName,
+							produceType: vm.selectStatus,
+							tradeId: vm.selectIndustry
+						},
+						page: {
+							curr: 1 //重新从第 1 页开始
 						}
 					});
 				}
-
-				// 添加信息窗口
-				var opts = {
-					width: 350, // 信息窗口宽度
-					height: 254, // 信息窗口高度
-					title: "", // 信息窗口标题
-					enableMessage: true //设置允许信息窗发送短息
-				};
-
-				for (var i = 0; i < enterpriseData.length; i++) {
-					var _point = new BMap.Point(enterpriseData[i].longitude, enterpriseData[i].latitude);
-					addMarker(_point);
-				};
-
-				//创建InfoWindow        
-				function createInfoWindow(json) {
-					var sContent = '';
-					sContent = '<a  href="javascript:void(0);" onclick="NewTab(' + json.id +
-						')"><div class="myMapInfo">' + '<div class="shang">' + '<div class="qybt">' + json.enterpriseName +
-						'<input type="hidden" value="/MainMonitor/EntMon?EnterpriseId=' + json.id + '" /></div>' +
-						'<div class="u-paddingLeft20 u-paddingRight20 u-paddingTop10 u-marginBottom15">' + '<div class="layui-row">' +
-						'<div class="layui-col-sm5 layui-col-xs5 u-paddingRight0">' + '行业:' + '<span>' + json.tradeName + '</span>' +
-						'</div>' +
-						'<div class="layui-col-sm7 layui-col-xs7">' + '生产:' + '<span>' + json.produceType + '</span>' + '</div>' +
-						'</div>' +
-						'<div class="layui-row">' + '<div class="layui-col-sm5 layui-col-xs5  u-paddingRight0">' + '状态:' + '<span>' +
-						json.produceType +
-						'</span>' + '</div>' + '<div class="layui-col-sm7 layui-col-xs7">' + '行政区域:' + '<span>' + json.organizeName +
-						'</span>' +
-						'</div>' + '</div>' + '<div>' + '地址:' + '<span>' + json.address + '</span>' + '</div>' + '</div>' +
-						'<div class="daTa">' + '<div class="xm xm1">' + '<p class=" u-marginBottom0">' + '<span class="shuJu">' + json.productMonitorNum +
-						'</span>个' + '</p>' + '<span class="biaoti">产污监测点</span>' + '</div>' + '<div class="xm xm2">' +
-						'<p class=" u-marginBottom0">' + '<span class="shuJu">' + json.treatMonitorNum + '</span>个' + '</p>' +
-						'<span class="biaoti">治污监测点</span>' + '</div>' + '<div class="xm xm3">' + '<p class=" u-marginBottom0">' +
-						'<span class="shuJu">' + json.startStatusNum + '</span>个' + '</p>' + '<span class="biaoti">监测点</span>' + '</div>' +
-						'</div>' + '</div >' + '<div class="xia"> ' + '</div> ' + '</div></a>';
-
-					var infoWindow = new BMap.InfoWindow(sContent, opts); // 创建信息窗口对象
-					map.openInfoWindow(infoWindow, map.getCenter()); //开启信息窗口
-				};
-
-			};
-			// 点击信息窗口跳转到企业监控
-			function NewTab(someT) {
-				// 先把企业ID保存到本地
-				window.localStorage.setItem("enterpriseId", someT);
-				// 搜索 企业监控 页面是否打开,如果打开就先关闭 企业监控 页面,然后再打开传值,相当于重新刷新一遍企业页面
-				var tabsheaderDomList = window.parent.document.getElementById("LAY_app_tabsheader").getElementsByTagName("li");
-				console.log(tabsheaderDomList);
-				for (var i = 0; i < tabsheaderDomList.length; i++) {
-					console.log(tabsheaderDomList[i])
-					if (tabsheaderDomList[i].attributes[0].value == "firmAbnormal_qyyc/normalQuery/firmMonitor.html") {
-						console.log("已经打开该页面了");
-						parent.layui.index.refreshTab(i);
-						// break;
-					} else {
-						// 没有打开的情况下直接新增tab
-						window.parent.document.getElementById("yincang").click();
-						// break;
-					}
+			},
+			mounted: function () {
+				this.pageInit();
+			},
+			watch: {
+				enterpriseName: function () {
+					vm.tableReloadFunc();
+				},
+				selectIndustry: function () {
+					vm.tableReloadFunc();
+				},
+				selectStatus: function () {
+					vm.tableReloadFunc();
 				}
-			} 
-		</script>
+			}
+		});
 
-	</body>
+		layui.config({
+			base: '../../../layuiadmin/' //静态资源所在路径
+		}).extend({
+			index: 'lib/index' //主入口模块
+		}).use(['index', 'table', 'laydate', 'layer', 'admin'], function () {
+			var table = layui.table,
+				layer = layui.layer,
+				admin = layui.admin;
+			var $ = layui.$;
+
+			table.render({
+				elem: '#timeMonitor',
+				height: 599, //容器高度
+				method: 'post',
+				url: layui.setter.BASEURL + 'environmental_intelligent_monitoring/dataMonitor/queryEnterpriseReportList', //数据接口
+				page: true,
+				where: {
+					userId: window.localStorage.getItem("userId")
+				},
+				parseData: function (res) { // 数据重新处理为layUI的数据格式
+					var msg = {
+						"code": res.code, //解析接口状态
+						"msg": res.msg, //解析提示文本
+						"count": res.page.totalCount, //解析数据长度
+						"data": res.page.list //解析数据列表
+					};
+					return msg;
+				},
+				cols: [
+					[{
+						type: 'numbers',
+						width: '70',
+						rowspan: 2
+					},
+					{
+						field: 'enterpriseName',
+						title: '企业',
+						minWidth: 180,
+
+						rowspan: 2,
+						align: 'center'
+					},
+					{
+						field: 'tradeName',
+						align: 'center',
+						title: '行业',
+						minWidth: 120,
+						rowspan: 2
+					},
+					{
+						field: 'produceType',
+						align: 'center',
+						title: '停限产计划',
+						minWidth: 120,
+						rowspan: 2
+					},
+					{
+						field: 'isAbnormal',
+						align: 'center',
+						title: '企业状态',
+						minWidth: 115,
+						rowspan: 2
+					},
+					{
+						field: 'productMonitorNum',
+						align: 'center',
+						title: '产污监测点数量',
+						minWidth: 155,
+
+						rowspan: 2
+					},
+					{
+						field: 'treatMonitorNum',
+						align: 'center',
+						title: '治污监测点数量',
+						minWidth: 155,
+
+						rowspan: 2
+					},
+					{
+						align: 'center',
+						title: '监测点数量(个)',
+						colspan: 3
+					}
+					],
+					[{
+						field: 'startStatusNum',
+						title: '开启',
+						minWidth: 80,
+
+					},
+					{
+						field: 'endStatusNum',
+						title: '关闭',
+						minWidth: 80,
+
+					},
+					{
+						field: 'unknownStatusNum',
+						title: '离线',
+						minWidth: 80,
+
+					},
+					]
+				], //设置表头
+				limit: 15,
+				limits: [15, 30, 50, 100, 200],
+				done: function (res, page, count) {
+					addMarkerFunc(res.data);
+					$("[data-field='produceType']").children().each(function () {
+						if ($(this).text() == 0) {
+							$(this).text("限产")
+						} else if ($(this).text() == 1) {
+							$(this).text("停产")
+						} else if ($(this).text() == 2) {
+							$(this).text("生产")
+						}
+					});
+
+					$("[data-field='isAbnormal']").children().each(function () {
+						if ($(this).text() == 0) {
+							$(this).text("正常")
+						} else if ($(this).text() == 1) {
+							$(this).text("报警")
+						}
+					})
+				}
+			});
+			//监听行单击事件
+			table.on('row(timeMonitor)', function (obj) {
+				var data = obj.data;
+				//标注选中样式
+				obj.tr.addClass('layui-table-click').siblings().removeClass('layui-table-click');
+				NewTab(obj.data.id);
+			});
+		});
+
+		// 循环添加企业位置标记
+		function addMarkerFunc(enterpriseData) {
+			var centerPoint;
+			if (enterpriseData.length == 0) {
+				centerPoint = [114.504434, 37.069162]
+			} else {
+				centerPoint = [enterpriseData[0].longitude, enterpriseData[0].latitude]
+			}
+			// 加载地图
+			var map = new BMap.Map("container", {
+				enableMapClick: false
+			}); // 创建地图实例  
+			var point = new BMap.Point(centerPoint[0], centerPoint[1]); // 创建点坐标  
+			map.centerAndZoom(point, 12);
+			map.enableScrollWheelZoom(true); //开启鼠标滚轮缩放
+
+			// 编写自定义函数,创建标注
+			function addMarker(_point) {
+				var marker = new BMap.Marker(_point);
+				map.addOverlay(marker);
+				// 给标注上添加点击事件
+				marker.addEventListener("click", function (e) {
+					for (var i = 0; i < enterpriseData.length; i++) {
+						if (enterpriseData[i].longitude == _point.lng) {
+							createInfoWindow(enterpriseData[i]);
+						}
+					}
+				});
+			}
+
+			// 添加信息窗口
+			var opts = {
+				width: 350, // 信息窗口宽度
+				height: 254, // 信息窗口高度
+				title: "", // 信息窗口标题
+				enableMessage: true //设置允许信息窗发送短息
+			};
+
+			for (var i = 0; i < enterpriseData.length; i++) {
+				var _point = new BMap.Point(enterpriseData[i].longitude, enterpriseData[i].latitude);
+				addMarker(_point);
+			};
+
+			//创建InfoWindow        
+			function createInfoWindow(json) {
+				// console.log(json);
+				// 停限产计划编码转文字
+				var produceType, isAbnormal;
+				if (json.produceType == 0) {
+					produceType = "限产";
+				} else if (json.produceType == 1) {
+					produceType = "停产";
+				} else if (json.produceType == 2) {
+					produceType = "生产";
+
+				}
+				// 企业状态编码转文字
+				if (json.isAbnormal == 0) {
+					isAbnormal = "正常";
+				} else if (json.isAbnormal == 1) {
+					isAbnormal = "报警";
+				}
+
+				var sContent = '';
+				sContent = '<a  href="javascript:void(0);" onclick="NewTab(' + json.id +
+					')"><div class="myMapInfo">' + '<div class="shang">' + '<div class="qybt">' + json.enterpriseName +
+					'<input type="hidden" value="/MainMonitor/EntMon?EnterpriseId=' + json.id + '" /></div>' +
+					'<div class="u-paddingLeft20 u-paddingRight20 u-paddingTop10 u-marginBottom15">' + '<div class="layui-row">' +
+					'<div class="layui-col-sm5 layui-col-xs5 u-paddingRight0">' + '行业:' + '<span>' + json.tradeName + '</span>' +
+					'</div>' +
+					'<div class="layui-col-sm7 layui-col-xs7">' + '停限产计划:' + '<span>' + produceType + '</span>' + '</div>' +
+					'</div>' +
+					'<div class="layui-row">' + '<div class="layui-col-sm5 layui-col-xs5  u-paddingRight0">' + '企业状态:' + '<span>' +
+					isAbnormal +
+					'</span>' + '</div>' + '<div class="layui-col-sm7 layui-col-xs7">' + '行政区域:' + '<span>' + json.organizeName +
+					'</span>' +
+					'</div>' + '</div>' + '<div>' + '地址:' + '<span>' + json.address + '</span>' + '</div>' + '</div>' +
+					'<div class="daTa">' + '<div class="xm xm1">' + '<p class=" u-marginBottom0">' + '<span class="shuJu">' + json.productMonitorNum +
+					'</span>个' + '</p>' + '<span class="biaoti">产污监测点</span>' + '</div>' + '<div class="xm xm2">' +
+					'<p class=" u-marginBottom0">' + '<span class="shuJu">' + json.treatMonitorNum + '</span>个' + '</p>' +
+					'<span class="biaoti">治污监测点</span>' + '</div>' + '<div class="xm xm3">' + '<p class=" u-marginBottom0">' +
+					'<span class="shuJu">' + json.startStatusNum + '</span>个' + '</p>' + '<span class="biaoti">监测点</span>' + '</div>' +
+					'</div>' + '</div >' + '<div class="xia"> ' + '</div> ' + '</div></a>';
+
+				var infoWindow = new BMap.InfoWindow(sContent, opts); // 创建信息窗口对象
+				map.openInfoWindow(infoWindow, map.getCenter()); //开启信息窗口
+			};
+
+		};
+		// 点击信息窗口跳转到企业监控
+		function NewTab(someT) {
+			// 先把企业ID保存到本地
+			window.localStorage.setItem("enterpriseId", someT);
+			// 搜索 企业监控 页面是否打开,如果打开就先关闭 企业监控 页面,然后再打开传值,相当于重新刷新一遍企业页面
+			var tabsheaderDomList = window.parent.document.getElementById("LAY_app_tabsheader").getElementsByTagName("li");
+			console.log(tabsheaderDomList);
+			for (var i = 0; i < tabsheaderDomList.length; i++) {
+				console.log(tabsheaderDomList[i])
+				if (tabsheaderDomList[i].attributes[0].value == "firmAbnormal_qyyc/normalQuery/firmMonitor.html") {
+					console.log("已经打开该页面了");
+					parent.layui.index.refreshTab(i);
+					// break;
+				} else {
+					// 没有打开的情况下直接新增tab
+					window.parent.document.getElementById("yincang").click();
+					// break;
+				}
+			}
+		} 
+	</script>
+
+</body>
+
 </html>
