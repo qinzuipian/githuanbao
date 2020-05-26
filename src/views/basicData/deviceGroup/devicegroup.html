@@ -6,7 +6,8 @@
     <title>设备分组</title>
     <meta name="renderer" content="webkit">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
     <link rel="stylesheet" href="./../../../layuiadmin/layui/css/layui.css" media="all">
     <link rel="stylesheet" type="text/css" href="./../../../layuiadmin/plugin/element.css" />
     <link rel="stylesheet" href="./../../../layuiadmin/style/admin.css" media="all">
@@ -75,7 +76,8 @@
                 <div class="layui-card-header card-title">
                     <div class="layui-inline">
                         <div class="layui-input-inline">
-                            <input type="text" id="enterpriseName" placeholder="企业名称" v-model="atraName" class="layui-input">
+                            <input type="text" placeholder="输入关键字进行查询" v-model="filterText"
+                                class="layui-input">
                         </div>
                         <!-- <div class="layui-inline" style="width: 40px;">
                             <i class="layui-icon layui-icon-search layuiadmin-button-btn" @click="laySearch"></i>
@@ -84,8 +86,9 @@
                 </div>
                 <div class="l-card-border" style="min-height: 400px;">
                     <!-- :indent="0" -->
-                    <el-tree v-loading="loading" :indent="0" :data="enpriseData" default-expand-all @node-click="handleNodeClick" ref="tree"
-                        highlight-current :expand-on-click-node="false" :props="defaultProps">
+                    <el-tree ref="tree" v-loading="loading" :indent="0" :data="enpriseData" default-expand-all
+                        @node-click="handleNodeClick" ref="tree" highlight-current :expand-on-click-node="false"
+                        :props="defaultProps" :filter-node-method="filterNode">
                     </el-tree>
                 </div>
             </div>
@@ -113,6 +116,7 @@
                 el: "#vm",
                 data: {
                     // treeHign: false,
+                    filterText: "",
                     treeData: [],
                     defaultProps: {
                         children: 'children',
@@ -125,6 +129,12 @@
                     enterpriseName: "",
                     loading: true
 
+                },
+                watch: {
+                    // 树状图关键字搜索
+                    filterText: function (val) {
+                        this.$refs.tree.filter(val);
+                    }
                 },
                 // updated: function () {
                 //     layui.use(['table'], function () {
@@ -174,6 +184,41 @@
                         }
 
                     },
+                    filterNode(value, data, node) {
+                        /*   if (!value) return true;
+                          return data.title.indexOf(value) !== -1; */
+                        // 如果什么都没填就直接返回
+                        if (!value) return true;
+                        // 如果传入的value和data中的label相同说明是匹配到了
+                        if (data.title.indexOf(value) !== -1) {
+                            return true;
+                        }
+                        // 否则要去判断它是不是选中节点的子节点
+                        return this.checkBelongToChooseNode(value, data, node);
+                    },
+                    // 判断传入的节点是不是选中节点的子节点
+                    checkBelongToChooseNode(value, data, node) {
+                        const level = node.level;
+                        // 如果传入的节点本身就是一级节点就不用校验了
+                        if (level === 1) {
+                            return false;
+                        }
+                        // 先取当前节点的父节点
+                        let parentData = node.parent;
+                        // 遍历当前节点的父节点
+                        let index = 0;
+                        while (index < level - 1) {
+                            // 如果匹配到直接返回
+                            if (parentData.data.title.indexOf(value) !== -1) {
+                                return true;
+                            }
+                            // 否则的话再往上一层做匹配
+                            parentData = parentData.parent;
+                            index++;
+                        }
+                        // 没匹配到返回false
+                        return false;
+                    },
                     treeInit: function () {
                         layui.use(['table'], function () {
                             // console.loglog(vm.shopId)
@@ -184,9 +229,9 @@
                                     shopId: vm.shopId,
                                     enterpriseId: vm.enterpriseId
                                 },
-								page: {
-									curr: 1 //重新从第 1 页开始
-								}
+                                page: {
+                                    curr: 1 //重新从第 1 页开始
+                                }
                             });
                         })
 
@@ -235,14 +280,14 @@
                     , cols: [[
                         // { type: 'numbers', width: 50, fixed: 'left' },
                         // { checkbox: true },
-                        { title: '生产单元',    field: 'shopName', minWidth: 100 },
-                        { title: '产污监测点',    field: 'productName', minWidth: 120 },
+                        { title: '生产单元', field: 'shopName', minWidth: 100 },
+                        { title: '产污监测点', field: 'productName', minWidth: 120 },
                         // { title: '事件类型编码', field: 'eventtypeid', minWidth: 100 },
-                        { title: '治污监测点',    field: 'treatName', minWidth: 120 },
-                        { title: '备用关系',    field: 'backup', minWidth: 80 },
+                        { title: '治污监测点', field: 'treatName', minWidth: 120 },
+                        { title: '备用关系', field: 'backup', minWidth: 80 },
                         { fixed: 'right', title: '操作', toolbar: '#barDemo', width: 100 }
                     ]] //设置表头
-                    ,  limit: 15
+                    , limit: 15
                     , limits: [15, 30, 50, 100, 200]
                     , done: function (res, page, count) {
                         $("[data-field='backup']").children().each(function () {

@@ -84,7 +84,8 @@
 							<div class="layui-inline layui-form" style="display: flex;">
 								<p style="line-height: 40px;margin-right: 10px;">选择日期：</p>
 								<div class="layui-input-inline">
-									<input type="text" v-model="indextime" id="indexTime" class="layui-input" onblur="monitorsearch()" placeholder="请输入日期">
+									<input type="text" v-model="indextime" id="indexTime" class="layui-input"
+										onblur="monitorsearch()" placeholder="请输入日期">
 								</div>
 							</div>
 							<!-- 第一层样式 -->
@@ -94,7 +95,8 @@
 										<div class="layui-card blue">
 											<div class="layui-card-header">
 												电压
-												<span class="layui-badge layui-bg-blue layuiadmin-badge layui-icon layui-icon-chart"></span>
+												<span
+													class="layui-badge layui-bg-blue layuiadmin-badge layui-icon layui-icon-chart"></span>
 											</div>
 											<div class="layui-card-body layuiadmin-card-list">
 												<p>
@@ -119,7 +121,8 @@
 										<div class="layui-card green">
 											<div class="layui-card-header">
 												功率
-												<span class="layui-badge layui-bg-cyan layuiadmin-badge layui-icon layui-icon-chart-screen"></span>
+												<span
+													class="layui-badge layui-bg-cyan layuiadmin-badge layui-icon layui-icon-chart-screen"></span>
 											</div>
 											<div class="layui-card-body layuiadmin-card-list">
 												<p>
@@ -143,7 +146,8 @@
 										<div class="layui-card yellow">
 											<div class="layui-card-header">
 												电流
-												<span class="layui-badge layui-bg-green layuiadmin-badge layui-icon layui-icon-chart"></span>
+												<span
+													class="layui-badge layui-bg-green layuiadmin-badge layui-icon layui-icon-chart"></span>
 											</div>
 											<div class="layui-card-body layuiadmin-card-list">
 
@@ -230,31 +234,36 @@
 							<h2 v-text="company"></h2>
 							<table style="width: 100%;">
 								<tr>
-									<td>地址</td>
-									<td v-text="address"></td>
+									<td>监测点</td>
+									<td v-text="total"></td>
 									<td>所属行业</td>
 									<td v-text="tradeName"></td>
+								</tr>
+
+								<tr>
+									<td>产污监测点</td>
+									<td v-text="productMonitorNum"></td>
+									<td>治污监测点</td>
+									<td v-text="treatMonitorNum"></td>
+								</tr>
+								<tr>
+									<td>第三方负责人</td>
+									<td v-text="lawPerson"></td>
+									<td>第三方电话</td>
+									<td v-text="lawPhone"></td>
 								</tr>
 								<tr>
 									<td>企业联系人</td>
 									<td v-text="chargePerson"></td>
-									<td>产污监测点</td>
-									<td v-text="productMonitorNum"></td>
+									<td>联系人电话</td>
+									<td v-text="chargePhone"></td>
 								</tr>
 								<tr>
-									<!-- <td>电气负责人</td>
-										<td v-text=""></td> -->
-									<td>污处监测点</td>
-									<td v-text="treatMonitorNum"></td>
-									<td>监测点</td>
-									<td v-text="total"></td>
+									<td>地址</td>
+									<td v-text="address"></td>
+									<td></td>
+									<td></td>
 								</tr>
-								<!-- <tr>
-										<td>安环负责人</td>
-										<td v-text=""></td>
-										<td>监测点</td>
-										<td v-text="total"></td>
-									</tr> -->
 							</table>
 						</div>
 						<div class="monitorTable">
@@ -263,12 +272,17 @@
 						</div>
 						<div class="echartTable" style="margin-top: 60px" id="eee">
 							<div class="title">
-								<button type="button" :class="{'active': firmEchartShow == 1}" @click="firmEchartClick(1)">实时数据</button>
-								<button type="button" :class="{'active': firmEchartShow == 2}" @click="firmEchartClick(2)">治污设施异常</button>
-								<button type="button" :class="{'active': firmEchartShow == 3}" @click="firmEchartClick(3)">停限产异常</button>
-								<button type="button" :class="{'active': firmEchartShow == 4}" @click="firmEchartClick(4)">其他异常</button>
+								<button type="button" :class="{'active': firmEchartShow == 1}"
+									@click="firmEchartClick(1)">实时数据</button>
+								<button type="button" :class="{'active': firmEchartShow == 2}"
+									@click="firmEchartClick(2)">治污设施异常</button>
+								<button type="button" :class="{'active': firmEchartShow == 3}"
+									@click="firmEchartClick(3)">停限产异常</button>
+								<button type="button" :class="{'active': firmEchartShow == 4}"
+									@click="firmEchartClick(4)">其他异常</button>
 								<div class="layui-input-inline">
-									<input type="text" v-model="timeDate" class="layui-input" onblur="search()" id="timeDate" placeholder="请输入日期">
+									<input type="text" v-model="timeDate" class="layui-input" onblur="search()"
+										id="timeDate" placeholder="请输入日期">
 								</div>
 							</div>
 						</div>
@@ -296,7 +310,8 @@
 							<p>如需查看更多参数图表,请点击右侧更多参数按钮</p>
 							<div class="layui-form">
 								<el-select v-model="qyvalue" placeholder="请选择" @change="change()">
-									<el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
+									<el-option v-for="item in options" :key="item.value" :label="item.label"
+										:value="item.value">
 									</el-option>
 								</el-select>
 							</div>
@@ -329,8 +344,8 @@
 				$ = layui.jquery,
 				echarts = layui.echarts,
 				laydate = layui.laydate;
-				tree = layui.tree;
-				data = vm.enterpriseTreeList
+			tree = layui.tree;
+			data = vm.enterpriseTreeList
 			//监测点的折线图
 			// inchart = echarts.init(document.getElementById('indexchart'));
 
@@ -389,10 +404,13 @@
 					vm.total = res.data.page.list[0].productMonitorNum + res.data.page.list[0].treatMonitorNum //检测点数
 					vm.chargePerson = res.data.page.list[0].chargePerson //企业负责人
 					vm.company = res.data.page.list[0].enterpriseName // 企业的名称
+					vm.chargePhone = res.data.page.list[0].chargePhone // 联系人电话
+					vm.lawPerson = res.data.page.list[0].lawPerson // 第三方负责人
+					vm.lawPhone = res.data.page.list[0].lawPhone // 第三方负责人
 				} else {
 
 				}
-				})
+			})
 				.catch(function () {
 
 				})
@@ -469,11 +487,11 @@
 				done: function (res, page, count) {
 					$("[data-field='status']").children().each(function () {
 						if ($(this).text() == '1') {
-							$(this).text("运行")
+							$(this).text("开启")
 						} else if ($(this).text() == '2') {
-							$(this).text("停机")
+							$(this).text("关闭")
 						} else if ($(this).text() == '3') {
-							$(this).text("失联")
+							$(this).text("离线")
 						}
 					})
 					$("[data-field='codeType']").children().each(function () {
@@ -876,6 +894,9 @@
 				timeDate: '',
 				indextime: "",
 				tradeName: "",
+				chargePhone: "",
+				lawPerson: "",
+				lawPhone: "",
 				productMonitorNum: '',
 				treatMonitorNum: "",
 				total: '',
@@ -1074,8 +1095,8 @@
 												getmonitordetail(obj.data.id); // 获取监测点信息的小表格
 												vm.jcvalue = ""
 												vm.qyvalue = ""
-												jcmorechart.resize();
-												document.getElementById("cha").style.display = "none"
+												// jcmorechart.resize();
+												// document.getElementById("cha").style.display = "none"
 
 											}
 										} else if (obj.data.type == "t_device_monitor_all") {
@@ -1087,8 +1108,8 @@
 											getmonitordetail(obj.data.id); // 获取监测点信息的小表格
 											vm.jcvalue = ""
 											vm.qyvalue = ""
-											jcmorechart.resize();
-											document.getElementById("cha").style.display = "none"
+											// jcmorechart.resize();
+											// document.getElementById("cha").style.display = "none"
 										}
 									}
 								});
@@ -1567,7 +1588,7 @@
 							userId: window.localStorage.getItem("userId")
 						}
 					}).then(function (res) {
-						jcmorechart.clear();
+						// jcmorechart.clear();
 						vm.more_time = [];
 						vm.more_value = [];
 						if (res.data.code == 0) {
@@ -1585,7 +1606,7 @@
 									vm.more_value.push(obj);
 								}
 								vm.more_time = res.data.data.mapx.x;
-								jcmorechart.setOption({
+							/* 	jcmorechart.setOption({
 									title: {
 										left: 'center'
 									},
@@ -1601,7 +1622,7 @@
 										type: 'value'
 									},
 									series: vm.more_value
-								}, true)
+								}, true) */
 							}
 						} else {
 

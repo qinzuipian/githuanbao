@@ -285,39 +285,39 @@
 									</div>
 								</div> -->
 								<div class="layui-form-item">
-									<label for="bitian" class="layui-form-label">负责人</label>
+									<label for="bitian" class="layui-form-label">联系人</label>
 									<div class="layui-input-inline">
-										<input type="text" name="chargePerson" class="layui-input" placeholder="负责人" />
+										<input type="text" name="chargePerson" class="layui-input" placeholder="联系人" />
 									</div>
 								</div>
 								<div class="layui-form-item">
-									<label for="bitian" class="layui-form-label">负责人电话</label>
+									<label for="bitian" class="layui-form-label">联系人电话</label>
 									<div class="layui-input-inline">
-										<input type="number" name="chargePhone" class="layui-input" placeholder="负责人电话" />
+										<input type="number" name="chargePhone" class="layui-input" placeholder="联系人电话" />
 									</div>
 								</div>
 								<div class="layui-form-item">
-									<label for="bitian" class="layui-form-label">检查人</label>
+									<label for="bitian" class="layui-form-label">监管人</label>
 									<div class="layui-input-inline">
-										<input type="text" name="checkPerson" class="layui-input" placeholder="检查人" />
+										<input type="text" name="checkPerson" class="layui-input" placeholder="监管人" />
 									</div>
 								</div>
 								<div class="layui-form-item">
-									<label for="bitian" class="layui-form-label">检查人电话</label>
+									<label for="bitian" class="layui-form-label">监管人电话</label>
 									<div class="layui-input-inline">
-										<input type="number" name="checkPhone" class="layui-input" placeholder="检查人电话" />
+										<input type="number" name="checkPhone" class="layui-input" placeholder="监管人电话" />
 									</div>
 								</div>
 								<div class="layui-form-item">
-									<label for="bitian" class="layui-form-label">法人</label>
+									<label for="bitian" class="layui-form-label">第三方负责人</label>
 									<div class="layui-input-inline">
-										<input type="text" name="lawPerson" class="layui-input" placeholder="法人" />
+										<input type="text" name="lawPerson" class="layui-input" placeholder="第三方负责人" />
 									</div>
 								</div>
 								<div class="layui-form-item">
-									<label for="bitian" class="layui-form-label">法人电话</label>
+									<label for="bitian" class="layui-form-label">第三方电话</label>
 									<div class="layui-input-inline">
-										<input type="number" name="lawPhone" class="layui-input" placeholder="法人电话" />
+										<input type="number" name="lawPhone" class="layui-input" placeholder="第三方电话" />
 									</div>
 								</div>
 								<div class="layui-form-item">
@@ -559,8 +559,6 @@
 									for(var i = 0; i < res.data.tBasEnterprise.tBasShopList.length; i++){
 										vm.list.push(res.data.tBasEnterprise.tBasShopList[i]);
 									}
-								/* 	console.log(list)
-									console.log(vm.list) */
 									vm.atraName = res.data.tBasEnterprise.organizeName
 									vm.tradeName = res.data.tBasEnterprise.tradeName
 									vm.concern = res.data.tBasEnterprise.concern

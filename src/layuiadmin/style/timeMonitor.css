@@ -3,6 +3,7 @@
 .nowData{
 	padding: 20px;
 	cursor:pointer;
+	width: 40%;
 }
 .nowData:hover{
 	color: #0000FF;

@@ -1,302 +1,381 @@
 <!DOCTYPE html>
 <html>
-	<head>
-		<meta charset="utf-8">
-		<title>企业用电明细统计</title>
-		<meta name="renderer" content="webkit">
-		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-		<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
-		<link rel="stylesheet" href="../../../layuiadmin/layui/css/layui.css" media="all">
-		<link rel="stylesheet" href="../../../layuiadmin/style/admin.css" media="all">
-		<link rel="stylesheet" type="text/css" href="../../../layuiadmin/plugin/element.css" />
-		<link rel="stylesheet" type="text/css" href="../../../layuiadmin/style/enterprisePower.css" />
 
-	</head>
-	<body>
-		<div id="vm">
-			<div class="layui-fluid layui-col-space30" style="padding-right: 0;width: 100%;">
-				<div class="layui-card layui-col-md3 layui-col-lg3">
-					<div class="layui-card-header card-title">
-						<!-- <input type="text" name="title" placeholder="请输入关键字" v-model="searchTxt" class="layui-input search-input"> -->
-					</div>
-					<div class="l-card-border enterprise-box">
-						<div id="enterpriseList" class="demo-tree demo-tree-box"></div>
-					</div>
+<head>
+	<meta charset="utf-8">
+	<title>企业用电明细统计</title>
+	<meta name="renderer" content="webkit">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<meta name="viewport"
+		content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+	<link rel="stylesheet" href="../../../layuiadmin/layui/css/layui.css" media="all">
+	<link rel="stylesheet" href="../../../layuiadmin/style/admin.css" media="all">
+	<link rel="stylesheet" type="text/css" href="../../../layuiadmin/plugin/element.css" />
+	<link rel="stylesheet" type="text/css" href="../../../layuiadmin/style/enterprisePower.css" />
+</head>
+
+<body>
+	<div id="vm">
+		<div class="layui-fluid layui-col-space30" style="padding-right: 0;width: 100%;">
+			<div class="layui-card layui-col-md3 layui-col-lg3">
+				<div class="layui-card-header card-title">
+					<input type="text" name="title" placeholder="请输入关键字进行查询" v-model="searchTxt"
+						class="layui-input search-input">
 				</div>
-				<div class="layui-card layui-col-md9 layui-col-lg9">
-					<div class="layui-card-header card-title box">
-						<div class="test-name">
-							<span>监测点名称:</span>
-							<span v-text="testNameTxt"></span>
-						</div>
-						<div class="test-time block">
-							<label class="layui-form-label">时间:</label>
-							<div class="layui-input-inline">
-								<el-date-picker v-model="testTime" type="date" value-format="yyyy-MM-dd" placeholder="选择日期" class="time-input"
-								 default-value>
-								</el-date-picker>
-							</div>
-						</div>
-						<div class="export-box">
-							<button type="button" class="layui-btn layui-btn-primary" @click="expordExcel">导出</button>
-						</div>
-					</div>
-
-					<table id="testData" lay-filter="testData"></table>
+				<div class="l-card-border enterprise-box">
+					<el-tree ref="tree" default-expand-all highlight-current :data="enterpriseTreeList"
+						:expand-on-click-node="false" :props="defaultProps" @node-click="handleNodeClick"
+						:filter-node-method="filterNode"></el-tree>
+					<!-- <div id="enterpriseList" class="demo-tree demo-tree-box"></div> -->
 				</div>
 			</div>
+			<div class="layui-card layui-col-md9 layui-col-lg9">
+				<div class="layui-card-header card-title box">
+					<div class="test-name">
+						<span>监测点名称:</span>
+						<span v-text="testNameTxt"></span>
+					</div>
+					<div class="test-time block">
+						<label class="layui-form-label">时间:</label>
+						<div class="layui-input-inline">
+							<el-date-picker v-model="testTime" type="date" value-format="yyyy-MM-dd" placeholder="选择日期"
+								class="time-input" default-value>
+							</el-date-picker>
+						</div>
+					</div>
+					<div class="export-box">
+						<button type="button" class="layui-btn layui-btn-primary" @click="expordExcel">导出</button>
+					</div>
+				</div>
+
+				<table id="testData" lay-filter="testData"></table>
+			</div>
 		</div>
+	</div>
 
 
-		<script src="../../../layuiadmin/js/baseUrlConfig.js"></script>
-		<script src="../../../layuiadmin/layui/layui.all.js"></script>
-		<script src="../../../layuiadmin/plugin/vue.min.js"></script>
-		<script src="../../../layuiadmin/plugin/element.js"></script>
-		<script src="../../../layuiadmin/plugin/axios.js"></script>
-		<script type="text/javascript">
-			var vm = new Vue({
-				el: "#vm",
-				data: {
-					searchTxt: '', // 搜索框关键字
-					enterpriseTreeList: [], // 左边树形结构的数据
-					enterpriseTreeListCopy: [], // 左边树形结构的数据的备份
-					testNameTxt: '', //监测点名称
-					monitorId: '', // 监测点ID
-					testTime: '', // 时间
+	<script src="../../../layuiadmin/js/baseUrlConfig.js"></script>
+	<script src="../../../layuiadmin/layui/layui.all.js"></script>
+	<script src="../../../layuiadmin/plugin/vue.min.js"></script>
+	<script src="../../../layuiadmin/plugin/element.js"></script>
+	<script src="../../../layuiadmin/plugin/axios.js"></script>
+	<script type="text/javascript">
+		var vm = new Vue({
+			el: "#vm",
+			data: {
+				searchTxt: '', // 搜索框关键字
+				defaultProps: {
+					children: 'children',
+					label: 'title'
 				},
-				methods: {
-					getEnterPriseTreeList: function() {
-						// 获取当前时间用来传入表格
-						var date = new Date();
-						var seperator1 = "-";
-						var year = date.getFullYear();
-						var month = date.getMonth() + 1;
-						var strDate = date.getDate();
-						if (month >= 1 && month <= 9) {
-							month = "0" + month;
-						}
-						if (strDate >= 0 && strDate <= 9) {
-							strDate = "0" + strDate;
-						}
-						this.testTime = year + seperator1 + month + seperator1 + strDate;
+				enterpriseTreeList: [], // 左边树形结构的数据
+				loading: false,
+				enterpriseTreeListCopy: [], // 左边树形结构的数据的备份
+				testNameTxt: '', //监测点名称
+				monitorId: '', // 监测点ID
+				testTime: '', // 时间
+			},
+			methods: {
+				getEnterPriseTreeList: function () {
+					// 获取当前时间用来传入表格
+					var date = new Date();
+					var seperator1 = "-";
+					var year = date.getFullYear();
+					var month = date.getMonth() + 1;
+					var strDate = date.getDate();
+					if (month >= 1 && month <= 9) {
+						month = "0" + month;
+					}
+					if (strDate >= 0 && strDate <= 9) {
+						strDate = "0" + strDate;
+					}
+					this.testTime = year + seperator1 + month + seperator1 + strDate;
 
-						axios({
-								method: "POST",
-								url: BASEURL + 'environmental_intelligent_monitoring/tbasorganize/dendrogramList',
-								params: {
-									type: 5,
-									userId: window.localStorage.getItem("userId")
-								}
-							})
-							.then(function(res) {
-								if (res.data.code == 0) {
-									for (var i = 0; i < res.data.data.length; i++) {
-										res.data.data[i].spread = true;
-									}
-									vm.enterpriseTreeList = res.data.data;
-									vm.enterpriseTreeListCopy = res.data.data;
-									layui.tree.render({
-										elem: '#enterpriseList', //默认是点击节点可进行收缩
-										data: vm.enterpriseTreeList,
-										id: 'enterpriseList',
-										click: function(obj) {
-											//得到当前点击的节点数据
-											if (obj.data.type == "t_device_monitor") {
-												vm.testNameTxt = obj.data.title
-											}
-											if (obj.data.type == "t_device_monitor") { // 如果当前点击的是监测点
-												vm.monitorId = obj.data.id;
-												layui.table.reload('testData', {
-													url: layui.setter.BASEURL + '/environmental_intelligent_monitoring/tdevicehistory/list',
-													where: {
-														monitorId: vm.monitorId
-													},
-													page: {
-														curr: 1 //重新从第 1 页开始
-													}
-												});
-											}
-										}
-									});
-								} else {
-									vm.$notify.error({
-										title: '错误',
-										message: res.data.msg
-									})
-								}
-							})
-					},
-
-					expordExcel: function() {
-						if (vm.monitorId == "" || vm.testTime == "") {
-							vm.$message.error('监测点或者时间不能为空');
-						} else {
-							parent.window.location.href = BASEURL +
-								'/environmental_intelligent_monitoring/tdevicehistory/exportEnterpriseExcel' + "?" + "actTime=" + vm.testTime +
-								"&" + "monitorId=" + vm.monitorId;
+					this.loading = true;
+					axios({
+						method: "POST",
+						url: BASEURL + 'environmental_intelligent_monitoring/tbasorganize/dendrogramList',
+						params: {
+							type: 5,
+							userId: window.localStorage.getItem("userId")
 						}
-					},
+					})
+						.then(function (res) {
+							if (res.data.code == 0) {
+								for (var i = 0; i < res.data.data.length; i++) {
+									res.data.data[i].spread = true;
+								}
+
+								vm.enterpriseTreeListCopy = res.data.data;
+								vm.loading = false;
+								var data = res.data.data;
+								vm.enterpriseTreeList = res.data.data;
+								// layui.tree.render({
+								// 	elem: '#enterpriseList', //默认是点击节点可进行收缩
+								// 	data: vm.enterpriseTreeList,
+								// 	id: 'enterpriseList',
+								// 	click: function (obj) {
+								// 		//得到当前点击的节点数据
+								// 		if (obj.data.type == "t_device_monitor") {
+								// 			vm.testNameTxt = obj.data.title
+								// 		}
+								// 		if (obj.data.type == "t_device_monitor") { // 如果当前点击的是监测点
+								// 			vm.monitorId = obj.data.id;
+								// 			layui.table.reload('testData', {
+								// 				url: layui.setter.BASEURL + '/environmental_intelligent_monitoring/tdevicehistory/list',
+								// 				where: {
+								// 					monitorId: vm.monitorId
+								// 				},
+								// 				page: {
+								// 					curr: 1 //重新从第 1 页开始
+								// 				}
+								// 			});
+								// 		}
+								// 	}
+								// });
+							} else {
+								vm.loading = false;
+								vm.$notify.error({
+									title: '错误',
+									message: res.data.msg
+								})
+							}
+						})
+				},
+
+				// 树状图节点搜索
+				filterNode(value, data, node) {
+                    /*   if (!value) return true;
+                      return data.title.indexOf(value) !== -1; */
+					// 如果什么都没填就直接返回
+					if (!value) return true;
+					// 如果传入的value和data中的label相同说明是匹配到了
+					if (data.title.indexOf(value) !== -1) {
+						return true;
+					}
+					// 否则要去判断它是不是选中节点的子节点
+					return this.checkBelongToChooseNode(value, data, node);
+				},
+				// 判断传入的节点是不是选中节点的子节点
+				checkBelongToChooseNode(value, data, node) {
+					const level = node.level;
+					// 如果传入的节点本身就是一级节点就不用校验了
+					if (level === 1) {
+						return false;
+					}
+					// 先取当前节点的父节点
+					let parentData = node.parent;
+					// 遍历当前节点的父节点
+					let index = 0;
+					while (index < level - 1) {
+						// 如果匹配到直接返回
+						if (parentData.data.title.indexOf(value) !== -1) {
+							return true;
+						}
+						// 否则的话再往上一层做匹配
+						parentData = parentData.parent;
+						index++;
+					}
+					// 没匹配到返回false
+					return false;
+				},
+
+				handleNodeClick: function (data, node) {
+					//得到当前点击的节点数据
+					if (data.type == "t_device_monitor") {
+						vm.testNameTxt = data.title
+					}
+					if (data.type == "t_device_monitor") { // 如果当前点击的是监测点
+						vm.monitorId = data.id;
+						layui.table.reload('testData', {
+							url: layui.setter.BASEURL + '/environmental_intelligent_monitoring/tdevicehistory/list',
+							where: {
+								monitorId: vm.monitorId
+							},
+							page: {
+								curr: 1 //重新从第 1 页开始
+							}
+						});
+					}
 
 				},
-				mounted: function() {
-					this.getEnterPriseTreeList();
+				expordExcel: function () {
+					if (vm.monitorId == "" || vm.testTime == "") {
+						vm.$message.error('监测点或者时间不能为空');
+					} else {
+						parent.window.location.href = BASEURL +
+							'/environmental_intelligent_monitoring/tdevicehistory/exportEnterpriseExcel' + "?" + "actTime=" + vm.testTime +
+							"&" + "monitorId=" + vm.monitorId;
+					}
 				},
-				watch: {
-					searchTxt: function() {
-						// console.log(vm.enterpriseTreeList);
-						// var searchTxtCopy = this.searchTxt.replace(/\s*/g,""); // 去掉空格
 
-						// if(searchTxtCopy == ''){
-						// 	this.enterpriseTreeList = this.enterpriseTreeListCopy;
-						// 	layui.tree.reload('enterpriseList', {
-						// 		elem: '#enterpriseList', //默认是点击节点可进行收缩
-						// 		data: vm.enterpriseTreeList,
-						// 	});
-						// }else{
-						// 	this.enterpriseTreeList = [];
-						// 	// console.log(this.enterpriseTreeListCopy);
-						// 	for(var i = 0; i < this.enterpriseTreeListCopy.length; i++){
-						// 		if(this.enterpriseTreeListCopy[i].type == "t_bas_enterprise"){ // 判断是否为企业
-						// 			if(this.enterpriseTreeListCopy[i].title.indexOf(searchTxtCopy) != -1){
-						// 				this.enterpriseTreeList.push(this.enterpriseTreeListCopy[i])
-						// 			}
-						// 		}else{
-						// 			if(this.enterpriseTreeListCopy[i].children.length > 0){
-						// 				for(var j = 0; j < this.enterpriseTreeListCopy[i].children.length; j++){
-						// 					if(this.enterpriseTreeListCopy[i].children[j].type == "t_bas_enterprise"){ // 判断是否为企业
-						// 						if(this.enterpriseTreeListCopy[i].children[j].title.indexOf(searchTxtCopy) != -1){
-						// 							if(this.enterpriseTreeList.length > 0){ // 判断最上级是否为空
-						// 								if(this.enterpriseTreeList[i].id == this.enterpriseTreeList[i-1].id){ // 这一次的上级和上一次的上级是同一个
-						// 									this.enterpriseTreeList[i-1].children.push(this.enterpriseTreeListCopy[i].children[j])
-						// 								}else{
-						// 									// var obj
-						// 								}
-						// 							}
-						// 						}
-						// 					}
-						// 				}
-						// 			}
-						// 		}
-						// 	}
+			},
+			mounted: function () {
+				this.getEnterPriseTreeList();
+			},
+			watch: {
+				/* 	,function (treeElem, filterElem, hitNumbers) {
+							console.log('hitNumbers', hitNumbers);
+							layer.msg('找到' + hitNumbers + '个节点');
+						} */
+				searchTxt: function (val) {
+					this.$refs.tree.filter(val);
+					// console.log(vm.enterpriseTreeList);
+					// var searchTxtCopy = this.searchTxt.replace(/\s*/g, ""); // 去掉空格
+
+					// if (searchTxtCopy == '') {
+					// 	this.enterpriseTreeList = this.enterpriseTreeListCopy;
+					// 	layui.tree.reload('enterpriseList', {
+					// 		elem: '#enterpriseList', //默认是点击节点可进行收缩
+					// 		data: vm.enterpriseTreeList,
+					// 	});
+					// } else {
+					// 	this.enterpriseTreeList = [];
+					// 	// console.log(this.enterpriseTreeListCopy);
+					// 	for (var i = 0; i < this.enterpriseTreeListCopy.length; i++) {
+					// 		if (this.enterpriseTreeListCopy[i].type == "t_bas_enterprise") { // 判断是否为企业
+					// 			if (this.enterpriseTreeListCopy[i].title.indexOf(searchTxtCopy) != -1) {
+					// 				this.enterpriseTreeList.push(this.enterpriseTreeListCopy[i])
+					// 			}
+					// 		} else {
+					// 			if (this.enterpriseTreeListCopy[i].children.length > 0) {
+					// 				for (var j = 0; j < this.enterpriseTreeListCopy[i].children.length; j++) {
+					// 					if (this.enterpriseTreeListCopy[i].children[j].type == "t_bas_enterprise") { // 判断是否为企业
+					// 						if (this.enterpriseTreeListCopy[i].children[j].title.indexOf(searchTxtCopy) != -1) {
+					// 							if (this.enterpriseTreeList.length > 0) { // 判断最上级是否为空
+					// 								if (this.enterpriseTreeList[i].id == this.enterpriseTreeList[i - 1].id) { // 这一次的上级和上一次的上级是同一个
+					// 									this.enterpriseTreeList[i - 1].children.push(this.enterpriseTreeListCopy[i].children[j])
+					// 								} else {
+					// 									// var obj
+					// 								}
+					// 							}
+					// 						}
+					// 					}
+					// 				}
+					// 			}
+					// 		}
+					// 	}
 
 
-						// 	layui.tree.reload('enterpriseList', {
-						// 		elem: '#enterpriseList', //默认是点击节点可进行收缩
-						// 		data: vm.enterpriseTreeList,
-						// 	});
-						// }
+					// 	layui.tree.reload('enterpriseList', {
+					// 		elem: '#enterpriseList', //默认是点击节点可进行收缩
+					// 		data: vm.enterpriseTreeList,
+					// 	});
+					// }
 
-					},
-					testTime: function() {
-						if (layui.setter) {
-							layui.table.reload('testData', {
-								url: layui.setter.BASEURL + '/environmental_intelligent_monitoring/tdevicehistory/list',
-								where: {
-									monitorId: vm.monitorId,
-									acttime: vm.testTime
-								},
-								page: {
-									curr: 1 //重新从第 1 页开始
-								}
-							});
-						}
+				},
+				testTime: function () {
+					if (layui.setter) {
+						layui.table.reload('testData', {
+							url: layui.setter.BASEURL + '/environmental_intelligent_monitoring/tdevicehistory/list',
+							where: {
+								monitorId: vm.monitorId,
+								acttime: vm.testTime
+							},
+							page: {
+								curr: 1 //重新从第 1 页开始
+							}
+						});
 					}
 				}
-			});
-			layui.config({
-				base: '../../../layuiadmin/' //静态资源所在路径
-			}).extend({
-				index: 'lib/index' //主入口模块
-			}).use(['index', 'tree', 'table'], function() {
-				var tree = layui.tree;
-				var data = vm.enterpriseTreeList;
-				var table = layui.table;
+			}
+		});
+		layui.config({
+			base: '../../../layuiadmin/' //静态资源所在路径
+		}).extend({
+			index: 'lib/index' //主入口模块
+		}).use(['index', 'tree', 'table', 'jquery'], function () {
+			var tree = layui.tree;
+			var data = vm.enterpriseTreeList;
+			var table = layui.table;
+			var $ = layui.jquery;
 
-				table.render({
-					elem: '#testData',
-					height: 650,
-					url: layui.setter.BASEURL + '/environmental_intelligent_monitoring/tdevicehistory/list', //数据接口
-					where: {
-						monitorId: vm.monitorId,
-						acttime: vm.testTime,
-						userId: window.localStorage.getItem("userId")
-					},
-					parseData: function(res) { // 数据重新处理为layUI的数据格式
-						var msg = {
-							"code": res.code, //解析接口状态
-							"msg": res.msg, //解析提示文本
-							"count": res.page.totalCount, //解析数据长度
-							"data": res.page.list //解析数据列表
-						};
-						return msg;
-					},
-					page: true, //开启分页
-					cols: [
-						[ //表头
-							{
-								field: 'monitorName',
-								title: '监测点名称',
-								width: 140,
+			table.render({
+				elem: '#testData',
+				height: 650,
+				url: layui.setter.BASEURL + '/environmental_intelligent_monitoring/tdevicehistory/list', //数据接口
+				where: {
+					monitorId: vm.monitorId,
+					acttime: vm.testTime,
+					userId: window.localStorage.getItem("userId")
+				},
+				parseData: function (res) { // 数据重新处理为layUI的数据格式
+					var msg = {
+						"code": res.code, //解析接口状态
+						"msg": res.msg, //解析提示文本
+						"count": res.page.totalCount, //解析数据长度
+						"data": res.page.list //解析数据列表
+					};
+					return msg;
+				},
+				page: true, //开启分页
+				cols: [
+					[ //表头
+						{
+							field: 'monitorName',
+							title: '监测点名称',
+							width: 140,
 
-							}, {
-								field: 'acttime',
-								title: '时间',
-								width: 170,
+						}, {
+							field: 'acttime',
+							title: '时间',
+							width: 170,
 
-							}, {
-								field: 'ua',
-								title: 'Ua(V)',
-								// width: 80,
+						}, {
+							field: 'ua',
+							title: 'Ua(V)',
+							// width: 80,
 
-							}, {
-								field: 'ub',
-								title: 'Ub(V)',
-								// width: 80
-							}, {
-								field: 'uc',
-								title: 'Uc(V)',
-								// width: 80
-							}, {
-								field: 'ia',
-								title: 'Ia(A)',
-								// width: 80,
+						}, {
+							field: 'ub',
+							title: 'Ub(V)',
+							// width: 80
+						}, {
+							field: 'uc',
+							title: 'Uc(V)',
+							// width: 80
+						}, {
+							field: 'ia',
+							title: 'Ia(A)',
+							// width: 80,
 
-							}, {
-								field: 'ib',
-								title: 'Ib(A)',
-								// width: 80,
+						}, {
+							field: 'ib',
+							title: 'Ib(A)',
+							// width: 80,
 
-							}, {
-								field: 'ic',
-								title: 'Ic(A)',
-								// width: 80
-							}, {
-								field: 'p',
-								title: 'P(kW)',
-								// width: 80,
+						}, {
+							field: 'ic',
+							title: 'Ic(A)',
+							// width: 80
+						}, {
+							field: 'p',
+							title: 'P(kW)',
+							// width: 80,
 
-							}, {
-								field: 'q',
-								title: 'Q(kVAR)',
-								width: 100,
+						}, {
+							field: 'q',
+							title: 'Q(kVAR)',
+							width: 100,
 
-							}, {
-								field: 'pi',
-								title: 'Pv(KWH)',
-								width: 120,
+						}, {
+							field: 'pi',
+							title: 'Pv(KWH)',
+							width: 120,
 
-							}, {
-								field: 'the',
-								title: 'The',
-								// width: 80,
+						}, {
+							field: 'the',
+							title: 'The',
+							// width: 80,
 
-							}
-						]
+						}
 					]
-				});
-
-
+				]
 			});
-		</script>
-	</body>
+
+
+		});
+	</script>
+</body>
+
 </html>

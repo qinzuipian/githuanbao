@@ -11,7 +11,7 @@
 	</head>
 	<style type="text/css">
 		.data {
-			width: :100%;
+			width: 100%;
 			height: 40px;
 			line-height: 40px;
 			background: #B3D8FF;
@@ -507,11 +507,11 @@
 								if (res.data.code == 0) {
 									app.monitorName = res.data.tDeviceRealtime.monitorName;
 									if (res.data.tDeviceRealtime.status == "1") {
-										app.status = "运行"
+										app.status = "开启"
 									} else if (res.data.tDeviceRealtime.status == "2") {
-										app.status = "停机"
+										app.status = "关闭"
 									} else if (res.data.tDeviceRealtime.status == "3") {
-										app.status = "失联"
+										app.status = "离线"
 									}
 									app.modifyDate = res.data.tDeviceRealtime.acttime;
 									app.enterpriseName = res.data.tDeviceRealtime.enterpriseName;
