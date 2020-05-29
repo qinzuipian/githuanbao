@@ -91,3 +91,6 @@
 	line-height: 30px;
 	color: #2F4056;
 }
+.el-tree-node>.el-tree-node__children {
+	overflow: inherit;
+}

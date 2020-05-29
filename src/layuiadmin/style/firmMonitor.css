@@ -58,6 +58,7 @@
 .firmRight .rightContent,.firmLeft .leftContent {
     padding: 10px;
     background-color: #fff;
+    overflow-x: scroll;
 }
 .firmRight .rightContent h2{
     text-align: center;
