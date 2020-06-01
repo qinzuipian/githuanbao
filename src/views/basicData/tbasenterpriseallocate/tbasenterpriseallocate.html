@@ -91,7 +91,7 @@
 
 				userList: [], // 用户列表
 				enterpriseList: [], // 企业列表
-				searchEnterprise:[],//搜索企业列表
+				searchEnterprise: [],//搜索企业列表
 				tradeList: [{
 					name: "不限",
 					id: ""
@@ -232,9 +232,9 @@
 								vm.reducedLoading = false;
 								vm.selectEnterprise = []
 								for (var i = 0; i < res.data.page.list.length; i++) {
-									for (var j = 0; j < vm.enterpriseList.length; j++) {
-										if (res.data.page.list[i].enterpriseId == vm.enterpriseList[j].id) {
-											vm.selectEnterprise.push(vm.enterpriseList[j].name)
+									for (var j = 0; j < vm.searchEnterprise.length; j++) {
+										if (res.data.page.list[i].enterpriseId == vm.searchEnterprise[j].id) {
+											vm.selectEnterprise.push(vm.searchEnterprise[j].name)
 										}
 									}
 								}
